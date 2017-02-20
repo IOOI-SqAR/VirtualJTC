@@ -1,0 +1,159 @@
+<html>
+<body>
+  <h1>Texteditor</h1>
+    Im Emulator ist ein Texteditor integriert,
+    der insbesondere f&uuml;r die Entwicklung von
+    <a href="basic.htm">Tiny-MP-BASIC</a>-Programmen gedacht ist.
+    Es k&ouml;nnen aber auch beliebige andere Textdateien editiert werden.
+    Neben den &uuml;blichen Editorfunktionen wie Dateien &ouml;ffnen
+    und speichern, suchen und ersetzen, Zugriff auf die Zwischenablage
+    usw. bietet er die M&ouml;glichkeit,
+    ein BASIC-Programm aus dem Arbeitsspeicher des Emulators zu laden
+    und umgekehrt wieder in den Arbeitsspeicher zu transferieren.
+  <br/><br/>
+    Nachfolgend werden nur die Funktionen beschrieben,
+    die sich von den &uuml;blichen Editorfunktionen unterscheiden.
+  <br/><br/>
+
+  <h2>1. BASIC-Programm aus Arbeitsspeicher laden</h2>
+    Diese Funktion erreichen Sie &uuml;ber das Men&uuml; <em>Datei</em>.
+    Zuerst fragt der Editor nach der Adresse im Arbeitsspeicher,
+    von der das Programm geladen werden soll.
+    Anschlie&szlig;end wird das an dieser Stelle beginnende BASIC-Programm
+    in den Editor geladen und dort angezeigt.
+    Dabei erfolgt eine Umwandlung vom
+    <a href="basic.htm#format">komprimierten Speicherformat</a>
+    in die &uuml;bliche BASIC-Darstellung, d.h.,
+    die Schl&uuml;sselw&ouml;rter werden ausgeschrieben und Leerzeichen
+    an bestimmten Stellen eingef&uuml;gt.
+  <br/><br/>
+    Mit Hilfe dieser Funktion kann auch ein im Arbeitsspeicher
+    befindliches BASIC-Programm ausgedruckt werden,
+    indem man es einfach &uuml;ber die Druckfunktion des Editors druckt.
+  <br/><br/>
+
+  <h2>2. BASIC-Programm syntaktisch pr&uuml;fen</h2>
+    Diese Funktion finden Sie wie auch die beiden danach beschriebenen
+    im Men&uuml; <em>Programmierung</em>.
+  <br/><br/>
+    Der Editor enth&auml;lt einen Parser,
+    der die Syntax des angezeigten BASIC-Programms pr&uuml;ft.
+    Fehler und Warnungen werden im unteren Bereich des Editors ausgegeben.
+    Neben der eigentlichen Fehlermeldung wird auch die betroffene
+    BASIC-Zeile mit angezeigt.
+    Die fehlerhafte Stelle innerhalb dieser Zeile ist mit drei
+    Fragezeichen gekennzeichnet.
+  <br/><br/>
+    Um direkt von der Fehlermeldung zur fehlerhaften BASIC-Zeile
+    zu gelangen, klicken Sie doppelt auf die eigentliche Fehlermeldung,
+    d.h. auf die Zeile mit der Zeilennummer.
+    Der Editor setzt dann den Cursor auf die fehlerhafte BASIC-Zeile.
+  <br/><br/>
+    Der Parser beachtet auch streng die Besonderheiten bei
+    <a href="basic.htm#if_then_else">IF...THEN...ELSE</a>,
+    d.h. dort, wo ein <em>ELSE</em> vom BASIC-Interpreter zwar nicht
+    angemeckert wird, aber auch keine Wirkung zeigt,
+    erlaubt es der BASIC-Parser des Editors erst gar nicht.
+  <br/><br/>
+    Zus&auml;tzlich zu der vom BASIC-Interpreter vorgegebenen Syntax
+    gelten f&uuml;r den Parser folgende Regeln:
+    <ul>
+      <li>Leerzeilen werden ignoriert</li>
+      <li>
+	Schl&uuml;sselw&ouml;rter, Variablen, Hexadezimalzahlen,
+        Prozedur- und Funktionsnamen k&ouml;nnen klein geschrieben werden.
+	Der Parser wandelt sie in Gro&szlig;buchstaben um.
+      </li>
+      <li>Das Schl&uuml;sselwort <em>LET</em> kann weggelassen werden</li>
+      <li>
+	Enth&auml;lt eine BASIC-Zeile keine Zeilennummer,
+	wird die Zeile ggf. mit einem Semikolon getrennt an die vorherige
+	angeh&auml;ngt, d.h., aus
+	<br/><br/>
+	  <tt>
+	    100 A=1<br/>
+	    PRINT A<br/>
+	    110 END<br/>
+	  </tt>
+	<br/>
+	erzeugt der Parser
+	<br/><br/>
+	  <tt>
+	    100 LET A=1; PRINT A<br/>
+	    110 END<br/>
+	  </tt>
+	<br/>
+	Daraus folgt, das die erste Zeile eine BASIC-Zeilennummer haben muss.
+	<br/><br/>
+      </li>
+      <li>
+	F&uuml;r die <em>IF</em>-Anweisung sind folgende Syntax-Varianten
+	m&ouml;glich:
+	<br/><br/>
+	<tt>
+	  IF &lt;Bedingung&gt; THEN &lt;Anweisung&gt;<br/>
+	  IF &lt;Bedingung&gt; THEN &lt;Zeilennummer&gt;<br/>
+	  IF &lt;Bedingung&gt; &lt;Anweisung&gt;<br/>
+	</tt>
+	<br/>
+	Das Schl&uuml;sselwort <em>THEN</em> kann weggelassen werden.
+	Folgt hinter der Bedingung ein <em>GOTO</em> mit einer Zahl
+	als Zeilennummer, so kann anstelle von <em>THEN</em> auch
+	<em>GOTO</em> weggelassen werden.
+	Dies gilt jedoch nicht, wenn die Zeilennummer mit einem
+	variablen Ausdruck angegeben ist.
+      </li>
+    </ul>
+  <br/><br/>
+
+  <h2>3. BASIC-Programm in Arbeitsspeicher laden</h2>
+    Diese Funktion pr&uuml;ft zuerst die Syntax des BASIC-Programms.
+    Wenn dabei kein Fehler auftritt, wird anschlie&szlig;end
+    das Programm in die <a href="basic.htm#format">komprimierte Form</a>
+    umgewandelt und in den Arbeitsspeicher des Emulators geladen.
+    Dort k&ouml;nnen Sie es nun starten.
+  <br/><br/>
+    Vor dem erstmaligen Laden des BASIC-Programms in den Arbeitsspeicher
+    fragt der Editor nach der Adresse, wohin es geladen werden soll.
+  <br/><br/>
+
+  <h2>4. BASIC-Programm in Arbeitsspeicher laden mit...</h2>
+    Diese Funktion hat die gleiche Wirkung wie die gerade beschriebene,
+    nur mit dem Unterschied, dass jedesmal vor dem Laden
+    in den Arbeitsspeicher nach der Adresse gefragt wird.
+  <br/><br/>
+
+  <h2>5. Suchen mit einem regul&auml;ren Ausdruck</h2>
+    Bei der Suchfunktion k&ouml;nnen Sie den zu suchenden Text auch als
+    regul&auml;ren Ausdruck angeben.
+    Dabei gelten die gleichen Regeln wir f&uuml;r regul&auml;re Ausdr&uuml;cke
+    in Java.
+    Diese sind wiederum sehr &auml;hnlich, jedoch nicht ganz identisch,
+    zu denen von Perl 5.
+  <br/><br/>
+    Unicode- und Mehrzeilenunterst&uuml;tzung sind bereits aktiviert, d.h.,
+    der Punkt steht f&uuml;r jedes beliebige Zeichen au&szlig;er Zeilenumbruch,
+    und <em>^</em> und <em>$</em> markieren den Zeilenanfang bzw. Zeilenende.
+  <br/><br/>
+    Die Tabelle zeigt eine kleine Auswahl der M&ouml;glichkeiten
+    mit regul&auml;ren Ausdr&uuml;cken:
+  <br/>
+    <table border="1">
+      <tr><th>Konstrukt</th><th>Bedeutung</th></tr>
+      <tr><td>X</td><td>Zeichen X</td></tr>
+      <tr><td>X?</td><td>Zeichen X einmal oder nicht</td></tr>
+      <tr><td>X+</td><td>Zeichen X einmal oder mehrmals</td></tr>
+      <tr><td>X*</td><td>Zeichen X einmal, mehrmals oder nicht</td></tr>
+      <tr><td>.</td><td>Beliebiges Zeichen au&szlig;er Zeilenumbruch</td></tr>
+      <tr><td>^</td><td>Zeilenanfang</td></tr>
+      <tr><td>$</td><td>Zeilenende</td></tr>
+      <tr><td>\\</td><td>Backslash</td></tr>
+      <tr><td>[ABC]</td><td>A, B oder C</td></tr>
+      <tr>
+	<td>[^ABC]</td><td>Beliebiges Zeichen au&szlig;er A, B und C</td>
+      </tr>
+      <tr><td>[a-zA-Z]</td><td>a bis z oder A bis Z</td></tr>
+    </table>
+</body>
+</html>
+

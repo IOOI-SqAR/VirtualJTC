@@ -1,0 +1,65 @@
+<html>
+<body>
+  <h1>Debugger</h1>
+    Der Debugger dient zur Verfolgung der Programmausf&uuml;hrung im Emulator.
+    Dazu k&ouml;nnen Sie Haltepunkte setzen,
+    die Programmausf&uuml;hrung anhalten,
+    die Registerinhalte sehen und ggf. auch &auml;ndern sowie
+    einzelne Prozessorbefehle oder Unterprogramme ausf&uuml;hren
+    bzw. die Programmausf&uuml;hrung fortsetzen.
+  <br/><br/>
+
+  <h2>1. Register</h2>
+    Den gr&ouml;&szlig;ten Teil des Debugger-Fensters nimmmt die Anzeige
+    der Register ein.
+    Deshalb werden nur so viele Register angezeigt, wie auch emuliert werden.
+    &Auml;ndern Sie jedoch in den Einstellungen die Option
+    <a href="settings.htm#reg_count">Register %80 bis %EF emulieren</a>,
+    w&auml;hrend das Debugger-Fenster offen ist,
+    wird die Anzahl der angezeigten Register nicht ge&auml;ndert.
+    Um das zu erreichen, m&uuml;ssen Sie das Debugger-Fenster
+    schlie&szlig;en und wieder &ouml;ffnen.
+  <br/><br/>
+    Die Register 0 und 1 werden nicht angezeigt,
+    da die Ports 0 und 1 beim JU+TE-Computer f&uuml;r den Daten- und
+    Adressbus verwendet werden und somit als Ein-/Ausgabetore
+    nicht zur Verf&uuml;gung stehen.
+  <br/><br/>
+
+  <h2>2. Programmausf&uuml;hrung anhalten</h2>
+    Die Programmausf&uuml;hrung wird mit dem Men&uuml;punkt
+    <em>Programmausf&uuml;hrung anhalten</em> im Men&uuml; <em>Debuggen</em>
+    oder bei Erreichen eines aktiven Haltepunktes angehalten.
+    Beim Anhalten werden die aktuellen Werte der Prozessorregister angezeigt.
+    Diese k&ouml;nnen Sie auch &auml;ndern, d.h.,
+    vor der Ausf&uuml;hrung des n&auml;chsten Befehls werden
+    die ge&auml;nderten Werte in die Register geschrieben.
+  <br/><br/>
+    Um Missverst&auml;ndnisse zu vermeiden, k&ouml;nnen die Register
+    2, 3, SIO, T1, PRE1, T0 und PRE0 nicht ge&auml;ndert werden.
+    Diese Register haben n&auml;mlich beim Lesen und Schreiben eine
+    unterschiedliche Bedeutung.
+  <br/><br/>
+
+  <h2>3. Haltepunkte</h2>
+    Die Funktionen zum Verwalten der Haltepunkte finden Sie im Men&uuml;
+    <em>Debuggen</em> und im Kontextmen&uuml; &uuml;ber den Bereich
+    <em>Haltepunkte</em> am rechten Fensterrand.
+  <br/><br/>
+    Haltepunkte m&uuml;ssen mit ihrem hexadezimalen Adresswert angegeben
+    werden.
+    Des weiteren k&ouml;nnen sie auch inaktiv gesetzt werden.
+    In dem Fall wird der Haltepunkt in Klammern angezeigt,
+    was soviel bedeutet,
+    dass die Programmausf&uuml;hrung an dieser Adresse nicht anh&auml;lt.
+  <br/><br/>
+
+  <h2>4. Befehle ausf&uuml;hren</h2>
+    Mit den weiteren Funktionen im Men&uuml; <em>Debuggen</em>
+    k&ouml;nnen Sie einzelne Befehle oder Befehlsgruppe ausf&uuml;hren
+    oder die Programmausf&uuml;hrung generell fortsetzen.
+    An aktiven Haltepunkten wird jedoch angehalten,
+    solange der Debugger g&ouml;ffnet ist.
+</body>
+</html>
+

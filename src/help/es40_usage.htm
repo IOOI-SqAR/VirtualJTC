@@ -1,0 +1,322 @@
+<html>
+<body>
+  <h1>Bedienung des Betriebssystems ES&nbsp;4.0</h1>
+    Das Betriebssystem beinhaltet einen BASIC-Editor
+    und einen Maschinenmonitor.
+    Nach dem Einschalten, d.h. nach dem Starten des Emulators,
+    und nach einem RESET meldet sich der BASIC-Editor.
+  <br/><br/>
+
+  <h2>1. BASIC-Editor</h2>
+    Ist als Prompt die Zeichenkette <em>Edi</em> zu sehen,
+    befindet man sich im BASIC-Editor.
+    Dieser kennt folgende Kommandos:
+  <br/>
+    <table border="1">
+      <tr><th>Kommando</th><th>Bedeutung</th></tr>
+      <tr>
+	<td valign="top">C</td>
+	<td>Setzt das BASIC-Programm nach einer STOP-Anweisung fort</td>
+      </tr>
+      <tr>
+	<td valign="top">E</td>
+	<td>
+	  Listet das BASIC-Programm zeilenweise auf,<br/>
+	  Mit der Leertaste wird die n&auml;chste Zeile angezeigt.
+	  Hinter dem <em>E</em> kann auch eine Zeilennummer angegeben werden.
+	  Dann wird das Programm ab dieser Zeilennummer angezeigt.
+	</td>
+      </tr>
+      <tr>
+	<td valign="top">L</td>
+	<td>
+	  L&auml;dt ein Programm von Kassette auf die Standardadresse
+	  f&uuml;r BASIC-Programme (%E000),<br/>
+	  Dazu muss die Emulation der
+	  <a href="audio.htm">Kassettenschnittstelle</a> aktiviert werden.<br/>
+	  Wurde das Programm fehlerfrei geladen, meldet sich der BASIC-Editor
+	  mit einer Null zur&uuml;ck, sonst mit 255.
+	  (siehe auch <a href="es40_usage.htm#load">Hinweise
+	  zum Laden von Kassette</a>)
+	</td>
+      </tr>
+      <tr>
+	<td valign="top">N</td>
+	<td>L&ouml;scht das BASIC-Programm aus dem Arbeitsspeicher</td>
+      </tr>
+      <tr>
+	<td valign="top">M</td>
+	<td>
+	  Ruft den <a href="es40_usage.htm#mon">Maschinenmonitor</a> auf
+	</td>
+      </tr>
+      <tr><td valign="top">R</td><td>Startet das BASIC-Programm</td></tr>
+      <tr>
+	<td valign="top">S</td>
+	<td>
+	  Speichert ein BASIC-Programm auf Kassette,<br/>
+	  Dazu muss die Emulation der
+	  <a href="audio.htm">Kassettenschnittstelle</a> aktiviert werden.
+	</td>
+      </tr>
+      <tr>
+	<td valign="top">?X</td>
+	<td>Gibt den Wert der Variable X aus</td>
+      </tr>
+      <tr>
+	<td valign="top">&lt;Zahl&gt;</td>
+	<td>
+	  Eingabe oder L&ouml;schen einer BASIC-Zeile,<br/>
+	  Wird hinter der Zahl nichts weiter angegeben, l&ouml;scht der Editor
+	  die BASIC-Zeile mit dieser Zeilennummer.
+	  Anderenfalls wird eine BASIC-Zeile mit dieser Zeilennummer
+	  eingegeben.
+	  Dabei m&uuml;ssen die BASIC-Anweisungen in der Kurzform des
+	  <a href="basic.htm#format">komprimierten Speicherformats</a>
+	  geschrieben werden.
+	</td>
+      </tr>
+    </table>
+  <br/><br/>
+
+  <h2><a name="mon">2. Maschinenmonitor</a></h2>
+    Der Maschinenmonitor dient zum Anzeigen und Beschreiben
+    von Speicherbereichen mit Hexadezimalzahlen und/oder ASCII-Zeichen.
+    Die Tabelle zeigt die Kommandos des Maschinenmonitors,
+    wobei alle einzugebenden Werte mit Ausnahme bei ASCII-Zeichen hexadezimal
+    (gro&szlig; geschrieben und ohne vorangestelltes Prozentzeichen)
+    angegeben werden m&uuml;ssen.
+  <br/>
+    <table border="1">
+      <tr><th>Kommando</th><th>Bedeutung</th></tr>
+      <tr>
+	<td valign="top" nowrap>,aaaa xx xx xx xx xx xx xx xx</td>
+	<td>
+	  Schreibt die max. 8 angegebenen Bytes in den Speicher
+	  ab Adresse aaaa
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>;aaaa cccccccccccccccc</td>
+	<td>
+	  Schreibt die max. 16 angegebenen ASCII-Zeichen in den Speicher
+	  ab Adresse aaaa
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>?aaaa bbbb</td>
+	<td>
+	  Berechnet aaaa+bbbb und aaaa-bbbb und gibt die beiden Ergebnisse aus
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>%aaaa</td>
+	<td>
+	  Gibt den vorzeichenbehafteten Dezimalwert der Hexadezimalzahl aaaa
+	  aus
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>#aaaa</td>
+	<td>
+	  Gibt den vorzeichenlosen Dezimalwert der Hexadezimalzahl aaaa aus
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>!rrxx</td>
+	<td>Schreibt den Wert xx in das Register rr</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Faaaa nnnn xx</td>
+	<td>
+	  F&uuml;llt den Speicher ab Adresse aaaa mit nnnn Bytes xx
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Haaaa</td>
+	<td>Zeigt ab Adresse aaaa 8 Bytes hexadezimal an</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Jaaaa</td>
+	<td>
+	  Startet ein Maschinenprogramm auf Adresse aaaa mit einem CALL-Befehl,
+	  d.h., das Maschinenprogramm kann mit einem RET-Befehl beendet werden.
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Laaaa</td>
+	<td>
+	  L&auml;dt eine Datei von Kassette in den Arbeitsspecher
+	  ab Adresse aaaa,<br/>
+	  Dazu muss die Emulation der
+	  <a href="audio.htm">Kassettenschnittstelle</a> aktiviert werden.<br/>
+	  Nach dem Laden wird die Anzahl der geladenen Bytes und
+	  der R&uuml;ckgabecode (Null bedeutet kein Fehler) ausgegeben.
+	  (siehe auch <a href="es40_usage.htm#load">Hinweise
+	  zum Laden von Kassette</a>)
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Q</td>
+	<td>Beendet den Maschinenmonitor</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Maaaa bbbb nnnn</td>
+	<td>
+	  Verschiebt nnnn Bytes im Arbeitsspeicher von Adresse aaaa
+	  nach bbbb,<br/>
+	  Das funktioniert auch bei &Uuml;berschneiden der Speicherbereiche.
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Rrr</td>
+	<td>Gibt der Wert des Registers rr aus</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>Saaaa nnnn</td>
+	<td>
+	  Speichert nnnn Bytes ab der Adresse aaaa auf Kassette,<br/>
+	  Das zweite Argument gibt nicht die Endadresse sondern die Anzahl
+	  der Bytes an.<br/>
+	  F&uuml;r diese Funktion muss die Emulation der
+	  <a href="audio.htm">Kassettenschnittstelle</a> aktiviert werden.
+	</td>
+      </tr>
+    </table>
+  <br/><br/>
+    Es bedeuten:
+  <br/>
+    <table border="1">
+      <tr><td>aaaa bbbb nnnn</td><td>16-Bit-Hexadezimalzahlen</td></tr>
+      <tr><td>rr xx</td><td>8-Bit-Hexadezimalzahlen</td></tr>
+      <tr><td>c</td><td>ASCII-Zeichen</td></tr>
+    </table>
+  <br/><br/>
+
+  <h2>3. Editierfunktionen</h2>
+    Alle Eingaben erfolgen mit Hilfe eines Full-Screen-Editors.
+    Dieser bietet komfortable Editierfunktionen,
+    die in nachfolgender Tabelle gezeigt werden.
+  <br/><br/>
+    In der ersten Spalte steht der hexadezimale Code der Funktion.
+    Gibt man in einem Programm ein Zeichen mit diesem Code
+    auf dem Bildschirm aus, wird die entsprechende Funktion ausgef&uuml;hrt.
+  <br/><br/>
+    F&uuml;r manche Funktionen gibt es auf der Tastatur des Emulator-Rechners
+    keine speziellen Tasten.
+    Diese Editierfunktionen k&ouml;nnen jedoch mit Hilfe einer CTRL- bzw.
+    Strg-Tastenkombination benutzt werden (siehe letzte Spalte in der Tabelle).
+  <br/>
+    <table border="1">
+      <tr>
+	<th>Code</th>
+	<th>Name</th>
+	<th>Bedeutung</th>
+	<th>CTRL-Tastenkombination</th>
+      </tr>
+      <tr><td>01</td><td></td><td>Kursor links</td><td>CTRL-A</td></tr>
+      <tr><td>02</td><td></td><td>Kursor rechts</td><td>CTRL-B</td></tr>
+      <tr><td>03</td><td></td><td>Kursor hoch</td><td>CTRL-C</td></tr>
+      <tr><td>04</td><td></td><td>Kursor runter</td><td>CTRL-D</td></tr>
+      <tr>
+	<td>05</td>
+	<td>HOM</td>
+	<td>Kursor in linke obere Ecke</td>
+	<td>CTRL-E</td>
+      </tr>
+      <tr>
+	<td>06</td>
+	<td>SOL</td>
+	<td>Kursor an Zeilenanfang</td>
+	<td>CTRL-F</td>
+      </tr>
+      <tr>
+	<td>07</td>
+	<td>DEL</td>
+	<td>Zeichen unter Cursor l&ouml;schen</td>
+	<td>CTRL-G</td>
+      </tr>
+      <tr>
+	<td>08</td>
+	<td>DBS</td>
+	<td>Zeichen links von Kursor l&ouml;schen</td>
+	<td>CTRL-H</td>
+      </tr>
+      <tr>
+	<td>09</td>
+	<td>INS</td>
+	<td>Zeichen einf&uuml;gen</td>
+	<td>CTRL-I</td>
+      </tr>
+      <tr>
+	<td>0A</td>
+	<td>LDE</td>
+	<td>Zeile l&ouml;schen</td>
+	<td>CTRL-J</td>
+      </tr>
+      <tr>
+	<td>0B</td>
+	<td>LIN</td>
+	<td>Zeile einf&uuml;gen</td>
+	<td>CTRL-K</td>
+      </tr>
+      <tr>
+	<td>0C</td>
+	<td>CLS</td>
+	<td>Bildschirm l&ouml;schen</td>
+	<td>CTRL-L</td>
+      </tr>
+      <tr>
+	<td>0D</td>
+	<td>RET</td>
+	<td>Eingabe abschlie&szlig;en</td>
+	<td>CTRL-M</td>
+      </tr>
+      <tr>
+	<td>0E</td>
+	<td>ESC</td>
+	<td>N&auml;chstes Zeichen nicht als Steuerzeichen interpretieren</td>
+	<td>CTRL-N</td>
+      </tr>
+    </table>
+  <br/><br/>
+
+  <h2><a name="load">4. Hinweise zum Laden von Kassette</a></h2>
+    Beim Laden von Kassette k&ouml;nnen Lesefehler auftreten.
+    In dem Fall f&auml;ngt der Ju+Te-Computer an zu piepen.
+    Im Emulator k&ouml;nnen Sie aber dieses Piepen nicht h&ouml;ren,
+    da die Kassettenschnittstelle gerade eingangsseitig
+    und nicht ausgangsseitig emuliert wird.
+    Das ES&nbsp;4.0 gestattet zwar nun das Zur&uuml;ckspulen der Kassette
+    und durch Dr&uuml;cken der Taste <em>C</em> das Laden fortzusetzen
+    bzw. mit der Taste <em>B</em> das Laden abzubrechen,
+    jedoch ist das schwierig zu machen, wenn man nichts h&ouml;rt
+    und somit den Lesefehler nicht gleich bemerkt.
+    Aus diesem Grund ist es empfehlenswert,
+    sofern das direkte Laden von Kassette in den Emulator nicht
+    auf Anhieb funktioniert,
+    den Umweg &uuml;ber eine Sound-Datei zu gehen.
+    Nehmen Sie dazu das Programm auf der Kassette als Sound-Datei auf
+    (z.B. WAV-Format, auf keinen Fall ein Format mit verlustbehafteter
+    Kompression wie MP3, AAC oder OGG)
+    und lesen Sie die Sound-Datei in den Emulator ein.
+    Wenn nun ein Lesefehler auftritt sehen Sie das am stehengebliebenen
+    Fortschrittsbalken im Audio-Fenster.
+    Allerdings bedeutet das auch, dass die Sound-Datei fehlerhaft ist
+    und somit neu aufgenommen werden muss.
+  <br/><br/>
+
+  <h2>5. Literatur</h2>
+    <table border="0">
+      <tr>
+	<td valign="top">[1]</td>
+	<td valign="top">
+	  Scheutzow, Harun: Betriebssystem ES4.0 f&uuml;r den JU+TE-Computer,
+	  Sonderdruck zum Jugend+Technik-Artikel in Heft 6/1990 Seite 82ff,
+	  Verlag Junge Welt GmbH, Berlin 1990
+	</td>
+      </tr>
+    </table>
+</body>
+</html>
+

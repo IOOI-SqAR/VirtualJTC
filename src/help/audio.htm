@@ -1,0 +1,242 @@
+<html>
+<body>
+  <h1>Audio/Kassette</h1>
+    Der JU+TE-Computer verwendet als Massenspeicher einen Kassettenrecorder.
+    Beim Emulator werden die Dateien &uuml;blicherweise nicht mehr
+    auf Kassette, sondern im Dateisystem des Emulator-Rechners gespeichert.
+    Trotzdem kann JTCEMU den Anschluss f&uuml;r den Kassettenrecorder
+    emulieren,
+    und zwar wahlweise &uuml;ber das Audio-System oder &uuml;ber Sound-Dateien.
+  <br/><br/>
+    Damit der Kassettenrecorderanschluss emuliert wird,
+    m&uuml;ssen Sie im Hauptfenster &uuml;ber das Men&uuml;
+    <em>Extra</em> das Fenster <em>Audio/Kassette</em> &ouml;ffnen
+    und eine entsprechende Audio-Funktion aktivieren.
+    Die nachfolgende Beschreibung bezieht sich auf dieses Audio-Fenster.
+  <br/><br/>
+
+
+  <h2>1. Audio-Funktionen</h2>
+
+  <h3>1.1. T&ouml;ne ausgeben</h3>
+    W&auml;hlen Sie diese Funktion, wenn Sie die T&ouml;ne h&ouml;ren
+    m&ouml;chten, die ein Programm zum Zwecke der Unterhaltung ausgibt
+    (z.B. akustische Untermalung bei Spielprogrammen).
+  <br/><br/>
+    Bei dieser Funktion wird die Ausf&uuml;hrungsgeschwindigkeit des Emulators
+    konstant gehalten, um einen gleichm&auml;&szlig;igen Programmablauf
+    zu gew&auml;hrleisten.
+    Eine ununterbrochene Versorgung des Audio-Systems mit Daten wird
+    nicht gew&auml;hrleistet, sodass kurze Unterbrechungen in der
+    Tonausgabe auftreten k&ouml;nnen.
+  <br/><br/>
+    <b>Achtung!</b> Beim einem JU+TE-Computer mit dem
+    <a href="os2k_usage.htm">2K-Betriebssystem</a> ist der Lautsprecher
+    anders angeschlossen als der Kassettenrecorder.
+    Die Funktion <em>T&ouml;ne ausgeben</em> emuliert den
+    Lautsprecheranschluss.
+  <br/><br/>
+
+  <h3>1.2. Daten am Audio-Ausgang ausgeben</h3>
+    W&auml;hlen Sie diese Funktion, wenn Sie Daten oder
+    Programme auf Kassette speichern oder an einen echten JU+TE-Computer
+    &uuml;bertragen m&ouml;chten.
+  <br/><br/>
+    Der Emulator versucht das Audio-System ununterbrochen mit Daten
+    zu versorgen, sodass m&ouml;glichst keine L&uuml;cken
+    und damit kein Datenverlust auftritt.
+    Die Ausf&uuml;hrungsgeschwindigkeit des Emulators richtet sich
+    nach den Anforderungen des Audio-Systems und kann somit variieren.
+  <br/><br/>
+    Leider kann nicht garantiert werden,
+    dass das Audio-System tats&auml;chlich ununterbrochen mit Daten
+    versorgt wird.
+    L&uuml;cken und damit Datenverlust k&ouml;nnen prinzipiell immer auftreten.
+    Wirkliche Sicherheit bringt nur die weiter unten beschriebene Funktion
+    <em>Daten in Sound-Datei schreiben</em>.
+  <br/><br/>
+    <b>Achtung!</b> Beim einem JU+TE-Computer mit dem
+    <a href="os2k_usage.htm">2K-Betriebssystem</a> ist der Lautsprecher
+    anders angeschlossen als der Kassettenrecorder.
+    Die Funktion <em>Daten am Audio-Ausgang ausgeben</em> emuliert den
+    Kassettenrecorderanschluss.
+  <br/><br/>
+
+  <h3>1.3. Daten vom Audio-Eingang lesen</h3>
+    Diese Funktion dient dazu, auf Kassette gespeicherte Dateien
+    und Programme oder Daten von einem echtem JU+TE-Computer
+    direkt in den Emulator zu Laden.
+  <br/><br/>
+    JTCEMU &ouml;ffnet den Audio-Kanal in Stereo.
+    In den Optionen k&ouml;nnen Sie w&auml;hlen,
+    ob die Daten vom linken oder rechten Kanal gelesen werden.
+    Sollte sich der Audio-Kanal nur in Mono &ouml;ffnen lassen,
+    steht diese Umschaltm&ouml;glichkeit nat&uuml;rlich
+    nicht zur Verf&uuml;gung.
+  <br/><br/>
+
+  <h3>1.4. Sound-Datei speichern</h3>
+    Bei dieser Funktion werden die Daten,
+    die am emulierten Kassettenrecorderanschluss ausgegeben werden,
+    in eine Sound-Datei geschrieben.
+    Der Vorteil dieser Funktion gegen&uuml;ber
+    <em>Daten am Audio-Ausgang ausgeben</em> ist der,
+    dass die Audio-Daten garantiert vollst&auml;ndig und l&uuml;ckenlos sind.
+  <br/><br/>
+    Die Sound-Datei beginnt mit dem ersten Phasenwechsel
+    nach Aktivierung der Funktion und endet beim letzten Phasenwechsel
+    vor Deaktivierung, d.h,
+    die Datei enth&auml;lt weder an ihrem Anfang noch
+    an ihrem Ende eine Pause.
+  <br/><br/>
+    Die eigentliche Sound-Datei wird erst beim Deaktivieren
+    erzeugt, d.h., bis dahin merkt sich der Emulator die Audio-Daten
+    im Speicher.
+    Aus diesem Grund kann diese Funktion nicht &uuml;ber
+    einen l&auml;ngeren Zeitraum aktiviert bleiben.
+    Zur Sicherheit deaktiviert sich die Funktion automatisch,
+    wenn etwa eine Sekunde lang kein Phasenwechsel
+    und damit kein Ton mehr ausgegeben wurde.
+  <br/><br/>
+
+  <h3>1.5. Sound-Datei lesen</h3>
+    Diese Funktion emuliert den Anschluss f&uuml;r den Kassettenrecorder,
+    indem die Audio-Daten von einer Sound-Datei gelesen werden.
+    Ein Fortschrittsbalken visualisiert den Einleseprozess.
+  <br/><br/>
+    Die Datei wird immer nur dann gelesen,
+    wenn im Emulator das Ein-/Ausgabetor 3 abgefragt wird,
+    d.h., wenn der Fortschrittsbalken stehen bleibt,
+    wird vom diesem Port gerade nicht gelesen.
+  <br/><br/>
+    Ob sich aber das gerade ausgef&uuml;hrte Programm beim Lesen
+    des Ports auch tats&auml;chlich f&uuml;r die Audio-Daten interessiert,
+    kann JTCEMU nicht wissen.
+    In jedem Fall wird die Sound-Datei synchron zur zeitlichen
+    Programmausf&uuml;hrung im Emulator verarbeitet.
+    Aus diesem Grund sollten Sie beim Laden eines in einer Sound-Datei
+    gespeicherten Programms zuerst den entsprechenden Ladebefehl eingeben,
+    danach die Audio-Funktion aktivieren und dann m&ouml;glichst schnell
+    im Emulator-Fenster die Enter-Taste dr&uuml;cken,
+    um die eigentliche Ladefunktion zu starten.
+  <br/><br/>
+
+  <h3>1.6. Letzte Sound-Datei (nocheinmal) lesen</h3>
+    Diese Funktion hat die gleiche Wirkung wie die gerade beschriebene,
+    jedoch mit dem Unterschied,
+    dass die zuletzt gespeicherte oder gelesene Sound-Datei
+    (ggf. nocheinmal) gelesen wird.
+  <br/><br/>
+
+  <h2>2. Optionen</h2>
+    Im Bereich Optionen k&ouml;nnen Sie die Eigenschaften der jeweiligen
+    Audio-Funktion beeinflussen.
+    Je nach ausgew&auml;hlter Funktion stehen nur die relevanten
+    Optionen zur Verf&uuml;gung.
+  <br/><br/>
+
+  <h3>2.1. Abtastrate</h3>
+    Normalerweise sollten Sie das Auswahlfeld auf <em>Standard</em>
+    stehen lassen.
+    Sie k&ouml;nnen jedoch die verschiedenen Abtastraten einzeln ausprobieren,
+    wenn Sie mit den Audio-Funktionen Probleme haben sollten.
+  <br/><br/>
+
+  <h3>2.2. Geschwindigkeit</h3>
+    Mit dieser Option k&ouml;nnen Sie die Geschwindigkeit der Audio-Daten
+    prozentual ver&auml;ndern.
+    F&uuml;r das Kassettenaufzeichnungsverfahren der 4K-/6K-Betriebssysteme
+    ist das i.d.R. nicht erforderlich,
+    doch das Aufzeichnungsverfahren des 2K-Betriebssystems ist sehr empfindlich
+    gegen&uuml;ber abweichenden Geschwindigkeiten.
+    Wenn das Einlesen in JTCEMU oder in das Zielsystem st&auml;ndig
+    fehlschl&auml;gt, bleibt Ihnen nichts anderes &uuml;brig,
+    als die Geschwindigkeit in 1-Prozent-Schritten zu ver&auml;ndern und
+    den Vorgang erneut zu versuchen.
+  <br/><br/>
+    Beim Speichern der <a href="settings.htm">Einstellungen</a> wird
+    auch der eingestellte Wert f&uuml;r die Geschwindigkeit gespeichert.
+    So brauchen Sie, wenn Sie einmal den richtigen Wert gefunden haben,
+    die Geschwindigkeit nicht jedesmal neu anpassen.
+  <br/><br/>
+
+  <h3>2.3. Schwellwert</h3>
+    Das 2K-Betriebssystem verwendet zur Aufzeichnung auf Kassette
+    ein auf Amplitudenmodulation basierendes Verfahren.
+    Der Schwellwert legt die Grenze zwischen 0 und 1-Pegel fest
+    und spiegelt das Potentiometer der originalen Kassettenschnittstelle
+    wider.
+    Die richtige Einstellung k&ouml;nnen Sie nur durch Probieren herausfinden.
+    Wenn Sie eine durch JTCEMU sebst erzeugte Sound-Datei
+    einlesen m&ouml;chten, sollte ein Wert von 50% funktionieren.
+  <br/><br/>
+    <b>Achtung:</b> Damit der Schwellwert richtig funktioniert,
+    sollten Sie den Befehl zum Einlesen (Shift-O) erst dann eingeben,
+    wenn der Kennton zu h&ouml;ren ist.
+  <br/><br/>
+    Bei den 4K- und 6K-Betriebssystemen steht die Option
+    nicht zur Verf&uuml;gung,
+    da dort eine Frequenzmodulation verwendet wird.
+  <br/><br/>
+    Beim Speichern der <a href="settings.htm">Einstellungen</a> wird
+    auch der eingestellte Schwellwert gespeichert.
+    So brauchen Sie, wenn Sie einmal den richtigen Wert gefunden haben,
+    den Schwellwert nicht jedesmal neu anpassen.
+  <br/><br/>
+
+  <h3>2.4. Aktiver Kanal</h3>
+    Wenn Sie Daten von einer Stereo-Audio-Quelle einlesen
+    (egal ob vom Audio-System oder von einer Sound-Datei),
+    bestimmen Sie hiermit, ob die Daten vom linken oder vom rechten Kanal
+    gelesen werden.
+    Den aktiven Kanal k&ouml;nnen Sie auch dann noch beliebig umschalten,
+    wenn die entsprechende Audio-Funktion bereits aktiviert wurde.
+  <br/><br/>
+
+  <h3>2.5. Mith&ouml;ren</h3>
+    Wenn Sie diese Option einschalten,
+    h&ouml;ren Sie beim Speichern oder Lesen einer Sound-Datei diese mit.
+  <br/><br/>
+    Das Speichern oder Lesen einer Sound-Datei kann den Emulator bremsen.
+    In diesem Fall h&ouml;ren Sie kurze Unterbrechungen in der Tonausgabe.
+    Das hat jedoch keinen qualitativen Einfluss auf den Datenfluss zwischen
+    Emulator und Sound-Datei.
+  <br/><br/>
+
+
+  <h2>3. Lautst&auml;rkeregelung</h2>
+    Die Laust&auml;rkeregelung erfolgt &uuml;ber die entsprechende
+    Bedienungssoftware des Betriebssystems.
+    Auf Ihrem Arbeitsplatzrechner sollte ein entsprechendes Programm
+    oder ein Mixer installiert sein.
+    Starten Sie dieses Programm und regeln Sie damit die Lautst&auml;rke.
+  <br/><br/>
+
+
+  <h2>4. Sonstiges</h2>
+    <ul>
+      <li>
+        Wenn bereits eine andere Applikation das Audio-System verwendet,
+        kann mitunter kein weiterer Audio-Kanal ge&ouml;ffnet werden.
+        Schlie&szlig;en Sie in diesem Fall die andere Applikation.
+      </li>
+      <li>
+        Sollte die Rechenleistung nicht ausreichen,
+        um die Audio-Daten in Echtzeit zu erzeugen oder zu verarbeiten,
+        wird eine Daten&uuml;bertragung &uuml;ber das Audio-System
+        fehlschlagen.
+        In diesem Fall sind nur Sound-Dateien Erfolg versprechend.
+        Verwenden Sie bitte f&uuml;r die Aufnahme und Wiedergabe
+        dieser Dateien die entsprechenden Werkzeuge des Betriebssystems.
+      </li>
+      <li>
+        Sie sollten die Audio-Funktionen wieder deaktivieren,
+        wenn Sie diese nicht mehr ben&ouml;tigen oder wenn Sie Probleme
+        mit der Performance haben, denn die Nutzung der Audio-Funktionen
+        erfordert zus&auml;tzliche Rechenleistung,
+        die Sie m&ouml;glicherweise anderweitig gut gebrauchen k&ouml;nnen.
+      </li>
+    </ul>
+</body>
+</html>
+

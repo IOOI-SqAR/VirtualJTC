@@ -1,0 +1,212 @@
+<html>
+<body>
+  <h1>Einstellungen</h1>
+    Die Einstellungen nehmen Sie in einem separaten Fenster vor,
+    dass Sie &uuml;ber das Men&uuml; <em>Extra</em> des Hauptfensters
+    aufrufen.
+    Die weiteren Ausf&uuml;hrungen beziehen sich auf dieses Fenster.
+  <br/><br/>
+
+  <h2>1. Gruppierung der einzelnen Einstellungen</h2>
+    Die einzelnen Einstellm&ouml;glichkeiten sind thematisch gruppiert.
+    Jede einzelne Gruppe finden Sie auf einer separaten Unterseite,
+    die Sie &uuml;ber die Reiter am oberen Rand erreichen.
+  <br/><br/>
+
+  <h3>1.1. System</h3>
+    Den JU+TE-Computer gibt es in mehreren Ausbaustufen,
+    die sich sowhl von der Gr&ouml;&szlig;e des Betriebssystems
+    als auch von der Hardware
+    (Grafikaufl&ouml;sung und Kassettenrecorderanschluss) unterscheiden.
+    Mit den Einstellungen in der Gruppe <em>System</em> w&auml;hlen
+    sie die gew&uuml;nschte Ausbaustufe aus.
+  <br/><br/>
+    Bei der 2K- und den beiden 4K-Ausbaustufen erfolgt die Erzeugung
+    des Video-Signals softwarem&auml;&szlig;ig &uuml;ber eine Interruptroutine.
+    Ist der entsprechende Interrupt gesperrt (Interrupt&nbsp;4),
+    wird auf dem Bildschirm somit nichts ausgegeben.
+    Im Emulator ist die Bildschirmausgabe dagegen standardm&auml;&szlig;ig
+    immer aktiv, auch bei gesperrtem Interrupt,
+    da die Visualisierung direkt aus dem Bildwiederholspeicher heraus erfolgt.
+    Sie k&ouml;nnen jedoch dieses Verhalten ausschalten.
+    JTCEMU verh&auml;lt sich dann wie das Original,
+    d.h. dunkler Bildschirm bei gesperrtem Interrupt&nbsp;4.
+  <br/><br/>
+    Beim 2K-Betriebssystem und beim EMR-ES&nbsp;1988 haben Sie zus&auml;tzlich
+    die Option,
+    die Systemroutine f&uuml;r die Tastaturabfrage emulieren zu lassen
+    (siehe Erl&auml;uterungen zur <a href="keyboard.htm">Tastatur</a>).
+  <br/><br/>
+
+  <h3><a name="reg_count">1.1.1. Register %80 bis %EF emulieren</a></h3>
+    Der Einchipmikrorechner U883 enth&auml;lt 124 Universalregister
+    (Register %04 bis %7F).
+    Einige, insbesondere neuere Z8-Mikocontroller beherbergen dagegen
+    sogar 236 Universalregister, d.h. auch die Register %80 bis %EF.
+    Mit der Option geben Sie an,
+    ob auch diese zus&auml;tzlichen Register emuliert werden sollen.
+  <br/><br/>
+
+  <h3>1.2. RAM</h3>
+    Hier legen Sie den RAM-Bereich fest
+    (siehe auch <a href="about.htm#memory">Speicheraufteilung</a>).
+  <br/><br/>
+    <b>Achtung!</b> Bei <em>1&nbsp;KByte RAM</em> und <em>2&nbsp;KByte RAM</em>
+    wird wie beim Original die unvollst&auml;ndige Adressdekodierung emuliert,
+    d.h., der 1-KByte-Speicher ist ab Adresse %E000 8&nbsp;mal beziehungsweise
+    der 2-KByte-Speicher 4 mal hintereinander eingeblendet.
+  <br/><br/>
+
+  <h3>1.3. ROM</h3>
+    Mit der Auswahl des Betriebssystems in den Einstellungen bei
+    <em>System</em> sind auch die ROM-Bereiche vorgegeben.
+    Zus&auml;tzlich k&ouml;nnen Sie diese ROM-Bereiche
+    &uuml;berschreiben bzw. neue ROM-Bereiche anlegen,
+    indem Sie externe ROM-Images einbinden.
+    Diese ROM-Images m&uuml;ssen als
+    <a href="loadsave.htm#binary">Bin&auml;rdateien</a> vorliegen,
+    d.h., die Dateien werden so wie sie sind in den Arbeitsspeicher
+    des Emulators geladen.
+  <br/><br/>
+    Ein ROM-Image binden Sie ein, indem Sie auf den Knopf
+    <em>Hinzuf&uuml;gen</em> dr&uuml;cken.
+    In dem sich nun &ouml;ffnenden Dateiauswahldialog selektieren Sie
+    die einzubindende Bin&auml;rdatei.
+    Anschlie&szlig;end werden Sie nach der Anfangsadresse gefragt,
+    an der das ROM-Image im Arbeitsspeicher zu finden sein soll.
+    Die L&auml;nge des so angelegten ROM-Bereichs ergibt sich aus der
+    L&auml;nge der eingebundenen Datei.
+  <br/><br/>
+    ROM-Images k&ouml;nnen an jeder beliebigen Adresse eingebunden werden,
+    egal ob das sinnvoll ist oder nicht.
+    Sie k&ouml;nnen somit auch den Bildwiederholspeicher
+    oder den Stack-Bereich als ROM deklarieren,
+    was h&ouml;chstwahrscheinlich nicht sinnvoll ist.
+    Wenn Sie ein ROM-Image auf Adresse %0000 einbinden,
+    wird damit der BASIC-Interpreter des U883 &uuml;berschrieben,
+    was bei einem echten JU+TE-Computer nicht m&ouml;glich ist.
+  <br/><br/>
+    Als weitere Option k&ouml;nnen Sie festlegen,
+    ob die ROM-Dateien bei jedem RESET neu geladen werden sollen.
+    Im Normalfall hat das wenig Sinn.
+    Doch wenn Sie ein Betriebssystem f&uuml;r den JU+TE-Computer entwickeln
+    und den Emulator zum Testen verwenden,
+    ist diese Option sehr hilfreich.
+    Nachdem Sie mit Ihren Entwicklungswerkzeugen ein neues ROM-Image
+    erzeugt haben, brauchen Sie im Emulator nur ein RESET ausl&ouml;sen,
+    und schon ist die neue Betriebssystemversion aktiv.
+  <br/><br/>
+
+  <h3>1.4. Best&auml;tigungen</h3>
+    Hier geben Sie an, welche Aktionen erst nach der Bejahung einer
+    Sicherheitsabfrage ausgef&uuml;hrt werden sollen.
+  <br/><br/>
+
+  <h3>1.5. Erscheinungsbild</h3>
+    JTCEMU ist mit der Programmiersprache Java entwickelt,
+    der ein plattform&uuml;bergreifendes Konzept zu Grunde liegt.
+    Manche Leute w&uuml;nschen,
+    dass eine Applikation unter jedem Betriebssystem gleich aussieht,
+    andere wiederum bevorzugen, dass sich eine Applikation
+    an das Aussehen der jeweiligen Plattform anpasst.
+    Java wird diesen unterschiedlichen Anspr&uuml;chen gerecht,
+    indem es sich in verschiedenen Erscheinungsbildern pr&auml;sentieren kann.
+    JTCEMU bietet deshalb diese M&ouml;glichkeit auch an.
+  <br/><br/>
+    Welche Erscheinungsbilder auf welcher Plattform unterst&uuml;tzt werden,
+    h&auml;ngt von der jeweiligen Java-Version ab.
+    In der Regel sind das aber mindestens das plattform&uuml;bergreifende
+    Erscheinungsbild <em>Metal</em> und ein dem lokalen Betriebssystem
+    angepasstes Erscheinungsbild.
+  <br/><br/>
+    Die Erscheinungsbilder haben nicht nur Auswirkungen auf das Aussehen
+    der Fenster, sondern auch auf die Funktionsweise der Dateiauswahlbox,
+    sofern Sie den JTCEMU-eigenen Dateiauswahldialog eingestellt haben.
+  <br/><br/>
+    Steht nur ein einziges Erscheinungsbild zur Verf&uuml;gung,
+    d.h. wenn keine Auswahl m&ouml;glich ist,
+    wird das Unterfenster <em>Erscheinungsbild</em> in den Einstellungen
+    erst gar nicht angeboten.
+  <br/><br/>
+
+  <h3>1.6 Sonstiges</h3>
+    In dieser Gruppe finden Sie die Einstellungen,
+    die sich in keine andere Gruppe sinnvoll einordnen lassen.
+  <br/><br/>
+
+  <h3>1.6.1. Dateiauswahldialog</h3>
+    JTCEMU kommt mit einem eigenen Dateiauswahldialog daher.
+    Dieser hat den Vorteil,
+    dass er auf die Bed&uuml;rfnisse des Emulators zugeschnitten ist.
+    So wird z.B. beim Anklicken einer Datei diese analysiert und,
+    sofern es sich um einen von JTCEMU unterst&uuml;tzten Dateityp handelt,
+    die relevanten Informationen in der Statuszeile angezeigt.
+    Au&szlig;erdem passt er sich auch optisch und funktional
+    dem eingestellten Erscheinungsbild an.
+  <br/><br/>
+    M&ouml;glicherweise ist aber der JTCEMU-Dateiauswahldialog
+    nicht so gut auf die spezifischen Eigenheiten des Systems angepasst ist
+    wie die standardm&auml;&szlig;ige Dateiauswahlbox des Betriebssystems.
+    Aus diesem Grund haben Sie hier die M&ouml;glichkeit,
+    zwischen beiden Dateiauswahldialogen zu w&auml;hlen.
+  <br/><br/>
+
+  <h3>1.6.2. Standardrand um Bildschirmausgabe</h3>
+    Sie k&ouml;nnen einen schwarzen Rand um die Bildschrirmausgabe erzeugen,
+    indem Sie das Hauptfenster gr&ouml;&szlig;er ziehen.
+    Wenn Sie nun jedoch eine andere Skalierung der Bildschirmausgabe
+    w&auml;hlen oder in den Einstellungen ein Betriebssystem mit einer
+    anderen Grafikaufl&ouml;sung oder ein anderes Erscheinungsbild aktivieren,
+    passt der Emulator das Hauptfenster an die neuen Erfordernisse an,
+    womit der Rand wieder verschwindet.
+    Mit dieser Option k&ouml;nnen Sie einen Standardrand festlegen,
+    der in solchen F&auml;llen automatisch erzeugt wird.
+  <br/><br/>
+
+  <h3>1.6.3. Zykluszeit f&uuml;r Aktualisierung der Bildschirmausgabe</h3>
+    Der Emulator aktualisiert zyklisch die Bildschirmausgabe
+    entsprechend den &Auml;nderungen im Bildwiederholspeicher
+    bzw. im Video-RAM.
+    Eine k&uuml;rzere Zykluszeit bewirkt eine fl&uuml;ssigere
+    Bildschirmausgabe.
+    Allerdings steigt damit auch der Bedarf an Rechenleistung.
+    Eine zu kurze Zykluszeit beeintr&auml;chtigt die Bedienung
+    des Emulators, da dann zu wenig Rechenleistung f&uuml;r das Reagieren
+    auf die Benutzeraktionen zur Verf&uuml;gung steht.
+  <br/><br/>
+    Der Standardwert von 50 ms, d.h. 20 mal pro Sekunde,
+    ist in der Regel auf den heute &uuml;blichen Arbeitsplatzrechnern
+    ein guter Kompromiss zwischen fl&uuml;ssiger Bildschirmausgabe und
+    fl&uuml;ssiger Bedienung.
+  <br/><br/>
+
+  <h3>1.6.4. Einstellungen werden gespeichert in Datei</h3>
+    Hier sehen Sie den vollst&auml;ndigen Dateinamen,
+    in dem die Einstellungen gespeichert werden (siehe weiter unten).
+    Ist die Umgebungsvariable <em>APPDATA</em> gesetzt,
+    liegt die Datei in dem Verzeichnis,
+    welches in dieser Umgebungsvariable angegeben ist,
+    anderenfalls im Verzeichnis f&uuml;r die eigenen Dateien.
+  <br/><br/>
+    Sie haben die M&ouml;glichkeit,
+    diese Datei zu l&ouml;schen, sofern sie bereits existiert.
+    Damit k&ouml;nnen Sie auf die Standardeinstellungen zur&uuml;cksetzen.
+    Starten Sie dazu nach dem L&ouml;schen der Datei den Emulator einfach neu.
+  <br/><br/>
+
+  <h2>2. Einstellungen &uuml;bernehmen und speichern</h2>
+    Nachdem Sie eine Einstellung ge&auml;ndert haben,
+    wird der Knopf <em>&Uuml;bernehmen</em> aktiv,
+    und sie k&ouml;nnen damit die neuen Einstellungen aktivieren.
+  <br/><br/>
+    Nach dem Aktivieren der neuen Einstellungen wird der Knopf
+    <em>Speichern</em> aktiv.
+    Damit haben Sie die M&ouml;glichkeit,
+    die Einstellungen dauerhaft zu speichern,
+    damit sie beim n&auml;chsten Start des Emulators wieder so gesetzt sind.
+  <br/><br/>
+    Beim Speichern der Einstellungen werden auch die Gr&ouml;&szlig;en
+    und Positionen aller gerade ge&ouml;ffneten Fenster gespeichert.
+</body>
+</html>
+

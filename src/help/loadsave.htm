@@ -1,0 +1,150 @@
+<html>
+<body>
+  <h1>Dateien laden und speichern</h1>
+    Der JU+TE-Computer verwendet als Massenspeicher
+    einen Kassettenrecorder.
+    Beim Emulator jedoch sollen die Dateien nicht auf Kassette,
+    sondern im Dateisystem des Emulator-Rechners gespeichert werden.
+    Aus diesem Grund kommen nicht die Funktionen des Betriebssystems
+    des emulierten Computers zur Anwendung,
+    sondern der Emulator bietet selbst entsprechende Funktionalit&auml;ten an.
+    Unabh&auml;ngig davon ist es aber mit Hilfe der
+    <a href="audio.htm">Audio</a>-Funktionen trotzdem m&ouml;glich,
+    Dateien auf Kassette zu speichern.
+  <br/><br/>
+
+  <h2>1. Dateiformate</h2>
+    JTCEMU unterst&uuml;tzt folgende Dateiformate:
+    <ul>
+      <li>JTC-Datei</li>
+      <li>KC-TAP-Datei</li>
+      <li>Bin&auml;rdatei</li>
+      <li>Intel-HEX-Datei</li>
+    </ul>
+  <br/>
+
+  <h3>1.1. JTC-Datei</h3>
+    Das JTC-Format ist das Standardformat des Emulators und entspricht
+    inhaltlich dem Format, mit dem das
+    <a href="es1988_usage.htm">Betriebssystem EMR-ES&nbsp;1988</a>
+    Dateien auf Kassette speichert.
+    Dieses Format besteht aus einem 128 Byte gro&szlig;en Kopf,
+    an den sich der Datenbereich anschlie&szlig;t,
+    der wiederum ein bin&auml;rer Abzug eines Speicherbereichs ist.
+    Der Dateikopf hat folgenden Aufbau:
+    <ul>
+      <li>11 Bytes Dateiname, mit Leerzeichen aufgef&uuml;llt</li>
+      <li>5 Bytes mit dem Wert 00</li>
+      <li>1 Byte mit dem Wert 02</li>
+      <li>2 Bytes Anfangsadresse (niederwertiges Byte zuerst)</li>
+      <li>2 Bytes Endadresse (niederwertiges Byte zuerst)</li>
+      <li>107 Bytes ungenutzt</li>
+    </ul>
+  <br/>
+    Das JTC-Format ist kompatibel zu dem von einigen KC-Emulatoren
+    her bekannten KCC-Format, d.h.,
+    m&ouml;chten Sie eine JTC-Datei in einen solchen KC-Emulator laden,
+    reicht es i.d.R. aus, die Datei in eine KCC-Datei umzubenennen.
+    Umgekehrt k&ouml;nnen KCC-Dateien geladen werden,
+    wenn sie dem Format von KC-Systemdateien entsprechen.
+    KC-BASIC-Dateien werden dagegen nicht unterst&uuml;tzt.
+  <br/><br/>
+
+  <h3>1.2. KC-TAP-Datei</h3>
+    Ein weit verbreitetes Format bei KC-Emulatoren ist das KC-TAP-Format.
+    JTCEMU unterst&uuml;tzt dieses Format auch,
+    allerdings mit folgenden Einschr&auml;nkungen:
+  <br/>
+    <ul>
+      <li>
+	KC-TAP ist ein Container-Format, welches mehrere gedanklich
+	auf Kassette hintereinander liegende Dateien enthalten kann.
+	JTCEMU liest nur die erste Datei ein.
+      </li>
+      <li>
+	Es werden keine KC-BASIC-Programme und keine KC-BASIC-Datenfelder
+	unterst&uuml;tzt.
+	Enth&auml;lt die TAP-Datei als erstes eine KC-BASIC-Datei,
+	wird die TAP-Datei erst gar nicht als solche erkannt.
+      </li>
+    </ul>
+  <br/>
+    Das KC-TAP-Format hat &uuml;blicherweise die Dateiendung <em>.tap</em>.
+    Da es aber auch bei anderen Systemen, z.B. einige C64-Emulatoren,
+    TAP-Dateien gibt, die v&ouml;llig anders aufgebaut sind,
+    wird das hier gemeinte Format KC-TAP genannt.
+  <br/><br/>
+
+  <h3><a name="binary">1.3. Bin&auml;rdatei</a></h3>
+    Bei einer Bin&auml;rdatei handelt es sich um einen reinen bin&auml;ren
+    Speicherabzug ohne weitere Zusatzinformationen,
+    d.h. ohne jegliche Adressangabe.
+    Man muss sich somit die Anfangsadresse des Speicherbereichs separat merken
+    und beim Laden immer mit angeben.
+  <br/><br/>
+    Da bei einer Bin&auml;rdatei die gesamte Datei unver&auml;ndert
+    in den Arbeitsspeicher geladen wird,
+    k&ouml;nnen auch alle anderen Dateiformate als Bin&auml;rdatei
+    geladen werden.
+    Allerdings werden dann aber auch die Kopf- und Metadaten
+    mit in den Arbeitsspeicher &uuml;bertragen.
+  <br/><br/>
+
+  <h3>1.4. Intel-HEX-Datei</h3>
+    Bei diesem Format handelt es sich auch um einen Speicherabzug,
+    jedoch sind die einzelnen Bytes hexadezimal kodiert,
+    d.h. die Datei ist eine reine ASCII-Datei
+    und kann auch in einem Texteditor ge&ouml;ffnet werden.
+    Des weiteren enth&auml;lt die Datei die Anfangsadresse
+    des betreffenden Speicherbereichs,
+    d.h. beim Laden m&uuml;ssen Sie diese Adresse nicht mehr eingeben.
+  <br/><br/>
+
+  <h2><a name="load">2. Datei laden</a></h2>
+    Die Funktion zum Laden einer Datei finden Sie im Men&uuml; <em>Datei</em>.
+    Alternativ k&ouml;nnen Sie auch eine Datei einfach in das Emulatorfenster
+    hineinziehen und dort loslassen, sofern das Betriebssystem
+    und die Java-Laufzeitumgebung Drag&amp;Drop unterst&uuml;tzen.
+  <br/><br/>
+    Nach dem Ausw&auml;hlen einer Datei &ouml;ffnet sich
+    ein Dialog zur Festlegung des Dateiformats und zur Eingabe der Ladeadresse.
+    Das Dateiformat sollte bereits richtig voreingestellt sein.
+    Enth&auml;lt die Datei eine Ladeadresse,
+    wird diese in das Eingabefeld <em>Laden ab Adresse</em> geschrieben,
+    d.h., in dem Fall brauchen Sie normalerweise keine weiteren Eingaben
+    in dem Dialog t&auml;tigen.
+    Das Feld <em>Bis. max. Adresse</em> kann leer bleiben.
+    Anschlie&szlig;end dr&uuml;cken Sie den Knopf <em>Laden</em>.
+  <br/><br/>
+
+  <h2>3. Datei speichern</h2>
+    Diese Funktion finden Sie ebenfalls im Men&uuml; <em>Datei</em>.
+    Zuerst &ouml;ffnet sich ein Dialog zur Eingabe der Anfangs-
+    und Endadresse des zu speichernden Bereichs
+    und zur Festlegung des Dateiformats.
+    Der Emulator pr&uuml;ft, ob sich ab Adresse E000h ein BASIC-Programm
+    im Speicher befindet.
+    Wenn ja, werden die beiden Eingabefelder mit der Anfangs-
+    und Endadresse dieses BASIC-Programms vorbelegt, d.h.,
+    beim Speichern eines BASIC-Programms brauchen Sie keine Adressen
+    selbst eingeben.
+  <br/><br/>
+    Beim Speichern einer JTC-, KC-TAP oder Intel-HEX-Datei wird auch
+    die Anfangsadresse mit gespeichert.
+    M&ouml;chten Sie, das in der Datei eine andere Anfangsadresse
+    als die tats&auml;chliche eingetragen wird,
+    so geben Sie das im Feld <em>Abweichende Anfangsadresse</em> an.
+  <br/><br/>
+    Des weiteren gibt es das Feld <em>Name in der Datei</em>,
+    dass jedoch nur beim JTC- und KC-TAP-Format verwendet wird.
+    Hier geben Sie eine beliebige, max. 11-stellige Bezeichnung an,
+    die mit in der Datei gespeichert wird.
+  <br/><br/>
+    Nachdem Sie den Dialog best&auml;tigt haben,
+    &ouml;ffnet sich eine Dateiauswahlbox,
+    in der Sie den Namen der Datei festlegen.
+    Mit Best&auml;tigen dieses Dateiauswahldialogs wird
+    der angegebene Speicherbereich in die gew&uuml;nschte Datei geschrieben.
+</body>
+</html>
+

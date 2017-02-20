@@ -1,0 +1,189 @@
+<html>
+<body>
+  <h1>&Uuml;ber JTCEMU</h1>
+    JTCEMU ist ein Emulator, der den von Dr. Helmut Hoyer ab 1987
+    in der Zeitschrift <em>Jugend+Technik</em> ver&ouml;ffentlichten
+    Eigenbaucomputer nachbildet.
+  <br/><br/>
+    Herzst&uuml;ck dieses Computers ist der Einchipmikrorechner U883,
+    der kompatibel zum Zilog Z8-Microcontroller ist
+    und in seinem 2&nbsp;KByte gro&szlig;en ROM
+    einen <a href="basic.htm">Tiny-MP-BASIC</a>-Interpreter enth&auml;lt.
+    Mit der ersten Betriebssystemversion von 1987 (2&nbsp;KByte gro&szlig;),
+    die 1988 durch eine fehlerbereinigte Version ersetzt wurde,
+    l&auml;sst sich der Rechner nur als BASIC-Computer verwenden.
+    Mit dem sp&auml;ter ver&ouml;ffentlichten 4&nbsp;KByte gro&szlig;en
+    <em>EMR-ES&nbsp;1988</em> werden auch Maschinencodeprogramme
+    unterst&uuml;tzt.
+    1989 entwickelte Harun Scheutzow das Betriebssystem ES&nbsp;2.3,
+    welches mit einer Modifikation der Hardware eine h&ouml;here
+    Grafikaufl&ouml;sung bietet.
+    Dieses ES&nbsp;2.3 wurde allerdings von keiner Zeitschrift
+    ver&ouml;ffentlicht.
+    1990 erschien dann in der <em>Jugend+Technik</em> die Bauanleitung
+    f&uuml;r eine noch h&ouml;her aufl&ouml;sende Grafikerweiterung
+    mit 16 Farben.
+    Das dazu passende Betriebssystem ES&nbsp;4.0,
+    ebenfalls von Harun Scheutzow,
+    wurde von der Redaktion dieser Zeitschrift in einem Sonderdruck
+    ver&ouml;ffentlicht.
+  <br/><br/>
+    Der Emulator enth&auml;lt sowohl das
+    <a href="os2k_usage.htm">2K-Beriebssystem</a>
+    (fehlerbereinigte Version von 1988),
+    die 4K-Byte gro&szlig;en Systeme
+    <a href="es1988_usage.htm">EMR-ES&nbsp;1988</a> und
+    <a href="es23_usage.htm">ES&nbsp;2.3</a> sowie das 6K-Betriebssystem
+    <a href="es40_usage.htm">ES&nbsp;4.0</a>.
+    In den <a href="settings.htm">Einstellungen</a> k&ouml;nnen Sie
+    zwischen diesen umschalten.
+    Dabei wird auch die emulierte Hardware angepasst (z.B. Bildschirmausgabe).
+  <br/><br/>
+    Emuliert werden:
+    <ul>
+      <li>
+	Einchipmikrorechner U883 (entspricht einem Zilog Z8-Microcontroller
+	mit 144&nbsp;Registern und 2&nbsp;KByte internem ROM)
+      </li>
+      <li>
+	je nach Einstellung 112 weitere Register (%80 bis %EF),
+	die zwar im U883 nicht, daf&uuml;r aber bei einigen
+	Z8-Microcontrollern vorhanden sind
+      </li>
+      <li>
+	je nach eingestelltem Betriebssystem
+	4, 6 oder 8&nbsp;KByte ROM<br/>
+	(davon 2&nbsp;KByte BASIC-Interpreter des U883
+	und der Rest Betriebssystem)
+      </li>
+      <li>
+	je nach Einstellung 1, 2, 8, 32 oder 64&nbsp;KByte RAM,<br/>
+	Es wird jedoch niemals RAM an den Stellen emuliert,
+	die ROM oder einen IO-Bereich enthalten.
+	Dadurch kann die tats&auml;chlich emulierte RAM-Gr&ouml;&szlig;e
+	kleiner sein als der eingestellte Wert.
+      </li>
+      <li>
+	bei 2K-Betriebssystem und 4K-System EMR-ES&nbsp;1988:
+	Grafikausgabe mit 64x64 Pixel schwarz/wei&szlig;
+      </li>
+      <li>
+	bei 4K-Betriebssystem ES&nbsp;2.3:
+	Grafikausgabe mit 128x128 Pixel schwarz/wei&szlig;
+      </li>
+      <li>
+	bei 6K-Betriebssystem ES&nbsp;4.0:
+	32&nbsp;KByte Video-RAM (vier 8&nbsp;KByte B&auml;nke)
+	f&uuml;r Grafikausgabe mit 320x192 Pixel und 16 Farben
+      </li>
+      <li>Tastatur</li>
+      <li>Kassettenrecorderanschluss</li>
+    </ul>
+  <br/><br/>
+    <a name="memory">Speicheraufteilung:</a>
+  <br/>
+    <table border=1>
+      <tr>
+	<th align=left nowrap>Adressbereich</th>
+	<th align=left nowrap>2&nbsp;KByte OS</th>
+	<th align=left nowrap>EMR-ES&nbsp;1988</th>
+	<th align=left nowrap>ES&nbsp;2.3</th>
+	<th align=left nowrap>ES&nbsp;4.0</th>
+      </tr>
+      <tr>
+	<td>%FE00-%FFFF</td>
+	<td colspan="3" align="center">Video-RAM</td>
+	<td align="center">RAM</td>
+      </tr>
+      <tr>
+	<td>%FD00-%FDFF</td>
+	<td colspan="2" align="center">RAM</td>
+	<td align="center">Video-RAM</td>
+	<td align="center">RAM</td>
+      </tr>
+      <tr>
+	<td>%F800-%FCFF</td>
+	<td colspan="2" align="center">optional RAM</td>
+	<td align="center">Video-RAM</td>
+	<td align="center">optional RAM</td>
+      </tr>
+      <tr>
+	<td>%E400-%F7FF</td>
+	<td colspan="2" align="center">optional RAM</td>
+	<td align="center">RAM</td>
+	<td align="center">optional RAM</td>
+      </tr>
+      <tr>
+	<td>%E100-%E3FF</td>
+	<td colspan="4" align="center">optional RAM</td>
+      </tr>
+      <tr>
+	<td>%E000-%E0FF</td>
+	<td colspan="4" align="center">RAM</td>
+      </tr>
+      <tr>
+	<td>%8000-%DCFF</td>
+	<td colspan="4" align="center">optional RAM</td>
+      </tr>
+      <tr>
+	<td>%7000-%7FFF</td>
+	<td colspan="4" align="center">IO-Bereich (Tastatur)</td>
+      </tr>
+      <tr>
+	<td>%6400-%7000</td>
+	<td colspan="3" align="center">IO-Bereich (Tastatur)</td>
+	<td>frei</td>
+      </tr>
+      <tr>
+	<td>%6000-%63FF</td>
+	<td colspan="3" align="center">IO-Bereich (Tastatur)</td>
+	<td align="center">IO-Bereich (Video)</td>
+      </tr>
+      <tr>
+	<td>%4000-%5FFF</td>
+	<td colspan="3" align="center">optional RAM</td>
+	<td align="center">Video-RAM</td>
+      </tr>
+      <tr>
+	<td>%2800-%3FFF</td>
+	<td colspan="4" align="center">optional RAM</td>
+      </tr>
+      <tr>
+	<td>%2000-%27FF</td>
+	<td align="center">optional RAM</td>
+	<td align="center">ROM</td>
+	<td colspan="2" align="center">optional RAM</td>
+      </tr>
+      <tr>
+	<td>%1800-%1FFF</td>
+	<td colspan="3" align="center">optional RAM</td>
+	<td align="center">ROM</td>
+      </tr>
+      <tr>
+	<td>%1000-%17FF</td>
+	<td colspan="2" align="center">optional RAM</td>
+	<td colspan="2" align="center">ROM</td>
+      </tr>
+      <tr>
+	<td>%0800-%0FFF</td>
+	<td colspan="4" align="center">ROM</td>
+      </tr>
+      <tr>
+	<td>%0000-%07FF</td>
+	<td colspan="4" align="center">ROM (BASIC-Interpreter des U883)</td>
+      </tr>
+    </table>
+  <br/><br/>
+    Das 2K- und die beiden 4K-Betriebssysteme rufen zkylisch
+    eine Interrupt-Routine auf,
+    die den Bildwiederholspeicher ausliest und daraus das Bildsignal erzeugt.
+    Werden die Interrupts gesperrt, erfolgt im JU+TE-Computer somit
+    keine Bildschirmausgabe mehr.
+    Der Emulator ignoriert dagegen das softwarem&auml;&szlig;ig
+    erzeugte Bildsignal und visualisiert direkt aus dem
+    Bildwiederholspeicher heraus.
+    Dadurch ist je nach Einstellung in JTCEMU auch dann noch
+    eine Bildschirmausgabe sichtbar, wenn die Interrupts gesperrt sind.
+</body>
+</html>
+
