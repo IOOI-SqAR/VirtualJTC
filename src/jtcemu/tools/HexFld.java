@@ -139,6 +139,17 @@ public class HexFld extends PlainDocument
   public void setValue( int value )
   {
     this.dataChanged = false;
+    
+    int oldValue = this.orgValue;
+    if (oldValue != value)
+    {
+    	this.textFld.setForeground(Color.RED);
+    }
+    else
+    {
+    	this.textFld.setForeground(Color.BLACK);
+    }
+    
     this.orgValue    = value;
     this.orgText     = createHexString( value );
     this.textFld.setText( this.orgText );
