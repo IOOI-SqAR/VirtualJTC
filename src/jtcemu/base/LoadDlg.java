@@ -45,11 +45,11 @@ public class LoadDlg extends BaseDlg implements ActionListener
 
 
   public LoadDlg(
-		Window   owner,
-		Z8Memory memory,
-		byte[]   fileBytes,
-		int      fileLen,
-		File     file )
+                Window   owner,
+                Z8Memory memory,
+                byte[]   fileBytes,
+                int      fileLen,
+                File     file )
   {
     super( owner );
     setTitle( "Datei laden: " + file.getName() );
@@ -63,13 +63,13 @@ public class LoadDlg extends BaseDlg implements ActionListener
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					1.0, 0.0,
-					GridBagConstraints.CENTER,
-					GridBagConstraints.HORIZONTAL,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        1.0, 0.0,
+                                        GridBagConstraints.CENTER,
+                                        GridBagConstraints.HORIZONTAL,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
 
     // Bereich Dateiformat
@@ -88,7 +88,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
 
 
     JPanel panelFmtBtn = new JPanel(
-				new FlowLayout( FlowLayout.LEFT, 5, 5 ) );
+                                new FlowLayout( FlowLayout.LEFT, 5, 5 ) );
     panelFmt.add( panelFmtBtn, gbcFmt );
 
     ButtonGroup grpFmt = new ButtonGroup();
@@ -236,26 +236,26 @@ public class LoadDlg extends BaseDlg implements ActionListener
     this.fileInfo = FileInfo.analyzeFile( this.fileBytes, this.fileLen );
     if( this.fileInfo != null ) {
       switch( fileInfo.getFormat() ) {
-	case JTC:
-	  this.btnFmtJTC.setSelected( true );
-	  this.fldBegAddr.setText(
-		this.fileInfo.getBegAddrText( FileInfo.Format.JTC ) );
-	  done = true;
-	  break;
+        case JTC:
+          this.btnFmtJTC.setSelected( true );
+          this.fldBegAddr.setText(
+                this.fileInfo.getBegAddrText( FileInfo.Format.JTC ) );
+          done = true;
+          break;
 
-	case TAP:
-	  this.btnFmtTAP.setSelected( true );
-	  this.fldBegAddr.setText(
-		this.fileInfo.getBegAddrText( FileInfo.Format.TAP ) );
-	  done = true;
-	  break;
+        case TAP:
+          this.btnFmtTAP.setSelected( true );
+          this.fldBegAddr.setText(
+                this.fileInfo.getBegAddrText( FileInfo.Format.TAP ) );
+          done = true;
+          break;
 
-	case HEX:
-	  this.btnFmtHEX.setSelected( true );
-	  this.fldBegAddr.setText(
-		this.fileInfo.getBegAddrText( FileInfo.Format.HEX ) );
-	  done = true;
-	  break;
+        case HEX:
+          this.btnFmtHEX.setSelected( true );
+          this.fldBegAddr.setText(
+                this.fileInfo.getBegAddrText( FileInfo.Format.HEX ) );
+          done = true;
+          break;
       }
     }
     if( !done ) {
@@ -270,36 +270,36 @@ public class LoadDlg extends BaseDlg implements ActionListener
        */
       String fileName = file.getName();
       if( fileName != null ) {
-	fileName = fileName.toUpperCase();
-	int len  = fileName.length();
-	int pos  = fileName.indexOf( '_' );
-	while( (pos >= 0) && ((pos + 4) < len) ) {
-	  if( isHexChar( fileName.charAt( pos + 1 ) )
-	      && isHexChar( fileName.charAt( pos + 2 ) )
-	      && isHexChar( fileName.charAt( pos + 3 ) )
-	      && isHexChar( fileName.charAt( pos + 4 ) ) )
-	  {
-	    this.fldBegAddr.setText( fileName.substring( pos + 1, pos + 5 ) );
-	    if( (pos + 9) < len ) {
-	      char ch = fileName.charAt( pos + 5 );
-	      if( ((ch == '_') || (ch == '-'))
-		  && isHexChar( fileName.charAt( pos + 6 ) )
-		  && isHexChar( fileName.charAt( pos + 7 ) )
-		  && isHexChar( fileName.charAt( pos + 8 ) )
-		  && isHexChar( fileName.charAt( pos + 9 ) ) )
-	      {
-		this.fldEndAddr.setText(
-				fileName.substring( pos + 6, pos + 10 ) );
-	      }
-	    }
-	    break;
-	  }
-	  if( pos + 5 < len ) {
-	    pos = fileName.indexOf( '_', pos + 1 );
-	  } else {
-	    pos = -1;
-	  }
-	}
+        fileName = fileName.toUpperCase();
+        int len  = fileName.length();
+        int pos  = fileName.indexOf( '_' );
+        while( (pos >= 0) && ((pos + 4) < len) ) {
+          if( isHexChar( fileName.charAt( pos + 1 ) )
+              && isHexChar( fileName.charAt( pos + 2 ) )
+              && isHexChar( fileName.charAt( pos + 3 ) )
+              && isHexChar( fileName.charAt( pos + 4 ) ) )
+          {
+            this.fldBegAddr.setText( fileName.substring( pos + 1, pos + 5 ) );
+            if( (pos + 9) < len ) {
+              char ch = fileName.charAt( pos + 5 );
+              if( ((ch == '_') || (ch == '-'))
+                  && isHexChar( fileName.charAt( pos + 6 ) )
+                  && isHexChar( fileName.charAt( pos + 7 ) )
+                  && isHexChar( fileName.charAt( pos + 8 ) )
+                  && isHexChar( fileName.charAt( pos + 9 ) ) )
+              {
+                this.fldEndAddr.setText(
+                                fileName.substring( pos + 6, pos + 10 ) );
+              }
+            }
+            break;
+          }
+          if( pos + 5 < len ) {
+            pos = fileName.indexOf( '_', pos + 1 );
+          } else {
+            pos = -1;
+          }
+        }
       }
     }
 
@@ -313,7 +313,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -336,29 +336,29 @@ public class LoadDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void windowOpened( WindowEvent e )
   {
     if( e.getWindow() == this ) {
       if( this.btnFmtJTC.isSelected() ) {
-	this.btnFmtJTC.requestFocus();
+        this.btnFmtJTC.requestFocus();
       }
       else if( this.btnFmtTAP.isSelected() ) {
-	this.btnFmtTAP.requestFocus();
+        this.btnFmtTAP.requestFocus();
       }
       else if( this.btnFmtBIN.isSelected() ) {
-	this.btnFmtBIN.requestFocus();
+        this.btnFmtBIN.requestFocus();
       }
       else if( this.btnFmtHEX.isSelected() ) {
-	this.btnFmtHEX.requestFocus();
+        this.btnFmtHEX.requestFocus();
       }
     }
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private JTextField createJTextField( int cols )
   {
@@ -366,7 +366,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
     Dimension  pSize = fld.getPreferredSize();
     if( pSize != null ) {
       if( pSize.height > 0 )
-	fld.setPreferredSize( new Dimension( 1, pSize.height ) );
+        fld.setPreferredSize( new Dimension( 1, pSize.height ) );
     }
     return fld;
   }
@@ -377,173 +377,173 @@ public class LoadDlg extends BaseDlg implements ActionListener
     try {
       int endAddr = 0xFFFF;
       int begAddr = GUIUtil.parseHex4(
-				this.fldBegAddr.getText(),
-				textBegAddr );
+                                this.fldBegAddr.getText(),
+                                textBegAddr );
 
       String text = this.fldEndAddr.getText();
       if( text != null ) {
-	text = text.trim();
-	if( !text.isEmpty() ) {
-	  endAddr = GUIUtil.parseHex4( text, textEndAddr );
-	}
+        text = text.trim();
+        if( !text.isEmpty() ) {
+          endAddr = GUIUtil.parseHex4( text, textEndAddr );
+        }
       }
       if( this.btnFmtJTC.isSelected() ) {
-	loadIntoMem(
-		begAddr,
-		endAddr,
-		this.fileBytes,
-		128,
-		getContentLen( 17 ) );
-	doClose();
+        loadIntoMem(
+                begAddr,
+                endAddr,
+                this.fileBytes,
+                128,
+                getContentLen( 17 ) );
+        doClose();
       }
       else if( this.btnFmtTAP.isSelected() ) {
-	boolean status = true;
-	int     nTotal = getContentLen( 34 );
-	int     nBlk   = 0;
-	int     pos    = 145;
-	int     addr   = begAddr;
-	while( (nTotal > 0)
-	       && (pos < this.fileBytes.length)
-	       && (addr <= endAddr) )
-	{
-	  if( nBlk == 0 ) {
-	    nBlk = 128;
-	  } else {
-	    if( !this.memory.setMemByte(
-				addr++,
-				false,
-				this.fileBytes[ pos ] ) )
-	    {
-	      status = false;
-	    }
-	    --nBlk;
-	    --nTotal;
-	  }
-	  pos++;
-	}
-	Main.setLastFile( this.file );
-	if( !status ) {
-	  fireLoadedOutOfRAM();
-	}
-	doClose();
+        boolean status = true;
+        int     nTotal = getContentLen( 34 );
+        int     nBlk   = 0;
+        int     pos    = 145;
+        int     addr   = begAddr;
+        while( (nTotal > 0)
+               && (pos < this.fileBytes.length)
+               && (addr <= endAddr) )
+        {
+          if( nBlk == 0 ) {
+            nBlk = 128;
+          } else {
+            if( !this.memory.setMemByte(
+                                addr++,
+                                false,
+                                this.fileBytes[ pos ] ) )
+            {
+              status = false;
+            }
+            --nBlk;
+            --nTotal;
+          }
+          pos++;
+        }
+        Main.setLastFile( this.file );
+        if( !status ) {
+          fireLoadedOutOfRAM();
+        }
+        doClose();
       }
       else if( this.btnFmtBIN.isSelected() ) {
-	loadIntoMem( begAddr, endAddr, this.fileBytes, 0, -1 );
-	doClose();
+        loadIntoMem( begAddr, endAddr, this.fileBytes, 0, -1 );
+        doClose();
       }
       else if( this.btnFmtHEX.isSelected() ) {
         String infoMsg = null;
 
-	ByteArrayOutputStream out = new ByteArrayOutputStream( 0x4000 );
-	ByteArrayInputStream  in  = new ByteArrayInputStream(
-							this.fileBytes,
-							0,
-							this.fileLen );
-	boolean loop     = true;
-	int     firstAddr = -1;
-	int     curAddr  = -1;
-	int     ch       = in.read();
-	while( loop && (ch != -1) ) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream( 0x4000 );
+        ByteArrayInputStream  in  = new ByteArrayInputStream(
+                                                        this.fileBytes,
+                                                        0,
+                                                        this.fileLen );
+        boolean loop     = true;
+        int     firstAddr = -1;
+        int     curAddr  = -1;
+        int     ch       = in.read();
+        while( loop && (ch != -1) ) {
 
-	  // Startmarkierung suchen
-	  while( (ch != -1) && (ch != ':') ) {
-	    ch = in.read();
-	  }
-	  if( ch != -1 ) {
-	    // Segment verarbeiten
-	    int cnt  = parseHex( in, 2 );
-	    int addr = parseHex( in, 4 );
-	    int type = parseHex( in, 2 );
-	    switch( type ) {
-	      case 0:                       // Data Record
-		if( cnt > 0 ) {
-		  if( firstAddr < 0 ) {
-		    firstAddr = addr;
-		    curAddr   = addr;
-		  }
-		  if( addr == curAddr ) {
-		    while( cnt > 0 ) {
-		      out.write( parseHex( in, 2 ) );
-		      --cnt;
-		      curAddr++;
-		    }
-		  } else {
-		    infoMsg = "Die Datei enth\u00E4lt mehrere nicht"
-			+ " zusammenh\u00E4ngende Datenbereiche.\n"
-			+ "Es wurde nur der erste Bereich geladen.";
-		  }
-		}
-		break;
+          // Startmarkierung suchen
+          while( (ch != -1) && (ch != ':') ) {
+            ch = in.read();
+          }
+          if( ch != -1 ) {
+            // Segment verarbeiten
+            int cnt  = parseHex( in, 2 );
+            int addr = parseHex( in, 4 );
+            int type = parseHex( in, 2 );
+            switch( type ) {
+              case 0:                       // Data Record
+                if( cnt > 0 ) {
+                  if( firstAddr < 0 ) {
+                    firstAddr = addr;
+                    curAddr   = addr;
+                  }
+                  if( addr == curAddr ) {
+                    while( cnt > 0 ) {
+                      out.write( parseHex( in, 2 ) );
+                      --cnt;
+                      curAddr++;
+                    }
+                  } else {
+                    infoMsg = "Die Datei enth\u00E4lt mehrere nicht"
+                        + " zusammenh\u00E4ngende Datenbereiche.\n"
+                        + "Es wurde nur der erste Bereich geladen.";
+                  }
+                }
+                break;
 
-	      case 1:			// End of File Record
-		loop = false;
-		break;
+              case 1:                        // End of File Record
+                loop = false;
+                break;
 
-	      case 2:			// Extended Segment Address Record
-		while( cnt > 0 ) {
-		  if( parseHex( in, 2 ) != 0 ) {
-		    infoMsg = "Die Datei enth\u00E4lt einen Datensatz f\u00FCr"
-			+ " eine segmentierte Adresse,\n"
-			+ "der von JTCEMU nicht unterst\u00FCtzt wird.";
-		  }
-		  --cnt;
-		}
-		break;
+              case 2:                        // Extended Segment Address Record
+                while( cnt > 0 ) {
+                  if( parseHex( in, 2 ) != 0 ) {
+                    infoMsg = "Die Datei enth\u00E4lt einen Datensatz f\u00FCr"
+                        + " eine segmentierte Adresse,\n"
+                        + "der von JTCEMU nicht unterst\u00FCtzt wird.";
+                  }
+                  --cnt;
+                }
+                break;
 
-	      case 3:			// Start Segment Address Record
-	      case 5:			// Start Linear Address Record
-		// Datensatz ignorieren
-		break;
+              case 3:                        // Start Segment Address Record
+              case 5:                        // Start Linear Address Record
+                // Datensatz ignorieren
+                break;
 
-	      case 4:			// Extended Linear Address Record
-		while( cnt > 0 ) {
-		  if( parseHex( in, 2 ) != 0 ) {
-		    infoMsg = "Die Datei enth\u00E4lt einen Datensatz f\u00FCr"
-			+ " eine lineare 32-Bit-Adresse,\n"
-			+ "die au\u00DFerhalb des von JTCEMU"
-			+ " emulierten Adressraumes liegt.";
-		  }
-		  --cnt;
-		}
-		break;
+              case 4:                        // Extended Linear Address Record
+                while( cnt > 0 ) {
+                  if( parseHex( in, 2 ) != 0 ) {
+                    infoMsg = "Die Datei enth\u00E4lt einen Datensatz f\u00FCr"
+                        + " eine lineare 32-Bit-Adresse,\n"
+                        + "die au\u00DFerhalb des von JTCEMU"
+                        + " emulierten Adressraumes liegt.";
+                  }
+                  --cnt;
+                }
+                break;
 
-	      default:
-		infoMsg = String.format(
-				"Die Datei enth\u00E4lt einen Datensatzart"
-					+ " des Typs %d,\n"
-					+ "der von JTCEMU nicht"
-					+ " unterst\u00FCtzt wird.",
-				type );
-	    }
-	    if( infoMsg != null ) {
-	      if( out.size() > 0 ) {
-		infoMsg = infoMsg
-			+ "\nEs werden nur die Daten bis zu diesem Datensatz"
-			+ " geladen.";
-	      } else {
-		throw new IOException( infoMsg );
-	      }
-	      loop = false;
-	    }
-	    ch = in.read();
-	  }
-	}
-	in.close();
-	out.close();
-	if( infoMsg != null ) {
-	  JOptionPane.showMessageDialog(
-		this,
-		infoMsg,
-		"Hinweis",
+              default:
+                infoMsg = String.format(
+                                "Die Datei enth\u00E4lt einen Datensatzart"
+                                        + " des Typs %d,\n"
+                                        + "der von JTCEMU nicht"
+                                        + " unterst\u00FCtzt wird.",
+                                type );
+            }
+            if( infoMsg != null ) {
+              if( out.size() > 0 ) {
+                infoMsg = infoMsg
+                        + "\nEs werden nur die Daten bis zu diesem Datensatz"
+                        + " geladen.";
+              } else {
+                throw new IOException( infoMsg );
+              }
+              loop = false;
+            }
+            ch = in.read();
+          }
+        }
+        in.close();
+        out.close();
+        if( infoMsg != null ) {
+          JOptionPane.showMessageDialog(
+                this,
+                infoMsg,
+                "Hinweis",
                 JOptionPane.WARNING_MESSAGE );
-	}
-	if( firstAddr >= 0 ) {
-	  byte[] dataBytes = out.toByteArray();
-	  if( dataBytes != null ) {
-	    loadIntoMem( begAddr, endAddr, dataBytes, 0, -1 );
-	    doClose();
-	  }
-	}
+        }
+        if( firstAddr >= 0 ) {
+          byte[] dataBytes = out.toByteArray();
+          if( dataBytes != null ) {
+            loadIntoMem( begAddr, endAddr, dataBytes, 0, -1 );
+            doClose();
+          }
+        }
       }
     }
     catch( Exception ex ) {
@@ -557,9 +557,9 @@ public class LoadDlg extends BaseDlg implements ActionListener
     int len = 0;
     if( addrPos + 1 < this.fileLen ) {
       int begAddr = ((this.fileBytes[ addrPos + 1 ] << 8) & 0xFF00)
-			| (this.fileBytes[ addrPos ] & 0x00FF);
+                        | (this.fileBytes[ addrPos ] & 0x00FF);
       int endAddr = ((this.fileBytes[ addrPos + 3 ] << 8) & 0xFF00)
-			| (this.fileBytes[ addrPos + 2 ] & 0x00FF);
+                        | (this.fileBytes[ addrPos + 2 ] & 0x00FF);
       len = endAddr - begAddr + 1;
     }
     return len > 0 ? len : 0;
@@ -571,40 +571,40 @@ public class LoadDlg extends BaseDlg implements ActionListener
     int pos = -1;
     if( this.fileLen > blkBegPos + 11 ) {
       if( ((this.fileBytes[ blkBegPos ] == 0xD3)
-			&& (this.fileBytes[ blkBegPos + 1 ] == 0xD3)
-			&& (this.fileBytes[ blkBegPos + 2 ] == 0xD3))
-	  || ((this.fileBytes[ blkBegPos ] == 0xD6)
-			&& (this.fileBytes[ blkBegPos + 1 ] == 0xD6)
-			&& (this.fileBytes[ blkBegPos + 2 ] == 0xD6)) )
+                        && (this.fileBytes[ blkBegPos + 1 ] == 0xD3)
+                        && (this.fileBytes[ blkBegPos + 2 ] == 0xD3))
+          || ((this.fileBytes[ blkBegPos ] == 0xD6)
+                        && (this.fileBytes[ blkBegPos + 1 ] == 0xD6)
+                        && (this.fileBytes[ blkBegPos + 2 ] == 0xD6)) )
       {
-	// KC-BASIC-Programm im Binaerformat
-	pos = blkBegPos + 12;
+        // KC-BASIC-Programm im Binaerformat
+        pos = blkBegPos + 12;
       }
       else if( ((this.fileBytes[ blkBegPos ] == 0xD4)
-			&& (this.fileBytes[ blkBegPos + 1 ] == 0xD4)
-			&& (this.fileBytes[ blkBegPos + 2 ] == 0xD4))
-	       || ((this.fileBytes[ blkBegPos ] == 0xD7)
-			&& (this.fileBytes[ blkBegPos + 1 ] == 0xD7)
-			&& (this.fileBytes[ blkBegPos + 2 ] == 0xD7)) )
+                        && (this.fileBytes[ blkBegPos + 1 ] == 0xD4)
+                        && (this.fileBytes[ blkBegPos + 2 ] == 0xD4))
+               || ((this.fileBytes[ blkBegPos ] == 0xD7)
+                        && (this.fileBytes[ blkBegPos + 1 ] == 0xD7)
+                        && (this.fileBytes[ blkBegPos + 2 ] == 0xD7)) )
       {
-	// Datenfelder eines KC-BASIC-Programms
-	pos = blkBegPos + 11;
+        // Datenfelder eines KC-BASIC-Programms
+        pos = blkBegPos + 11;
       }
       else if( ((this.fileBytes[ blkBegPos ] == 0xD5)
-			&& (this.fileBytes[ blkBegPos + 1 ] == 0xD5)
-			&& (this.fileBytes[ blkBegPos + 2 ] == 0xD5))
-	       || ((this.fileBytes[ blkBegPos ] == 0xD8)
-			&& (this.fileBytes[ blkBegPos + 1 ] == 0xD8)
-			&& (this.fileBytes[ blkBegPos + 2 ] == 0xD8)) )
+                        && (this.fileBytes[ blkBegPos + 1 ] == 0xD5)
+                        && (this.fileBytes[ blkBegPos + 2 ] == 0xD5))
+               || ((this.fileBytes[ blkBegPos ] == 0xD8)
+                        && (this.fileBytes[ blkBegPos + 1 ] == 0xD8)
+                        && (this.fileBytes[ blkBegPos + 2 ] == 0xD8)) )
       {
-	// KC-BASIC-Programm im ASCII-Format
-	pos = blkBegPos + 13;
-	while( pos < this.fileBytes.length ) {
-	  if( this.fileBytes[ pos ] != (byte) 0 ) {
-	    break;
-	  }
-	  pos++;
-	}
+        // KC-BASIC-Programm im ASCII-Format
+        pos = blkBegPos + 13;
+        while( pos < this.fileBytes.length ) {
+          if( this.fileBytes[ pos ] != (byte) 0 ) {
+            break;
+          }
+          pos++;
+        }
       }
     }
     return pos;
@@ -612,19 +612,19 @@ public class LoadDlg extends BaseDlg implements ActionListener
 
 
   private void loadIntoMem(
-			int    addr,
-			int    endAddr,
-			byte[] dataBytes,
-			int    pos,
-			int    len ) throws IOException
+                        int    addr,
+                        int    endAddr,
+                        byte[] dataBytes,
+                        int    pos,
+                        int    len ) throws IOException
   {
     boolean status = true;
     while( (len != 0) && (pos < dataBytes.length) && (addr <= endAddr) ) {
       if( !this.memory.setMemByte( addr++, false, dataBytes[ pos++ ] ) ) {
-	status = false;
+        status = false;
       }
       if( len > 0 )
-	--len;
+        --len;
     }
     Main.setLastFile( this.file );
     if( !status )
@@ -638,14 +638,14 @@ public class LoadDlg extends BaseDlg implements ActionListener
     while( cnt > 0 ) {
       int ch = in.read();
       if( (ch >= '0') && (ch <= '9') ) {
-	value = (value << 4) | ((ch - '0') & 0x0F);
+        value = (value << 4) | ((ch - '0') & 0x0F);
       } else if( (ch >= 'A') && (ch <= 'F') ) {
-	value = (value << 4) | ((ch - 'A' + 10) & 0x0F);
+        value = (value << 4) | ((ch - 'A' + 10) & 0x0F);
       } else if( (ch >= 'a') && (ch <= 'f') ) {
-	value = (value << 4) | ((ch - 'a' + 10) & 0x0F);
+        value = (value << 4) | ((ch - 'a' + 10) & 0x0F);
       } else {
-	throw new IOException(
-		"Datei entspricht nicht dem erwarteten HEX-Format." );
+        throw new IOException(
+                "Datei entspricht nicht dem erwarteten HEX-Format." );
       }
       --cnt;
     }
@@ -656,10 +656,10 @@ public class LoadDlg extends BaseDlg implements ActionListener
   private void fireLoadedOutOfRAM() throws IOException
   {
     throw new IOException(
-		"Die Datei konnte nicht oder nicht vollst\u00E4ndig"
-			+" in den Arbeitsspeicher geladen werden,\n"
-			+ "da der betroffene Adressbereich auch ROM,"
-			+" Video-RAM und/oder IO-Adressen enth\u00E4lt." );
+                "Die Datei konnte nicht oder nicht vollst\u00E4ndig"
+                        +" in den Arbeitsspeicher geladen werden,\n"
+                        + "da der betroffene Adressbereich auch ROM,"
+                        +" Video-RAM und/oder IO-Adressen enth\u00E4lt." );
   }
 
 
@@ -682,15 +682,15 @@ public class LoadDlg extends BaseDlg implements ActionListener
       fmt = FileInfo.Format.HEX;
     }
     if( (fmt == FileInfo.Format.JTC)
-	|| (fmt == FileInfo.Format.TAP)
-	|| (fmt == FileInfo.Format.HEX) )
+        || (fmt == FileInfo.Format.TAP)
+        || (fmt == FileInfo.Format.HEX) )
     {
       this.labelFileBegAddr.setEnabled( true );
       this.fldFileBegAddr.setEnabled( true );
       if( this.fileInfo != null ) {
-	this.fldFileBegAddr.setText( this.fileInfo.getBegAddrText( fmt ) );
+        this.fldFileBegAddr.setText( this.fileInfo.getBegAddrText( fmt ) );
       } else {
-	this.fldFileBegAddr.setText( null );
+        this.fldFileBegAddr.setText( null );
       }
     } else {
       this.labelFileBegAddr.setEnabled( false );
@@ -698,21 +698,21 @@ public class LoadDlg extends BaseDlg implements ActionListener
       this.fldFileBegAddr.setText( null );
     }
     if( (fmt == FileInfo.Format.JTC)
-	|| (fmt == FileInfo.Format.TAP) )
+        || (fmt == FileInfo.Format.TAP) )
     {
       this.labelFileEndAddr.setEnabled( true );
       this.fldFileEndAddr.setEnabled( true );
       if( this.fileInfo != null ) {
-	this.fldFileEndAddr.setText( this.fileInfo.getEndAddrText( fmt ) );
+        this.fldFileEndAddr.setText( this.fileInfo.getEndAddrText( fmt ) );
       } else {
-	this.fldFileEndAddr.setText( null );
+        this.fldFileEndAddr.setText( null );
       }
       this.labelFileDesc.setEnabled( true );
       this.fldFileDesc.setEnabled( true );
       if( this.fileInfo != null ) {
-	this.fldFileDesc.setText( this.fileInfo.getFileDesc( fmt ) );
+        this.fldFileDesc.setText( this.fileInfo.getFileDesc( fmt ) );
       } else {
-	this.fldFileDesc.setText( null );
+        this.fldFileDesc.setText( null );
       }
     } else {
       this.labelFileEndAddr.setEnabled( false );

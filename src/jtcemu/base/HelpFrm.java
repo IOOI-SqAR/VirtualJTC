@@ -23,16 +23,16 @@ import jtcemu.Main;
 
 
 public class HelpFrm extends BaseFrm
-			implements
-				ActionListener,
-				CaretListener,
-				HyperlinkListener,
-				Printable
+                        implements
+                                ActionListener,
+                                CaretListener,
+                                HyperlinkListener,
+                                Printable
 {
   private static class URLStackEntry
   {
     public URL    url;
-    public Double viewPos;	// relative Angabe von 0.0 bis 1.0
+    public Double viewPos;        // relative Angabe von 0.0 bis 1.0
 
     public URLStackEntry( URL url, Double viewPos )
     {
@@ -76,13 +76,13 @@ public class HelpFrm extends BaseFrm
   public static void open( final String page )
   {
     SwingUtilities.invokeLater(
-		new Runnable()
-		{
-		  public void run()
-		  {
-		    openInternal( page );
-		  }
-		} );
+                new Runnable()
+                {
+                  public void run()
+                  {
+                    openInternal( page );
+                  }
+                } );
   }
 
 
@@ -92,7 +92,7 @@ public class HelpFrm extends BaseFrm
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -100,31 +100,31 @@ public class HelpFrm extends BaseFrm
     Object src = e.getSource();
     if( src != null ) {
       if( src == this.mnuClose ) {
-	doClose();
+        doClose();
       } else if( src == this.mnuCopy ) {
-	this.editorPane.copy();
+        this.editorPane.copy();
       } else if( src == this.mnuSelectAll ) {
-	this.editorPane.selectAll();
+        this.editorPane.selectAll();
       } else if( (src == this.mnuBack) || (src == this.btnBack) ) {
-	doBack();
+        doBack();
       } else if( (src == this.mnuHome) || (src == this.btnHome) ) {
-	setURL( null, null );
+        setURL( null, null );
       } else if( src == this.timer ) {
-	this.timer.stop();
-	doScrollTo( this.posToScroll );
-	this.posToScroll = null;
+        this.timer.stop();
+        doScrollTo( this.posToScroll );
+        this.posToScroll = null;
       } else {
-	GUIUtil.setWaitCursor( this, true );
-	if( (src == this.mnuPrint) || (src == this.btnPrint) ) {
-	  doPrint();
-	}
-	GUIUtil.setWaitCursor( this, false );
+        GUIUtil.setWaitCursor( this, true );
+        if( (src == this.mnuPrint) || (src == this.btnPrint) ) {
+          doPrint();
+        }
+        GUIUtil.setWaitCursor( this, false );
       }
     }
   }
 
 
-	/* --- CaretListener --- */
+        /* --- CaretListener --- */
 
   @Override
   public void caretUpdate( CaretEvent e )
@@ -135,7 +135,7 @@ public class HelpFrm extends BaseFrm
   }
 
 
-	/* --- HyperlinkListener --- */
+        /* --- HyperlinkListener --- */
 
   @Override
   public void hyperlinkUpdate( HyperlinkEvent e )
@@ -145,13 +145,13 @@ public class HelpFrm extends BaseFrm
   }
 
 
-	/* --- Printable --- */
+        /* --- Printable --- */
 
   @Override
   public int print(
-		Graphics   g,
-		PageFormat pf,
-		int        pageNum ) throws PrinterException
+                Graphics   g,
+                PageFormat pf,
+                int        pageNum ) throws PrinterException
   {
     double x = pf.getImageableX();
     double y = pf.getImageableY();
@@ -160,8 +160,8 @@ public class HelpFrm extends BaseFrm
 
     if( (w < 1.0) || (h < 1.0) ) {
       throw new PrinterException(
-		"Die Seite hat keinen bedruckbaren Bereich,\n"
-			+ "da die R\u00E4nder zu gro\u00DF sind." );
+                "Die Seite hat keinen bedruckbaren Bereich,\n"
+                        + "da die R\u00E4nder zu gro\u00DF sind." );
     }
 
 
@@ -175,12 +175,12 @@ public class HelpFrm extends BaseFrm
 
       // Skalieren und zu druckender Bereich markieren
       if( (scale < 1.0) && (g instanceof Graphics2D) ) {
-	((Graphics2D) g).scale( scale, scale );
+        ((Graphics2D) g).scale( scale, scale );
 
-	x /= scale;
-	y /= scale;
-	w /= scale;
-	h /= scale;
+        x /= scale;
+        y /= scale;
+        w /= scale;
+        h /= scale;
       }
 
       // Seite drucken
@@ -199,7 +199,7 @@ public class HelpFrm extends BaseFrm
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   protected boolean doClose()
@@ -212,7 +212,7 @@ public class HelpFrm extends BaseFrm
   }
 
 
-	/* --- private Konstruktoren und Methoden --- */
+        /* --- private Konstruktoren und Methoden --- */
 
   private HelpFrm()
   {
@@ -270,13 +270,13 @@ public class HelpFrm extends BaseFrm
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.NORTHWEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 0, 0, 0 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.NORTHWEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 0, 0, 0 ),
+                                        0, 0 );
 
     // Werkzeugleiste
     JToolBar toolBar = new JToolBar();
@@ -286,22 +286,22 @@ public class HelpFrm extends BaseFrm
     toolBar.setRollover( true );
 
     this.btnBack = GUIUtil.createImageButton(
-				this,
-				"/images/nav/back.png",
-				"Zur\u00FCck" );
+                                this,
+                                "/images/nav/back.png",
+                                "Zur\u00FCck" );
     toolBar.add( this.btnBack );
 
     this.btnHome = GUIUtil.createImageButton(
-				this,
-				"/images/nav/home.png",
-				"Startseite" );
+                                this,
+                                "/images/nav/home.png",
+                                "Startseite" );
     toolBar.add( this.btnHome );
     toolBar.addSeparator();
 
     this.btnPrint = GUIUtil.createImageButton(
-				this,
-				"/images/file/print.png",
-				"Drucken" );
+                                this,
+                                "/images/file/print.png",
+                                "Drucken" );
     toolBar.add( this.btnPrint );
 
     add( toolBar, gbc );
@@ -346,7 +346,7 @@ public class HelpFrm extends BaseFrm
   {
     JMenuItem item = createJMenuItem( text);
     item.setAccelerator(
-		KeyStroke.getKeyStroke( ctrlKeyCode, Event.CTRL_MASK ) );
+                KeyStroke.getKeyStroke( ctrlKeyCode, Event.CTRL_MASK ) );
     return item;
   }
 
@@ -355,9 +355,9 @@ public class HelpFrm extends BaseFrm
   {
     if( this.urlStack.size() > 1 ) {
       try {
-	this.urlStack.pop();	// aktuelle Seite vom Stack entfernen
-	URLStackEntry entry = this.urlStack.pop();
-	setURL( entry.url, entry.viewPos );
+        this.urlStack.pop();        // aktuelle Seite vom Stack entfernen
+        URLStackEntry entry = this.urlStack.pop();
+        setURL( entry.url, entry.viewPos );
       }
       catch( EmptyStackException ex ) {}
     }
@@ -395,11 +395,11 @@ public class HelpFrm extends BaseFrm
       double d = viewPos.doubleValue();
       int    h = this.editorPane.getHeight();
       if( (d > 0.0) && (d <= 1.0) && (h > 0) ) {
-	JViewport vp = this.scrollPane.getViewport();
-	if( vp != null ) {
-	  vp.setViewPosition(
-		new Point( 0, (int) Math.round( d * (double) h ) ) );
-	}
+        JViewport vp = this.scrollPane.getViewport();
+        if( vp != null ) {
+          vp.setViewPosition(
+                new Point( 0, (int) Math.round( d * (double) h ) ) );
+        }
       }
     }
   }
@@ -433,58 +433,58 @@ public class HelpFrm extends BaseFrm
       boolean       alreadyVisible = false;
       URLStackEntry topEntry       = null;
       if( this.urlStack.size() > 0 ) {
-	topEntry = this.urlStack.peek();
-	if( topEntry.url.equals( url ) )
-	  alreadyVisible = true;
+        topEntry = this.urlStack.peek();
+        if( topEntry.url.equals( url ) )
+          alreadyVisible = true;
       }
       if( !alreadyVisible ) {
-	try {
+        try {
 
-	  // aktuelle Position ermitteln und im letzten Stack-Eintrag merken
-	  if( topEntry != null ) {
-	    topEntry.viewPos = null;
-	    int h = this.editorPane.getHeight();
-	    if( h > 0 ) {
-	      JViewport vp = this.scrollPane.getViewport();
-	      if( vp != null ) {
-		Point pt = vp.getViewPosition();
-		if( pt != null ) {
-		  double d = (double) pt.y / (double) h;
-		  if( (d > 0.0) && (d <= 1.0) )
-		    topEntry.viewPos = new Double( d );
-		}
-	      }
-	    }
-	  }
+          // aktuelle Position ermitteln und im letzten Stack-Eintrag merken
+          if( topEntry != null ) {
+            topEntry.viewPos = null;
+            int h = this.editorPane.getHeight();
+            if( h > 0 ) {
+              JViewport vp = this.scrollPane.getViewport();
+              if( vp != null ) {
+                Point pt = vp.getViewPosition();
+                if( pt != null ) {
+                  double d = (double) pt.y / (double) h;
+                  if( (d > 0.0) && (d <= 1.0) )
+                    topEntry.viewPos = new Double( d );
+                }
+              }
+            }
+          }
 
-	  // neue Seite anzeigen
-	  this.editorPane.setPage( url );
+          // neue Seite anzeigen
+          this.editorPane.setPage( url );
 
-	  // wenn Seite angezeigt werden konnte, neuen Stack-Eintrag erzeugen
-	  this.urlStack.push( new URLStackEntry( url, null ) );
+          // wenn Seite angezeigt werden konnte, neuen Stack-Eintrag erzeugen
+          this.urlStack.push( new URLStackEntry( url, null ) );
 
-	  // auf Position scrollen
-	  if( viewPos != null ) {
-	    this.posToScroll = viewPos;
-	    this.timer.restart();
-	  }
+          // auf Position scrollen
+          if( viewPos != null ) {
+            this.posToScroll = viewPos;
+            this.timer.restart();
+          }
 
-	  // Aktionsknoepfe aktualisieren
-	  boolean stateBack = (this.urlStack.size() > 1);
-	  this.mnuBack.setEnabled( stateBack );
-	  this.btnBack.setEnabled( stateBack );
+          // Aktionsknoepfe aktualisieren
+          boolean stateBack = (this.urlStack.size() > 1);
+          this.mnuBack.setEnabled( stateBack );
+          this.btnBack.setEnabled( stateBack );
 
-	  boolean stateHome = (stateBack || !url.equals( this.urlHome));
-	  this.mnuHome.setEnabled( stateHome );
-	  this.btnHome.setEnabled( stateHome );
-	}
-	catch( IOException ex ) {
-	  JOptionPane.showMessageDialog(
-		this,
-		"Die Hilfeseite kann nicht angezeigt werden.",
-		"Fehler",
-		JOptionPane.ERROR_MESSAGE );
-	}
+          boolean stateHome = (stateBack || !url.equals( this.urlHome));
+          this.mnuHome.setEnabled( stateHome );
+          this.btnHome.setEnabled( stateHome );
+        }
+        catch( IOException ex ) {
+          JOptionPane.showMessageDialog(
+                this,
+                "Die Hilfeseite kann nicht angezeigt werden.",
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE );
+        }
       }
     }
   }

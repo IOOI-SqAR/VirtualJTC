@@ -22,8 +22,8 @@ import z8.*;
 
 
 public class ReassFrm extends AbstractTextFrm implements
-						ActionListener,
-						CaretListener
+                                                ActionListener,
+                                                CaretListener
 {
   private static ReassFrm instance = null;
 
@@ -61,7 +61,7 @@ public class ReassFrm extends AbstractTextFrm implements
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -69,40 +69,40 @@ public class ReassFrm extends AbstractTextFrm implements
     Object src = e.getSource();
     if( src != null ) {
       if( src == this.fldBegAddr ) {
-	this.fldEndAddr.requestFocus();
+        this.fldEndAddr.requestFocus();
       }
       else if( (src == this.fldEndAddr) || (src == this.mnuReassemble) ) {
-	doReassemble();
+        doReassemble();
       }
       else if( src == this.mnuSaveAs ) {
-	doSaveAs();
+        doSaveAs();
       }
       else if( src == this.mnuPrintOptions ) {
-	PrintOptionsDlg.open( this );
+        PrintOptionsDlg.open( this );
       }
       else if( src == this.mnuPrint ) {
-	doPrint();
+        doPrint();
       }
       else if( src == this.mnuClose ) {
-	doClose();
+        doClose();
       }
       else if( src == this.mnuCopy ) {
-	if( this.selectionFld != null ){
-	  this.selectionFld.copy();
-	}
+        if( this.selectionFld != null ){
+          this.selectionFld.copy();
+        }
       }
       else if( src == this.mnuSelectAll ) {
-	this.textArea.requestFocus();
-	this.textArea.selectAll();
+        this.textArea.requestFocus();
+        this.textArea.selectAll();
       }
       else if( src == this.mnuHelpContent ) {
-	HelpFrm.open( "/help/reassembler.htm" );
+        HelpFrm.open( "/help/reassembler.htm" );
       }
     }
   }
 
 
-	/* --- CaretListener --- */
+        /* --- CaretListener --- */
 
   @Override
   public void caretUpdate( CaretEvent e )
@@ -110,16 +110,16 @@ public class ReassFrm extends AbstractTextFrm implements
     Object src = e.getSource();
     if( src != null ) {
       if( src instanceof JTextComponent ) {
-	this.selectionFld = (JTextComponent) src;
-	int begPos        = this.selectionFld.getSelectionStart();
-	this.mnuCopy.setEnabled( (begPos >= 0)
-		&& (begPos < this.selectionFld.getSelectionEnd()) );
+        this.selectionFld = (JTextComponent) src;
+        int begPos        = this.selectionFld.getSelectionStart();
+        this.mnuCopy.setEnabled( (begPos >= 0)
+                && (begPos < this.selectionFld.getSelectionEnd()) );
       }
     }
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   protected boolean doClose()
@@ -132,7 +132,7 @@ public class ReassFrm extends AbstractTextFrm implements
   }
 
 
-	/* --- Konstruktor --- */
+        /* --- Konstruktor --- */
 
   private ReassFrm( Z8Memory memory )
   {
@@ -154,18 +154,18 @@ public class ReassFrm extends AbstractTextFrm implements
 
     this.mnuReassemble = new JMenuItem( "Reassemblieren" );
     this.mnuReassemble.setAccelerator(
-			KeyStroke.getKeyStroke(
-					KeyEvent.VK_R,
-					InputEvent.CTRL_MASK ) );
+                        KeyStroke.getKeyStroke(
+                                        KeyEvent.VK_R,
+                                        InputEvent.CTRL_MASK ) );
     this.mnuReassemble.addActionListener( this );
     mnuFile.add( this.mnuReassemble );
     mnuFile.addSeparator();
 
     this.mnuSaveAs = new JMenuItem( "Speichern unter..." );
     this.mnuSaveAs.setAccelerator(
-		KeyStroke.getKeyStroke(
-			KeyEvent.VK_S,
-			InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK ) );
+                KeyStroke.getKeyStroke(
+                        KeyEvent.VK_S,
+                        InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK ) );
     this.mnuSaveAs.setEnabled( false );
     this.mnuSaveAs.addActionListener( this );
     mnuFile.add( this.mnuSaveAs );
@@ -177,8 +177,8 @@ public class ReassFrm extends AbstractTextFrm implements
 
     this.mnuPrint = new JMenuItem( "Drucken..." );
     this.mnuPrint.setAccelerator( KeyStroke.getKeyStroke(
-					KeyEvent.VK_P,
-					InputEvent.CTRL_MASK ) );
+                                        KeyEvent.VK_P,
+                                        InputEvent.CTRL_MASK ) );
     this.mnuPrint.setEnabled( false );
     this.mnuPrint.addActionListener( this );
     mnuFile.add( this.mnuPrint );
@@ -196,8 +196,8 @@ public class ReassFrm extends AbstractTextFrm implements
 
     this.mnuCopy = new JMenuItem( "Kopieren" );
     this.mnuCopy.setAccelerator( KeyStroke.getKeyStroke(
-					KeyEvent.VK_C,
-					InputEvent.CTRL_MASK ) );
+                                        KeyEvent.VK_C,
+                                        InputEvent.CTRL_MASK ) );
     this.mnuCopy.setEnabled( false );
     this.mnuCopy.addActionListener( this );
     mnuEdit.add( this.mnuCopy );
@@ -227,13 +227,13 @@ public class ReassFrm extends AbstractTextFrm implements
     add( panelHead, BorderLayout.NORTH );
 
     GridBagConstraints gbcHead = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
     panelHead.add( new JLabel( "Anfangsadresse:" ), gbcHead );
 
@@ -281,7 +281,7 @@ public class ReassFrm extends AbstractTextFrm implements
   }
 
 
-	/* --- Aktionen --- */
+        /* --- Aktionen --- */
 
   private void doReassemble()
   {
@@ -290,26 +290,26 @@ public class ReassFrm extends AbstractTextFrm implements
       int    endAddr = begAddr;
       String text    = this.fldEndAddr.getText();
       if( text != null ) {
-	if( !text.isEmpty() ) {
-	  endAddr = GUIUtil.parseHex4( this.fldEndAddr, "Endadresse" );
-	}
+        if( !text.isEmpty() ) {
+          endAddr = GUIUtil.parseHex4( this.fldEndAddr, "Endadresse" );
+        }
       }
       StringBuilder buf = new StringBuilder( 0x4000 );
       this.z8Reass.reassemble( buf, begAddr, endAddr );
       setText( buf.toString() );
       this.textArea.requestFocus();
       if( buf.length() > 0 ) {
-	this.mnuSaveAs.setEnabled( true );
-	this.mnuPrint.setEnabled( true );
-	this.mnuSelectAll.setEnabled( true );
+        this.mnuSaveAs.setEnabled( true );
+        this.mnuPrint.setEnabled( true );
+        this.mnuSelectAll.setEnabled( true );
       }
     }
     catch( ParseException ex ) {
       JOptionPane.showMessageDialog(
-			this,
-			ex.getMessage(),
-			"Eingabefehler",
-			JOptionPane.ERROR_MESSAGE );
+                        this,
+                        ex.getMessage(),
+                        "Eingabefehler",
+                        JOptionPane.ERROR_MESSAGE );
     }
   }
 
@@ -317,34 +317,34 @@ public class ReassFrm extends AbstractTextFrm implements
   private void doSaveAs()
   {
     File file = FileDlg.showFileSaveDlg(
-				this,
-				"Textdatei speichern",
-				this.lastFile != null ?
-					this.lastFile
-					: Main.getLastPathFile(),
-				GUIUtil.textFileFilter );
+                                this,
+                                "Textdatei speichern",
+                                this.lastFile != null ?
+                                        this.lastFile
+                                        : Main.getLastPathFile(),
+                                GUIUtil.textFileFilter );
     if( file != null ) {
       try {
-	Writer out = null;
-	try {
-	  out = new BufferedWriter( new FileWriter( file ) );
-	  this.textArea.write( out );
-	  out.close();
-	  out           = null;
-	  this.lastFile = file;
-	  Main.setLastFile( file );
-	}
-	finally {
-	  if( out != null ) {
-	    try {
-	      out.close();
-	    }
-	    catch( IOException ex ) {}
-	  }
-	}
+        Writer out = null;
+        try {
+          out = new BufferedWriter( new FileWriter( file ) );
+          this.textArea.write( out );
+          out.close();
+          out           = null;
+          this.lastFile = file;
+          Main.setLastFile( file );
+        }
+        finally {
+          if( out != null ) {
+            try {
+              out.close();
+            }
+            catch( IOException ex ) {}
+          }
+        }
       }
       catch( IOException ex ) {
-	Main.showError( this, ex );
+        Main.showError( this, ex );
       }
     }
   }

@@ -25,32 +25,32 @@ import jtcemu.Main;
 public class GUIUtil
 {
   public static FileFilter basicFileFilter = new FileNameExtensionFilter(
-					"BASIC-Dateien (*.bas)",
-					"bas" );
+                                        "BASIC-Dateien (*.bas)",
+                                        "bas" );
 
   public static FileFilter binaryFileFilter = new FileNameExtensionFilter(
-					"Bin\u00E4rdateien (*.bin)",
-					"bin" );
+                                        "Bin\u00E4rdateien (*.bin)",
+                                        "bin" );
 
   public static FileFilter hexFileFilter = new FileNameExtensionFilter(
-					"Hex-Dateien (*.hex)",
-					"hex" );
+                                        "Hex-Dateien (*.hex)",
+                                        "hex" );
 
   public static FileFilter jtcFileFilter = new FileNameExtensionFilter(
-					"JTC-Dateien (*.jtc)",
-					"jtc" );
+                                        "JTC-Dateien (*.jtc)",
+                                        "jtc" );
 
   public static FileFilter romFileFilter = new FileNameExtensionFilter(
-					"ROM-Dateien (*.bin; *.rom)",
-					"bin", "rom" );
+                                        "ROM-Dateien (*.bin; *.rom)",
+                                        "bin", "rom" );
 
   public static FileFilter tapFileFilter = new FileNameExtensionFilter(
-					"TAP-Dateien (*.tap)",
-					"tap" );
+                                        "TAP-Dateien (*.tap)",
+                                        "tap" );
 
   public static FileFilter textFileFilter = new FileNameExtensionFilter(
-					"Textdateien (*.asc, *.log, *.txt)",
-					"asc", "log", "txt" );
+                                        "Textdateien (*.asc, *.log, *.txt)",
+                                        "asc", "log", "txt" );
 
 
   private static final Cursor defaultCursor = Cursor.getDefaultCursor();
@@ -67,21 +67,21 @@ public class GUIUtil
       int w = -1;
       int h = -1;
       if( window instanceof Dialog ) {
-	if( ((Dialog) window).isResizable() ) {
-	  w = Main.getIntProperty( p + ".window.width", -1 );
-	  h = Main.getIntProperty( p + ".window.height", -1 );
-	}
+        if( ((Dialog) window).isResizable() ) {
+          w = Main.getIntProperty( p + ".window.width", -1 );
+          h = Main.getIntProperty( p + ".window.height", -1 );
+        }
       }
       else if( window instanceof Frame ) {
-	if( ((Frame) window).isResizable() ) {
-	  w = Main.getIntProperty( p + ".window.width", -1 );
-	  h = Main.getIntProperty( p + ".window.height", -1 );
-	}
+        if( ((Frame) window).isResizable() ) {
+          w = Main.getIntProperty( p + ".window.width", -1 );
+          h = Main.getIntProperty( p + ".window.height", -1 );
+        }
       }
       if( (w > 0) && (h > 0) ) {
-	window.setBounds( x, y, w, h );
+        window.setBounds( x, y, w, h );
       } else {
-	window.setLocation( x, y );
+        window.setLocation( x, y );
       }
       rv = true;
     }
@@ -90,42 +90,42 @@ public class GUIUtil
 
 
   public static Integer askDecimal(
-				Component owner,
-				String    msg,
-				Integer   preSelection,
-				Integer   minValue )
+                                Component owner,
+                                String    msg,
+                                Integer   preSelection,
+                                Integer   minValue )
   {
     Integer rv = null;
     while( rv == null ) {
       String errMsg = null;
       String text   = null;
       if( preSelection != null ) {
-	text = JOptionPane.showInputDialog(
-				owner,
-				msg + ":",
-				preSelection.toString() );
+        text = JOptionPane.showInputDialog(
+                                owner,
+                                msg + ":",
+                                preSelection.toString() );
       } else {
-	text = JOptionPane.showInputDialog( owner, msg + ":" );
+        text = JOptionPane.showInputDialog( owner, msg + ":" );
       }
       if( text != null ) {
-	if( text.length() > 0 ) {
-	  try {
-	    rv = Integer.valueOf( text );
-	    if( (rv != null) && (minValue != null) ) {
-	      if( rv.intValue() < minValue.intValue() ) {
-		Main.showError( owner, "Zahl zu klein!" );
-		rv = null;
-	      }
-	    }
-	  }
-	  catch( NumberFormatException ex ) {
-	    Main.showError( owner, "Ung\u00FCltige Eingabe" );
-	  }
-	} else {
-	  Main.showError( owner, "Eingabe erwartet" );
-	}
+        if( text.length() > 0 ) {
+          try {
+            rv = Integer.valueOf( text );
+            if( (rv != null) && (minValue != null) ) {
+              if( rv.intValue() < minValue.intValue() ) {
+                Main.showError( owner, "Zahl zu klein!" );
+                rv = null;
+              }
+            }
+          }
+          catch( NumberFormatException ex ) {
+            Main.showError( owner, "Ung\u00FCltige Eingabe" );
+          }
+        } else {
+          Main.showError( owner, "Eingabe erwartet" );
+        }
       } else {
-	break;
+        break;
       }
     }
     return rv;
@@ -133,34 +133,34 @@ public class GUIUtil
 
 
   public static Integer askHex4(
-				Component owner,
-				String    msg,
-				Integer   preSelection )
+                                Component owner,
+                                String    msg,
+                                Integer   preSelection )
   {
     Integer rv = null;
     while( rv == null ) {
       String text = null;
       if( preSelection != null ) {
-	text = JOptionPane.showInputDialog(
-				owner,
-				msg + ":",
-				String.format( "%04X", preSelection ) );
+        text = JOptionPane.showInputDialog(
+                                owner,
+                                msg + ":",
+                                String.format( "%04X", preSelection ) );
       } else {
-	text = JOptionPane.showInputDialog( owner, msg + ":" );
+        text = JOptionPane.showInputDialog( owner, msg + ":" );
       }
       if( text != null ) {
-	text = text.trim();
-	if( (text.length() > 1) && text.startsWith( "%" ) ) {
-	  text = text.substring( 1 );
-	}
-	try {
-	  rv = new Integer( parseHex4( text, msg ) );
-	}
-	catch( ParseException ex ) {
-	  Main.showError( owner, ex );
-	}
+        text = text.trim();
+        if( (text.length() > 1) && text.startsWith( "%" ) ) {
+          text = text.substring( 1 );
+        }
+        try {
+          rv = new Integer( parseHex4( text, msg ) );
+        }
+        catch( ParseException ex ) {
+          Main.showError( owner, ex );
+        }
       } else {
-	break;
+        break;
       }
     }
     return rv;
@@ -168,10 +168,10 @@ public class GUIUtil
 
 
   public static JButton createImageButton(
-				Component owner,
-				String    imgName,
-				String    text,
-				String    actionCmd )
+                                Component owner,
+                                String    imgName,
+                                String    text,
+                                String    actionCmd )
   {
     JButton btn = null;
     Image   img = readImage( owner, imgName );
@@ -193,9 +193,9 @@ public class GUIUtil
 
 
   public static JButton createImageButton(
-				Component owner,
-				String    imgName,
-				String    text )
+                                Component owner,
+                                String    imgName,
+                                String    text )
   {
     return createImageButton( owner, imgName, text, null );
   }
@@ -208,48 +208,48 @@ public class GUIUtil
       e.acceptDrop( DnDConstants.ACTION_COPY );    // Quelle nicht loeschen
       Transferable t = e.getTransferable();
       if( t != null ) {
-	try {
-	  Object o = t.getTransferData( DataFlavor.javaFileListFlavor );
-	  if( o != null ) {
-	    if( o instanceof Collection ) {
-	      Iterator iter = ((Collection) o).iterator();
-	      if( iter != null ) {
-		while( iter.hasNext() ) {
-		  o = iter.next();
-		  if( o != null ) {
-		    File tmpFile = null;
-		    if( o instanceof File ) {
-		      String path = ((File) o).getPath();
-		      if( path != null ) {
-			if( !path.isEmpty() ) {
-			  tmpFile = (File) o;
-			}
-		      }
-		    }
-		    else if( o instanceof String ) {
-		      String s = (String) o;
-		      if( !s.isEmpty() ) {
-			tmpFile = new File( s );
-		      }
-		    }
-		    if( tmpFile != null ) {
-		      if( file == null ) {
-			file = tmpFile;
-		      } else {
-			Main.showError(
-				owner,
-				"Bitte nur eine Datei hier hineinziehen!" );
-			file = null;
-			break;
-		      }
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-	catch( Exception ex ) {}
+        try {
+          Object o = t.getTransferData( DataFlavor.javaFileListFlavor );
+          if( o != null ) {
+            if( o instanceof Collection ) {
+              Iterator iter = ((Collection) o).iterator();
+              if( iter != null ) {
+                while( iter.hasNext() ) {
+                  o = iter.next();
+                  if( o != null ) {
+                    File tmpFile = null;
+                    if( o instanceof File ) {
+                      String path = ((File) o).getPath();
+                      if( path != null ) {
+                        if( !path.isEmpty() ) {
+                          tmpFile = (File) o;
+                        }
+                      }
+                    }
+                    else if( o instanceof String ) {
+                      String s = (String) o;
+                      if( !s.isEmpty() ) {
+                        tmpFile = new File( s );
+                      }
+                    }
+                    if( tmpFile != null ) {
+                      if( file == null ) {
+                        file = tmpFile;
+                      } else {
+                        Main.showError(
+                                owner,
+                                "Bitte nur eine Datei hier hineinziehen!" );
+                        file = null;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        catch( Exception ex ) {}
       }
       e.dropComplete( true );
     } else {
@@ -264,9 +264,9 @@ public class GUIUtil
     boolean rv = false;
     int action = e.getDropAction();
     if( (action == DnDConstants.ACTION_COPY)
-	|| (action == DnDConstants.ACTION_MOVE)
-	|| (action == DnDConstants.ACTION_COPY_OR_MOVE)
-	|| (action == DnDConstants.ACTION_LINK) )
+        || (action == DnDConstants.ACTION_MOVE)
+        || (action == DnDConstants.ACTION_COPY_OR_MOVE)
+        || (action == DnDConstants.ACTION_LINK) )
     {
       rv = e.isDataFlavorSupported( DataFlavor.javaFileListFlavor );
     }
@@ -279,9 +279,9 @@ public class GUIUtil
     boolean rv = false;
     int action = e.getDropAction();
     if( (action == DnDConstants.ACTION_COPY)
-	|| (action == DnDConstants.ACTION_MOVE)
-	|| (action == DnDConstants.ACTION_COPY_OR_MOVE)
-	|| (action == DnDConstants.ACTION_LINK) )
+        || (action == DnDConstants.ACTION_MOVE)
+        || (action == DnDConstants.ACTION_COPY_OR_MOVE)
+        || (action == DnDConstants.ACTION_LINK) )
     {
       rv = e.isDataFlavorSupported( DataFlavor.javaFileListFlavor );
     }
@@ -290,8 +290,8 @@ public class GUIUtil
 
 
   public static int parseHex4(
-			JTextField fld,
-			String     fldName ) throws ParseException
+                        JTextField fld,
+                        String     fldName ) throws ParseException
   {
     int value = parseHex4( fld.getText(), fldName );
     fld.setText( String.format( "%04X", value ) );
@@ -300,8 +300,8 @@ public class GUIUtil
 
 
   public static int parseHex4(
-			String text,
-			String fldName ) throws ParseException
+                        String text,
+                        String fldName ) throws ParseException
   {
     int     value = 0;
     boolean done  = false;
@@ -309,21 +309,21 @@ public class GUIUtil
       text    = text.trim();
       int len = text.length();
       for( int i = 0; i < len; i++ ) {
-	char ch = Character.toUpperCase( text.charAt( i ) );
-	if( (ch >= '0') && (ch <= '9') ) {
-	  value = (value << 4) | (ch - '0');
-	  done  = true;
-	} else if( (ch >= 'A') && (ch <= 'F') ) {
-	  value = (value << 4) | (ch - 'A' + 10);
-	  done  = true;
-	} else {
-	  throw new ParseException(
-			fldName +  " muss eine Hexadezimalzahl sein!",
-			i );
-	}
-	if( (value & ~0xFFFF) != 0 ) {
-	  throw new ParseException( fldName + ": Wert ist zu gro\u00DF!", i );
-	}
+        char ch = Character.toUpperCase( text.charAt( i ) );
+        if( (ch >= '0') && (ch <= '9') ) {
+          value = (value << 4) | (ch - '0');
+          done  = true;
+        } else if( (ch >= 'A') && (ch <= 'F') ) {
+          value = (value << 4) | (ch - 'A' + 10);
+          done  = true;
+        } else {
+          throw new ParseException(
+                        fldName +  " muss eine Hexadezimalzahl sein!",
+                        i );
+        }
+        if( (value & ~0xFFFF) != 0 ) {
+          throw new ParseException( fldName + ": Wert ist zu gro\u00DF!", i );
+        }
       }
     }
     if( !done ) {

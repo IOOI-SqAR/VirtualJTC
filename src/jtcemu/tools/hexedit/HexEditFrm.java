@@ -22,8 +22,8 @@ import jtcemu.base.*;
 
 
 public class HexEditFrm
-		extends AbstractHexCharFrm
-		implements DropTargetListener
+                extends AbstractHexCharFrm
+                implements DropTargetListener
 {
   private static final int BUF_EXTEND = 0x2000;
 
@@ -77,7 +77,7 @@ public class HexEditFrm
   }
 
 
-	/* --- DropTargetListener --- */
+        /* --- DropTargetListener --- */
 
   @Override
   public void dragEnter( DropTargetDragEvent e )
@@ -119,7 +119,7 @@ public class HexEditFrm
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -127,45 +127,45 @@ public class HexEditFrm
     Object src = e.getSource();
     if( src != null ) {
       if( (src == this.btnNew) || (src == this.mnuNew) ) {
-	doNew();
+        doNew();
       } else if( (src == this.btnOpen) || (src == this.mnuOpen) ) {
-	doOpen();
+        doOpen();
       } else if( (src == this.btnSave) || (src == this.mnuSave) ) {
-	doSave( false );
+        doSave( false );
       } else if( src == this.mnuSaveAs ) {
-	doSave( true );
+        doSave( true );
       } else if( src == this.mnuPrintOptions ) {
-	PrintOptionsDlg.open( this );
+        PrintOptionsDlg.open( this );
       } else if( src == this.mnuPrint ) {
-	doPrint();
+        doPrint();
       } else if( src == this.mnuClose ) {
-	doClose();
+        doClose();
       } else if( src == this.mnuBytesAppend ) {
-	doBytesAppend();
+        doBytesAppend();
       } else if( src == this.mnuBytesCopy ) {
-	doBytesCopy();
+        doBytesCopy();
       } else if( src == this.mnuBytesSave ) {
-	doBytesSave();
+        doBytesSave();
       } else if( src == this.mnuBytesInsert ) {
-	doBytesInsert();
+        doBytesInsert();
       } else if( src == this.mnuBytesOverwrite ) {
-	doBytesOverwrite();
+        doBytesOverwrite();
       } else if( src == this.mnuBytesRemove ) {
-	doBytesRemove();
+        doBytesRemove();
       } else if( src == this.mnuSavePos ) {
-	doSavePos();
+        doSavePos();
       } else if( src == this.mnuGotoSavedPos ) {
-	doGotoSavedPos( false );
+        doGotoSavedPos( false );
       } else if( src == this.mnuSelectToSavedPos ) {
-	doGotoSavedPos( true );
+        doGotoSavedPos( true );
       } else if( (src == this.btnFind) || (src == this.mnuFind) ) {
-	doFind();
+        doFind();
       } else if( src == this.mnuFindNext ) {
-	doFindNext();
+        doFindNext();
       } else if( src == this.mnuHelpContent ) {
-	HelpFrm.open( "/help/hexeditor.htm" );
+        HelpFrm.open( "/help/hexeditor.htm" );
       } else {
-	super.actionPerformed( e );
+        super.actionPerformed( e );
       }
     }
   }
@@ -191,7 +191,7 @@ public class HexEditFrm
     byte rv = (byte) 0;
     if( this.fileBytes != null ) {
       if( (idx >= 0) && (idx < this.fileBytes.length) ) {
-	rv = this.fileBytes[ idx ];
+        rv = this.fileBytes[ idx ];
       }
     }
     return rv;
@@ -235,7 +235,7 @@ public class HexEditFrm
   }
 
 
-	/* --- Konstruktor --- */
+        /* --- Konstruktor --- */
 
   private HexEditFrm()
   {
@@ -265,8 +265,8 @@ public class HexEditFrm
     mnuFile.addSeparator();
 
     this.mnuSave = createJMenuItem(
-		"Speichern",
-		KeyStroke.getKeyStroke( KeyEvent.VK_S, Event.CTRL_MASK ) );
+                "Speichern",
+                KeyStroke.getKeyStroke( KeyEvent.VK_S, Event.CTRL_MASK ) );
     this.mnuSave.setEnabled( false );
     mnuFile.add( this.mnuSave );
 
@@ -279,10 +279,10 @@ public class HexEditFrm
     mnuFile.add( this.mnuPrintOptions );
 
     this.mnuPrint = createJMenuItem(
-			"Drucken...",
-			KeyStroke.getKeyStroke(
-				KeyEvent.VK_P,
-				InputEvent.CTRL_MASK ) );
+                        "Drucken...",
+                        KeyStroke.getKeyStroke(
+                                KeyEvent.VK_P,
+                                InputEvent.CTRL_MASK ) );
     this.mnuPrint.setEnabled( false );
     mnuFile.add( this.mnuPrint );
     mnuFile.addSeparator();
@@ -306,26 +306,26 @@ public class HexEditFrm
     mnuEdit.addSeparator();
 
     this.mnuBytesInsert = createJMenuItem(
-		"Bytes einf\u00FCgen...",
-		KeyStroke.getKeyStroke( KeyEvent.VK_I, Event.CTRL_MASK ) );
+                "Bytes einf\u00FCgen...",
+                KeyStroke.getKeyStroke( KeyEvent.VK_I, Event.CTRL_MASK ) );
     this.mnuBytesInsert.setEnabled( false );
     mnuEdit.add( this.mnuBytesInsert );
 
     this.mnuBytesOverwrite = createJMenuItem(
-		"Bytes \u00FCberschreiben...",
-		KeyStroke.getKeyStroke( KeyEvent.VK_O, Event.CTRL_MASK ) );
+                "Bytes \u00FCberschreiben...",
+                KeyStroke.getKeyStroke( KeyEvent.VK_O, Event.CTRL_MASK ) );
     this.mnuBytesOverwrite.setEnabled( false );
     mnuEdit.add( this.mnuBytesOverwrite );
 
     this.mnuBytesAppend = createJMenuItem(
-		"Bytes am Ende anh\u00E4ngen...",
-		KeyStroke.getKeyStroke( KeyEvent.VK_E, Event.CTRL_MASK ) );
+                "Bytes am Ende anh\u00E4ngen...",
+                KeyStroke.getKeyStroke( KeyEvent.VK_E, Event.CTRL_MASK ) );
     mnuEdit.add( this.mnuBytesAppend );
     mnuEdit.addSeparator();
 
     this.mnuBytesRemove = createJMenuItem(
-		"Bytes entfernen",
-		KeyStroke.getKeyStroke( KeyEvent.VK_DELETE, 0 ) );
+                "Bytes entfernen",
+                KeyStroke.getKeyStroke( KeyEvent.VK_DELETE, 0 ) );
     this.mnuBytesRemove.setEnabled( false );
     mnuEdit.add( this.mnuBytesRemove );
     mnuEdit.addSeparator();
@@ -335,25 +335,25 @@ public class HexEditFrm
     mnuEdit.add( this.mnuSavePos );
 
     this.mnuGotoSavedPos = createJMenuItem(
-				"Zur gemerkten Position springen" );
+                                "Zur gemerkten Position springen" );
     this.mnuGotoSavedPos.setEnabled( false );
     mnuEdit.add( this.mnuGotoSavedPos );
 
     this.mnuSelectToSavedPos = createJMenuItem(
-				"Bis zur gemerkten Position markieren" );
+                                "Bis zur gemerkten Position markieren" );
     this.mnuSelectToSavedPos.setEnabled( false );
     mnuEdit.add( this.mnuSelectToSavedPos );
     mnuEdit.addSeparator();
 
     this.mnuFind = createJMenuItem(
-		"Suchen...",
-		KeyStroke.getKeyStroke( KeyEvent.VK_F, Event.CTRL_MASK ) );
+                "Suchen...",
+                KeyStroke.getKeyStroke( KeyEvent.VK_F, Event.CTRL_MASK ) );
     this.mnuFind.setEnabled( false );
     mnuEdit.add( this.mnuFind );
 
     this.mnuFindNext = createJMenuItem(
-		"Weitersuchen",
-		KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
+                "Weitersuchen",
+                KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
     this.mnuFindNext.setEnabled( false );
     mnuEdit.add( this.mnuFindNext );
 
@@ -370,13 +370,13 @@ public class HexEditFrm
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					1.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.HORIZONTAL,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        1.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.HORIZONTAL,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
 
     // Werkzeugleiste
@@ -388,29 +388,29 @@ public class HexEditFrm
     add( toolBar, gbc );
 
     this.btnNew = GUIUtil.createImageButton(
-				this,
-				"/images/file/new.png",
-				"Neu" );
+                                this,
+                                "/images/file/new.png",
+                                "Neu" );
     toolBar.add( this.btnNew );
 
     this.btnOpen = GUIUtil.createImageButton(
-				this,
-				"/images/file/open.png",
-				"\u00D6ffnen" );
+                                this,
+                                "/images/file/open.png",
+                                "\u00D6ffnen" );
     toolBar.add( this.btnOpen );
 
     this.btnSave = GUIUtil.createImageButton(
-				this,
-				"/images/file/save.png",
-				"Speichern" );
+                                this,
+                                "/images/file/save.png",
+                                "Speichern" );
     this.btnSave.setEnabled( false );
     toolBar.add( this.btnSave );
     toolBar.addSeparator();
 
     this.btnFind = GUIUtil.createImageButton(
-				this,
-				"/images/edit/find.png",
-				"Suchen" );
+                                this,
+                                "/images/edit/find.png",
+                                "Suchen" );
     this.btnFind.setEnabled( false );
     toolBar.add( this.btnFind );
 
@@ -446,32 +446,32 @@ public class HexEditFrm
   }
 
 
-	/* --- Aktionen --- */
+        /* --- Aktionen --- */
 
   private void doBytesAppend()
   {
     ReplyBytesDlg dlg = new ReplyBytesDlg(
-					this,
-					"Bytes anh\u00E4ngen",
-					this.lastInputFmt,
-					this.lastBigEndian,
-					null );
+                                        this,
+                                        "Bytes anh\u00E4ngen",
+                                        this.lastInputFmt,
+                                        this.lastBigEndian,
+                                        null );
     dlg.setVisible( true );
     byte[] a = dlg.getApprovedBytes();
     if( a != null ) {
       if( a.length > 0 ) {
-	int oldLen = this.fileLen;
-	this.lastInputFmt  = dlg.getApprovedInputFormat();
-	this.lastBigEndian = dlg.getApprovedBigEndian();
-	try {
-	  insertBytes( this.fileLen, a, 0 );
-	}
-	catch( SizeLimitExceededException ex ) {
-	  Main.showError( this, ex.getMessage() );
-	}
-	setDataChanged( true );
-	updView();
-	setSelection( oldLen, this.fileLen - 1 );
+        int oldLen = this.fileLen;
+        this.lastInputFmt  = dlg.getApprovedInputFormat();
+        this.lastBigEndian = dlg.getApprovedBigEndian();
+        try {
+          insertBytes( this.fileLen, a, 0 );
+        }
+        catch( SizeLimitExceededException ex ) {
+          Main.showError( this, ex.getMessage() );
+        }
+        setDataChanged( true );
+        updView();
+        setSelection( oldLen, this.fileLen - 1 );
       }
     }
   }
@@ -482,27 +482,27 @@ public class HexEditFrm
     int caretPos = this.hexCharFld.getCaretPosition();
     if( (caretPos >= 0) && (caretPos < this.fileLen) ) {
       ReplyBytesDlg dlg = new ReplyBytesDlg(
-					this,
-					"Bytes einf\u00FCgen",
-					this.lastInputFmt,
-					this.lastBigEndian,
-					null );
+                                        this,
+                                        "Bytes einf\u00FCgen",
+                                        this.lastInputFmt,
+                                        this.lastBigEndian,
+                                        null );
       dlg.setVisible( true );
       byte[] a = dlg.getApprovedBytes();
       if( a != null ) {
-	if( a.length > 0 ) {
-	  this.lastInputFmt  = dlg.getApprovedInputFormat();
-	  this.lastBigEndian = dlg.getApprovedBigEndian();
-	  try {
-	    insertBytes( caretPos, a, 0 );
-	  }
-	  catch( SizeLimitExceededException ex ) {
-	    Main.showError( this, ex.getMessage() );
-	  }
-	  setDataChanged( true );
-	  updView();
-	  setSelection( caretPos, caretPos + a.length - 1 );
-	}
+        if( a.length > 0 ) {
+          this.lastInputFmt  = dlg.getApprovedInputFormat();
+          this.lastBigEndian = dlg.getApprovedBigEndian();
+          try {
+            insertBytes( caretPos, a, 0 );
+          }
+          catch( SizeLimitExceededException ex ) {
+            Main.showError( this, ex.getMessage() );
+          }
+          setDataChanged( true );
+          updView();
+          setSelection( caretPos, caretPos + a.length - 1 );
+        }
       }
     }
   }
@@ -513,34 +513,34 @@ public class HexEditFrm
     int caretPos = this.hexCharFld.getCaretPosition();
     if( (caretPos >= 0) && (caretPos < this.fileLen) ) {
       ReplyBytesDlg dlg = new ReplyBytesDlg(
-					this,
-					"Bytes \u00FCberschreiben",
-					this.lastInputFmt,
-					this.lastBigEndian,
-					null );
+                                        this,
+                                        "Bytes \u00FCberschreiben",
+                                        this.lastInputFmt,
+                                        this.lastBigEndian,
+                                        null );
       dlg.setVisible( true );
       byte[] a = dlg.getApprovedBytes();
       if( a != null ) {
-	if( a.length > 0 ) {
-	  this.lastInputFmt  = dlg.getApprovedInputFormat();
-	  this.lastBigEndian = dlg.getApprovedBigEndian();
-	  try {
-	    int src = 0;
-	    int dst = caretPos;
-	    while( (src < a.length) && (dst < this.fileLen) ) {
-	      this.fileBytes[ dst++ ] = a[ src++ ];
-	    }
-	    if( src < a.length ) {
-	      insertBytes( dst, a, src );
-	    }
-	  }
-	  catch( SizeLimitExceededException ex ) {
-	    Main.showError( this, ex.getMessage() );
-	  }
-	  setDataChanged( true );
-	  updView();
-	  setSelection( caretPos, caretPos + a.length - 1 );
-	}
+        if( a.length > 0 ) {
+          this.lastInputFmt  = dlg.getApprovedInputFormat();
+          this.lastBigEndian = dlg.getApprovedBigEndian();
+          try {
+            int src = 0;
+            int dst = caretPos;
+            while( (src < a.length) && (dst < this.fileLen) ) {
+              this.fileBytes[ dst++ ] = a[ src++ ];
+            }
+            if( src < a.length ) {
+              insertBytes( dst, a, src );
+            }
+          }
+          catch( SizeLimitExceededException ex ) {
+            Main.showError( this, ex.getMessage() );
+          }
+          setDataChanged( true );
+          updView();
+          setSelection( caretPos, caretPos + a.length - 1 );
+        }
       }
     }
   }
@@ -565,37 +565,37 @@ public class HexEditFrm
     if( m1 >= 0 ) {
       String msg = null;
       if( m2 > m1 ) {
-	msg = String.format(
-		"M\u00F6chten Sie die %d markierten Bytes entfernen?",
-		m2 - m1 + 1);
+        msg = String.format(
+                "M\u00F6chten Sie die %d markierten Bytes entfernen?",
+                m2 - m1 + 1);
       }
       else if( m2 == m1 ) {
-	msg = String.format(
-		"M\u00F6chten das markierte Byte mit dem hexadezimalen"
-			+ " Wert %02X entfernen?",
-		this.fileBytes[ m1 ] );
+        msg = String.format(
+                "M\u00F6chten das markierte Byte mit dem hexadezimalen"
+                        + " Wert %02X entfernen?",
+                this.fileBytes[ m1 ] );
       }
       if( msg != null ) {
-	JOptionPane pane = new JOptionPane(
-					msg,
-					JOptionPane.QUESTION_MESSAGE,
-					JOptionPane.YES_NO_OPTION );
-	pane.createDialog( this, "Best\u00E4tigung" ).setVisible( true );
-	Object option = pane.getValue();
-	if( option != null ) {
-	  if( option.equals( JOptionPane.YES_OPTION ) ) {
-	    if( m2 + 1 < this.fileLen ) {
-	      m2++;
-	      while( m2 < this.fileLen ) {
-		this.fileBytes[ m1++ ] = this.fileBytes[ m2++ ];
-	      }
-	    }
-	    this.fileLen = m1;
-	    setDataChanged( true );
-	    updView();
-	    setCaretPosition( m1, false );
-	  }
-	}
+        JOptionPane pane = new JOptionPane(
+                                        msg,
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        JOptionPane.YES_NO_OPTION );
+        pane.createDialog( this, "Best\u00E4tigung" ).setVisible( true );
+        Object option = pane.getValue();
+        if( option != null ) {
+          if( option.equals( JOptionPane.YES_OPTION ) ) {
+            if( m2 + 1 < this.fileLen ) {
+              m2++;
+              while( m2 < this.fileLen ) {
+                this.fileBytes[ m1++ ] = this.fileBytes[ m2++ ];
+              }
+            }
+            this.fileLen = m1;
+            setDataChanged( true );
+            updView();
+            setCaretPosition( m1, false );
+          }
+        }
       }
     }
   }
@@ -621,35 +621,35 @@ public class HexEditFrm
     if( m1 >= 0 ) {
       int len = Math.min( m2, this.fileBytes.length ) - m1 + 1;
       if( len > 0 ) {
-	File presetDir = null;
-	if( this.file != null ) {
-	  presetDir = this.file.getParentFile();
-	}
-	if( presetDir == null ) {
-	  presetDir = Main.getLastPathFile();
-	}
-	File file = FileDlg.showFileSaveDlg(
-					this,
-					"Datei speichern",
-					presetDir );
-	if( file != null ) {
-	  try {
-	    OutputStream out = null;
-	    try {
-	      out = new FileOutputStream( file );
-	      out.write( this.fileBytes, m1, len  );
-	      out.close();
-	      out = null;
-	    }
-	    finally {
-	      close( out );
-	    }
-	    Main.setLastFile( file );
-	  }
-	  catch( Exception ex ) {
-	    Main.showError( this, ex );
-	  }
-	}
+        File presetDir = null;
+        if( this.file != null ) {
+          presetDir = this.file.getParentFile();
+        }
+        if( presetDir == null ) {
+          presetDir = Main.getLastPathFile();
+        }
+        File file = FileDlg.showFileSaveDlg(
+                                        this,
+                                        "Datei speichern",
+                                        presetDir );
+        if( file != null ) {
+          try {
+            OutputStream out = null;
+            try {
+              out = new FileOutputStream( file );
+              out.write( this.fileBytes, m1, len  );
+              out.close();
+              out = null;
+            }
+            finally {
+              close( out );
+            }
+            Main.setLastFile( file );
+          }
+          catch( Exception ex ) {
+            Main.showError( this, ex );
+          }
+        }
       }
     }
   }
@@ -683,12 +683,12 @@ public class HexEditFrm
   {
     if( confirmDataSaved() ) {
       File file = FileDlg.showFileOpenDlg(
-				this,
-				"Datei \u00F6ffnen",
-				"\u00D6ffnen",
-				Main.getLastPathFile() );
+                                this,
+                                "Datei \u00F6ffnen",
+                                "\u00D6ffnen",
+                                Main.getLastPathFile() );
       if( file != null )
-	openFile( file );
+        openFile( file );
     }
   }
 
@@ -699,36 +699,36 @@ public class HexEditFrm
     File    file = this.file;
     if( forceFileDlg || (file == null) ) {
       file = FileDlg.showFileSaveDlg(
-		this,
-		"Datei speichern",
-		file != null ? file : Main.getLastPathFile() );
+                this,
+                "Datei speichern",
+                file != null ? file : Main.getLastPathFile() );
     }
     if( file != null ) {
       try {
-	OutputStream out = null;
-	try {
-	  out = new FileOutputStream( file );
-	  if( (this.fileLen > 0) && (this.fileBytes.length > 0) ) {
-	    out.write(
-		this.fileBytes,
-		0,
-		Math.min( this.fileLen, this.fileBytes.length) );
-	  }
-	  out.close();
-	  out       = null;
-	  this.file = file;
-	  rv        = true;
-	  if( !setDataChanged( false ) ) {
-	    updTitle();
-	  }
-	}
-	finally {
-	  close( out );
-	}
-	Main.setLastFile( file );
+        OutputStream out = null;
+        try {
+          out = new FileOutputStream( file );
+          if( (this.fileLen > 0) && (this.fileBytes.length > 0) ) {
+            out.write(
+                this.fileBytes,
+                0,
+                Math.min( this.fileLen, this.fileBytes.length) );
+          }
+          out.close();
+          out       = null;
+          this.file = file;
+          rv        = true;
+          if( !setDataChanged( false ) ) {
+            updTitle();
+          }
+        }
+        finally {
+          close( out );
+        }
+        Main.setLastFile( file );
       }
       catch( Exception ex ) {
-	Main.showError( this, ex );
+        Main.showError( this, ex );
       }
     }
     return rv;
@@ -746,13 +746,13 @@ public class HexEditFrm
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private static void close( Closeable stream )
   {
     if( stream != null ) {
       try {
-	stream.close();
+        stream.close();
       }
       catch( IOException ex ) {}
     }
@@ -767,21 +767,21 @@ public class HexEditFrm
       toFront();
       String[] options = { "Speichern", "Verwerfen", "Abbrechen" };
       int      selOpt  = JOptionPane.showOptionDialog(
-				this,
-				"Die Datei wurde ge\u00E4ndert und nicht"
-					+" gespeichert.\n"
-					+ "M\u00F6chten Sie jetzt speichern?",
-				"Daten ge\u00E4ndert",
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.WARNING_MESSAGE,
-				null,
-				options,
-				"Speichern" );
+                                this,
+                                "Die Datei wurde ge\u00E4ndert und nicht"
+                                        +" gespeichert.\n"
+                                        + "M\u00F6chten Sie jetzt speichern?",
+                                "Daten ge\u00E4ndert",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.WARNING_MESSAGE,
+                                null,
+                                options,
+                                "Speichern" );
       if( selOpt == 0 ) {
-	rv = doSave( false );
+        rv = doSave( false );
       }
       else if( selOpt != 1 ) {
-	rv = false;
+        rv = false;
       }
     }
     return rv;
@@ -789,38 +789,38 @@ public class HexEditFrm
 
 
   private void insertBytes(
-			int    dstPos,
-			byte[] srcBuf,
-			int    srcPos ) throws SizeLimitExceededException
+                        int    dstPos,
+                        byte[] srcBuf,
+                        int    srcPos ) throws SizeLimitExceededException
   {
     if( (srcPos >= 0) && (srcPos < srcBuf.length) && (srcBuf.length > 0) ) {
       int diffLen = srcBuf.length - srcPos;
       int reqLen  = this.fileLen + diffLen;
       if( reqLen >= this.fileBytes.length ) {
-	int n = Math.min( reqLen + BUF_EXTEND, Integer.MAX_VALUE );
-	if( n < reqLen) {
-	  throw new SizeLimitExceededException( "Die max. zul\u00E4ssige"
-			+ " Dateigr\u00F6\u00DFe wurde erreicht." );
-	}
-	byte[] tmpBuf = new byte[ n ];
-	if( dstPos > 0 ) {
-	  System.arraycopy( this.fileBytes, 0, tmpBuf, 0, dstPos );
-	}
-	System.arraycopy( srcBuf, srcPos, tmpBuf, dstPos, diffLen );
-	if( dstPos < this.fileLen ) {
-	  System.arraycopy(
-			this.fileBytes,
-			dstPos,
-			tmpBuf,
-			dstPos + diffLen,
-			this.fileLen - dstPos );
-	}
-	this.fileBytes = tmpBuf;
+        int n = Math.min( reqLen + BUF_EXTEND, Integer.MAX_VALUE );
+        if( n < reqLen) {
+          throw new SizeLimitExceededException( "Die max. zul\u00E4ssige"
+                        + " Dateigr\u00F6\u00DFe wurde erreicht." );
+        }
+        byte[] tmpBuf = new byte[ n ];
+        if( dstPos > 0 ) {
+          System.arraycopy( this.fileBytes, 0, tmpBuf, 0, dstPos );
+        }
+        System.arraycopy( srcBuf, srcPos, tmpBuf, dstPos, diffLen );
+        if( dstPos < this.fileLen ) {
+          System.arraycopy(
+                        this.fileBytes,
+                        dstPos,
+                        tmpBuf,
+                        dstPos + diffLen,
+                        this.fileLen - dstPos );
+        }
+        this.fileBytes = tmpBuf;
       } else {
-	for( int i = this.fileLen - 1; i >= dstPos; --i ) {
-	  this.fileBytes[ i + diffLen ] = this.fileBytes[ i ];
-	}
-	System.arraycopy( srcBuf, srcPos, this.fileBytes, dstPos, diffLen );
+        for( int i = this.fileLen - 1; i >= dstPos; --i ) {
+          this.fileBytes[ i + diffLen ] = this.fileBytes[ i ];
+        }
+        System.arraycopy( srcBuf, srcPos, this.fileBytes, dstPos, diffLen );
       }
       this.fileLen += diffLen;
     }
@@ -832,63 +832,63 @@ public class HexEditFrm
     try {
       InputStream in = null;
       try {
-	long len = file.length();
-	if( len > Integer.MAX_VALUE ) {
-	  throwFileTooBig();
-	}
-	if( len > 0 ) {
-	  len = len * 10L / 9L;
-	}
-	if( len < BUF_EXTEND ) {
-	  len = BUF_EXTEND;
-	} else if( len > Integer.MAX_VALUE ) {
-	  len = Integer.MAX_VALUE;
-	}
-	byte[] fileBytes = new byte[ (int) len ];
-	int    fileLen   = 0;
+        long len = file.length();
+        if( len > Integer.MAX_VALUE ) {
+          throwFileTooBig();
+        }
+        if( len > 0 ) {
+          len = len * 10L / 9L;
+        }
+        if( len < BUF_EXTEND ) {
+          len = BUF_EXTEND;
+        } else if( len > Integer.MAX_VALUE ) {
+          len = Integer.MAX_VALUE;
+        }
+        byte[] fileBytes = new byte[ (int) len ];
+        int    fileLen   = 0;
 
-	in = new FileInputStream( file );
-	while( fileLen < fileBytes.length ) {
-	  int n = in.read( fileBytes, fileLen, fileBytes.length - fileLen );
-	  if( n <= 0 ) {
-	    break;
-	  }
-	  fileLen += n;
-	}
-	if( fileLen >= fileBytes.length ) {
-	  int b = in.read();
-	  while( b != -1 ) {
-	    if( fileLen >= fileBytes.length ) {
-	      int n = Math.min( fileLen + BUF_EXTEND, Integer.MAX_VALUE );
-	      if( fileLen >= n ) {
-		throwFileTooBig();
-	      }
-	      byte[] a = new byte[ n ];
-	      System.arraycopy( fileBytes, 0, a, 0, fileLen );
-	      fileBytes = a;
-	    }
-	    fileBytes[ fileLen++ ] = (byte) b;
-	    b = in.read();
-	  }
-	}
-	in.close();
+        in = new FileInputStream( file );
+        while( fileLen < fileBytes.length ) {
+          int n = in.read( fileBytes, fileLen, fileBytes.length - fileLen );
+          if( n <= 0 ) {
+            break;
+          }
+          fileLen += n;
+        }
+        if( fileLen >= fileBytes.length ) {
+          int b = in.read();
+          while( b != -1 ) {
+            if( fileLen >= fileBytes.length ) {
+              int n = Math.min( fileLen + BUF_EXTEND, Integer.MAX_VALUE );
+              if( fileLen >= n ) {
+                throwFileTooBig();
+              }
+              byte[] a = new byte[ n ];
+              System.arraycopy( fileBytes, 0, a, 0, fileLen );
+              fileBytes = a;
+            }
+            fileBytes[ fileLen++ ] = (byte) b;
+            b = in.read();
+          }
+        }
+        in.close();
 
-	this.file      = file;
-	this.fileBytes = fileBytes;
-	this.fileLen   = fileLen;
-	this.savedPos  = -1;
-	this.mnuGotoSavedPos.setEnabled( false );
-	this.mnuSelectToSavedPos.setEnabled( false );
-	if( !setDataChanged( false ) ) {
-	  updTitle();
-	}
-	updView();
-	setCaretPosition( -1, false );
-	this.hexCharFld.setYOffset( 0 );
-	Main.setLastFile( file );
+        this.file      = file;
+        this.fileBytes = fileBytes;
+        this.fileLen   = fileLen;
+        this.savedPos  = -1;
+        this.mnuGotoSavedPos.setEnabled( false );
+        this.mnuSelectToSavedPos.setEnabled( false );
+        if( !setDataChanged( false ) ) {
+          updTitle();
+        }
+        updView();
+        setCaretPosition( -1, false );
+        this.hexCharFld.setYOffset( 0 );
+        Main.setLastFile( file );
       }
       finally {
-	close( in );
+        close( in );
       }
     }
     catch( IOException ex ) {

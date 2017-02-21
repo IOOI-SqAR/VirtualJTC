@@ -81,31 +81,31 @@ public abstract class AudioIO
       DataLine.Info  info = new DataLine.Info( SourceDataLine.class, fmt );
       SourceDataLine line = null;
       try {
-	if( AudioSystem.isLineSupported( info ) ) {
-	  line = (SourceDataLine) AudioSystem.getLine( info );
-	  if( line != null ) {
-	    line.open( fmt );
-	    line.start();
+        if( AudioSystem.isLineSupported( info ) ) {
+          line = (SourceDataLine) AudioSystem.getLine( info );
+          if( line != null ) {
+            line.open( fmt );
+            line.start();
 
-	    // Buffer anlegen
-	    int r = Math.round( fmt.getSampleRate() );
-	    int n = line.getBufferSize() / 32;
-	    if( n < r / 8 ) {
-	      n = r / 8;		// min. 1/8 Sekunde
-	    }
-	    else if( n > r / 2 ) {
-	      n = r / 2;		// max. 1/2 Sekunde
-	    }
-	    if( n < 1 ) {
-	      n = 1;
-	    }
-	    this.monitorBuf = new byte[ n ];
-	  }
-	}
+            // Buffer anlegen
+            int r = Math.round( fmt.getSampleRate() );
+            int n = line.getBufferSize() / 32;
+            if( n < r / 8 ) {
+              n = r / 8;                // min. 1/8 Sekunde
+            }
+            else if( n > r / 2 ) {
+              n = r / 2;                // max. 1/2 Sekunde
+            }
+            if( n < 1 ) {
+              n = 1;
+            }
+            this.monitorBuf = new byte[ n ];
+          }
+        }
       }
       catch( Exception ex ) {
-	DataLineCloser.closeDataLine( line );
-	line = null;
+        DataLineCloser.closeDataLine( line );
+        line = null;
       }
       this.monitorLine = line;
     }
@@ -135,8 +135,8 @@ public abstract class AudioIO
     byte[]         buf  = this.monitorBuf;
     if( (line != null) && (buf != null) ) {
       if( this.monitorPos >= buf.length ) {
-	line.write( buf, 0, buf.length );
-	this.monitorPos = 0;
+        line.write( buf, 0, buf.length );
+        this.monitorPos = 0;
       }
       buf[ this.monitorPos ] = (byte) frameValue;
       this.monitorPos++;
@@ -145,9 +145,9 @@ public abstract class AudioIO
 
 
   public abstract AudioFormat startAudio(
-					int   cyclesPerSecond,
-					int   sampleRate,
-					float thresholdValue );
+                                        int   cyclesPerSecond,
+                                        int   sampleRate,
+                                        float thresholdValue );
 
   public abstract void stopAudio();
 }

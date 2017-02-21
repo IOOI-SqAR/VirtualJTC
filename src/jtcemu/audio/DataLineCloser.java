@@ -25,32 +25,32 @@ public class DataLineCloser extends Thread
   {
     if( dataLine != null ) {
       if( dataLine.isOpen() ) {
-	Thread thread = new DataLineCloser( dataLine );
-	thread.start();
+        Thread thread = new DataLineCloser( dataLine );
+        thread.start();
 
-	// max. eine Sekunde auf Thread-Beendigung warten
-	try {
-	  thread.join( 1000 );
-	}
-	catch( InterruptedException ex ) {}
+        // max. eine Sekunde auf Thread-Beendigung warten
+        try {
+          thread.join( 1000 );
+        }
+        catch( InterruptedException ex ) {}
       }
     }
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void run()
   {
     if( this.dataLine != null ) {
       try {
-	this.dataLine.flush();
+        this.dataLine.flush();
       }
       catch( Exception ex ) {}
 
       try {
-	this.dataLine.stop();
+        this.dataLine.stop();
       }
       catch( Exception ex ) {}
 
@@ -64,7 +64,7 @@ public class DataLineCloser extends Thread
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private DataLineCloser( DataLine dataLine )
   {

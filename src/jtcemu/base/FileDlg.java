@@ -19,8 +19,8 @@ import jtcemu.Main;
 
 
 public class FileDlg extends BaseDlg implements
-					ActionListener,
-					PropertyChangeListener
+                                        ActionListener,
+                                        PropertyChangeListener
 {
   private static final String defaultStatusText = "Bereit";
   private static       Frame  defaultOwner      = null;
@@ -32,23 +32,23 @@ public class FileDlg extends BaseDlg implements
 
 
   public static File showFileOpenDlg(
-			Window        owner,
-			String        title,
-			String        approveBtnText,
-			File          preSelection,
-			FileFilter... fileFilters )
+                        Window        owner,
+                        String        title,
+                        String        approveBtnText,
+                        File          preSelection,
+                        FileFilter... fileFilters )
   {
     File file = null;
     if( isNativeFileDialogEnabled() ) {
       file = openFileDialog( owner, title, FileDialog.LOAD, preSelection );
     } else {
       FileDlg dlg = new FileDlg(
-			owner,
-			false,
-			title,
-			approveBtnText,
-			preSelection,
-			fileFilters );
+                        owner,
+                        false,
+                        title,
+                        approveBtnText,
+                        preSelection,
+                        fileFilters );
       dlg.setVisible( true );
       file = dlg.selectedFile;
     }
@@ -57,22 +57,22 @@ public class FileDlg extends BaseDlg implements
 
 
   public static File showFileSaveDlg(
-			Window        owner,
-			String        title,
-			File          preSelection,
-			FileFilter... fileFilters )
+                        Window        owner,
+                        String        title,
+                        File          preSelection,
+                        FileFilter... fileFilters )
   {
     File file = null;
     if( isNativeFileDialogEnabled() ) {
       file = openFileDialog( owner, title, FileDialog.SAVE, preSelection );
     } else {
       FileDlg dlg = new FileDlg(
-			owner,
-			true,
-			title,
-			"Speichern",
-			preSelection,
-			fileFilters );
+                        owner,
+                        true,
+                        title,
+                        "Speichern",
+                        preSelection,
+                        fileFilters );
       dlg.setVisible( true );
       file = dlg.selectedFile;
     }
@@ -80,7 +80,7 @@ public class FileDlg extends BaseDlg implements
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -88,37 +88,37 @@ public class FileDlg extends BaseDlg implements
     if( e.getSource() == this.fileChooser ) {
       String actionCmd = e.getActionCommand();
       if( actionCmd != null ) {
-	if( actionCmd.equals( JFileChooser.APPROVE_SELECTION ) ) {
-	  File file = this.fileChooser.getSelectedFile();
-	  if( this.forSave && (file != null) ) {
-	    if( file.exists() ) {
-	      if( JOptionPane.showConfirmDialog(
-			this,
-			"Die Datei existiert bereits und wird"
-				+ " \u00FCberschrieben!",
-			"Warnung",
-			JOptionPane.OK_CANCEL_OPTION,
-			JOptionPane.WARNING_MESSAGE )
-					!= JOptionPane.OK_OPTION )
-	      {
-		file = null;
-	      }
-	    }
-	  }
-	  if( file != null ) {
-	    this.selectedFile = file;
-	    doClose();
-	  }
-	}
-	else if( actionCmd.equals( JFileChooser.CANCEL_SELECTION ) ) {
-	  doClose();
-	}
+        if( actionCmd.equals( JFileChooser.APPROVE_SELECTION ) ) {
+          File file = this.fileChooser.getSelectedFile();
+          if( this.forSave && (file != null) ) {
+            if( file.exists() ) {
+              if( JOptionPane.showConfirmDialog(
+                        this,
+                        "Die Datei existiert bereits und wird"
+                                + " \u00FCberschrieben!",
+                        "Warnung",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE )
+                                        != JOptionPane.OK_OPTION )
+              {
+                file = null;
+              }
+            }
+          }
+          if( file != null ) {
+            this.selectedFile = file;
+            doClose();
+          }
+        }
+        else if( actionCmd.equals( JFileChooser.CANCEL_SELECTION ) ) {
+          doClose();
+        }
       }
     }
   }
 
 
-	/* --- PropertyChangeListener --- */
+        /* --- PropertyChangeListener --- */
 
   @Override
   public void propertyChange( PropertyChangeEvent e )
@@ -127,51 +127,51 @@ public class FileDlg extends BaseDlg implements
       String prop = e.getPropertyName();
       if( prop != null ) {
         if( prop.equals( JFileChooser.DIRECTORY_CHANGED_PROPERTY ) ) {
-	  this.labelStatus.setText( defaultStatusText );
+          this.labelStatus.setText( defaultStatusText );
         }
         else if( prop.equals( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) ) {
-	  String statusText = defaultStatusText;
+          String statusText = defaultStatusText;
           Object value      = e.getNewValue();
           if( value != null ) {
             if( value instanceof File ) {
-	      File     file       = (File) value;
-	      FileInfo info       = FileInfo.analyzeFile( file );
-	      if( info != null ) {
-		String infoText = info.getInfoText();
-		if( infoText != null ) {
-		  statusText = infoText;
-		} else {
-		  if( file != null ) {
-		    String s = file.getName();
-		    if( s != null ) {
-		      int pos = s.lastIndexOf( '.' );
-		      if( (pos >= 0) && ((pos + 1) < s.length()) ) {
-			statusText = String.format(
-				"%s-Datei",
-				s.substring( pos + 1 ).toUpperCase() );
-		      }
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
-	  this.labelStatus.setText( statusText );
-	}
+              File     file       = (File) value;
+              FileInfo info       = FileInfo.analyzeFile( file );
+              if( info != null ) {
+                String infoText = info.getInfoText();
+                if( infoText != null ) {
+                  statusText = infoText;
+                } else {
+                  if( file != null ) {
+                    String s = file.getName();
+                    if( s != null ) {
+                      int pos = s.lastIndexOf( '.' );
+                      if( (pos >= 0) && ((pos + 1) < s.length()) ) {
+                        statusText = String.format(
+                                "%s-Datei",
+                                s.substring( pos + 1 ).toUpperCase() );
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          this.labelStatus.setText( statusText );
+        }
       }
     }
   }
 
 
-	/* --- private Konstruktoren und Methoden --- */
+        /* --- private Konstruktoren und Methoden --- */
 
   private FileDlg(
-		Window        owner,
-		boolean       forSave,
-		String        title,
-		String        approveBtnText,
-		File          preSelection,
-		FileFilter... fileFilters )
+                Window        owner,
+                boolean       forSave,
+                String        title,
+                String        approveBtnText,
+                File          preSelection,
+                FileFilter... fileFilters )
   {
     super( owner );
     setTitle( title );
@@ -183,13 +183,13 @@ public class FileDlg extends BaseDlg implements
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					1.0, 1.0,
-					GridBagConstraints.CENTER,
-					GridBagConstraints.BOTH,
-					new Insets( 0, 0, 0, 0 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        1.0, 1.0,
+                                        GridBagConstraints.CENTER,
+                                        GridBagConstraints.BOTH,
+                                        new Insets( 0, 0, 0, 0 ),
+                                        0, 0 );
 
     this.fileChooser = new JFileChooser();
     if( preSelection != null ) {
@@ -212,7 +212,7 @@ public class FileDlg extends BaseDlg implements
         }
         if( aaff != null ) {
           this.fileChooser.setFileFilter( aaff );
-	}
+        }
       }
     }
     this.fileChooser.setApproveButtonText( approveBtnText );
@@ -259,10 +259,10 @@ public class FileDlg extends BaseDlg implements
 
 
   private static File openFileDialog(
-				Window owner,
-				String title,
-				int    mode,
-				File   preSelection )
+                                Window owner,
+                                String title,
+                                int    mode,
+                                File   preSelection )
   {
     FileDialog dlg = null;
     if( owner instanceof Dialog ) {
@@ -271,27 +271,27 @@ public class FileDlg extends BaseDlg implements
       dlg = new FileDialog( (Frame) owner, title, mode );
     } else {
       if( defaultOwner == null ) {
-	defaultOwner = new Frame();
+        defaultOwner = new Frame();
       }
       dlg = new FileDialog( defaultOwner, title, mode );
     }
     dlg.setModalityType( Dialog.ModalityType.DOCUMENT_MODAL );
     if( preSelection != null ) {
       if( preSelection.isDirectory() ) {
-	dlg.setDirectory( preSelection.getPath() );
+        dlg.setDirectory( preSelection.getPath() );
       } else {
-	String dirName = preSelection.getParent();
-	if( dirName != null ) {
-	  if( !dirName.isEmpty() ) {
-	    dlg.setDirectory( dirName );
-	  }
-	}
-	String fileName = preSelection.getName();
-	if( fileName != null ) {
-	  if( !fileName.isEmpty() ) {
-	    dlg.setFile( fileName );
-	  }
-	}
+        String dirName = preSelection.getParent();
+        if( dirName != null ) {
+          if( !dirName.isEmpty() ) {
+            dlg.setDirectory( dirName );
+          }
+        }
+        String fileName = preSelection.getName();
+        if( fileName != null ) {
+          if( !fileName.isEmpty() ) {
+            dlg.setFile( fileName );
+          }
+        }
       }
     }
     dlg.setVisible( true );
@@ -299,7 +299,7 @@ public class FileDlg extends BaseDlg implements
     String s  = dlg.getFile();
     if( s != null ) {
       if( !s.isEmpty() ) {
-	rv = new File( s );
+        rv = new File( s );
       }
     }
     return rv;

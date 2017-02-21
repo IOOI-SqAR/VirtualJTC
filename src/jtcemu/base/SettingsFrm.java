@@ -21,10 +21,10 @@ import jtcemu.*;
 
 
 public class SettingsFrm extends BaseFrm
-			implements
-				ActionListener,
-				ChangeListener,
-				ListSelectionListener
+                        implements
+                                ActionListener,
+                                ChangeListener,
+                                ListSelectionListener
 {
   private static final int MAX_MARGIN = 199;
 
@@ -90,7 +90,7 @@ public class SettingsFrm extends BaseFrm
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -98,41 +98,41 @@ public class SettingsFrm extends BaseFrm
     Object src = e.getSource();
     if( src != null ) {
       if( src == this.btnROMAdd ) {
-	doROMAdd();
+        doROMAdd();
       }
       else if( src == this.btnROMRemove ) {
-	doROMRemove();
+        doROMRemove();
       }
       else if( src == this.btnDeletePropsFile ) {
-	doDeletePropsFile();
+        doDeletePropsFile();
       }
       else if( src == this.btnApply ) {
-	doApply();
+        doApply();
       }
       else if( src == this.btnSave ) {
-	doSave();
+        doSave();
       }
       else if( src == this.btnHelp ) {
-	HelpFrm.open( "/help/settings.htm" );
+        HelpFrm.open( "/help/settings.htm" );
       }
       else if( src == this.btnClose ) {
-	doClose();
+        doClose();
       }
       else if( src instanceof JRadioButton ) {
-	updSysFields();
-	setDataChanged();
+        updSysFields();
+        setDataChanged();
       }
       else if( (src instanceof JCheckBox)
-	       || (src instanceof JComboBox)
-	       || (src instanceof JRadioButton) )
+               || (src instanceof JComboBox)
+               || (src instanceof JRadioButton) )
       {
-	setDataChanged();
+        setDataChanged();
       }
     }
   }
 
 
-	/* --- ChangeListener --- */
+        /* --- ChangeListener --- */
 
   @Override
   public void stateChanged( ChangeEvent e )
@@ -142,7 +142,7 @@ public class SettingsFrm extends BaseFrm
   }
 
 
-	/* --- ListSelectionListener --- */
+        /* --- ListSelectionListener --- */
 
   @Override
   public void valueChanged( ListSelectionEvent e )
@@ -151,7 +151,7 @@ public class SettingsFrm extends BaseFrm
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   protected boolean doClose()
@@ -171,7 +171,7 @@ public class SettingsFrm extends BaseFrm
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private SettingsFrm( TopFrm topFrm, JTCSys jtcSys )
   {
@@ -186,13 +186,13 @@ public class SettingsFrm extends BaseFrm
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					1.0, 1.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.BOTH,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        1.0, 1.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.BOTH,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
     this.tabbedPane = new JTabbedPane( JTabbedPane.TOP );
     add( this.tabbedPane, gbc );
@@ -203,26 +203,26 @@ public class SettingsFrm extends BaseFrm
     this.tabbedPane.addTab( "System", panelSys );
 
     GridBagConstraints gbcSys = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
     JTCSys.OSType osType = this.jtcSys.getOSType();
     ButtonGroup   grpOS  = new ButtonGroup();
 
     panelSys.add(
-		new JLabel( "Betriebssystem / Grafikaufl\u00F6sung:" ),
-		gbcSys );
+                new JLabel( "Betriebssystem / Grafikaufl\u00F6sung:" ),
+                gbcSys );
 
     this.btnOS2k = new JRadioButton(
-			"2 KByte BASIC-System / 64x64 Pixel",
-			(osType != JTCSys.OSType.ES1988)
-					&& (osType != JTCSys.OSType.ES23)
-					&& (osType != JTCSys.OSType.ES40) );
+                        "2 KByte BASIC-System / 64x64 Pixel",
+                        (osType != JTCSys.OSType.ES1988)
+                                        && (osType != JTCSys.OSType.ES23)
+                                        && (osType != JTCSys.OSType.ES40) );
     grpOS.add( this.btnOS2k );
     this.btnOS2k.addActionListener( this );
     gbcSys.insets.top  = 0;
@@ -231,24 +231,24 @@ public class SettingsFrm extends BaseFrm
     panelSys.add( this.btnOS2k, gbcSys );
 
     this.btnES1988 = new JRadioButton(
-			"4 KByte EMR-ES 1988 / 64x64 Pixel",
-			osType == JTCSys.OSType.ES1988 );
+                        "4 KByte EMR-ES 1988 / 64x64 Pixel",
+                        osType == JTCSys.OSType.ES1988 );
     grpOS.add( this.btnES1988 );
     this.btnES1988.addActionListener( this );
     gbcSys.gridy++;
     panelSys.add( this.btnES1988, gbcSys );
 
     this.btnES23 = new JRadioButton(
-			"4 KByte ES 2.3 / 128x128 Pixel",
-			osType == JTCSys.OSType.ES23 );
+                        "4 KByte ES 2.3 / 128x128 Pixel",
+                        osType == JTCSys.OSType.ES23 );
     grpOS.add( this.btnES23 );
     this.btnES23.addActionListener( this );
     gbcSys.gridy++;
     panelSys.add( this.btnES23, gbcSys );
 
     this.btnES40 = new JRadioButton(
-			"6 KByte ES 4.0 / 320x192 Pixel, 16 Farben",
-			osType == JTCSys.OSType.ES40 );
+                        "6 KByte ES 4.0 / 320x192 Pixel, 16 Farben",
+                        osType == JTCSys.OSType.ES40 );
     grpOS.add( this.btnES40 );
     this.btnES40.addActionListener( this );
     gbcSys.insets.bottom = 5;
@@ -256,8 +256,8 @@ public class SettingsFrm extends BaseFrm
     panelSys.add( this.btnES40, gbcSys );
 
     this.btnAlwaysScreenActive = new JCheckBox(
-		"Bildschirmausgabe auch bei gesperrtem Interrupt 4",
-		this.jtcSys.getAlwaysScreenActive() );
+                "Bildschirmausgabe auch bei gesperrtem Interrupt 4",
+                this.jtcSys.getAlwaysScreenActive() );
     this.btnAlwaysScreenActive.addActionListener( this );
     gbcSys.insets.top    = 5;
     gbcSys.insets.bottom = 0;
@@ -266,16 +266,16 @@ public class SettingsFrm extends BaseFrm
     panelSys.add( this.btnAlwaysScreenActive, gbcSys );
 
     this.btnEmuKeyboardSyscall = new JCheckBox(
-		"Systemroutine f\u00FCr Tastaturabfrage emulieren",
-		this.jtcSys.getEmulateKeyboardSyscall() );
+                "Systemroutine f\u00FCr Tastaturabfrage emulieren",
+                this.jtcSys.getEmulateKeyboardSyscall() );
     this.btnEmuKeyboardSyscall.addActionListener( this );
     gbcSys.insets.top = 0;
     gbcSys.gridy++;
     panelSys.add( this.btnEmuKeyboardSyscall, gbcSys );
 
     this.btnEmuReg80ToEF = new JCheckBox(
-		"Register %80 bis %EF emulieren",
-		this.jtcSys.getEmulateRegisters80ToEF() );
+                "Register %80 bis %EF emulieren",
+                this.jtcSys.getEmulateRegisters80ToEF() );
     this.btnEmuReg80ToEF.addActionListener( this );
     gbcSys.insets.bottom = 5;
     gbcSys.gridy++;
@@ -289,27 +289,27 @@ public class SettingsFrm extends BaseFrm
     this.tabbedPane.addTab( "RAM", panelRAM );
 
     GridBagConstraints gbcRAM = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
     ButtonGroup grpRAM  = new ButtonGroup();
     int         ramSize = this.jtcSys.getRAMSize();
 
     this.btnRAM1k = new JRadioButton(
-			"1 KByte RAM (%E000-%E0FF und %FD00-%FFFF)",
-			ramSize == 0x0400 );
+                        "1 KByte RAM (%E000-%E0FF und %FD00-%FFFF)",
+                        ramSize == 0x0400 );
     grpRAM.add( this.btnRAM1k );
     this.btnRAM1k.addActionListener( this );
     panelRAM.add( this.btnRAM1k, gbcRAM );
 
     this.btnRAM2k = new JRadioButton(
-			"2 KByte RAM (%E000-%E4FF und %FD00-%FFFF)",
-			ramSize == 0x0800 );
+                        "2 KByte RAM (%E000-%E4FF und %FD00-%FFFF)",
+                        ramSize == 0x0800 );
     grpRAM.add( this.btnRAM2k );
     this.btnRAM2k.addActionListener( this );
     gbcRAM.insets.top = 0;
@@ -317,24 +317,24 @@ public class SettingsFrm extends BaseFrm
     panelRAM.add( this.btnRAM2k, gbcRAM );
 
     this.btnRAM8k = new JRadioButton(
-			"8 KByte RAM (%E000-%FFFF)",
-			ramSize == 0x2000 );
+                        "8 KByte RAM (%E000-%FFFF)",
+                        ramSize == 0x2000 );
     grpRAM.add( this.btnRAM8k );
     this.btnRAM8k.addActionListener( this );
     gbcRAM.gridy++;
     panelRAM.add( this.btnRAM8k, gbcRAM );
 
     this.btnRAM32k = new JRadioButton(
-			"32 KByte RAM (%8000-%FFFF)",
-			ramSize == 0x8000 );
+                        "32 KByte RAM (%8000-%FFFF)",
+                        ramSize == 0x8000 );
     grpRAM.add( this.btnRAM32k );
     this.btnRAM32k.addActionListener( this );
     gbcRAM.gridy++;
     panelRAM.add( this.btnRAM32k, gbcRAM );
 
     this.btnRAM64k = new JRadioButton(
-			"64 KByte RAM abz\u00FCglich ROM und IO-Bereich",
-			ramSize == 0x10000 );
+                        "64 KByte RAM abz\u00FCglich ROM und IO-Bereich",
+                        ramSize == 0x10000 );
     grpRAM.add( this.btnRAM64k );
     this.btnRAM64k.addActionListener( this );
     gbcRAM.insets.bottom = 5;
@@ -347,13 +347,13 @@ public class SettingsFrm extends BaseFrm
     this.tabbedPane.addTab( "ROM", this.panelROM );
 
     GridBagConstraints gbcROM = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
     this.panelROM.add( new JLabel( "Eingebundene ROM-Images:" ), gbcROM );
 
@@ -391,20 +391,20 @@ public class SettingsFrm extends BaseFrm
     ExtROM[] aExtROMs = this.jtcSys.getExtROMs();
     if( aExtROMs != null ) {
       for( int i = 0; i < aExtROMs.length; i++ ) {
-	this.extROMs.add( aExtROMs[ i ] );
+        this.extROMs.add( aExtROMs[ i ] );
       }
       try {
-	Collections.sort( this.extROMs );
+        Collections.sort( this.extROMs );
       }
       catch( ClassCastException ex ) {}
       this.listROM.setListData( this.extROMs );
     }
 
     this.btnReloadROMOnReset = new JCheckBox(
-			"ROM-Images bei jedem RESET neu laden",
-			Main.getBooleanProperty(
-					"jtcemu.rom.reload_on_reset",
-					false ) );
+                        "ROM-Images bei jedem RESET neu laden",
+                        Main.getBooleanProperty(
+                                        "jtcemu.rom.reload_on_reset",
+                                        false ) );
     this.btnReloadROMOnReset.setEnabled( !this.extROMs.isEmpty() );
     this.btnReloadROMOnReset.addActionListener( this );
     gbcROM.gridx = 0;
@@ -417,22 +417,22 @@ public class SettingsFrm extends BaseFrm
     this.tabbedPane.addTab( "Best\u00E4tigungen", panelConfirm );
 
     GridBagConstraints gbcConfirm = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
     panelConfirm.add(
-		new JLabel( "Folgende Aktionen m\u00FCssen in einem"
-				+ " Dialog best\u00E4tigt werden:" ),
-		gbcConfirm );
+                new JLabel( "Folgende Aktionen m\u00FCssen in einem"
+                                + " Dialog best\u00E4tigt werden:" ),
+                gbcConfirm );
 
     this.btnConfirmInit = new JCheckBox(
-		"Einschalten/Initialisieren (Arbeitsspeicher l\u00F6schen)",
-		Main.getBooleanProperty( "jtcemu.confirm.init", true ) );
+                "Einschalten/Initialisieren (Arbeitsspeicher l\u00F6schen)",
+                Main.getBooleanProperty( "jtcemu.confirm.init", true ) );
     this.btnConfirmInit.addActionListener( this );
     gbcConfirm.insets.top  = 0;
     gbcConfirm.insets.left = 50;
@@ -440,15 +440,15 @@ public class SettingsFrm extends BaseFrm
     panelConfirm.add( this.btnConfirmInit, gbcConfirm );
 
     this.btnConfirmReset = new JCheckBox(
-		"Zur\u00FCcksetzen (RESET)",
-		Main.getBooleanProperty( "jtcemu.confirm.reset", true ) );
+                "Zur\u00FCcksetzen (RESET)",
+                Main.getBooleanProperty( "jtcemu.confirm.reset", true ) );
     this.btnConfirmReset.addActionListener( this );
     gbcConfirm.gridy++;
     panelConfirm.add( this.btnConfirmReset, gbcConfirm );
 
     this.btnConfirmQuit = new JCheckBox(
-		"JTCEMU beenden",
-		Main.getBooleanProperty( "jtcemu.confirm.quit", true ) );
+                "JTCEMU beenden",
+                Main.getBooleanProperty( "jtcemu.confirm.quit", true ) );
     this.btnConfirmQuit.addActionListener( this );
     gbcConfirm.insets.bottom = 5;
     gbcConfirm.gridy++;
@@ -461,42 +461,42 @@ public class SettingsFrm extends BaseFrm
     this.lafs     = UIManager.getInstalledLookAndFeels();
     if( this.lafs != null ) {
       if( this.lafs.length > 1 ) {
-	this.panelLAF = new JPanel( new GridBagLayout() );
-	this.tabbedPane.addTab( "Erscheinungsbild", this.panelLAF );
+        this.panelLAF = new JPanel( new GridBagLayout() );
+        this.tabbedPane.addTab( "Erscheinungsbild", this.panelLAF );
 
-	GridBagConstraints gbcLAF = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+        GridBagConstraints gbcLAF = new GridBagConstraints(
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
-	String      curClName = null;
-	LookAndFeel laf       = UIManager.getLookAndFeel();
-	if( laf != null ) {
-	  curClName = laf.getClass().getName();
-	}
+        String      curClName = null;
+        LookAndFeel laf       = UIManager.getLookAndFeel();
+        if( laf != null ) {
+          curClName = laf.getClass().getName();
+        }
 
-	for( int i = 0; i < this.lafs.length; i++ ) {
-	  String       clName = this.lafs[ i ].getClassName();
-	  JRadioButton btn    = new JRadioButton( this.lafs[ i ].getName() );
-	  this.grpLAF.add( btn );
-	  btn.setActionCommand( clName );
-	  btn.addActionListener( this );
-	  if( curClName != null ) {
-	    if( clName.equals( curClName ) ) {
-	      btn.setSelected( true );
-	    }
-	  }
-	  if( i == this.lafs.length - 1 ) {
-	    gbcLAF.insets.bottom = 5;
-	  }
-	  this.panelLAF.add( btn, gbcLAF );
-	  gbcLAF.insets.top = 0;
-	  gbcLAF.gridy++;
-	}
+        for( int i = 0; i < this.lafs.length; i++ ) {
+          String       clName = this.lafs[ i ].getClassName();
+          JRadioButton btn    = new JRadioButton( this.lafs[ i ].getName() );
+          this.grpLAF.add( btn );
+          btn.setActionCommand( clName );
+          btn.addActionListener( this );
+          if( curClName != null ) {
+            if( clName.equals( curClName ) ) {
+              btn.setSelected( true );
+            }
+          }
+          if( i == this.lafs.length - 1 ) {
+            gbcLAF.insets.bottom = 5;
+          }
+          this.panelLAF.add( btn, gbcLAF );
+          gbcLAF.insets.top = 0;
+          gbcLAF.gridy++;
+        }
       }
     }
 
@@ -506,21 +506,21 @@ public class SettingsFrm extends BaseFrm
     this.tabbedPane.addTab( "Sonstiges", this.panelEtc );
 
     GridBagConstraints gbcEtc = new GridBagConstraints(
-					0, 0,
-					GridBagConstraints.REMAINDER, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 0, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        GridBagConstraints.REMAINDER, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 0, 5 ),
+                                        0, 0 );
 
     this.panelEtc.add( new JLabel( "Dateiauswahldialog:" ), gbcEtc );
 
     ButtonGroup grpFileSelect = new ButtonGroup();
 
     this.btnFileDlgEmu = new JRadioButton(
-		"JTCEMU-Dateiauswahldialog verwenden",
-		true );
+                "JTCEMU-Dateiauswahldialog verwenden",
+                true );
     grpFileSelect.add( this.btnFileDlgEmu );
     this.btnFileDlgEmu.addActionListener( this );
     gbcEtc.insets.top  = 0;
@@ -529,8 +529,8 @@ public class SettingsFrm extends BaseFrm
     this.panelEtc.add( this.btnFileDlgEmu, gbcEtc );
 
     this.btnFileDlgNative = new JRadioButton(
-		"Dateiauswahldialog des Betriebssystems verwenden",
-		false );
+                "Dateiauswahldialog des Betriebssystems verwenden",
+                false );
     grpFileSelect.add( this.btnFileDlgNative );
     this.btnFileDlgNative.addActionListener( this );
     gbcEtc.insets.bottom = 5;
@@ -540,7 +540,7 @@ public class SettingsFrm extends BaseFrm
     String s = Main.getProperty( "jtcemu.filedialog" );
     if( s != null ) {
       if( s.equals( "native" ) ) {
-	this.btnFileDlgNative.setSelected( true );
+        this.btnFileDlgNative.setSelected( true );
       }
     }
 
@@ -555,7 +555,7 @@ public class SettingsFrm extends BaseFrm
     try {
       int margin = Main.getIntProperty( "jtcemu.screen.margin", 20 );
       if( (margin >= 0) && (margin <= MAX_MARGIN) ) {
-	sm.setValue( new Integer( margin ) );
+        sm.setValue( new Integer( margin ) );
       }
     }
     catch( IllegalArgumentException ex ) {}
@@ -574,9 +574,9 @@ public class SettingsFrm extends BaseFrm
     gbcEtc.gridx  = 0;
     gbcEtc.gridy++;
     this.panelEtc.add(
-		new JLabel( "Zykluszeit f\u00FCr Aktualisierung"
-				+ " der Bildschirmausgabe:" ),
-		gbcEtc );
+                new JLabel( "Zykluszeit f\u00FCr Aktualisierung"
+                                + " der Bildschirmausgabe:" ),
+                gbcEtc );
 
     this.comboScreenRefresh = new JComboBox();
     this.comboScreenRefresh.setEditable( false );
@@ -586,7 +586,7 @@ public class SettingsFrm extends BaseFrm
     this.comboScreenRefresh.addItem( "100" );
     this.comboScreenRefresh.addItem( "200" );
     this.comboScreenRefresh.setSelectedItem(
-		Integer.toString( topFrm.getScreenRefreshMillis() ) );
+                Integer.toString( topFrm.getScreenRefreshMillis() ) );
     this.comboScreenRefresh.addActionListener( this );
     gbcEtc.anchor = GridBagConstraints.WEST;
     gbcEtc.gridx++;
@@ -600,8 +600,8 @@ public class SettingsFrm extends BaseFrm
       gbcEtc.gridx         = 0;
       gbcEtc.gridy++;
       this.panelEtc.add(
-		new JLabel( "Einstellungen werden gespeichert in der Datei:" ),
-		gbcEtc );
+                new JLabel( "Einstellungen werden gespeichert in der Datei:" ),
+                gbcEtc );
 
       this.fldPropsFile = new JTextField();
       this.fldPropsFile.setEditable( false );
@@ -615,7 +615,7 @@ public class SettingsFrm extends BaseFrm
 
       this.btnDeletePropsFile = new JButton( "L\u00F6schen" );
       if( !this.propsFile.exists() ) {
-	this.btnDeletePropsFile.setEnabled( false );
+        this.btnDeletePropsFile.setEnabled( false );
       }
       this.btnDeletePropsFile.addActionListener( this );
       gbcEtc.fill      = GridBagConstraints.NONE;
@@ -631,7 +631,7 @@ public class SettingsFrm extends BaseFrm
 
     // Knoepfe
     JPanel panelBtn = new JPanel(
-		new GridLayout( this.propsFile != null ? 4 : 3, 1, 5, 5 ) );
+                new GridLayout( this.propsFile != null ? 4 : 3, 1, 5, 5 ) );
 
     gbc.anchor  = GridBagConstraints.NORTHEAST;
     gbc.fill    = GridBagConstraints.NONE;
@@ -687,26 +687,26 @@ public class SettingsFrm extends BaseFrm
       // Warnung, wenn die RAM-Groesse zu klein ist
       String msg = null;
       if( this.btnES1988.isSelected()
-	  && this.btnRAM1k.isSelected() )
+          && this.btnRAM1k.isSelected() )
       {
-	msg = "Das EMR-ES 1988 erfordert mindestens 2 KByte RAM.";
+        msg = "Das EMR-ES 1988 erfordert mindestens 2 KByte RAM.";
       }
       else if( (this.btnES23.isSelected() || this.btnES40.isSelected())
-	       && (this.btnRAM1k.isSelected() || this.btnRAM2k.isSelected()) )
+               && (this.btnRAM1k.isSelected() || this.btnRAM2k.isSelected()) )
       {
-	msg = "ES 2.3 und ES 4.0 erfordern mindestens 8 KByte RAM.";
+        msg = "ES 2.3 und ES 4.0 erfordern mindestens 8 KByte RAM.";
       }
       if( msg != null ) {
-	if( JOptionPane.showConfirmDialog(
-		this,
-		msg + "\nM\u00F6chten Sie die Einstellungen trotzdem"
-			+ " \u00FCbernehmen?",
-		"Warnung",
-		JOptionPane.YES_NO_OPTION,
-		JOptionPane.WARNING_MESSAGE ) != JOptionPane.YES_OPTION )
-	{
-	  state = false;
-	}
+        if( JOptionPane.showConfirmDialog(
+                this,
+                msg + "\nM\u00F6chten Sie die Einstellungen trotzdem"
+                        + " \u00FCbernehmen?",
+                "Warnung",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE ) != JOptionPane.YES_OPTION )
+        {
+          state = false;
+        }
       }
     }
     if( state ) {
@@ -715,11 +715,11 @@ public class SettingsFrm extends BaseFrm
       // Array mit neuen ROMs erzeugen
       ExtROM[] newExtROMs = null;
       if( !this.extROMs.isEmpty() ) {
-	try {
-	  newExtROMs = this.extROMs.toArray(
-				new ExtROM[ this.extROMs.size() ] );
-	}
-	catch( ArrayStoreException ex ) {}
+        try {
+          newExtROMs = this.extROMs.toArray(
+                                new ExtROM[ this.extROMs.size() ] );
+        }
+        catch( ArrayStoreException ex ) {}
       }
 
       /*
@@ -731,7 +731,7 @@ public class SettingsFrm extends BaseFrm
         if( newExtROMs != null ) {
           nNewExtROMs = newExtROMs.length;
         }
-	ExtROM[] oldExtROMs  = this.jtcSys.getExtROMs();
+        ExtROM[] oldExtROMs  = this.jtcSys.getExtROMs();
         int      nOldExtROMs = 0;
         if( oldExtROMs != null ) {
           nOldExtROMs = oldExtROMs.length;
@@ -753,53 +753,53 @@ public class SettingsFrm extends BaseFrm
       // zuerst neue Eigenschaften setzen
       int ramSize = 0x10000;
       if( this.btnRAM1k.isSelected() ) {
-	ramSize = 0x0400;
+        ramSize = 0x0400;
       } else if( this.btnRAM2k.isSelected() ) {
-	ramSize = 0x0800;
+        ramSize = 0x0800;
       } else if( this.btnRAM8k.isSelected() ) {
-	ramSize = 0x2000;
+        ramSize = 0x2000;
       } else if( this.btnRAM32k.isSelected() ) {
-	ramSize = 0x8000;
+        ramSize = 0x8000;
       }
       if( ramSize != this.jtcSys.getRAMSize() ) {
           forceReset = true;
       }
       props.setProperty(
-		"jtcemu.ram.size",
-		String.format( "%dK", ramSize / 1024 ) );
+                "jtcemu.ram.size",
+                String.format( "%dK", ramSize / 1024 ) );
       props.setProperty(
-		"jtcemu.confirm.init",
-		Boolean.toString( this.btnConfirmInit.isSelected() ) );
+                "jtcemu.confirm.init",
+                Boolean.toString( this.btnConfirmInit.isSelected() ) );
       props.setProperty(
-		"jtcemu.confirm.reset",
-		Boolean.toString( this.btnConfirmReset.isSelected() ) );
+                "jtcemu.confirm.reset",
+                Boolean.toString( this.btnConfirmReset.isSelected() ) );
       props.setProperty(
-		"jtcemu.confirm.quit",
-		Boolean.toString( this.btnConfirmQuit.isSelected() ) );
+                "jtcemu.confirm.quit",
+                Boolean.toString( this.btnConfirmQuit.isSelected() ) );
       Main.putProperties( props );
 
       // JTCSys aktualisieren
       this.jtcSys.setExtROMs( newExtROMs );
       this.jtcSys.settingsChanged();
       if( forceReset ) {
-	this.jtcSys.fireReset();
+        this.jtcSys.fireReset();
       }
 
       // zum Schluss (nach JTCSys!) andere Fenster informieren
       Frame[] frames = Frame.getFrames();
       if( frames != null ) {
-	for( int i = 0; i < frames.length; i++ ) {
-	  Frame frm = frames[ i ];
-	  if( frm != null ) {
-	    if( frm instanceof BaseFrm ) {
-	      ((BaseFrm) frm).settingsChanged();
-	    }
-	  }
-	}
+        for( int i = 0; i < frames.length; i++ ) {
+          Frame frm = frames[ i ];
+          if( frm != null ) {
+            if( frm instanceof BaseFrm ) {
+              ((BaseFrm) frm).settingsChanged();
+            }
+          }
+        }
       }
       this.btnApply.setEnabled( false );
       if( this.btnSave != null ) {
-	this.btnSave.setEnabled( true );
+        this.btnSave.setEnabled( true );
       }
     }
   }
@@ -809,27 +809,27 @@ public class SettingsFrm extends BaseFrm
   {
     if( this.propsFile != null ) {
       if( JOptionPane.showConfirmDialog(
-		this,
-		"M\u00F6chten Sie die gespeicherten Einstellungen"
-			+ " l\u00F6schen?\n"
-			+ "Beim n\u00E4chsten mal startet dann JTCEMU"
-			+ " mit den\n"
-			+ "Standardeinstellungen.",
-		"Best\u00E4tigung",
-		JOptionPane.YES_NO_OPTION ) == JOptionPane.YES_OPTION )
+                this,
+                "M\u00F6chten Sie die gespeicherten Einstellungen"
+                        + " l\u00F6schen?\n"
+                        + "Beim n\u00E4chsten mal startet dann JTCEMU"
+                        + " mit den\n"
+                        + "Standardeinstellungen.",
+                "Best\u00E4tigung",
+                JOptionPane.YES_NO_OPTION ) == JOptionPane.YES_OPTION )
       {
-	if( this.propsFile.delete() ) {
-	  if( this.btnDeletePropsFile != null ) {
-	    this.btnDeletePropsFile.setEnabled( false );
-	  }
-	} else {
-	  JOptionPane.showMessageDialog(
-		this,
-		"Die Datei mit den gespeicherten Einstellungen\n"
-			+ "konnte nicht gel\u00F6scht werden.",
-		"Fehler",
-		JOptionPane.ERROR_MESSAGE );
-	}
+        if( this.propsFile.delete() ) {
+          if( this.btnDeletePropsFile != null ) {
+            this.btnDeletePropsFile.setEnabled( false );
+          }
+        } else {
+          JOptionPane.showMessageDialog(
+                this,
+                "Die Datei mit den gespeicherten Einstellungen\n"
+                        + "konnte nicht gel\u00F6scht werden.",
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE );
+        }
       }
     }
   }
@@ -841,49 +841,49 @@ public class SettingsFrm extends BaseFrm
     if( (props != null) && (this.propsFile != null) ) {
       Frame[] frames = Frame.getFrames();
       if( frames != null ) {
-	for( int i = 0; i < frames.length; i++ ) {
-	  Frame  f = frames[ i ];
-	  String p = f.getClass().getName();
-	  props.setProperty( p + ".window.x", Integer.toString( f.getX() ) );
-	  props.setProperty( p + ".window.y", Integer.toString( f.getY() ) );
-	  if( f.isResizable() ) {
-	    props.setProperty(
-			p + ".window.width",
-			Integer.toString( f.getWidth() ) );
-	    props.setProperty(
-			p + ".window.height",
-			Integer.toString( f.getHeight() ) );
-	  }
-	  if( f instanceof BaseFrm ) {
-	    ((BaseFrm) f).prepareSettingsToSave();
-	  }
-	}
+        for( int i = 0; i < frames.length; i++ ) {
+          Frame  f = frames[ i ];
+          String p = f.getClass().getName();
+          props.setProperty( p + ".window.x", Integer.toString( f.getX() ) );
+          props.setProperty( p + ".window.y", Integer.toString( f.getY() ) );
+          if( f.isResizable() ) {
+            props.setProperty(
+                        p + ".window.width",
+                        Integer.toString( f.getWidth() ) );
+            props.setProperty(
+                        p + ".window.height",
+                        Integer.toString( f.getHeight() ) );
+          }
+          if( f instanceof BaseFrm ) {
+            ((BaseFrm) f).prepareSettingsToSave();
+          }
+        }
       }
       try {
-	Writer out = null;
-	try {
-	  out = new FileWriter( this.propsFile );
-	  props.store( out, "JU+TE-Computer-Emulator" );
-	  out.close();
-	  out = null;
-	  if( this.btnSave != null ) {
-	    this.btnSave.setEnabled( false );
-	  }
-	  if( this.btnDeletePropsFile != null ) {
-	    this.btnDeletePropsFile.setEnabled( true );
-	  }
-	}
-	finally {
-	  if( out != null ) {
-	    try {
-	      out.close();
-	    }
-	    catch( IOException ex ) {}
-	  }
-	}
+        Writer out = null;
+        try {
+          out = new FileWriter( this.propsFile );
+          props.store( out, "JU+TE-Computer-Emulator" );
+          out.close();
+          out = null;
+          if( this.btnSave != null ) {
+            this.btnSave.setEnabled( false );
+          }
+          if( this.btnDeletePropsFile != null ) {
+            this.btnDeletePropsFile.setEnabled( true );
+          }
+        }
+        finally {
+          if( out != null ) {
+            try {
+              out.close();
+            }
+            catch( IOException ex ) {}
+          }
+        }
       }
       catch( IOException ex ) {
-	Main.showError( this, ex );
+        Main.showError( this, ex );
       }
     }
   }
@@ -892,64 +892,64 @@ public class SettingsFrm extends BaseFrm
   private void doROMAdd()
   {
     File file = FileDlg.showFileOpenDlg(
-				this,
-				"ROM-Datei laden",
-				"Laden",
-				Main.getLastPathFile(),
-				GUIUtil.romFileFilter );
+                                this,
+                                "ROM-Datei laden",
+                                "Laden",
+                                Main.getLastPathFile(),
+                                GUIUtil.romFileFilter );
     if( file != null ) {
       try {
-	ExtROM  rom      = new ExtROM( file );
-	Integer addr     = null;
-	String  fileName = file.getName();
-	if( fileName != null ) {
-	  fileName = fileName.toUpperCase();
-	  int len  = fileName.length();
-	  int pos  = fileName.indexOf( '_' );
-	  while( (pos >= 0) && ((pos + 4) < len) ) {
-	    if( isHexChar( fileName.charAt( pos + 1 ) )
-		&& isHexChar( fileName.charAt( pos + 2 ) )
-		&& isHexChar( fileName.charAt( pos + 3 ) )
-		&& isHexChar( fileName.charAt( pos + 4 ) ) )
-	    {
-	      try {
-		addr = Integer.valueOf(
-				fileName.substring( pos + 1, pos + 5 ),
-				16 );
-	      }
-	      catch( NumberFormatException ex ) {}
-	      if( addr != null ) {
-		break;
-	      }
-	    }
-	    if( pos + 5 < len ) {
-	      pos = fileName.indexOf( '_', pos + 1 );
-	    } else {
-	      pos = -1;
-	    }
-	  }
-	}
-	addr = GUIUtil.askHex4( this, "Anfangsadresse", addr );
-	if( addr != null ) {
-	  rom.setBegAddress( addr.intValue() );
-	  this.extROMs.add( rom );
-	  try {
-	    Collections.sort( this.extROMs );
-	  }
-	  catch( ClassCastException ex ) {}
-	  this.listROM.setListData( this.extROMs );
-	  this.btnReloadROMOnReset.setEnabled( true );
-	  setDataChanged();
+        ExtROM  rom      = new ExtROM( file );
+        Integer addr     = null;
+        String  fileName = file.getName();
+        if( fileName != null ) {
+          fileName = fileName.toUpperCase();
+          int len  = fileName.length();
+          int pos  = fileName.indexOf( '_' );
+          while( (pos >= 0) && ((pos + 4) < len) ) {
+            if( isHexChar( fileName.charAt( pos + 1 ) )
+                && isHexChar( fileName.charAt( pos + 2 ) )
+                && isHexChar( fileName.charAt( pos + 3 ) )
+                && isHexChar( fileName.charAt( pos + 4 ) ) )
+            {
+              try {
+                addr = Integer.valueOf(
+                                fileName.substring( pos + 1, pos + 5 ),
+                                16 );
+              }
+              catch( NumberFormatException ex ) {}
+              if( addr != null ) {
+                break;
+              }
+            }
+            if( pos + 5 < len ) {
+              pos = fileName.indexOf( '_', pos + 1 );
+            } else {
+              pos = -1;
+            }
+          }
+        }
+        addr = GUIUtil.askHex4( this, "Anfangsadresse", addr );
+        if( addr != null ) {
+          rom.setBegAddress( addr.intValue() );
+          this.extROMs.add( rom );
+          try {
+            Collections.sort( this.extROMs );
+          }
+          catch( ClassCastException ex ) {}
+          this.listROM.setListData( this.extROMs );
+          this.btnReloadROMOnReset.setEnabled( true );
+          setDataChanged();
 
-	  int idx = this.extROMs.indexOf( rom );
-	  if( idx >= 0 ) {
-	    this.listROM.setSelectedIndex( idx );
-	  }
-	  Main.setLastFile( file );
-	}
+          int idx = this.extROMs.indexOf( rom );
+          if( idx >= 0 ) {
+            this.listROM.setSelectedIndex( idx );
+          }
+          Main.setLastFile( file );
+        }
       }
       catch( Exception ex ) {
-	Main.showError( this, ex );
+        Main.showError( this, ex );
       }
     }
   }
@@ -971,19 +971,19 @@ public class SettingsFrm extends BaseFrm
   {
     boolean rv = true;
     props.setProperty(
-		"jtcemu.filedialog",
-		this.btnFileDlgNative.isSelected() ? "native" : "jtcemu" );
+                "jtcemu.filedialog",
+                this.btnFileDlgNative.isSelected() ? "native" : "jtcemu" );
 
     Object obj = this.spinnerMargin.getValue();
     props.setProperty(
-		"jtcemu.screen.margin",
-		obj != null ? obj.toString() : "0" );
+                "jtcemu.screen.margin",
+                obj != null ? obj.toString() : "0" );
 
     obj = this.comboScreenRefresh.getSelectedItem();
     if( obj != null ) {
       String text = obj.toString();
       if( text != null ) {
-	props.setProperty( "jtcemu.screen.refresh.ms", text );
+        props.setProperty( "jtcemu.screen.refresh.ms", text );
       }
     }
     return rv;
@@ -997,39 +997,39 @@ public class SettingsFrm extends BaseFrm
     if( bm != null ) {
       String lafClassName = bm.getActionCommand();
       if( lafClassName != null ) {
-	if( lafClassName.length() > 0 ) {
-	  boolean     lafChanged = true;
-	  LookAndFeel oldLAF     = UIManager.getLookAndFeel();
-	  if( oldLAF != null ) {
-	    if( lafClassName.equals( oldLAF.getClass().getName() ) ) {
-	      lafChanged = false;
-	    }
-	  }
-	  if( lafChanged ) {
-	    try {
-	      UIManager.setLookAndFeel( lafClassName );
-	      SwingUtilities.invokeLater(
-				new Runnable()
-				{
-				  public void run()
-				  {
-				    informLAFChanged();
-				  }
-				} );
-	      props.setProperty( "jtcemu.laf.classname", lafClassName );
-	    }
-	    catch( Exception ex ) {
-	      rv = false;
-	      if( this.panelLAF != null ) {
-		this.tabbedPane.setSelectedComponent( this.panelLAF );
-	      }
-	      Main.showError(
-			this,
-			"Das Erscheinungsbild kann nicht"
-				+ " eingestellt werden." );
-	    }
-	  }
-	}
+        if( lafClassName.length() > 0 ) {
+          boolean     lafChanged = true;
+          LookAndFeel oldLAF     = UIManager.getLookAndFeel();
+          if( oldLAF != null ) {
+            if( lafClassName.equals( oldLAF.getClass().getName() ) ) {
+              lafChanged = false;
+            }
+          }
+          if( lafChanged ) {
+            try {
+              UIManager.setLookAndFeel( lafClassName );
+              SwingUtilities.invokeLater(
+                                new Runnable()
+                                {
+                                  public void run()
+                                  {
+                                    informLAFChanged();
+                                  }
+                                } );
+              props.setProperty( "jtcemu.laf.classname", lafClassName );
+            }
+            catch( Exception ex ) {
+              rv = false;
+              if( this.panelLAF != null ) {
+                this.tabbedPane.setSelectedComponent( this.panelLAF );
+              }
+              Main.showError(
+                        this,
+                        "Das Erscheinungsbild kann nicht"
+                                + " eingestellt werden." );
+            }
+          }
+        }
       }
     }
     return rv;
@@ -1045,28 +1045,28 @@ public class SettingsFrm extends BaseFrm
       n++;
       int begAddr = rom.getBegAddress();
       if( begAddr <= a ) {
-	this.tabbedPane.setSelectedComponent( this.panelROM );
-	Main.showError(
-		this,
-		String.format(
-			"ROM an Adresse %04X \u00FCberschneidet sich"
-				+ " mit vorherigem ROM.",
-			begAddr ) );
-	rv = false;
-	break;
+        this.tabbedPane.setSelectedComponent( this.panelROM );
+        Main.showError(
+                this,
+                String.format(
+                        "ROM an Adresse %04X \u00FCberschneidet sich"
+                                + " mit vorherigem ROM.",
+                        begAddr ) );
+        rv = false;
+        break;
       }
       props.setProperty(
-		String.format( "jtcemu.rom.%d.address", n ),
-		String.format( "%04X", begAddr ) );
+                String.format( "jtcemu.rom.%d.address", n ),
+                String.format( "%04X", begAddr ) );
       props.setProperty(
-		String.format( "jtcemu.rom.%d.file", n ),
-		rom.getFile().getPath() );
+                String.format( "jtcemu.rom.%d.file", n ),
+                rom.getFile().getPath() );
       a = rom.getEndAddress();
     }
     props.setProperty( "jtcemu.rom.count", Integer.toString( n ) );
     props.setProperty(
-		"jtcemu.rom.reload_on_reset",
-		Boolean.toString( this.btnReloadROMOnReset.isSelected() ) );
+                "jtcemu.rom.reload_on_reset",
+                Boolean.toString( this.btnReloadROMOnReset.isSelected() ) );
     return rv;
   }
 
@@ -1087,14 +1087,14 @@ public class SettingsFrm extends BaseFrm
       props.setProperty( "jtcemu.os", "2K" );
     }
     props.setProperty(
-		"jtcemu.screen.active.always",
-		Boolean.toString( this.btnAlwaysScreenActive.isSelected() ) );
+                "jtcemu.screen.active.always",
+                Boolean.toString( this.btnAlwaysScreenActive.isSelected() ) );
     props.setProperty(
-		"jtcemu.keyboard.emulate_syscall",
-		Boolean.toString( this.btnEmuKeyboardSyscall.isSelected() ) );
+                "jtcemu.keyboard.emulate_syscall",
+                Boolean.toString( this.btnEmuKeyboardSyscall.isSelected() ) );
     props.setProperty(
-		"jtcemu.z8.emulate_registers_80toEF",
-		Boolean.toString( this.btnEmuReg80ToEF.isSelected() ) );
+                "jtcemu.z8.emulate_registers_80toEF",
+                Boolean.toString( this.btnEmuReg80ToEF.isSelected() ) );
     return rv;
   }
 
@@ -1104,13 +1104,13 @@ public class SettingsFrm extends BaseFrm
     Frame[] frames = Frame.getFrames();
     if( frames != null ) {
       for( int i = 0; i< frames.length; i++ ) {
-	Frame frm = frames[ i ];
-	if( frm != null ) {
-	  SwingUtilities.updateComponentTreeUI( frm );
-	  if( frm instanceof BaseFrm ) {
-	    ((BaseFrm) frm).lafChanged();
-	  }
-	}
+        Frame frm = frames[ i ];
+        if( frm != null ) {
+          SwingUtilities.updateComponentTreeUI( frm );
+          if( frm instanceof BaseFrm ) {
+            ((BaseFrm) frm).lafChanged();
+          }
+        }
       }
     }
   }
@@ -1136,7 +1136,7 @@ public class SettingsFrm extends BaseFrm
     boolean state = (this.btnOS2k.isSelected() || this.btnES1988.isSelected());
     this.btnEmuKeyboardSyscall.setEnabled( state );
     this.btnAlwaysScreenActive.setEnabled(
-		state || this.btnES23.isSelected() );
+                state || this.btnES23.isSelected() );
   }
 }
 

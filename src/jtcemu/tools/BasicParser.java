@@ -36,9 +36,9 @@ public class BasicParser
 
 
   public BasicParser(
-		String                text,
-		JTextArea             logOut,
-		ByteArrayOutputStream codeBuf )
+                String                text,
+                JTextArea             logOut,
+                ByteArrayOutputStream codeBuf )
   {
     this.srcText = (text != null ? text : "");
     this.srcLen  = this.srcText.length();
@@ -66,15 +66,15 @@ public class BasicParser
     try {
       char ch = this.iter.first();
       while( ch != CharacterIterator.DONE ) {
-	parseLine();
-	ch = skipSpaces();
+        parseLine();
+        ch = skipSpaces();
       }
       if( this.hasLines ) {
-	putCode( 0x0D );
+        putCode( 0x0D );
       }
       if( this.codeBuf != null ) {
-	if( this.codeBuf.size() > 0 )
-	  this.codeBuf.write( 0 );
+        if( this.codeBuf.size() > 0 )
+          this.codeBuf.write( 0 );
       }
     }
     catch( TooManyErrorsException ex ) {
@@ -95,7 +95,7 @@ public class BasicParser
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private void parseLine() throws TooManyErrorsException
   {
@@ -106,87 +106,87 @@ public class BasicParser
     if( (ch != CharacterIterator.DONE) && (ch != '\n') ) {
       try {
 
-	// BASIC-Zeilennummer parsen
-	if( (ch >= '0') && (ch <= '9') ) {
-	  boolean errDone      = false;
-	  int     basicLineNum = (ch - '0');
-	  ch                   = this.iter.next();
-	  while( (ch >= '0') && (ch <= '9') ) {
-	    if( !errDone ) {
-	      basicLineNum = (basicLineNum * 10) + (ch - '0');
-	      if( basicLineNum > 32767 ) {
-		putError( "Zeilennummer zu gro\u00DF", -1 );
-		errDone = true;
-	      }
-	    }
-	    ch = this.iter.next();
-	  }
-	  if( !errDone && !this.allowAllBasicLineNums ) {
-	    int lByte = basicLineNum & 0xFF;
-	    if( (lByte == 0x00) || (lByte == 0x0D) ) {
-	      putError(
-		"Zeilennummer " + Integer.toString( basicLineNum )
-			+ " beim 2K- und 4K-Betriebssystem nicht erlaubt,"
-			+ " da ihre bin\u00E4re Form %00 oder %0D"
-			+ " enth\u00E4lt",
-		-1 );
-	      errDone = true;
-	    }
-	  }
-	  if( !errDone
-	      && (this.lastBasicLineNum >= 0)
-	      && (basicLineNum <= this.lastBasicLineNum) )
-	  {
-	    putError(
-		"Zeilennummer muss gr\u00F6\u00DFer als die vorherige sein",
-		-1 );
-	    errDone = true;
-	  }
-	  if( !errDone ) {
-	    if( this.hasLines ) {
-	      putCode( 0x0D );
-	    }
-	    putCode( (basicLineNum >> 8) | 0x80 );
-	    putCode( basicLineNum );
-	    this.curBasicLineNum  = basicLineNum;
-	    this.lastBasicLineNum = basicLineNum;
-	    this.hasLines         = true;
-	    this.firstInstInLine  = true;
-	    this.prevLineHasIF    = this.lineHasIF;
-	    this.lineHasIF        = false;
-	  }
-	} else {
-	  if( this.hasLines ) {
-	    if( this.lastCode != ';' ) {
-	      putCode( ';' );
-	    }
-	  } else {
-	    throwParseException( "Mindestens die erste Zeile muss eine"
-					+ " BASIC-Zeilennummer haben!" );
-	  }
-	}
+        // BASIC-Zeilennummer parsen
+        if( (ch >= '0') && (ch <= '9') ) {
+          boolean errDone      = false;
+          int     basicLineNum = (ch - '0');
+          ch                   = this.iter.next();
+          while( (ch >= '0') && (ch <= '9') ) {
+            if( !errDone ) {
+              basicLineNum = (basicLineNum * 10) + (ch - '0');
+              if( basicLineNum > 32767 ) {
+                putError( "Zeilennummer zu gro\u00DF", -1 );
+                errDone = true;
+              }
+            }
+            ch = this.iter.next();
+          }
+          if( !errDone && !this.allowAllBasicLineNums ) {
+            int lByte = basicLineNum & 0xFF;
+            if( (lByte == 0x00) || (lByte == 0x0D) ) {
+              putError(
+                "Zeilennummer " + Integer.toString( basicLineNum )
+                        + " beim 2K- und 4K-Betriebssystem nicht erlaubt,"
+                        + " da ihre bin\u00E4re Form %00 oder %0D"
+                        + " enth\u00E4lt",
+                -1 );
+              errDone = true;
+            }
+          }
+          if( !errDone
+              && (this.lastBasicLineNum >= 0)
+              && (basicLineNum <= this.lastBasicLineNum) )
+          {
+            putError(
+                "Zeilennummer muss gr\u00F6\u00DFer als die vorherige sein",
+                -1 );
+            errDone = true;
+          }
+          if( !errDone ) {
+            if( this.hasLines ) {
+              putCode( 0x0D );
+            }
+            putCode( (basicLineNum >> 8) | 0x80 );
+            putCode( basicLineNum );
+            this.curBasicLineNum  = basicLineNum;
+            this.lastBasicLineNum = basicLineNum;
+            this.hasLines         = true;
+            this.firstInstInLine  = true;
+            this.prevLineHasIF    = this.lineHasIF;
+            this.lineHasIF        = false;
+          }
+        } else {
+          if( this.hasLines ) {
+            if( this.lastCode != ';' ) {
+              putCode( ';' );
+            }
+          } else {
+            throwParseException( "Mindestens die erste Zeile muss eine"
+                                        + " BASIC-Zeilennummer haben!" );
+          }
+        }
 
-	// Anweisungen parsen
-	parseInst();
-	this.firstInstInLine = false;
+        // Anweisungen parsen
+        parseInst();
+        this.firstInstInLine = false;
 
-	// ggf. weiter Anweisungen parsen
-	ch = skipSpaces();
-	while( ch == ';' ) {
-	  this.iter.next();
-	  ch = skipSpaces();
-	  if( (ch != CharacterIterator.DONE) && (ch != '\n') ) {
-	    putCode( ';' );
-	    parseInst();
-	    ch = skipSpaces();
-	  }
-	}
-	if( (ch != CharacterIterator.DONE) && (ch != '\n') ) {
-	  throwUnexpectedChar( ch );
-	}
+        // ggf. weiter Anweisungen parsen
+        ch = skipSpaces();
+        while( ch == ';' ) {
+          this.iter.next();
+          ch = skipSpaces();
+          if( (ch != CharacterIterator.DONE) && (ch != '\n') ) {
+            putCode( ';' );
+            parseInst();
+            ch = skipSpaces();
+          }
+        }
+        if( (ch != CharacterIterator.DONE) && (ch != '\n') ) {
+          throwUnexpectedChar( ch );
+        }
       }
       catch( ParseException ex ) {
-	putError( ex.getMessage(), ex.getErrorOffset() );
+        putError( ex.getMessage(), ex.getErrorOffset() );
       }
     }
 
@@ -216,82 +216,82 @@ public class BasicParser
       String instName = readIdentifier();
       int    instLen  = instName.length();
       if( instLen == 1 ) {
-	this.iter.setIndex( begInst );
-	parseLET();
+        this.iter.setIndex( begInst );
+        parseLET();
       } else if( instLen > 1 ) {
-	if( instName.equals( "CALL" ) ) {
-	  putCode( 'C' );
-	  parseExpr();
-	}
-	else if( instName.equals( "ELSE" ) ) {
-	  parseELSE();
-	}
-	else if( instName.equals( "END" ) ) {
-	  putCode( 'E' );
-	}
-	else if( instName.equals( "GOSUB" ) ) {
-	  putCode( 'S' );
-	  parseExpr();
-	}
-	else if( instName.equals( "GOTO" ) ) {
-	  putCode( 'G' );
-	  parseExpr();
-	}
-	else if( instName.equals( "IF" ) ) {
-	  parseIF();
-	}
-	else if( instName.equals( "INPUT" ) ) {
-	  parseINPUT();
-	}
-	else if( instName.equals( "LET" ) ) {
-	  parseLET();
-	}
-	else if( instName.equals( "PRINTHEX" ) || instName.equals( "PTH" ) ) {
-	  parsePRINT( 'H' );
-	}
-	else if( instName.equals( "PRINT" ) ) {
-	  parsePRINT( 'P' );
-	}
-	else if( instName.equals( "PROC" ) ) {
-	  parsePROC();
-	}
-	else if( instName.equals( "PTC" ) ) {
-	  putCode( 'O' );
-	  putCode( instName );
-	  parseArgList( 1 );
-	}
-	else if( instName.equals( "RETURN" ) ) {
-	  putCode( 'R' );
-	}
-	else if( instName.equals( "REM" ) ) {
-	  parseREM();
-	}
-	else if( instName.equals( "SETR" )
-		 || instName.equals( "SETRR" )
-		 || instName.equals( "SETEB" )
-		 || instName.equals( "SETEW" ) )
-	{
-	  putCode( 'O' );
-	  putCode( instName );
-	  parseArgList( 2 );
-	}
-	else if( instName.equals( "STOP" ) ) {
-	  putCode( 'T' );
-	}
-	else if( instName.equals( "TOFF" ) ) {
-	  putCode( '/' );
-	}
-	else if( instName.equals( "TRAP" ) ) {
-	  parseTRAP();
-	}
-	else if( instName.equals( "WAIT" ) ) {
-	  putCode( 'W' );
-	  parseExpr();
-	} else {
-	  throwParseException( instName + ": Unbekannte Anweisung" );
-	}
+        if( instName.equals( "CALL" ) ) {
+          putCode( 'C' );
+          parseExpr();
+        }
+        else if( instName.equals( "ELSE" ) ) {
+          parseELSE();
+        }
+        else if( instName.equals( "END" ) ) {
+          putCode( 'E' );
+        }
+        else if( instName.equals( "GOSUB" ) ) {
+          putCode( 'S' );
+          parseExpr();
+        }
+        else if( instName.equals( "GOTO" ) ) {
+          putCode( 'G' );
+          parseExpr();
+        }
+        else if( instName.equals( "IF" ) ) {
+          parseIF();
+        }
+        else if( instName.equals( "INPUT" ) ) {
+          parseINPUT();
+        }
+        else if( instName.equals( "LET" ) ) {
+          parseLET();
+        }
+        else if( instName.equals( "PRINTHEX" ) || instName.equals( "PTH" ) ) {
+          parsePRINT( 'H' );
+        }
+        else if( instName.equals( "PRINT" ) ) {
+          parsePRINT( 'P' );
+        }
+        else if( instName.equals( "PROC" ) ) {
+          parsePROC();
+        }
+        else if( instName.equals( "PTC" ) ) {
+          putCode( 'O' );
+          putCode( instName );
+          parseArgList( 1 );
+        }
+        else if( instName.equals( "RETURN" ) ) {
+          putCode( 'R' );
+        }
+        else if( instName.equals( "REM" ) ) {
+          parseREM();
+        }
+        else if( instName.equals( "SETR" )
+                 || instName.equals( "SETRR" )
+                 || instName.equals( "SETEB" )
+                 || instName.equals( "SETEW" ) )
+        {
+          putCode( 'O' );
+          putCode( instName );
+          parseArgList( 2 );
+        }
+        else if( instName.equals( "STOP" ) ) {
+          putCode( 'T' );
+        }
+        else if( instName.equals( "TOFF" ) ) {
+          putCode( '/' );
+        }
+        else if( instName.equals( "TRAP" ) ) {
+          parseTRAP();
+        }
+        else if( instName.equals( "WAIT" ) ) {
+          putCode( 'W' );
+          parseExpr();
+        } else {
+          throwParseException( instName + ": Unbekannte Anweisung" );
+        }
       } else {
-	throwParseException( "Anweisung erwartet" );
+        throwParseException( "Anweisung erwartet" );
       }
     }
   }
@@ -301,8 +301,8 @@ public class BasicParser
   {
     if( !this.firstInstInLine ) {
       throwParseException( "ELSE muss die erste Anweisung"
-		+ " in der hinter IF folgenden Zeile sein"
-		+ " (mit eigener BASIC-Zeilennummer)" );
+                + " in der hinter IF folgenden Zeile sein"
+                + " (mit eigener BASIC-Zeilennummer)" );
     }
     if( !this.prevLineHasIF ) {
       throwParseException( "ELSE: vorherige Zeile enth\u00E4lt kein IF" );
@@ -310,7 +310,7 @@ public class BasicParser
     putCode( '>' );
     if( skipSpaces() != ';' ) {
       throwParseException( "Hinter ELSE m\u00FCssen ein Semikolon und"
-				+ " dahinter die Anweisungen folgen" );
+                                + " dahinter die Anweisungen folgen" );
     }
   }
 
@@ -329,19 +329,19 @@ public class BasicParser
       int    pos  = this.iter.getIndex();
       String name = readIdentifier();
       if( name.length() > 0 ) {
-	putCode( ';' );
-	if( name.equals( "THEN" ) ) {
-	  ch = skipSpaces();
-	  if( (ch >= '0') && (ch <= '9') ) {
-	    putCode( 'G' );
-	    parseDecNumber();
-	    done = true;
-	  }
-	} else {
-	  this.iter.setIndex( pos );
-	}
+        putCode( ';' );
+        if( name.equals( "THEN" ) ) {
+          ch = skipSpaces();
+          if( (ch >= '0') && (ch <= '9') ) {
+            putCode( 'G' );
+            parseDecNumber();
+            done = true;
+          }
+        } else {
+          this.iter.setIndex( pos );
+        }
       } else {
-	throwUnexpectedChar( ch );
+        throwUnexpectedChar( ch );
       }
     }
     if( !done ) {
@@ -377,22 +377,22 @@ public class BasicParser
     while( loop ) {
       char ch = Character.toUpperCase( skipSpaces() );
       if( (ch < 'A') || (ch > 'Z') ) {
-	throwVarExpected();
+        throwVarExpected();
       }
       putCode( ch );
       this.iter.next();
       if( skipSpaces() != '=' ) {
-	throwParseException( "\'=\' erwartet" );
+        throwParseException( "\'=\' erwartet" );
       }
       putCode( '=' );
       this.iter.next();
       parseExpr();
       ch = skipSpaces();
       if( ch == ',' ) {
-	putCode( ch );
+        putCode( ch );
         this.iter.next();
       } else {
-	loop = false;
+        loop = false;
       }
     }
   }
@@ -406,21 +406,21 @@ public class BasicParser
       parseOptStringLiteral();
       char ch = skipSpaces();
       if( (ch != CharacterIterator.DONE)
-	  && (ch != '\n')
-	  && (ch != ';')
-	  && (ch != ',') )
+          && (ch != '\n')
+          && (ch != ';')
+          && (ch != ',') )
       {
-	parseExpr();
+        parseExpr();
       }
       if( skipSpaces() == ',' ) {
-	putCode( ',' );
-	this.iter.next();
-	ch = skipSpaces();
-	if( (ch == CharacterIterator.DONE) || (ch == '\n') || (ch == ';') ) {
-	  loop = false;
-	}
+        putCode( ',' );
+        this.iter.next();
+        ch = skipSpaces();
+        if( (ch == CharacterIterator.DONE) || (ch == '\n') || (ch == ';') ) {
+          loop = false;
+        }
       } else {
-	loop = false;
+        loop = false;
       }
     }
   }
@@ -434,47 +434,47 @@ public class BasicParser
       this.iter.next();
       boolean loop = true;
       while( loop ) {
-	char ch = Character.toUpperCase( skipSpaces() );
-	if( (ch < 'A') || (ch > 'Z') ) {
-	  throwVarExpected();
-	}
-	putCode( ch );
-	this.iter.next();
-	ch = skipSpaces();
-	if( ch == ',' ) {
-	  putCode( ch );
-	  this.iter.next();
-	} else {
-	  loop = false;
-	}
+        char ch = Character.toUpperCase( skipSpaces() );
+        if( (ch < 'A') || (ch > 'Z') ) {
+          throwVarExpected();
+        }
+        putCode( ch );
+        this.iter.next();
+        ch = skipSpaces();
+        if( ch == ',' ) {
+          putCode( ch );
+          this.iter.next();
+        } else {
+          loop = false;
+        }
       }
       if( skipSpaces() != ']' ) {
-	throwParseException( "\']\' erwartet" );
+        throwParseException( "\']\' erwartet" );
       }
       putCode( ']' );
       this.iter.next();
       if( skipSpaces() != '=' ) {
-	throwParseException( "\'=\' erwartet" );
+        throwParseException( "\'=\' erwartet" );
       }
       putCode( '=' );
       this.iter.next();
     }
     String procName = readIdentifier();
     if( procName.equals( "ABS" )
-	|| procName.equals( "GETR" )
-	|| procName.equals( "GETRR" )
-	|| procName.equals( "GETEB" )
-	|| procName.equals( "GETEW" )
-	|| procName.equals( "NEG" )
-	|| procName.equals( "NOT" )
-	|| procName.equals( "PTC" ) )
+        || procName.equals( "GETR" )
+        || procName.equals( "GETRR" )
+        || procName.equals( "GETEB" )
+        || procName.equals( "GETEW" )
+        || procName.equals( "NEG" )
+        || procName.equals( "NOT" )
+        || procName.equals( "PTC" ) )
     {
       putCode( procName );
       parseArgList( 1 );
     } else if( procName.equals( "SETR" )
-	     || procName.equals( "SETRR" )
-	     || procName.equals( "SETEB" )
-	     || procName.equals( "SETEW" ) )
+             || procName.equals( "SETRR" )
+             || procName.equals( "SETEB" )
+             || procName.equals( "SETEW" ) )
     {
       putCode( procName );
       parseArgList( 2 );
@@ -506,15 +506,15 @@ public class BasicParser
     } else {
       String name = readIdentifier();
       if( name.length() > 0 ) {
-	if( name.equals( "TO" ) ) {
-	  putCode( ';' );
-	} else {
-	  throw new ParseException(
-			"TO anstelle " + name + " erwartet",
-			this.iter.getIndex() );
-	}
+        if( name.equals( "TO" ) ) {
+          putCode( ';' );
+        } else {
+          throw new ParseException(
+                        "TO anstelle " + name + " erwartet",
+                        this.iter.getIndex() );
+        }
       } else {
-	throwUnexpectedChar( ch );
+        throwUnexpectedChar( ch );
       }
     }
     parseExpr();
@@ -525,26 +525,26 @@ public class BasicParser
   {
     if( argCnt > 0 ) {
       if( skipSpaces() != '[' ) {
-	throwParseException( "\'[\' erwartet" );
+        throwParseException( "\'[\' erwartet" );
       }
       putCode( '[' );
       this.iter.next();
       boolean loop = true;
       while( loop ) {
-	parseExpr();
-	--argCnt;
-	if( argCnt > 0 ) {
-	  if( skipSpaces() != ',' ) {
-	    throwParseException( "\',\' erwartet" );
-	  }
-	  putCode( ',' );
-	  this.iter.next();
-	} else {
-	  loop = false;
-	}
+        parseExpr();
+        --argCnt;
+        if( argCnt > 0 ) {
+          if( skipSpaces() != ',' ) {
+            throwParseException( "\',\' erwartet" );
+          }
+          putCode( ',' );
+          this.iter.next();
+        } else {
+          loop = false;
+        }
       }
       if( skipSpaces() != ']' ) {
-	throwParseException( "\']\' erwartet" );
+        throwParseException( "\']\' erwartet" );
       }
       putCode( ']' );
       this.iter.next();
@@ -560,15 +560,15 @@ public class BasicParser
       putCode( ch );
       ch = this.iter.next();
       if( (ch == '=') || (ch == '>') ) {
-	this.iter.next();
-	putCode( ch );
+        this.iter.next();
+        putCode( ch );
       }
       parseExpr();
     } else if( ch == '>' ) {
       putCode( ch );
       if( this.iter.next() == '=' ) {
-	this.iter.next();
-	putCode( '=' );
+        this.iter.next();
+        putCode( '=' );
       }
       parseExpr();
     } else if( ch == '=' ) {
@@ -577,7 +577,7 @@ public class BasicParser
       parseExpr();
     } else {
       throwParseException( "Vergleichsoperator \'<\', \'<=\', \'=\', \'>\'"
-					+ " oder \'>=\' erwartet" );
+                                        + " oder \'>=\' erwartet" );
     }
   }
 
@@ -594,19 +594,19 @@ public class BasicParser
     }
     ch = skipSpaces();
     while( (ch == '+')
-	   || (ch == '-')
-	   || (ch == '*')
-	   || (ch == '/')
-	   || (ch == '$') )
+           || (ch == '-')
+           || (ch == '*')
+           || (ch == '/')
+           || (ch == '$') )
     {
       putCode( ch );
       if( ch == '$' ) {
-	ch = Character.toUpperCase( this.iter.next() );
-	if( (ch == 'A') || (ch == 'M') || (ch == 'O') || (ch == 'X') ) {
-	  putCode( ch );
-	} else {
-	  throwParseException( "\'A\', \'M\', \'O\' oder \'X\' erwartet" );
-	}
+        ch = Character.toUpperCase( this.iter.next() );
+        if( (ch == 'A') || (ch == 'M') || (ch == 'O') || (ch == 'X') ) {
+          putCode( ch );
+        } else {
+          throwParseException( "\'A\', \'M\', \'O\' oder \'X\' erwartet" );
+        }
       }
       ch = this.iter.next();
       parsePrimExpr();
@@ -623,7 +623,7 @@ public class BasicParser
       this.iter.next();
       parseExpr();
       if( skipSpaces() != ')' ) {
-	throwParseException( "\')\' erwartet" );
+        throwParseException( "\')\' erwartet" );
       }
       putCode( ')' );
       this.iter.next();
@@ -635,26 +635,26 @@ public class BasicParser
       String funcName = readIdentifier();
       int    funcLen  = funcName.length();
       if( funcLen == 1 ) {
-	putCode( funcName.charAt( 0 ) );
+        putCode( funcName.charAt( 0 ) );
       } else if( funcLen > 1 ) {
-	if( funcName.equals( "ABS" )
-	    || funcName.equals( "GETR" )
-	    || funcName.equals( "GETRR" )
-	    || funcName.equals( "GETEB" )
-	    || funcName.equals( "GETEW" )
-	    || funcName.equals( "NOT" )
-	    || funcName.equals( "RL" )
-	    || funcName.equals( "RR" ) )
-	{
-	  putCode( funcName );
-	  parseArgList( 1 );
-	} else if( funcName.equals( "GTC" ) || funcName.equals( "INPUT" ) ) {
-	  putCode( funcName );
-	} else {
-	  throwParseException( funcName + ": Unbekannte Funktion" );
-	}
+        if( funcName.equals( "ABS" )
+            || funcName.equals( "GETR" )
+            || funcName.equals( "GETRR" )
+            || funcName.equals( "GETEB" )
+            || funcName.equals( "GETEW" )
+            || funcName.equals( "NOT" )
+            || funcName.equals( "RL" )
+            || funcName.equals( "RR" ) )
+        {
+          putCode( funcName );
+          parseArgList( 1 );
+        } else if( funcName.equals( "GTC" ) || funcName.equals( "INPUT" ) ) {
+          putCode( funcName );
+        } else {
+          throwParseException( funcName + ": Unbekannte Funktion" );
+        }
       } else {
-	throwParseException( "Ziffer, Buchstabe, \'(\' oder \'%\' erwartet" );
+        throwParseException( "Ziffer, Buchstabe, \'(\' oder \'%\' erwartet" );
       }
     }
   }
@@ -668,12 +668,12 @@ public class BasicParser
       int v = ch - '0';
       ch    = this.iter.next();
       while( (ch >= '0') && (ch <= '9') ) {
-	v = (v * 10) + (ch - '0');
-	if( v > 32767 ) {
-	  throwParseException( "Zahl zu gro\u00DF" );
-	}
-	putCode( ch );
-	ch = this.iter.next();
+        v = (v * 10) + (ch - '0');
+        if( v > 32767 ) {
+          throwParseException( "Zahl zu gro\u00DF" );
+        }
+        putCode( ch );
+        ch = this.iter.next();
       }
     }
   }
@@ -687,16 +687,16 @@ public class BasicParser
       ch    = Character.toUpperCase( this.iter.next() );
       int v = 0;
       while( ((ch >= '0') && (ch <= '9')) || ((ch >= 'A') && (ch <= 'F')) ) {
-	putCode( ch );
-	if( (ch >= '0') && (ch <= '9') ) {
-	  v = (v << 4) | (ch - '0');
-	} else if( (ch >= 'A') && (ch <= 'F') ) {
-	  v = (v << 4) | (ch + 10 - 'A');
-	}
-	if( v >= 0x10000 ) {
-	  throwParseException( "Hexadezimalzahl zu gro\u00DF" );
-	}
-	ch = Character.toUpperCase( this.iter.next() );
+        putCode( ch );
+        if( (ch >= '0') && (ch <= '9') ) {
+          v = (v << 4) | (ch - '0');
+        } else if( (ch >= 'A') && (ch <= 'F') ) {
+          v = (v << 4) | (ch + 10 - 'A');
+        }
+        if( v >= 0x10000 ) {
+          throwParseException( "Hexadezimalzahl zu gro\u00DF" );
+        }
+        ch = Character.toUpperCase( this.iter.next() );
       }
     }
   }
@@ -713,36 +713,36 @@ public class BasicParser
 
       ch = this.iter.next();
       while( (ch != CharacterIterator.DONE) && (ch != '\"') ) {
-	if( (ch > 0) && (ch <= 0x7F) ) {
-	  if( ch == '\n' ) {
-	    this.lineNum++;
-	    if( !warnNL ) {
-	      putWarning( "Zeilenumbruch in Zeichenkette" );
-	      warnNL = true;
-	    }
-	  }
-	  else if( (ch < 0x20) || (ch > 0x5F) ) {
-	    if( !warnNotPrintable ) {
-	      putWarning( "Zeichenkette enth\u00E4lt Zeichen \'" + ch + "\',"
-			+ " welches nicht im Zeichensatz des JU+TE-Computers"
-			+ " vorkommt" );
-	      warnNotPrintable = true;
-	    }
-	  }
-	  putCode( ch );
-	} else {
-	  if( !warnNotASCII ) {
-	    putWarning( "Nicht-ASCII-Zeichen in Zeichenkette ignoriert" );
-	    warnNotASCII = true;
-	  }
-	}
-	ch = this.iter.next();
+        if( (ch > 0) && (ch <= 0x7F) ) {
+          if( ch == '\n' ) {
+            this.lineNum++;
+            if( !warnNL ) {
+              putWarning( "Zeilenumbruch in Zeichenkette" );
+              warnNL = true;
+            }
+          }
+          else if( (ch < 0x20) || (ch > 0x5F) ) {
+            if( !warnNotPrintable ) {
+              putWarning( "Zeichenkette enth\u00E4lt Zeichen \'" + ch + "\',"
+                        + " welches nicht im Zeichensatz des JU+TE-Computers"
+                        + " vorkommt" );
+              warnNotPrintable = true;
+            }
+          }
+          putCode( ch );
+        } else {
+          if( !warnNotASCII ) {
+            putWarning( "Nicht-ASCII-Zeichen in Zeichenkette ignoriert" );
+            warnNotASCII = true;
+          }
+        }
+        ch = this.iter.next();
       }
       if( ch == '\"' ) {
-	putCode( ch );
-	this.iter.next();
+        putCode( ch );
+        this.iter.next();
       } else {
-	throwParseException( "Zeichenkette nicht abgeschlossen" );
+        throwParseException( "Zeichenkette nicht abgeschlossen" );
       }
     }
   }
@@ -762,36 +762,36 @@ public class BasicParser
     if( (text != null) && (this.codeBuf != null) ) {
       int len = text.length();
       if( len > 0 ) {
-	for( int i = 0; i < len; i++ ) {
-	  this.codeBuf.write( text.charAt( i ) );
-	}
-	this.lastCode = text.charAt( len - 1 );
+        for( int i = 0; i < len; i++ ) {
+          this.codeBuf.write( text.charAt( i ) );
+        }
+        this.lastCode = text.charAt( len - 1 );
       }
     }
   }
 
 
   private void putError(
-		String msg,
-		int    errorOffset ) throws TooManyErrorsException
+                String msg,
+                int    errorOffset ) throws TooManyErrorsException
   {
     putMessage( "Fehler", msg );
     if( (this.logOut != null) && (errorOffset >= this.lineOffset) ) {
       StringBuilder buf = new StringBuilder( 256 );
       int           pos = this.lineOffset;
       while( (pos < errorOffset) && (pos < this.srcLen) ) {
-	buf.append( (char) this.srcText.charAt( pos++ ) );
+        buf.append( (char) this.srcText.charAt( pos++ ) );
       }
       buf.append( " ???" );
       if( pos < this.srcLen - 1 ) {
-	buf.append( (char) '\u0020' );
-	while( pos < this.srcLen ) {
-	  char ch = this.srcText.charAt( pos++ );
-	  if( ch == '\n' ) {
-	    break;
-	  }
-	  buf.append( ch );
-	}
+        buf.append( (char) '\u0020' );
+        while( pos < this.srcLen ) {
+          char ch = this.srcText.charAt( pos++ );
+          if( ch == '\n' ) {
+            break;
+          }
+          buf.append( ch );
+        }
       }
       buf.append( "\n\n" );
       this.logOut.append( buf.toString() );
@@ -817,8 +817,8 @@ public class BasicParser
       this.logOut.append( " in Zeile " );
       this.logOut.append( Integer.toString( this.lineNum ) );
       if( this.curBasicLineNum >= 0 ) {
-	this.logOut.append( ", BASIC-Zeile " );
-	this.logOut.append( Integer.toString( this.curBasicLineNum ) );
+        this.logOut.append( ", BASIC-Zeile " );
+        this.logOut.append( Integer.toString( this.curBasicLineNum ) );
       }
       this.logOut.append( ": " );
       this.logOut.append( msgText );

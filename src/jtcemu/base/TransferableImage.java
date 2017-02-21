@@ -26,7 +26,7 @@ public class TransferableImage implements ClipboardOwner, Transferable
   }
 
 
-	/* --- ClipboardOwner --- */
+        /* --- ClipboardOwner --- */
 
   @Override
   public void lostOwnership( Clipboard clp, Transferable data )
@@ -35,11 +35,11 @@ public class TransferableImage implements ClipboardOwner, Transferable
   }
 
 
-	/* --- Transferable --- */
+        /* --- Transferable --- */
 
   @Override
   public Object getTransferData( DataFlavor flavor )
-					throws UnsupportedFlavorException
+                                        throws UnsupportedFlavorException
   {
     if( !isDataFlavorSupported( flavor ) ) {
       throw new UnsupportedFlavorException( flavor );

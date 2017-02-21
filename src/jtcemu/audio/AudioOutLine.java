@@ -36,7 +36,7 @@ public class AudioOutLine extends AudioOut
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   /*
    * Mit dieser Methode erfaehrt die Klasse den aktuellen
@@ -67,16 +67,16 @@ public class AudioOutLine extends AudioOut
        * bis mindestens zum naechsten Soundsystemaufruf, abgeschaltet.
        */
       if( this.forDataTransfer )
-	this.z8.setSpeedUnlimitedFor( diffCycles * 8 );
+        this.z8.setSpeedUnlimitedFor( diffCycles * 8 );
     }
   }
 
 
   @Override
   public AudioFormat startAudio(
-			int   cyclesPerSecond,
-			int   sampleRate,
-			float thresholdValue )
+                        int   cyclesPerSecond,
+                        int   sampleRate,
+                        float thresholdValue )
   {
     AudioFormat fmt = null;
     if( this.dataLine != null ) {
@@ -84,37 +84,37 @@ public class AudioOutLine extends AudioOut
     } else {
       if( cyclesPerSecond > 0 ) {
 
-	// Audio-Ausgabekanal oeffnen, Mono
-	SourceDataLine line = null;
-	if( sampleRate > 0 ) {
-	  line = openSourceDataLine( sampleRate );
-	} else {
-	  int[] sampleRates = this.forDataTransfer ?
-				this.sampleRatesData : this.sampleRatesSound;
-	  for( int i = 0; (line == null) && (i < sampleRates.length); i++ )
-	    line = openSourceDataLine( sampleRates[ i ] );
-	}
-	if( line != null ) {
-	  this.lastPhaseSamples = 0;
-	  this.maxPauseCycles   = cyclesPerSecond / 10;	// 0.1 Sekunde
-	  this.enabled          = true;
-	  this.dataLine         = line;
-	  fmt                   = this.dataLine.getFormat();
-	  this.cyclesPerFrame   = Math.round( (float) cyclesPerSecond
-							/ fmt.getFrameRate() );
+        // Audio-Ausgabekanal oeffnen, Mono
+        SourceDataLine line = null;
+        if( sampleRate > 0 ) {
+          line = openSourceDataLine( sampleRate );
+        } else {
+          int[] sampleRates = this.forDataTransfer ?
+                                this.sampleRatesData : this.sampleRatesSound;
+          for( int i = 0; (line == null) && (i < sampleRates.length); i++ )
+            line = openSourceDataLine( sampleRates[ i ] );
+        }
+        if( line != null ) {
+          this.lastPhaseSamples = 0;
+          this.maxPauseCycles   = cyclesPerSecond / 10;        // 0.1 Sekunde
+          this.enabled          = true;
+          this.dataLine         = line;
+          fmt                   = this.dataLine.getFormat();
+          this.cyclesPerFrame   = Math.round( (float) cyclesPerSecond
+                                                        / fmt.getFrameRate() );
 
-	  // Audio-Buffer anlegen
-	  int r = Math.round( fmt.getFrameRate() );
-	  int n = line.getBufferSize() / 32;
-	  if( n > r / 2 ) {		// max. 1/2 Sekunde puffern
-	    n = r / 2;
-	  }
-	  if( n < 1 ) {
-	    n = 1;
-	  }
-	  this.audioDataBuf = new byte[ n * fmt.getFrameSize() ];
-	  this.audioDataPos = 0;
-	}
+          // Audio-Buffer anlegen
+          int r = Math.round( fmt.getFrameRate() );
+          int n = line.getBufferSize() / 32;
+          if( n > r / 2 ) {                // max. 1/2 Sekunde puffern
+            n = r / 2;
+          }
+          if( n < 1 ) {
+            n = 1;
+          }
+          this.audioDataBuf = new byte[ n * fmt.getFrameSize() ];
+          this.audioDataPos = 0;
+        }
       }
     }
     return fmt;
@@ -138,17 +138,17 @@ public class AudioOutLine extends AudioOut
     byte[]         audioDataBuf = this.audioDataBuf;
     if( (line != null) && (audioDataBuf != null) ) {
       for( int i = 0; i < nSamples; i++ ) {
-	if( this.audioDataPos >= audioDataBuf.length ) {
-	  line.write( audioDataBuf, 0, audioDataBuf.length );
-	  this.audioDataPos = 0;
-	}
-	audioDataBuf[ this.audioDataPos++ ] = value;
+        if( this.audioDataPos >= audioDataBuf.length ) {
+          line.write( audioDataBuf, 0, audioDataBuf.length );
+          this.audioDataPos = 0;
+        }
+        audioDataBuf[ this.audioDataPos++ ] = value;
       }
     }
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private SourceDataLine openSourceDataLine( int sampleRate )
   {
@@ -161,23 +161,23 @@ public class AudioOutLine extends AudioOut
 
 
   private SourceDataLine openSourceDataLine2(
-				int     sampleRate,
-				boolean bigEndian )
+                                int     sampleRate,
+                                boolean bigEndian )
   {
     AudioFormat fmt = new AudioFormat(
-				(float) sampleRate,
-				8,
-				1,
-				true,
-				bigEndian );
+                                (float) sampleRate,
+                                8,
+                                1,
+                                true,
+                                bigEndian );
 
     SourceDataLine line = null;
     try {
       line = AudioSystem.getSourceDataLine( fmt );
       if( line != null ) {
-	line.open( fmt );
-	line.start();
-	this.sampleRate = sampleRate;
+        line.open( fmt );
+        line.start();
+        this.sampleRate = sampleRate;
       }
     }
     catch( Exception ex ) {

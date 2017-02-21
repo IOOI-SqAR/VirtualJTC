@@ -61,8 +61,8 @@ public class HexCharFld extends JComponent
   public String createAddrFmtString()
   {
     int maxAddr = this.dataSrc.getAddrOffset()
-				+ this.dataSrc.getDataLength()
-				- 1;
+                                + this.dataSrc.getDataLength()
+                                - 1;
     if( maxAddr < 0 ) {
       maxAddr = 0;
     }
@@ -109,22 +109,22 @@ public class HexCharFld extends JComponent
   {
     int rv = -1;
     if( (this.wChar > 0) && (this.wHex > 0) && (y > MARGIN)
-	&& (this.rowHeight > 0) )
+        && (this.rowHeight > 0) )
     {
       int row  = this.topRow + ((y - MARGIN) / this.rowHeight);
       int xAbs = this.xOffset + x;
       if( (xAbs >= this.xHex)
-	  && (xAbs < this.xHex + (BYTES_PER_ROW * this.wHex)) )
+          && (xAbs < this.xHex + (BYTES_PER_ROW * this.wHex)) )
       {
-	int m = (xAbs - this.xHex) % this.wHex;
-	if( m < (2 * this.wChar) ) {
-	  rv = (row * BYTES_PER_ROW) + ((xAbs - this.xHex) / this.wHex);
-	}
+        int m = (xAbs - this.xHex) % this.wHex;
+        if( m < (2 * this.wChar) ) {
+          rv = (row * BYTES_PER_ROW) + ((xAbs - this.xHex) / this.wHex);
+        }
       }
       else if( (xAbs >= this.xAscii)
-	       && (xAbs < this.xAscii + (BYTES_PER_ROW * this.wChar)) )
+               && (xAbs < this.xAscii + (BYTES_PER_ROW * this.wChar)) )
       {
-	rv = (row * BYTES_PER_ROW) + ((xAbs - this.xAscii) / this.wChar);
+        rv = (row * BYTES_PER_ROW) + ((xAbs - this.xAscii) / this.wChar);
       }
     }
     if( rv > this.dataSrc.getDataLength() ) {
@@ -155,7 +155,7 @@ public class HexCharFld extends JComponent
   public void refresh()
   {
     this.totalRows = (this.dataSrc.getDataLength() + BYTES_PER_ROW - 1)
-							/ BYTES_PER_ROW;
+                                                        / BYTES_PER_ROW;
     this.topRow    = 0;
     this.caretPos  = -1;
     this.markPos   = -1;
@@ -207,14 +207,14 @@ public class HexCharFld extends JComponent
   }
 
 
-	/* --- ueverschriebene Methoden --- */
+        /* --- ueverschriebene Methoden --- */
 
   @Override
   public Dimension getPreferredSize()
   {
     return new Dimension(
-		getContentWidth(),
-		(12 * this.rowHeight) + (2 * MARGIN) );
+                getContentWidth(),
+                (12 * this.rowHeight) + (2 * MARGIN) );
   }
 
 
@@ -232,12 +232,12 @@ public class HexCharFld extends JComponent
     int h = getHeight();
     if( (w > 0) && (h > 0) && (this.rowHeight > 0) ) {
       if( this.wChar == 0 ) {
-	calcPositions();
+        calcPositions();
       }
       g.setColor( SystemColor.text );
       g.fillRect( 0, 0, w, h );
       if( this.xOffset > 0 ) {
-	g.translate( -this.xOffset, 0 );
+        g.translate( -this.xOffset, 0 );
       }
       g.setFont( getFont() );
       g.setPaintMode();
@@ -247,78 +247,78 @@ public class HexCharFld extends JComponent
 
       this.topRow = (this.yOffset - MARGIN) / this.rowHeight;
       if( this.topRow < 0 ) {
-	this.topRow = 0;
+        this.topRow = 0;
       }
       int pos = this.topRow * BYTES_PER_ROW;
       int m1  = -1;
       int m2  = -1;
       if( (this.caretPos >= 0) && (this.markPos >= 0) ) {
-	m1 = Math.min( this.caretPos, this.markPos );
-	m2 = Math.max( this.caretPos, this.markPos );
+        m1 = Math.min( this.caretPos, this.markPos );
+        m2 = Math.max( this.caretPos, this.markPos );
       } else {
-	m1 = this.caretPos;
-	m2 = this.caretPos;
+        m1 = this.caretPos;
+        m2 = this.caretPos;
       }
       int    dataLen  = this.dataSrc.getDataLength();
       int    addrOffs = this.dataSrc.getAddrOffset();
       String addrFmt  = createAddrFmtString();
       while( (pos < dataLen) && (y < h + hFont) ) {
-	g.setColor( SystemColor.textText );
-	g.drawString( String.format( addrFmt, addrOffs + pos ), MARGIN, y );
-	int x = this.xHex;
-	for( int i = 0; i < BYTES_PER_ROW; i++ ) {
-	  int idx = pos + i;
-	  if( idx < dataLen ) {
-	    if( (idx >= m1) && (idx <= m2) ) {
-	      int nMark = 2;
-	      if( (i < BYTES_PER_ROW - 1) && (idx < m2) ) {
-		nMark = 3;
-	      }
-	      g.setColor( SystemColor.textHighlight );
-	      g.fillRect(
-			x,
-			y - hFont + 2,
-			nMark * this.wChar,
-			this.rowHeight );
-	      g.setColor( SystemColor.textHighlightText );
-	    } else {
-	      g.setColor( SystemColor.textText );
-	    }
-	    g.drawString(
-		String.format( "%02X", this.dataSrc.getDataByte( idx ) ),
-		x,
-		y );
-	    x += this.wHex;
-	  } else {
-	    break;
-	  }
-	}
-	x = this.xAscii;
-	for( int i = 0; i < BYTES_PER_ROW; i++ ) {
-	  int idx = pos + i;
-	  if( idx < dataLen ) {
-	    char ch = (char) this.dataSrc.getDataByte( pos + i );
-	    if( (ch < 0x20) || (ch > 0x7F) ) {
-	      ch = '.';
-	    }
-	    if( (idx >= m1) && (idx <= m2) ) {
-	      g.setColor( SystemColor.textHighlight );
-	      g.fillRect( x, y - hFont + 2, this.wChar, this.rowHeight );
-	      g.setColor( SystemColor.textHighlightText );
-	    } else {
-	      g.setColor( SystemColor.textText );
-	    }
-	    g.drawString( Character.toString( ch ), x, y );
-	    x += this.wChar;
-	  } else {
-	    break;
-	  }
-	}
-	y   += this.rowHeight;
-	pos += BYTES_PER_ROW;
+        g.setColor( SystemColor.textText );
+        g.drawString( String.format( addrFmt, addrOffs + pos ), MARGIN, y );
+        int x = this.xHex;
+        for( int i = 0; i < BYTES_PER_ROW; i++ ) {
+          int idx = pos + i;
+          if( idx < dataLen ) {
+            if( (idx >= m1) && (idx <= m2) ) {
+              int nMark = 2;
+              if( (i < BYTES_PER_ROW - 1) && (idx < m2) ) {
+                nMark = 3;
+              }
+              g.setColor( SystemColor.textHighlight );
+              g.fillRect(
+                        x,
+                        y - hFont + 2,
+                        nMark * this.wChar,
+                        this.rowHeight );
+              g.setColor( SystemColor.textHighlightText );
+            } else {
+              g.setColor( SystemColor.textText );
+            }
+            g.drawString(
+                String.format( "%02X", this.dataSrc.getDataByte( idx ) ),
+                x,
+                y );
+            x += this.wHex;
+          } else {
+            break;
+          }
+        }
+        x = this.xAscii;
+        for( int i = 0; i < BYTES_PER_ROW; i++ ) {
+          int idx = pos + i;
+          if( idx < dataLen ) {
+            char ch = (char) this.dataSrc.getDataByte( pos + i );
+            if( (ch < 0x20) || (ch > 0x7F) ) {
+              ch = '.';
+            }
+            if( (idx >= m1) && (idx <= m2) ) {
+              g.setColor( SystemColor.textHighlight );
+              g.fillRect( x, y - hFont + 2, this.wChar, this.rowHeight );
+              g.setColor( SystemColor.textHighlightText );
+            } else {
+              g.setColor( SystemColor.textText );
+            }
+            g.drawString( Character.toString( ch ), x, y );
+            x += this.wChar;
+          } else {
+            break;
+          }
+        }
+        y   += this.rowHeight;
+        pos += BYTES_PER_ROW;
       }
       if( this.xOffset > 0 ) {
-	g.translate( this.xOffset, 0 );
+        g.translate( this.xOffset, 0 );
       }
     }
   }
@@ -332,7 +332,7 @@ public class HexCharFld extends JComponent
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private void calcPositions()
   {

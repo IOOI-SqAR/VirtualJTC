@@ -24,8 +24,8 @@ import z8.Z8;
 public class AudioFrm extends BaseFrm implements ActionListener
 {
   private static final int[] sampleRates = {
-				96000, 48000, 44100, 32000,
-				22050, 16000, 11025, 8000 };
+                                96000, 48000, 44100, 32000,
+                                22050, 16000, 11025, 8000 };
 
   private static AudioFrm instance = null;
 
@@ -76,26 +76,26 @@ public class AudioFrm extends BaseFrm implements ActionListener
   public void fireDisable()
   {
     SwingUtilities.invokeLater(
-		new Runnable()
-		{
-		  public void run()
-		  {
-		    doDisable();
-		  }
-		} );
+                new Runnable()
+                {
+                  public void run()
+                  {
+                    doDisable();
+                  }
+                } );
   }
 
 
   public void fireProgressUpdate( final double value )
   {
     SwingUtilities.invokeLater(
-		new Runnable()
-		{
-		  public void run()
-		  {
-		    updProgressBar( value );
-		  }
-		} );
+                new Runnable()
+                {
+                  public void run()
+                  {
+                    updProgressBar( value );
+                  }
+                } );
   }
 
 
@@ -119,7 +119,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -129,28 +129,28 @@ public class AudioFrm extends BaseFrm implements ActionListener
       Object src = e.getSource();
 
       if( (src == this.btnSoundOut)
-	  || (src == this.btnDataOut)
-	  || (src == this.btnDataIn)
-	  || (src == this.btnFileOut)
-	  || (src == this.btnFileIn)
-	  || (src == this.btnFileLastIn) )
+          || (src == this.btnDataOut)
+          || (src == this.btnDataIn)
+          || (src == this.btnFileOut)
+          || (src == this.btnFileIn)
+          || (src == this.btnFileLastIn) )
       {
-	updOptFields();
+        updOptFields();
       }
       else if( (src == this.btnChannel0) || (src == this.btnChannel1) ) {
-	updChannel();
+        updChannel();
       }
       else if( src == this.btnEnable ) {
-	doEnable();
+        doEnable();
       }
       else if( src == this.btnDisable ) {
-	doDisable();
+        doDisable();
       }
       else if( src == this.btnHelp ) {
-	HelpFrm.open( "/help/audio.htm" );
+        HelpFrm.open( "/help/audio.htm" );
       }
       else if( src == this.btnClose ) {
-	doClose();
+        doClose();
       }
     }
     catch( Exception ex ) {
@@ -160,7 +160,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void lafChanged()
@@ -175,15 +175,15 @@ public class AudioFrm extends BaseFrm implements ActionListener
     Object value = this.spinnerSpeed.getValue();
     if( value != null ) {
       Main.setProperty(
-		"jtcemu.audio.speed_adjustment.percent",
-		value.toString() );
+                "jtcemu.audio.speed_adjustment.percent",
+                value.toString() );
     }
     Main.setProperty(
-		"jtcemu.audio.threshold.percent",
-		String.valueOf( this.sliderThreshold.getValue() ) );
+                "jtcemu.audio.threshold.percent",
+                String.valueOf( this.sliderThreshold.getValue() ) );
     Main.setProperty(
-		"jtcemu.audio.monitor.enabled",
-		Boolean.toString( btnMonitorPlay.isSelected() ) );
+                "jtcemu.audio.monitor.enabled",
+                Boolean.toString( btnMonitorPlay.isSelected() ) );
   }
 
 
@@ -194,7 +194,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
   }
 
 
-	/* --- private Konstruktoren und Methoden --- */
+        /* --- private Konstruktoren und Methoden --- */
 
   private AudioFrm( Z8 z8, JTCSys jtcSys, Thread emuThread )
   {
@@ -214,13 +214,13 @@ public class AudioFrm extends BaseFrm implements ActionListener
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						1.0, 0.0,
-						GridBagConstraints.NORTHWEST,
-						GridBagConstraints.HORIZONTAL,
-						new Insets( 5, 5, 5, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                1.0, 0.0,
+                                                GridBagConstraints.NORTHWEST,
+                                                GridBagConstraints.HORIZONTAL,
+                                                new Insets( 5, 5, 5, 5 ),
+                                                0, 0 );
 
 
     // Bereich Funktion
@@ -229,13 +229,13 @@ public class AudioFrm extends BaseFrm implements ActionListener
     add( panelFct, gbc );
 
     GridBagConstraints gbcFct = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.NORTHWEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.NORTHWEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
     ButtonGroup grpFct = new ButtonGroup();
 
@@ -270,7 +270,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     panelFct.add( this.btnFileIn, gbcFct );
 
     this.btnFileLastIn = new JRadioButton(
-				"Letzte Sound-Datei (noch einmal) lesen" );
+                                "Letzte Sound-Datei (noch einmal) lesen" );
     grpFct.add( this.btnFileLastIn );
     this.btnFileLastIn.addActionListener( this );
     gbcFct.insets.bottom = 5;
@@ -285,13 +285,13 @@ public class AudioFrm extends BaseFrm implements ActionListener
     add( panelOpt, gbc );
 
     GridBagConstraints gbcOpt = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 5, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 5, 5 ),
+                                                0, 0 );
 
     this.labelSampleRate = new JLabel( "Abtastrate (Hz):" );
     panelOpt.add( this.labelSampleRate, gbcOpt );
@@ -314,13 +314,13 @@ public class AudioFrm extends BaseFrm implements ActionListener
     panelOpt.add( this.labelSpeed, gbcOpt );
 
     Integer pValue = Main.getIntegerProperty(
-			"jtcemu.audio.speed_adjustment.percent" );
+                        "jtcemu.audio.speed_adjustment.percent" );
     this.spinnerSpeed = new JSpinner(
-				new SpinnerNumberModel(
-					pValue != null ? pValue.intValue() : 0,
-					-20,
-					20,
-					1 ) );
+                                new SpinnerNumberModel(
+                                        pValue != null ? pValue.intValue() : 0,
+                                        -20,
+                                        20,
+                                        1 ) );
     gbcOpt.gridwidth  = 2;
     gbcOpt.gridx++;
     panelOpt.add( this.spinnerSpeed, gbcOpt );
@@ -331,12 +331,12 @@ public class AudioFrm extends BaseFrm implements ActionListener
     panelOpt.add( this.labelThreshold, gbcOpt );
 
     pValue = Main.getIntegerProperty(
-			"jtcemu.audio.threshold.percent" );
+                        "jtcemu.audio.threshold.percent" );
     this.sliderThreshold = new JSlider(
-				JSlider.HORIZONTAL,
-				0,
-				100,
-				pValue != null ? pValue.intValue() : 50 );
+                                JSlider.HORIZONTAL,
+                                0,
+                                100,
+                                pValue != null ? pValue.intValue() : 50 );
     this.sliderThreshold.setMajorTickSpacing( 50 );
     this.sliderThreshold.setMinorTickSpacing( 10 );
     this.sliderThreshold.setPaintLabels( true );
@@ -389,13 +389,13 @@ public class AudioFrm extends BaseFrm implements ActionListener
     panelStatus.setBorder( BorderFactory.createTitledBorder( "Status" ) );
 
     GridBagConstraints gbcStatus = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.EAST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 5, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.EAST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 5, 5 ),
+                                                0, 0 );
 
     this.labelFileName = new JLabel( "Datei:" );
     panelStatus.add( this.labelFileName, gbcStatus );
@@ -470,28 +470,28 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
 
   private static javax.swing.filechooser.FileFilter createFileFilter(
-						String                  text,
-						AudioFileFormat.Type... fmts )
+                                                String                  text,
+                                                AudioFileFormat.Type... fmts )
   {
     javax.swing.filechooser.FileFilter rv = null;
     if( fmts != null ) {
       if( fmts.length > 0 ) {
-	Collection<String> suffixes = new ArrayList<String>( fmts.length );
-	for( int i = 0; i < fmts.length; i++ ) {
-	  String suffix = fmts[ i ].getExtension();
-	  if( suffix != null ) {
-	    if( suffix.length() > 0 )
-	      suffixes.add( suffix );
-	  }
-	}
-	if( !suffixes.isEmpty() ) {
-	  try {
-	    rv = new FileNameExtensionFilter(
-			text,
-			suffixes.toArray( new String[ suffixes.size() ] ) );
-	  }
-	  catch( ArrayStoreException ex ) {}
-	}
+        Collection<String> suffixes = new ArrayList<String>( fmts.length );
+        for( int i = 0; i < fmts.length; i++ ) {
+          String suffix = fmts[ i ].getExtension();
+          if( suffix != null ) {
+            if( suffix.length() > 0 )
+              suffixes.add( suffix );
+          }
+        }
+        if( !suffixes.isEmpty() ) {
+          try {
+            rv = new FileNameExtensionFilter(
+                        text,
+                        suffixes.toArray( new String[ suffixes.size() ] ) );
+          }
+          catch( ArrayStoreException ex ) {}
+        }
       }
     }
     return rv;
@@ -504,10 +504,10 @@ public class AudioFrm extends BaseFrm implements ActionListener
     Object speedV = this.spinnerSpeed.getValue();
     if( speedV != null ) {
       if( speedV instanceof Number )
-	speedF += (((Number) speedV).floatValue() / 100F);
+        speedF += (((Number) speedV).floatValue() / 100F);
     }
     int cyclesPerSecond = (int) Math.round(
-			(float) this.z8.getCyclesPerSecond() * speedF );
+                        (float) this.z8.getCyclesPerSecond() * speedF );
 
     if( this.btnSoundOut.isSelected() ) {
       // keine Geschwindigkeitsanpassung!
@@ -535,46 +535,46 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     if( file == null ) {
       if( this.readFileFilter == null ) {
-	this.readFileFilter = createFileFilter(
-					"Audiodateien",
-					AudioFileFormat.Type.AIFC,
-					AudioFileFormat.Type.AIFF,
-					AudioFileFormat.Type.AU,
-					AudioFileFormat.Type.SND,
-					AudioFileFormat.Type.WAVE );
+        this.readFileFilter = createFileFilter(
+                                        "Audiodateien",
+                                        AudioFileFormat.Type.AIFC,
+                                        AudioFileFormat.Type.AIFF,
+                                        AudioFileFormat.Type.AU,
+                                        AudioFileFormat.Type.SND,
+                                        AudioFileFormat.Type.WAVE );
       }
       file = FileDlg.showFileOpenDlg(
-				this,
-				"Sound-Datei \u00F6ffnen",
-				"\u00D6ffnen",
-				Main.getLastPathFile(),
-				this.readFileFilter );
+                                this,
+                                "Sound-Datei \u00F6ffnen",
+                                "\u00D6ffnen",
+                                Main.getLastPathFile(),
+                                this.readFileFilter );
     }
     if( file != null ) {
       stopAudio();
       boolean monitorPlay = this.btnMonitorPlay.isSelected();
       AudioIn audioIn     = new AudioInFile(
-					this.z8,
-					this,
-					file,
-					monitorPlay );
+                                        this.z8,
+                                        this,
+                                        file,
+                                        monitorPlay );
       this.audioFmt = audioIn.startAudio(
-				cyclesPerSecond,
-				getSampleRate(),
-				getThresholdValue() );
+                                cyclesPerSecond,
+                                getSampleRate(),
+                                getThresholdValue() );
       this.audioIO  = audioIn;
       if( this.audioFmt != null ) {
-	updChannel();
-	this.jtcSys.setAudioIn( audioIn );
-	this.curFile    = file;
-	this.lastFile   = file;
-	Main.setLastFile( file );
-	setAudioState( true );
-	if( audioIn.isMonitorPlayActive() != monitorPlay ) {
-	  showErrorNoMonitorPlay();
-	}
+        updChannel();
+        this.jtcSys.setAudioIn( audioIn );
+        this.curFile    = file;
+        this.lastFile   = file;
+        Main.setLastFile( file );
+        setAudioState( true );
+        if( audioIn.isMonitorPlayActive() != monitorPlay ) {
+          showErrorNoMonitorPlay();
+        }
       } else {
-	showError( this.audioIO.getErrorText() );
+        showError( this.audioIO.getErrorText() );
       }
     }
   }
@@ -585,9 +585,9 @@ public class AudioFrm extends BaseFrm implements ActionListener
     stopAudio();
     AudioIn audioIn = new AudioInLine( this.z8 );
     this.audioFmt   = audioIn.startAudio(
-					cyclesPerSecond,
-					getSampleRate(),
-					getThresholdValue() );
+                                        cyclesPerSecond,
+                                        getSampleRate(),
+                                        getThresholdValue() );
     this.audioIO    = audioIn;
     if( this.audioFmt != null ) {
       updChannel();
@@ -604,61 +604,61 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     if( this.writeFileFilter == null ) {
       this.writeFileFilter = createFileFilter(
-					"Unterst\u00FCtzte Audiodateien",
-					AudioSystem.getAudioFileTypes() );
+                                        "Unterst\u00FCtzte Audiodateien",
+                                        AudioSystem.getAudioFileTypes() );
     }
     File file = FileDlg.showFileSaveDlg(
-				this,
-				"Sound-Datei speichern",
-				Main.getLastPathFile(),
-				this.writeFileFilter );
+                                this,
+                                "Sound-Datei speichern",
+                                Main.getLastPathFile(),
+                                this.writeFileFilter );
     if( file != null ) {
       AudioFileFormat.Type fileType = getAudioFileType( file );
       if( fileType != null ) {
-	stopAudio();
-	boolean  monitorPlay = this.btnMonitorPlay.isSelected();
-	AudioOut audioOut    = new AudioOutFile(
-					this.z8,
-					this.jtcSys,
-					this,
-					file,
-					fileType,
-					monitorPlay );
-	this.audioFmt = audioOut.startAudio(
-					cyclesPerSecond,
-					getSampleRate(),
-					getThresholdValue() );
-	this.audioIO  = audioOut;
-	if( this.audioFmt != null ) {
-	  this.jtcSys.setAudioOut( audioOut, true );
-	  this.curFile  = file;
-	  this.lastFile = file;
-	  Main.setLastFile( file );
-	  setAudioState( true );
-	  if( audioOut.isMonitorPlayActive() != monitorPlay ) {
-	    showErrorNoMonitorPlay();
-	  }
-	} else {
-	  showError( this.audioIO.getErrorText() );
-	}
+        stopAudio();
+        boolean  monitorPlay = this.btnMonitorPlay.isSelected();
+        AudioOut audioOut    = new AudioOutFile(
+                                        this.z8,
+                                        this.jtcSys,
+                                        this,
+                                        file,
+                                        fileType,
+                                        monitorPlay );
+        this.audioFmt = audioOut.startAudio(
+                                        cyclesPerSecond,
+                                        getSampleRate(),
+                                        getThresholdValue() );
+        this.audioIO  = audioOut;
+        if( this.audioFmt != null ) {
+          this.jtcSys.setAudioOut( audioOut, true );
+          this.curFile  = file;
+          this.lastFile = file;
+          Main.setLastFile( file );
+          setAudioState( true );
+          if( audioOut.isMonitorPlayActive() != monitorPlay ) {
+            showErrorNoMonitorPlay();
+          }
+        } else {
+          showError( this.audioIO.getErrorText() );
+        }
       }
     }
   }
 
 
   private void doEnableAudioOutLine(
-				int     cyclesPerSecond,
-				boolean forDataTransfer )
+                                int     cyclesPerSecond,
+                                boolean forDataTransfer )
   {
     stopAudio();
     AudioOut audioOut = new AudioOutLine(
-				this.z8,
-				this.jtcSys,
-				this.btnDataOut.isSelected() );
+                                this.z8,
+                                this.jtcSys,
+                                this.btnDataOut.isSelected() );
     this.audioFmt = audioOut.startAudio(
-				cyclesPerSecond,
-				getSampleRate(),
-				getThresholdValue() );
+                                cyclesPerSecond,
+                                getSampleRate(),
+                                getThresholdValue() );
     this.audioIO  = audioOut;
     if( this.audioFmt != null ) {
       this.jtcSys.setAudioOut( audioOut, forDataTransfer );
@@ -683,7 +683,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
   private AudioFileFormat.Type getAudioFileType( File file )
   {
     Collection<AudioFileFormat.Type> types =
-				new ArrayList<AudioFileFormat.Type>();
+                                new ArrayList<AudioFileFormat.Type>();
     if( AudioSystem.isFileTypeSupported( AudioFileFormat.Type.AIFC ) ) {
       types.add( AudioFileFormat.Type.AIFC );
     }
@@ -704,15 +704,15 @@ public class AudioFrm extends BaseFrm implements ActionListener
     if( fileName != null ) {
       fileName = fileName.toUpperCase( Locale.ENGLISH );
       for( AudioFileFormat.Type fileType : types ) {
-	String ext = fileType.getExtension();
-	if( ext != null ) {
-	  ext = ext.toUpperCase();
-	  if( !ext.startsWith( "." ) ) {
-	    ext = "." + ext;
-	  }
-	  if( fileName.endsWith( ext ) )
-	    return fileType;
-	}
+        String ext = fileType.getExtension();
+        if( ext != null ) {
+          ext = ext.toUpperCase();
+          if( !ext.startsWith( "." ) ) {
+            ext = "." + ext;
+          }
+          if( fileName.endsWith( ext ) )
+            return fileType;
+        }
       }
     }
 
@@ -722,14 +722,14 @@ public class AudioFrm extends BaseFrm implements ActionListener
       buf.append( "\nM\u00F6gliche Dateiendungen sind:\n" );
       String delim = null;
       for( AudioFileFormat.Type fileType : types ) {
-	String ext = fileType.getExtension();
-	if( ext != null ) {
-	  if( delim != null ) {
-	    buf.append( delim );
-	  }
-	  buf.append( ext );
-	  delim = ", ";
-	}
+        String ext = fileType.getExtension();
+        if( ext != null ) {
+          if( delim != null ) {
+            buf.append( delim );
+          }
+          buf.append( ext );
+          delim = ", ";
+        }
       }
     }
     Main.showError( this, buf.toString() );
@@ -749,16 +749,16 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
       int channels = fmt.getChannels();
       switch( channels ) {
-	case 1:
-	  buf.append( "Mono" );
-	  break;
-	case 2:
-	  buf.append( "Stereo" );
-	  break;
-	default:
-	  buf.append( channels );
-	  buf.append( " Kan\u00E4le" );
-	  break;
+        case 1:
+          buf.append( "Mono" );
+          break;
+        case 2:
+          buf.append( "Stereo" );
+          break;
+        default:
+          buf.append( channels );
+          buf.append( " Kan\u00E4le" );
+          break;
       }
     }
     return buf.toString();
@@ -769,14 +769,14 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     int i = this.comboSampleRate.getSelectedIndex() - 1;  // 0: automatisch
     return ((i >= 0) && (i < this.sampleRates.length)) ?
-					this.sampleRates[ i ] : 0;
+                                        this.sampleRates[ i ] : 0;
   }
 
 
   private float getThresholdValue()
   {
     return (float) this.sliderThreshold.getValue()
-			/ (float) this.sliderThreshold.getMaximum();
+                        / (float) this.sliderThreshold.getMaximum();
   }
 
 
@@ -802,7 +802,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     if( state ) {
       AudioIO audioIO = this.audioIO;
       if( audioIO != null )
-	progressState = audioIO.isProgressUpdateEnabled();
+        progressState = audioIO.isProgressUpdateEnabled();
     }
     if( progressState ) {
       this.labelProgress.setEnabled( true );
@@ -839,10 +839,10 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     if( errorText == null ) {
       if( this.comboSampleRate.getSelectedIndex() > 0 ) {
-	errorText = "Es kann kein Audiokanal mit den angegebenen"
-				+ " Optionen ge\u00F6ffnet werden.";
+        errorText = "Es kann kein Audiokanal mit den angegebenen"
+                                + " Optionen ge\u00F6ffnet werden.";
       } else {
-	errorText = "Es kann kein Audiokanal ge\u00F6ffnet werden.";
+        errorText = "Es kann kein Audiokanal ge\u00F6ffnet werden.";
       }
     }
     Main.showError( this, errorText );
@@ -852,10 +852,10 @@ public class AudioFrm extends BaseFrm implements ActionListener
   private void showErrorNoMonitorPlay()
   {
     Main.showError(
-	this,
-	"Das Mith\u00F6ren ist nicht m\u00F6glich,\n"
-		+ "da das \u00D6ffnen eines Audiokanals mit dem Format\n"
-		+ "der Sound-Datei fehlgeschlagen ist." );
+        this,
+        "Das Mith\u00F6ren ist nicht m\u00F6glich,\n"
+                + "da das \u00D6ffnen eines Audiokanals mit dem Format\n"
+                + "der Sound-Datei fehlgeschlagen ist." );
   }
 
 
@@ -869,7 +869,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
       audioIO.stopAudio();
       String errorText = audioIO.getErrorText();
       if( errorText != null )
-	Main.showError( this, errorText );
+        Main.showError( this, errorText );
     }
   }
 
@@ -880,15 +880,15 @@ public class AudioFrm extends BaseFrm implements ActionListener
     AudioFormat audioFmt = this.audioFmt;
     if( (audioIO != null) && (audioFmt != null) ) {
       if( audioIO instanceof AudioIn ) {
-	int channel = 0;
-	if( this.btnChannel1.isSelected() ) {
-	  channel = 1;
-	}
-	if( channel >= audioFmt.getChannels() ) {
-	  channel = 0;
-	  this.btnChannel0.setSelected( true );
-	}
-	((AudioIn) audioIO).setSelectedChannel( channel );
+        int channel = 0;
+        if( this.btnChannel1.isSelected() ) {
+          channel = 1;
+        }
+        if( channel >= audioFmt.getChannels() ) {
+          channel = 0;
+          this.btnChannel0.setSelected( true );
+        }
+        ((AudioIn) audioIO).setSelectedChannel( channel );
       }
     }
   }
@@ -901,21 +901,21 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     // Sample-Rate
     boolean state = ((audioIO == null)
-	&& (this.btnSoundOut.isSelected()
-	    || this.btnDataOut.isSelected()
-	    || this.btnDataIn.isSelected()
-	    || this.btnFileOut.isSelected()));
+        && (this.btnSoundOut.isSelected()
+            || this.btnDataOut.isSelected()
+            || this.btnDataIn.isSelected()
+            || this.btnFileOut.isSelected()));
 
     this.labelSampleRate.setEnabled( state );
     this.comboSampleRate.setEnabled( state );
 
     // Geschwindigkeit
     if( (audioIO == null)
-	&& (this.btnDataIn.isSelected()
-	    || this.btnDataOut.isSelected()
-	    || this.btnFileIn.isSelected()
-	    || this.btnFileLastIn.isSelected()
-	    || this.btnFileOut.isSelected()) )
+        && (this.btnDataIn.isSelected()
+            || this.btnDataOut.isSelected()
+            || this.btnFileIn.isSelected()
+            || this.btnFileLastIn.isSelected()
+            || this.btnFileOut.isSelected()) )
     {
       this.labelSpeed.setEnabled( true );
       this.spinnerSpeed.setEnabled( true );
@@ -926,10 +926,10 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     // Schwellwert
     state = ((audioIO == null)
-	     && (this.jtcSys.getOSType() == JTCSys.OSType.OS2K)
-	     && (this.btnDataIn.isSelected()
-		 || this.btnFileIn.isSelected()
-		 || this.btnFileLastIn.isSelected()));
+             && (this.jtcSys.getOSType() == JTCSys.OSType.OS2K)
+             && (this.btnDataIn.isSelected()
+                 || this.btnFileIn.isSelected()
+                 || this.btnFileLastIn.isSelected()));
     this.labelThreshold.setEnabled( state );
     this.sliderThreshold.setEnabled( state );
 
@@ -937,13 +937,13 @@ public class AudioFrm extends BaseFrm implements ActionListener
     state = false;
     if( (audioIO != null) && (audioFmt != null) ) {
       if( audioIO instanceof AudioIn ) {
-	if( audioFmt.getChannels() > 1 )
-	  state = true;
+        if( audioFmt.getChannels() > 1 )
+          state = true;
       }
     } else {
       state = (this.btnDataIn.isSelected()
-	       || this.btnFileIn.isSelected()
-	       || this.btnFileLastIn.isSelected());
+               || this.btnFileIn.isSelected()
+               || this.btnFileLastIn.isSelected());
     }
     this.labelChannel.setEnabled( state );
     this.btnChannel0.setEnabled( state );
@@ -952,8 +952,8 @@ public class AudioFrm extends BaseFrm implements ActionListener
     // Mithoeren
     state = ((audioIO == null)
         && (this.btnFileOut.isSelected()
-	    || this.btnFileIn.isSelected()
-	    || this.btnFileLastIn.isSelected()));
+            || this.btnFileIn.isSelected()
+            || this.btnFileLastIn.isSelected()));
     this.btnMonitorPlay.setEnabled( state );
   }
 
@@ -961,7 +961,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
   private void updProgressBar( double value )
   {
     int intVal = (int) Math.round(
-	value * (double) this.progressBar.getMaximum() ) + 1;
+        value * (double) this.progressBar.getMaximum() ) + 1;
 
     if( intVal < this.progressBar.getMinimum() ) {
       intVal = this.progressBar.getMinimum();

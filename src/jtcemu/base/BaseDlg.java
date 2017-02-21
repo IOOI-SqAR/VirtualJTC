@@ -45,7 +45,7 @@ public class BaseDlg extends JDialog implements WindowListener
   }
 
 
-	/* --- WindowListener --- */
+        /* --- WindowListener --- */
 
   @Override
   public void windowActivated( WindowEvent e )

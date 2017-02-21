@@ -37,21 +37,21 @@ public class Main
     try {
       String appData = System.getenv( "APPDATA" );
       if( appData != null ) {
-	if( appData.length() > 0 ) {
-	  propsFile = new File( appData, propsFileName );
-	}
+        if( appData.length() > 0 ) {
+          propsFile = new File( appData, propsFileName );
+        }
       }
       if( propsFile == null ) {
-	String homeDir = System.getProperty( "user.home" );
-	if( homeDir != null ) {
-	  if( homeDir.length() > 0 ) {
-	    if( File.separatorChar == '/' ) {
-	      propsFile = new File( homeDir, "." + propsFileName );
-	    } else {
-	      propsFile = new File( homeDir, propsFileName );
-	    }
-	  }
-	}
+        String homeDir = System.getProperty( "user.home" );
+        if( homeDir != null ) {
+          if( homeDir.length() > 0 ) {
+            if( File.separatorChar == '/' ) {
+              propsFile = new File( homeDir, "." + propsFileName );
+            } else {
+              propsFile = new File( homeDir, propsFileName );
+            }
+          }
+        }
       }
     }
     catch( SecurityException ex ) {}
@@ -60,34 +60,34 @@ public class Main
     }
     if( propsFile.exists() ) {
       try {
-	Reader in = null;
-	try {
-	  in = new FileReader( propsFile );
-	  properties.load( in );
+        Reader in = null;
+        try {
+          in = new FileReader( propsFile );
+          properties.load( in );
 
-	  // Erscheinungsbild setzen
-	  String lafClassName = properties.getProperty(
-						"jtcemu.laf.classname" );
-	  if( lafClassName != null ) {
-	    if( lafClassName.length() > 0 ) {
-	      try {
-		UIManager.setLookAndFeel( lafClassName );
-	      }
-	      catch( Exception ex ) {}
-	    }
-	  }
-	}
-	finally {
-	  if( in != null ) {
-	    try {
-	      in.close();
-	    }
-	    catch( IOException ex ) {}
-	  }
-	}
+          // Erscheinungsbild setzen
+          String lafClassName = properties.getProperty(
+                                                "jtcemu.laf.classname" );
+          if( lafClassName != null ) {
+            if( lafClassName.length() > 0 ) {
+              try {
+                UIManager.setLookAndFeel( lafClassName );
+              }
+              catch( Exception ex ) {}
+            }
+          }
+        }
+        finally {
+          if( in != null ) {
+            try {
+              in.close();
+            }
+            catch( IOException ex ) {}
+          }
+        }
       }
       catch( IOException ex ) {
-	showError( null, ex );
+        showError( null, ex );
       }
     }
 
@@ -112,46 +112,46 @@ public class Main
       // externe ROM-Images laden
       int n = getIntProperty( "jtcemu.rom.count", 0 );
       if( n > 0 ) {
-	ArrayList<ExtROM> extROMs = new ArrayList<ExtROM>( n );
-	for( int i = 0; i < n; i++ ) {
-	  String addrText = getProperty(
-			String.format( "jtcemu.rom.%d.address", i + 1 ) );
-	  String fileName = getProperty(
-			String.format( "jtcemu.rom.%d.file", i + 1 ) );
-	  if( (addrText != null) && (fileName != null) ) {
-	    try {
-	      int addr = Integer.parseInt( addrText, 16 );
-	      if( (addr >= 0) && (addr <= 0xFFFF) ) {
-		try {
-		  ExtROM extROM = new ExtROM( new File( fileName ) );
-		  extROM.setBegAddress( addr );
-		  extROMs.add( extROM );
-		}
-		catch( IOException ex ) {
-		  String msg = ex.getMessage();
-		  Main.showError(
-			topFrm,
-			String.format(
-				"ROM an Adresse %04X kann nicht"
-					+ " geladen werden\n%s",
-				addr,
-				msg != null ? msg : "" ) );
-		}
-	      }
-	    }
-	    catch( Exception ex ) {};
-	  }
-	}
-	n = extROMs.size();
-	if( n > 0 ) {
-	  try {
-	    jtcSys.setExtROMs( extROMs.toArray( new ExtROM[ n ] ) );
-	  }
-	  catch( ArrayStoreException ex ) {}
-	}
-	setProperty(
-		"jtcemu.rom.count",
-		Integer.toString( extROMs.size() ) );
+        ArrayList<ExtROM> extROMs = new ArrayList<ExtROM>( n );
+        for( int i = 0; i < n; i++ ) {
+          String addrText = getProperty(
+                        String.format( "jtcemu.rom.%d.address", i + 1 ) );
+          String fileName = getProperty(
+                        String.format( "jtcemu.rom.%d.file", i + 1 ) );
+          if( (addrText != null) && (fileName != null) ) {
+            try {
+              int addr = Integer.parseInt( addrText, 16 );
+              if( (addr >= 0) && (addr <= 0xFFFF) ) {
+                try {
+                  ExtROM extROM = new ExtROM( new File( fileName ) );
+                  extROM.setBegAddress( addr );
+                  extROMs.add( extROM );
+                }
+                catch( IOException ex ) {
+                  String msg = ex.getMessage();
+                  Main.showError(
+                        topFrm,
+                        String.format(
+                                "ROM an Adresse %04X kann nicht"
+                                        + " geladen werden\n%s",
+                                addr,
+                                msg != null ? msg : "" ) );
+                }
+              }
+            }
+            catch( Exception ex ) {};
+          }
+        }
+        n = extROMs.size();
+        if( n > 0 ) {
+          try {
+            jtcSys.setExtROMs( extROMs.toArray( new ExtROM[ n ] ) );
+          }
+          catch( ArrayStoreException ex ) {}
+        }
+        setProperty(
+                "jtcemu.rom.count",
+                Integer.toString( extROMs.size() ) );
       }
 
       // Hauptfenster anzeigen
@@ -164,17 +164,17 @@ public class Main
 
 
   public static boolean getBooleanProperty(
-				String  keyword,
-				boolean defaultValue )
+                                String  keyword,
+                                boolean defaultValue )
   {
     boolean rv = defaultValue;
     String  s  = properties.getProperty( keyword );
     if( s != null ) {
       s = s.trim().toUpperCase();
       if( s.equals( "1" )
-	  || s.equals( "Y" )
-	  || s.equals( "TRUE" )
-	  || Boolean.parseBoolean( s ) )
+          || s.equals( "Y" )
+          || s.equals( "TRUE" )
+          || Boolean.parseBoolean( s ) )
       {
         rv = true;
       }
@@ -193,10 +193,10 @@ public class Main
     if( s != null ) {
       s = s.trim();
       if( s.length() > 0 ) {
-	try {
-	  rv = Integer.valueOf( s );
-	}
-	catch( NumberFormatException ex ) {}
+        try {
+          rv = Integer.valueOf( s );
+        }
+        catch( NumberFormatException ex ) {}
       }
     }
     return rv;
@@ -215,9 +215,9 @@ public class Main
     File file = null;
     if( lastFile != null ) {
       if( lastFile.isDirectory() ) {
-	file = lastFile;
+        file = lastFile;
       } else {
-	file = lastFile.getParentFile();
+        file = lastFile.getParentFile();
       }
     }
     return file;
@@ -279,10 +279,10 @@ public class Main
   public static void showError( Component owner, String msg )
   {
     JOptionPane.showMessageDialog(
-		owner,
-		msg != null ? msg : "Unbekannter Fehler",
-		"Fehler",
-		JOptionPane.ERROR_MESSAGE );
+                owner,
+                msg != null ? msg : "Unbekannter Fehler",
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE );
   }
 
 
@@ -292,11 +292,11 @@ public class Main
     if( ex != null ) {
       msg = ex.getMessage();
       if( msg != null ) {
-	if( msg.length() < 1 )
-	  msg = null;
+        if( msg.length() < 1 )
+          msg = null;
       }
       if( msg == null ) {
-	msg = ex.getClass().getName();
+        msg = ex.getClass().getName();
       }
       showError( owner, msg );
     }
@@ -310,7 +310,7 @@ public class Main
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private static void readWindowIcon( String resource )
   {
@@ -318,10 +318,10 @@ public class Main
     if( url != null ) {
       Image image = topFrm.getToolkit().createImage( url );
       if( image != null ) {
-	if( windowIcons == null ) {
-	  windowIcons = new ArrayList<Image>();
-	}
-	windowIcons.add( image );
+        if( windowIcons == null ) {
+          windowIcons = new ArrayList<Image>();
+        }
+        windowIcons.add( image );
       }
     }
   }

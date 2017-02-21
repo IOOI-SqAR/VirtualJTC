@@ -28,12 +28,12 @@ public class AudioOutFile extends AudioOut
 
 
   public AudioOutFile(
-		Z8                   z8,
-		JTCSys               jtcSys,
-		AudioFrm             audioFrm,
-		File                 file,
-		AudioFileFormat.Type fileType,
-		boolean              monitorPlay )
+                Z8                   z8,
+                JTCSys               jtcSys,
+                AudioFrm             audioFrm,
+                File                 file,
+                AudioFileFormat.Type fileType,
+                boolean              monitorPlay )
   {
     super( z8, jtcSys );
     this.audioFrm    = audioFrm;
@@ -45,7 +45,7 @@ public class AudioOutFile extends AudioOut
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   /*
    * Wenn die Pause zu groess ist,
@@ -64,33 +64,33 @@ public class AudioOutFile extends AudioOut
 
   @Override
   public AudioFormat startAudio(
-			int   cyclesPerSecond,
-			int   sampleRate,
-			float thresholdValue )
+                        int   cyclesPerSecond,
+                        int   sampleRate,
+                        float thresholdValue )
   {
     if( this.queue == null ) {
       if( cyclesPerSecond > 0 ) {
-	if( sampleRate > 0 ) {
-	  this.sampleRate = sampleRate;
-	} else {
-	  this.sampleRate = 44100;
-	}
-	this.queue            = new AudioDataQueue( this.sampleRate * 60 );
-	this.lastPhaseSamples = 0;
-	this.maxPauseCycles   = cyclesPerSecond;	// 1 Sekunde
-	this.enabled          = true;
-	this.audioFmt         = new AudioFormat(
-					this.sampleRate,
-					8,
-					1,
-					true,
-					false );
-	this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
-					/ this.audioFmt.getFrameRate() );
+        if( sampleRate > 0 ) {
+          this.sampleRate = sampleRate;
+        } else {
+          this.sampleRate = 44100;
+        }
+        this.queue            = new AudioDataQueue( this.sampleRate * 60 );
+        this.lastPhaseSamples = 0;
+        this.maxPauseCycles   = cyclesPerSecond;        // 1 Sekunde
+        this.enabled          = true;
+        this.audioFmt         = new AudioFormat(
+                                        this.sampleRate,
+                                        8,
+                                        1,
+                                        true,
+                                        false );
+        this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
+                                        / this.audioFmt.getFrameRate() );
 
-	if( this.monitorPlay ) {
-	  openMonitorLine( this.audioFmt );
-	}
+        if( this.monitorPlay ) {
+          openMonitorLine( this.audioFmt );
+        }
       }
     }
     return this.audioFmt;
@@ -107,21 +107,21 @@ public class AudioOutFile extends AudioOut
     this.errorText       = queue.getErrorText();
     if( (this.errorText == null) && (queue.getTotalSampleCount() > 0) ) {
       try {
-	AudioSystem.write(
-		new AudioInputStream(
-			queue,
-			this.audioFmt,
-			queue.getTotalSampleCount() ),
-		this.fileType,
-		this.file );
+        AudioSystem.write(
+                new AudioInputStream(
+                        queue,
+                        this.audioFmt,
+                        queue.getTotalSampleCount() ),
+                this.fileType,
+                this.file );
       }
       catch( Exception ex ) {
-	this.errorText = "Die Sound-Datei kann nicht gespeichert werden.\n\n"
-							  + ex.getMessage();
+        this.errorText = "Die Sound-Datei kann nicht gespeichert werden.\n\n"
+                                                          + ex.getMessage();
       }
     } else {
       this.errorText = "Die Sound-Datei wurde nicht gespeichert,\n"
-				+ "da keine Audio-Daten erzeugt wurden.";
+                                + "da keine Audio-Daten erzeugt wurden.";
     }
   }
 
@@ -131,11 +131,11 @@ public class AudioOutFile extends AudioOut
   {
     if( nSamples > 0 ) {
       for( int i = 0; i < nSamples; i++ ) {
-	this.queue.write( value );
+        this.queue.write( value );
       }
       if( isMonitorPlayActive() ) {
-	for( int i = 0; i < nSamples; i++ )
-	  writeMonitorLine( value );
+        for( int i = 0; i < nSamples; i++ )
+          writeMonitorLine( value );
       }
     }
   }

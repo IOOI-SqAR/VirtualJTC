@@ -27,9 +27,9 @@ import z8.*;
 
 
 public class TopFrm extends BaseFrm
-			implements
-				ActionListener,
-				DropTargetListener
+                        implements
+                                ActionListener,
+                                DropTargetListener
 {
   private static final int[] screenScales = { 1, 2, 3, 4, 6, 8 };
 
@@ -86,8 +86,8 @@ public class TopFrm extends BaseFrm
       int                  v    = screenScales[ i ];
       String               text = Integer.toString( v );
       JRadioButtonMenuItem item = new JRadioButtonMenuItem(
-							text + "00 %",
-							v == screenScale );
+                                                        text + "00 %",
+                                                        v == screenScale );
       item.setActionCommand( "screen.scale." + text );
       item.addActionListener( this );
       grpScale.add( item );
@@ -100,13 +100,13 @@ public class TopFrm extends BaseFrm
     mnuExtra.addSeparator();
 
     mnuScreenImg.add( createJMenuItem(
-				"Als Text kopieren",
-				"screen.text.copy" ) );
+                                "Als Text kopieren",
+                                "screen.text.copy" ) );
     mnuScreenImg.add( createJMenuItem(
-				"Als Bild kopieren", "screen.image.copy" ) );
+                                "Als Bild kopieren", "screen.image.copy" ) );
     mnuScreenImg.add( createJMenuItem(
-				"Als Bild speichern unter...",
-				"screen.image.save_as" ) );
+                                "Als Bild speichern unter...",
+                                "screen.image.save_as" ) );
 
     mnuExtra.add( createJMenuItem( "Debugger...", "debug" ) );
     mnuExtra.add( createJMenuItem( "Reassembler...", "reass" ) );
@@ -118,12 +118,12 @@ public class TopFrm extends BaseFrm
     mnuExtra.add( createJMenuItem( "Einstellungen...", "settings" ) );
     mnuExtra.addSeparator();
     mnuExtra.add( createJMenuItem(
-				"Zur\u00FCcksetzen (RESET)",
-				KeyEvent.VK_F7,
-				"reset" ) );
+                                "Zur\u00FCcksetzen (RESET)",
+                                KeyEvent.VK_F7,
+                                "reset" ) );
     mnuExtra.add( createJMenuItem(
-				"Einschalten/Initialisieren",
-				"power_on" ) );
+                                "Einschalten/Initialisieren",
+                                "power_on" ) );
     mnuBar.add( mnuExtra );
 
 
@@ -154,36 +154,36 @@ public class TopFrm extends BaseFrm
     panelToolBar.add( toolBar );
 
     toolBar.add( GUIUtil.createImageButton(
-				this,
-				"/images/file/open.png",
-				"Laden",
-				"load" ) );
+                                this,
+                                "/images/file/open.png",
+                                "Laden",
+                                "load" ) );
 
     toolBar.add( GUIUtil.createImageButton(
-				this,
-				"/images/file/save.png",
-				"Speichern",
+                                this,
+                                "/images/file/save.png",
+                                "Speichern",
                                 "save" ) );
     toolBar.addSeparator();
 
     toolBar.add( GUIUtil.createImageButton(
-				this,
-				"/images/file/edit.png",
-				"Texteditor",
-				"edit" ) );
+                                this,
+                                "/images/file/edit.png",
+                                "Texteditor",
+                                "edit" ) );
     toolBar.add( GUIUtil.createImageButton(
-				this,
-				"/images/file/audio.png",
-				"Audio/Kassette",
-				"audio" ) );
+                                this,
+                                "/images/file/audio.png",
+                                "Audio/Kassette",
+                                "audio" ) );
 
     toolBar.addSeparator();
 
     toolBar.add( GUIUtil.createImageButton(
-				this,
-				"/images/file/reset.png",
-				"Zur\u00FCcksetzen (RESET)",
-				"reset" ) );
+                                this,
+                                "/images/file/reset.png",
+                                "Zur\u00FCcksetzen (RESET)",
+                                "reset" ) );
 
 
     // Bildschirmausgabe
@@ -192,14 +192,14 @@ public class TopFrm extends BaseFrm
     add( this.screenFld, BorderLayout.CENTER );
 
     this.mode2Scale.put(
-		this.screenFld.getMode(),
-		new Integer( screenScale ) );
+                this.screenFld.getMode(),
+                new Integer( screenScale ) );
 
 
     // Bildschirmausgabe zyklisch aktualisieren
     this.screenRefreshTimer = new javax.swing.Timer(
-					getSettingsScreenRefreshMillis(),
-					this );
+                                        getSettingsScreenRefreshMillis(),
+                                        this );
     this.screenRefreshTimer.start();
 
 
@@ -227,14 +227,14 @@ public class TopFrm extends BaseFrm
     boolean state = true;
     if( Main.getBooleanProperty( "jtcemu.confirm.init", true ) ) {
       if( JOptionPane.showConfirmDialog(
-		this,
-		"M\u00F6chten Sie das Aus- und wieder Einschalten emulieren\n"
-			+ "und den Emulator initialisieren?\n"
-			+ "Dabei wird der Arbeitsspeicher gel\u00F6scht.",
-		"Best\u00E4tigung",
-		JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
+                this,
+                "M\u00F6chten Sie das Aus- und wieder Einschalten emulieren\n"
+                        + "und den Emulator initialisieren?\n"
+                        + "Dabei wird der Arbeitsspeicher gel\u00F6scht.",
+                "Best\u00E4tigung",
+                JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
       {
-	state = false;
+        state = false;
       }
     }
     if( state ) {
@@ -248,20 +248,20 @@ public class TopFrm extends BaseFrm
     boolean state = true;
     if( Main.getBooleanProperty( "jtcemu.confirm.reset", true ) ) {
       String msg = "M\u00F6chten Sie jetzt ein RESET ausl\u00F6sen\n"
-			+ "und den Emulator zur\u00FCcksetzen?";
+                        + "und den Emulator zur\u00FCcksetzen?";
       if( (this.jtcSys.getOSType() == JTCSys.OSType.OS2K)
-	  || (this.jtcSys.getOSType() == JTCSys.OSType.ES1988) )
+          || (this.jtcSys.getOSType() == JTCSys.OSType.ES1988) )
       {
-	msg += "\nWenn der A-Cursor zu sehen ist,\n"
-			+ "sollten Sie kein RESET ausl\u00F6sen!";
+        msg += "\nWenn der A-Cursor zu sehen ist,\n"
+                        + "sollten Sie kein RESET ausl\u00F6sen!";
       }
       if( JOptionPane.showConfirmDialog(
-		this,
-		msg,
-		"Best\u00E4tigung",
-		JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
+                this,
+                msg,
+                "Best\u00E4tigung",
+                JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
       {
-	state = false;
+        state = false;
       }
     }
     if( state )
@@ -275,7 +275,7 @@ public class TopFrm extends BaseFrm
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -283,111 +283,111 @@ public class TopFrm extends BaseFrm
     if( e.getSource() == this.screenRefreshTimer ) {
       boolean screenOutputEnabled = this.jtcSys.isScreenOutputEnabled();
       if( (screenOutputEnabled != this.screenOutputEnabled)
-	  || this.screenFld.isDirty() )
+          || this.screenFld.isDirty() )
       {
-	this.screenFld.repaint();
-	this.screenOutputEnabled = screenOutputEnabled;
+        this.screenFld.repaint();
+        this.screenOutputEnabled = screenOutputEnabled;
       }
     } else {
       String actionCmd = e.getActionCommand();
       if( actionCmd != null ) {
-	if( actionCmd.equals( "quit" ) ) {
-	  doQuit();
-	} else {
-	  GUIUtil.setWaitCursor( this, true );
-	  try {
-	    if( actionCmd.equals( "load" ) ) {
-	      File file = FileDlg.showFileOpenDlg(
-					this,
-					"Datei laden",
-					"Laden...",
-					Main.getLastPathFile(),
-					GUIUtil.binaryFileFilter,
-					GUIUtil.hexFileFilter,
-					GUIUtil.jtcFileFilter,
-					GUIUtil.tapFileFilter );
-	      if( file != null )
-		loadFile( file );
-	    }
-	    else if( actionCmd.equals( "save" ) ) {
-	      (new SaveDlg( this, this.jtcSys )).setVisible( true );
-	    }
-	    else if( actionCmd.equals( "edit" ) ) {
-	      TextEditFrm.open( this.jtcSys );
-	    }
-	    else if( actionCmd.equals( "screen.text.copy" ) ) {
-	      doScreenTextCopy();
-	    }
-	    else if( actionCmd.equals( "screen.image.copy" ) ) {
-	      doScreenImageCopy();
-	    }
-	    else if( actionCmd.equals( "screen.image.save_as" ) ) {
-	      doScreenImageSaveAs();
-	    }
-	    else if( actionCmd.equals( "debug" ) ) {
-	      DebugFrm.open( this.z8 );
-	    }
-	    else if( actionCmd.equals( "reass" ) ) {
-	      ReassFrm.open( this.jtcSys );
-	    }
-	    else if( actionCmd.equals( "memedit" ) ) {
-	      MemEditFrm.open( this.jtcSys );
-	    }
-	    else if( actionCmd.equals( "hexedit" ) ) {
-	      HexEditFrm.open();
-	    }
-	    else if( actionCmd.equals( "audio" ) ) {
-	      AudioFrm.open( this.z8, this.jtcSys, this.emuThread );
-	    }
-	    else if( actionCmd.equals( "keyboard" ) ) {
-	      doKeyboardFrm();
-	    }
-	    else if( actionCmd.equals( "settings" ) ) {
-	      SettingsFrm.open( this, this.jtcSys );
-	    }
-	    else if( actionCmd.equals( "power_on" ) ) {
-	      doPowerOn();
-	    }
-	    else if( actionCmd.equals( "reset" ) ) {
-	      doReset();
-	    }
-	    else if( actionCmd.equals( "help" ) ) {
-	      HelpFrm.open( null );
-	    }
-	    else if( actionCmd.equals( "about" ) ) {
-	      doAbout();
-	    }
-	    else if( actionCmd.equals( "license" ) ) {
-	      HelpFrm.open( "/help/license.htm" );
-	    }
-	    else if( actionCmd.equals( "thanks" ) ) {
-	      HelpFrm.open( "/help/thanks.htm" );
-	    }
-	    else if( actionCmd.startsWith( "screen.scale." ) ) {
-	      if( actionCmd.length() > 13 ) {
-		try {
-		  int scale = Integer.parseInt( actionCmd.substring( 13 ) );
-		  this.screenFld.setScreenScale( scale );
-		  this.mode2Scale.put(
-				this.screenFld.getMode(),
-				new Integer( scale ) );
-		  pack();
-		}
-		catch( NumberFormatException ex ) {}
-	      }
-	    }
-	  }
-	  catch( Exception ex ) {
-	    Main.showError( this, ex );
-	  }
-	  GUIUtil.setWaitCursor( this, false );
-	}
+        if( actionCmd.equals( "quit" ) ) {
+          doQuit();
+        } else {
+          GUIUtil.setWaitCursor( this, true );
+          try {
+            if( actionCmd.equals( "load" ) ) {
+              File file = FileDlg.showFileOpenDlg(
+                                        this,
+                                        "Datei laden",
+                                        "Laden...",
+                                        Main.getLastPathFile(),
+                                        GUIUtil.binaryFileFilter,
+                                        GUIUtil.hexFileFilter,
+                                        GUIUtil.jtcFileFilter,
+                                        GUIUtil.tapFileFilter );
+              if( file != null )
+                loadFile( file );
+            }
+            else if( actionCmd.equals( "save" ) ) {
+              (new SaveDlg( this, this.jtcSys )).setVisible( true );
+            }
+            else if( actionCmd.equals( "edit" ) ) {
+              TextEditFrm.open( this.jtcSys );
+            }
+            else if( actionCmd.equals( "screen.text.copy" ) ) {
+              doScreenTextCopy();
+            }
+            else if( actionCmd.equals( "screen.image.copy" ) ) {
+              doScreenImageCopy();
+            }
+            else if( actionCmd.equals( "screen.image.save_as" ) ) {
+              doScreenImageSaveAs();
+            }
+            else if( actionCmd.equals( "debug" ) ) {
+              DebugFrm.open( this.z8 );
+            }
+            else if( actionCmd.equals( "reass" ) ) {
+              ReassFrm.open( this.jtcSys );
+            }
+            else if( actionCmd.equals( "memedit" ) ) {
+              MemEditFrm.open( this.jtcSys );
+            }
+            else if( actionCmd.equals( "hexedit" ) ) {
+              HexEditFrm.open();
+            }
+            else if( actionCmd.equals( "audio" ) ) {
+              AudioFrm.open( this.z8, this.jtcSys, this.emuThread );
+            }
+            else if( actionCmd.equals( "keyboard" ) ) {
+              doKeyboardFrm();
+            }
+            else if( actionCmd.equals( "settings" ) ) {
+              SettingsFrm.open( this, this.jtcSys );
+            }
+            else if( actionCmd.equals( "power_on" ) ) {
+              doPowerOn();
+            }
+            else if( actionCmd.equals( "reset" ) ) {
+              doReset();
+            }
+            else if( actionCmd.equals( "help" ) ) {
+              HelpFrm.open( null );
+            }
+            else if( actionCmd.equals( "about" ) ) {
+              doAbout();
+            }
+            else if( actionCmd.equals( "license" ) ) {
+              HelpFrm.open( "/help/license.htm" );
+            }
+            else if( actionCmd.equals( "thanks" ) ) {
+              HelpFrm.open( "/help/thanks.htm" );
+            }
+            else if( actionCmd.startsWith( "screen.scale." ) ) {
+              if( actionCmd.length() > 13 ) {
+                try {
+                  int scale = Integer.parseInt( actionCmd.substring( 13 ) );
+                  this.screenFld.setScreenScale( scale );
+                  this.mode2Scale.put(
+                                this.screenFld.getMode(),
+                                new Integer( scale ) );
+                  pack();
+                }
+                catch( NumberFormatException ex ) {}
+              }
+            }
+          }
+          catch( Exception ex ) {
+            Main.showError( this, ex );
+          }
+          GUIUtil.setWaitCursor( this, false );
+        }
       }
     }
   }
 
 
-	/* --- DropTargetListener --- */
+        /* --- DropTargetListener --- */
 
   @Override
   public void dragEnter( DropTargetDragEvent e )
@@ -418,31 +418,31 @@ public class TopFrm extends BaseFrm
       e.acceptDrop( DnDConstants.ACTION_COPY );    // Quelle nicht loeschen
       Transferable t = e.getTransferable();
       if( t != null ) {
-	try {
-	  Object o = t.getTransferData( DataFlavor.javaFileListFlavor );
-	  if( o != null ) {
-	    if( o instanceof Collection ) {
-	      Iterator iter = ((Collection) o).iterator();
-	      if( iter != null ) {
-		if( iter.hasNext() ) {
-		  o = iter.next();
-		  if( o != null ) {
-		    File file = null;
-		    if( o instanceof File ) {
-		      file = (File) o;
-		    }
-		    else if( o instanceof String ) {
-		      file = new File( o.toString() );
-		    }
-		    if( file != null )
-		      loadFile( file );
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-	catch( Exception ex ) {}
+        try {
+          Object o = t.getTransferData( DataFlavor.javaFileListFlavor );
+          if( o != null ) {
+            if( o instanceof Collection ) {
+              Iterator iter = ((Collection) o).iterator();
+              if( iter != null ) {
+                if( iter.hasNext() ) {
+                  o = iter.next();
+                  if( o != null ) {
+                    File file = null;
+                    if( o instanceof File ) {
+                      file = (File) o;
+                    }
+                    else if( o instanceof String ) {
+                      file = new File( o.toString() );
+                    }
+                    if( file != null )
+                      loadFile( file );
+                  }
+                }
+              }
+            }
+          }
+        }
+        catch( Exception ex ) {}
       }
       e.dropComplete( true );
     } else {
@@ -459,7 +459,7 @@ public class TopFrm extends BaseFrm
   }
 
 
-	/* --- ueberschriebene Methoden  --- */
+        /* --- ueberschriebene Methoden  --- */
 
   @Override
   public void lafChanged()
@@ -472,8 +472,8 @@ public class TopFrm extends BaseFrm
   public void prepareSettingsToSave()
   {
     Main.setProperty(
-	"jtcemu.screen.scale",
-	Integer.toString( this.screenFld.getScreenScale() ) );
+        "jtcemu.screen.scale",
+        Integer.toString( this.screenFld.getScreenScale() ) );
   }
 
 
@@ -482,8 +482,8 @@ public class TopFrm extends BaseFrm
   {
     this.screenRefreshTimer.setDelay( getSettingsScreenRefreshMillis() );
     if( ((this.jtcSys.getOSType() != JTCSys.OSType.OS2K)
-		&& (this.jtcSys.getOSType() != JTCSys.OSType.ES1988))
-	|| this.jtcSys.getEmulateKeyboardSyscall() )
+                && (this.jtcSys.getOSType() != JTCSys.OSType.ES1988))
+        || this.jtcSys.getEmulateKeyboardSyscall() )
     {
       KeyboardFrm.close();
     }
@@ -491,7 +491,7 @@ public class TopFrm extends BaseFrm
       pack();
     }
     JRadioButtonMenuItem item = this.scale2MenuItems.get(
-			new Integer( this.screenFld.getScreenScale() ) );
+                        new Integer( this.screenFld.getScreenScale() ) );
     if( item != null ) {
       item.setSelected( true );
     }
@@ -512,58 +512,58 @@ public class TopFrm extends BaseFrm
   }
 
 
-	/* --- Aktionen --- */
+        /* --- Aktionen --- */
 
   private void doAbout()
   {
     JOptionPane.showMessageDialog(
-	this,
-	"JTCEMU Version 1.1.1\n"
-		+ "Emulation des JU+TE-Computers\n"
-		+ "\n"
-		+ "(c) 2007-2011 Jens M\u00FCller\n"
-		+ "Lizenz: GNU General Public License Version 3\n"
-		+ "\n"
-		+ "Benutzung des Programms erfolgt auf eigene Gefahr!\n"
-		+ "Jegliche Haftung und Gew\u00E4hrleistung"
-		+ " ist ausgeschlossen!\n"
-		+ "\n"
-		+ "Der Emulator enth\u00E4lt ROM-Images der Betriebssysteme,\n"
-		+ "die mit der Bauanleitung des JU+TE-Computers"
-		+ " ver\u00F6ffentlicht\n"
-		+ "bzw. von der Redaktion Jugend+Technik\n"
-		+ "zur Verf\u00FCgung gestellt wurden.\n"
-		+ "Die Urheberschaften an diesen ROM-Images liegen bei:\n"
-		+ "\n"
-		+ "2K-Betriebssystem und 4K-System EMR-ES 1988:\n"
-		+ "(c) 1987-1988 Dr. Helmut Hoyer\n"
-		+ "\n"
-		+ "4K-Betriebssystem ES 2.3 und 6K-System ES 4.0:\n"
-		+ "(c) 1989-1990 Harun Scheutzow",
-	"\u00DCber...",
-	JOptionPane.INFORMATION_MESSAGE );
+        this,
+        "JTCEMU Version 1.1.1\n"
+                + "Emulation des JU+TE-Computers\n"
+                + "\n"
+                + "(c) 2007-2011 Jens M\u00FCller\n"
+                + "Lizenz: GNU General Public License Version 3\n"
+                + "\n"
+                + "Benutzung des Programms erfolgt auf eigene Gefahr!\n"
+                + "Jegliche Haftung und Gew\u00E4hrleistung"
+                + " ist ausgeschlossen!\n"
+                + "\n"
+                + "Der Emulator enth\u00E4lt ROM-Images der Betriebssysteme,\n"
+                + "die mit der Bauanleitung des JU+TE-Computers"
+                + " ver\u00F6ffentlicht\n"
+                + "bzw. von der Redaktion Jugend+Technik\n"
+                + "zur Verf\u00FCgung gestellt wurden.\n"
+                + "Die Urheberschaften an diesen ROM-Images liegen bei:\n"
+                + "\n"
+                + "2K-Betriebssystem und 4K-System EMR-ES 1988:\n"
+                + "(c) 1987-1988 Dr. Helmut Hoyer\n"
+                + "\n"
+                + "4K-Betriebssystem ES 2.3 und 6K-System ES 4.0:\n"
+                + "(c) 1989-1990 Harun Scheutzow",
+        "\u00DCber...",
+        JOptionPane.INFORMATION_MESSAGE );
   }
 
 
   private void doKeyboardFrm()
   {
     if( ((this.jtcSys.getOSType() == JTCSys.OSType.OS2K)
-		|| (this.jtcSys.getOSType() == JTCSys.OSType.ES1988))
-	&& !this.jtcSys.getEmulateKeyboardSyscall() )
+                || (this.jtcSys.getOSType() == JTCSys.OSType.ES1988))
+        && !this.jtcSys.getEmulateKeyboardSyscall() )
     {
       KeyboardFrm.open( this, this.jtcSys );
     } else {
       JOptionPane.showMessageDialog(
-		this,
-		"Das Fenster mit der originalen Tastaturmatrix"
-			+ " steht nur zur Verf\u00FCgung,\n"
-			+ "wenn das 2K-Betriebssystem oder das EMR-ES 1988"
-			+ " aktiv ist und\n"
-			+ "die Systemroutine f\u00FCr die Tastaturabfrage"
-			+ " nicht emuliert wird\n"
-			+ "(siehe Einstellungen, Bereich System).",
-		"Hinweis",
-		JOptionPane.INFORMATION_MESSAGE );
+                this,
+                "Das Fenster mit der originalen Tastaturmatrix"
+                        + " steht nur zur Verf\u00FCgung,\n"
+                        + "wenn das 2K-Betriebssystem oder das EMR-ES 1988"
+                        + " aktiv ist und\n"
+                        + "die Systemroutine f\u00FCr die Tastaturabfrage"
+                        + " nicht emuliert wird\n"
+                        + "(siehe Einstellungen, Bereich System).",
+                "Hinweis",
+                JOptionPane.INFORMATION_MESSAGE );
     }
   }
 
@@ -573,12 +573,12 @@ public class TopFrm extends BaseFrm
     boolean state = true;
     if( Main.getBooleanProperty( "jtcemu.confirm.quit", true ) ) {
       if( JOptionPane.showConfirmDialog(
-		this,
-		"M\u00F6chten Sie den Emulator beenden?",
-		"Best\u00E4tigung",
-		JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
+                this,
+                "M\u00F6chten Sie den Emulator beenden?",
+                "Best\u00E4tigung",
+                JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
       {
-	state = false;
+        state = false;
       }
     }
     if( state ) {
@@ -598,7 +598,7 @@ public class TopFrm extends BaseFrm
       ReassFrm.close();
       SettingsFrm.close();
       try {
-	this.emuThread.join( 500 );
+        this.emuThread.join( 500 );
       }
       catch( InterruptedException ex ) {}
       doClose();
@@ -612,14 +612,14 @@ public class TopFrm extends BaseFrm
     try {
       Toolkit tk = getToolkit();
       if( tk != null ) {
-	Clipboard clp = tk.getSystemClipboard();
-	if( clp != null ) {
-	  Image image = this.screenFld.createBufferedImage();
-	  if( image != null ) {
-	    TransferableImage tImg = new TransferableImage( image );
-	    clp.setContents( tImg, tImg );
-	  }
-	}
+        Clipboard clp = tk.getSystemClipboard();
+        if( clp != null ) {
+          Image image = this.screenFld.createBufferedImage();
+          if( image != null ) {
+            TransferableImage tImg = new TransferableImage( image );
+            clp.setContents( tImg, tImg );
+          }
+        }
       }
     }
     catch( IllegalStateException ex ) {}
@@ -631,64 +631,64 @@ public class TopFrm extends BaseFrm
     try {
       String[] fmtNames = ImageIO.getWriterFormatNames();
       if( fmtNames != null ) {
-	if( fmtNames.length < 1 )
-	  fmtNames = null;
+        if( fmtNames.length < 1 )
+          fmtNames = null;
       }
       if( fmtNames == null ) {
-	throw new IOException(
-		"Das Speichern von Bilddateien wird auf\n"
-			+ "dieser Plattform nicht unterst\u00FCtzt." );
+        throw new IOException(
+                "Das Speichern von Bilddateien wird auf\n"
+                        + "dieser Plattform nicht unterst\u00FCtzt." );
       }
       BufferedImage image = this.screenFld.createBufferedImage();
       if( image != null ) {
-	File file = FileDlg.showFileSaveDlg(
-				this,
-				"Bilddatei speichern",
-				Main.getLastPathFile(),
-				new FileNameExtensionFilter(
-					"Unterst\u00FCtzte Bilddateien",
-					fmtNames ) );
-	if( file != null ) {
-	  String s = file.getName();
-	  if( s != null ) {
-	    s = s.toUpperCase();
-	    String fmt = null;
-	    for( int i = 0; i < fmtNames.length; i++ ) {
-	      if( s.endsWith( "." + fmtNames[ i ].toUpperCase() ) ) {
-		fmt = fmtNames[ i ];
-		break;
-	      }
-	    }
-	    if( fmt != null ) {
-	      OutputStream out = null;
-	      try {
-		out = new FileOutputStream( file );
-		if( !ImageIO.write( image, fmt, file ) ) {
-		  fmt = null;
-		}
-		out.close();
-		Main.setLastFile( file );
-	      }
-	      catch( IOException ex ) {
-		file.delete();
-		throw ex;
-	      }
-	      finally {
-		if( out != null ) {
-		  try {
-		    out.close();
-		  }
-		  catch( IOException ex ) {}
-		}
-	      }
-	    }
-	    if( fmt == null ) {
-	      throw new IOException(
-			"Das durch die Dateiendung angegebene Format\n"
-				+ "wird nicht unterst\u00FCtzt." );
-	    }
-	  }
-	}
+        File file = FileDlg.showFileSaveDlg(
+                                this,
+                                "Bilddatei speichern",
+                                Main.getLastPathFile(),
+                                new FileNameExtensionFilter(
+                                        "Unterst\u00FCtzte Bilddateien",
+                                        fmtNames ) );
+        if( file != null ) {
+          String s = file.getName();
+          if( s != null ) {
+            s = s.toUpperCase();
+            String fmt = null;
+            for( int i = 0; i < fmtNames.length; i++ ) {
+              if( s.endsWith( "." + fmtNames[ i ].toUpperCase() ) ) {
+                fmt = fmtNames[ i ];
+                break;
+              }
+            }
+            if( fmt != null ) {
+              OutputStream out = null;
+              try {
+                out = new FileOutputStream( file );
+                if( !ImageIO.write( image, fmt, file ) ) {
+                  fmt = null;
+                }
+                out.close();
+                Main.setLastFile( file );
+              }
+              catch( IOException ex ) {
+                file.delete();
+                throw ex;
+              }
+              finally {
+                if( out != null ) {
+                  try {
+                    out.close();
+                  }
+                  catch( IOException ex ) {}
+                }
+              }
+            }
+            if( fmt == null ) {
+              throw new IOException(
+                        "Das durch die Dateiendung angegebene Format\n"
+                                + "wird nicht unterst\u00FCtzt." );
+            }
+          }
+        }
       }
     }
     catch( Exception ex ) {
@@ -702,19 +702,19 @@ public class TopFrm extends BaseFrm
     try {
       Toolkit tk = getToolkit();
       if( tk != null ) {
-	Clipboard clp = tk.getSystemClipboard();
-	if( clp != null ) {
-	  StringSelection data = new StringSelection(
-					this.jtcSys.getScreenText() );
-	  clp.setContents( data, data );
-	}
+        Clipboard clp = tk.getSystemClipboard();
+        if( clp != null ) {
+          StringSelection data = new StringSelection(
+                                        this.jtcSys.getScreenText() );
+          clp.setContents( data, data );
+        }
       }
     }
     catch( IllegalStateException ex ) {}
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private JMenuItem createJMenuItem( String text, String actionCmd )
   {
@@ -728,9 +728,9 @@ public class TopFrm extends BaseFrm
 
 
   private JMenuItem createJMenuItem(
-				String text,
-				int    altKeyCode,
-				String actionCmd )
+                                String text,
+                                int    altKeyCode,
+                                String actionCmd )
   {
     JMenuItem item = createJMenuItem( text, actionCmd );
     item.setAccelerator( KeyStroke.getKeyStroke( altKeyCode, 0 ) );
@@ -746,7 +746,7 @@ public class TopFrm extends BaseFrm
 
   private void loadFile( File file ) throws IOException
   {
-    int  bufSize = 0x2000;				// default 8 KByte
+    int  bufSize = 0x2000;                                // default 8 KByte
     long fileLen = file.length();
     if( fileLen > 0 ) {
       // Puffer so gross, dass auch beim Hex-Format 64K gelesen werden koennen
@@ -761,25 +761,25 @@ public class TopFrm extends BaseFrm
     }
     finally {
       if( in != null ) {
-	try {
-	  in.close();
-	}
-	catch( IOException ex ) {}
+        try {
+          in.close();
+        }
+        catch( IOException ex ) {}
       }
     }
     if( fileLen > 0 ) {
       (new LoadDlg(
-		this,
-		this.jtcSys,
-		fileBytes,
-		(int) fileLen,
-		file )).setVisible( true );
+                this,
+                this.jtcSys,
+                fileBytes,
+                (int) fileLen,
+                file )).setVisible( true );
     } else {
       JOptionPane.showMessageDialog(
-		this,
-		"Die Datei ist leer.",
-		"Info",
-		JOptionPane.INFORMATION_MESSAGE );
+                this,
+                "Die Datei ist leer.",
+                "Info",
+                JOptionPane.INFORMATION_MESSAGE );
     }
   }
 
@@ -793,30 +793,30 @@ public class TopFrm extends BaseFrm
     if(  Main.getBooleanProperty( "jtcemu.rom.reload_on_reset", false ) ) {
       ExtROM[] roms = this.jtcSys.getExtROMs();
       if( roms != null ) {
-	for( int i = 0; i < roms.length; i++ ) {
-	  try {
-	    roms[ i ].reload();
-	  }
-	  catch( IOException ex ) {
-	    errAddr = String.format( "%%%04X", roms[ i ].getBegAddress() );
-	    errCnt++;
-	    if( errBuf == null ) {
-	      errBuf = new StringBuilder( 256 );;
-	      errBuf.append( "Die ROM-Images an folgenden Adressen"
-			+ " konnten nicht geladen werden:\n" );
-	    }
-	    if( addrCol > 0 ) {
-	      errBuf.append( "  " );
-	    } else {
-	      errBuf.append( (char) '\n' );
-	    }
-	    errBuf.append( errAddr );
-	    addrCol++;
-	    if( addrCol >= 8 ) {
-	      addrCol = 0;
-	    }
-	  }
-	}
+        for( int i = 0; i < roms.length; i++ ) {
+          try {
+            roms[ i ].reload();
+          }
+          catch( IOException ex ) {
+            errAddr = String.format( "%%%04X", roms[ i ].getBegAddress() );
+            errCnt++;
+            if( errBuf == null ) {
+              errBuf = new StringBuilder( 256 );;
+              errBuf.append( "Die ROM-Images an folgenden Adressen"
+                        + " konnten nicht geladen werden:\n" );
+            }
+            if( addrCol > 0 ) {
+              errBuf.append( "  " );
+            } else {
+              errBuf.append( (char) '\n' );
+            }
+            errBuf.append( errAddr );
+            addrCol++;
+            if( addrCol >= 8 ) {
+              addrCol = 0;
+            }
+          }
+        }
       }
     }
     KeyboardFrm.reset();
@@ -824,14 +824,14 @@ public class TopFrm extends BaseFrm
     this.z8.fireReset( clearMem );
     if( errCnt == 1 ) {
       Main.showError(
-		this,
-		"Das ROM-Image an Adresse " + errAddr + " konnte nicht"
-			+ " geladen werden.\n"
-			+ "Es bleibt das alte Image g\u00FCltig." );
+                this,
+                "Das ROM-Image an Adresse " + errAddr + " konnte nicht"
+                        + " geladen werden.\n"
+                        + "Es bleibt das alte Image g\u00FCltig." );
     }
     else if( (errCnt > 1) && (errBuf != null) ) {
       errBuf.append( "\n\nAn diesen Adressen bleiben die alten Images"
-			+ " g\u00FCltig." );
+                        + " g\u00FCltig." );
       Main.showError( this, errBuf.toString() );
     }
     /*
@@ -856,13 +856,13 @@ public class TopFrm extends BaseFrm
     if( mode != this.screenFld.getMode() ) {
       Integer screenScale = null;
       if( updScale ) {
-	screenScale = this.mode2Scale.get( mode );
+        screenScale = this.mode2Scale.get( mode );
       }
       if( screenScale != null ) {
-	this.screenFld.setMode( mode, false );
-	this.screenFld.setScreenScale( screenScale );
+        this.screenFld.setMode( mode, false );
+        this.screenFld.setScreenScale( screenScale );
       } else {
-	this.screenFld.setMode( mode, updScale );
+        this.screenFld.setMode( mode, updScale );
       }
       sizeChanged = true;
     }

@@ -64,26 +64,26 @@ public class AudioDataQueue extends InputStream
     boolean done = false;
     if( (this.sampleValues != null) && (this.sampleCounts != null) ) {
       if( this.size > 0 ) {
-	byte lastValue = this.sampleValues[ this.size - 1 ];
-	if( value == lastValue ) {
-	  writeLastValueAgain();
-	  this.totalSampleCnt++;
-	  done = true;
-	}
+        byte lastValue = this.sampleValues[ this.size - 1 ];
+        if( value == lastValue ) {
+          writeLastValueAgain();
+          this.totalSampleCnt++;
+          done = true;
+        }
       }
       if( !done ) {
-	if( ensureSize() ) {
-	  this.sampleCounts[ this.size ] = 1;
-	  this.sampleValues[ this.size ] = value;
-	  this.size++;
-	  this.totalSampleCnt++;
-	}
+        if( ensureSize() ) {
+          this.sampleCounts[ this.size ] = 1;
+          this.sampleValues[ this.size ] = value;
+          this.size++;
+          this.totalSampleCnt++;
+        }
       }
     }
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public boolean markSupported()
@@ -98,20 +98,20 @@ public class AudioDataQueue extends InputStream
     int rv = -1;
     if( (this.sampleValues != null) && (this.sampleCounts != null) ) {
       if( this.pos < this.size ) {
-	if( this.sampleCounts[ this.pos ] <= 0 ) {
-	  this.pos++;
-	}
+        if( this.sampleCounts[ this.pos ] <= 0 ) {
+          this.pos++;
+        }
       }
       if( this.pos < this.size ) {
-	rv = (int) this.sampleValues[ this.pos ] & 0x0FF;
-	this.sampleCounts[ this.pos ]--;
+        rv = (int) this.sampleValues[ this.pos ] & 0x0FF;
+        this.sampleCounts[ this.pos ]--;
       }
     }
     return rv;
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private boolean ensureSize()
   {
@@ -119,35 +119,35 @@ public class AudioDataQueue extends InputStream
     if( this.size >= this.sampleValues.length ) {
       try {
 
-	// neue Array-Groesse bestimmen
-	int stepSize = this.sampleValues.length / 2;
-	if( stepSize < 0x100 ) {
-	  stepSize = 0x100;
-	}
-	else if( stepSize > 0x100000 ) {
-	  stepSize = 0x100000;
-	}
+        // neue Array-Groesse bestimmen
+        int stepSize = this.sampleValues.length / 2;
+        if( stepSize < 0x100 ) {
+          stepSize = 0x100;
+        }
+        else if( stepSize > 0x100000 ) {
+          stepSize = 0x100000;
+        }
 
-	// Werte-Array kopieren
-	byte[] buf = new byte[ this.sampleValues.length + stepSize ];
-	System.arraycopy(
-		this.sampleValues, 0, buf, 0, this.sampleValues.length );
-	this.sampleValues = buf;
+        // Werte-Array kopieren
+        byte[] buf = new byte[ this.sampleValues.length + stepSize ];
+        System.arraycopy(
+                this.sampleValues, 0, buf, 0, this.sampleValues.length );
+        this.sampleValues = buf;
 
-	// Anzahl-Array kopieren
-	buf = new byte[ this.sampleCounts.length + stepSize ];
-	System.arraycopy(
-		this.sampleCounts, 0, buf, 0, this.sampleCounts.length );
-	this.sampleCounts = buf;
+        // Anzahl-Array kopieren
+        buf = new byte[ this.sampleCounts.length + stepSize ];
+        System.arraycopy(
+                this.sampleCounts, 0, buf, 0, this.sampleCounts.length );
+        this.sampleCounts = buf;
       }
       catch( OutOfMemoryError ex ) {
-	status              = false;
-	this.sampleValues   = null;
-	this.sampleCounts   = null;
-	this.totalSampleCnt = 0;
-	this.errorText      = "Kein Speicher mehr f\u00FCr die Aufzeichnung\n"
-					+ "der Audio-Daten verf\u00FCgbar.";
-	System.gc();
+        status              = false;
+        this.sampleValues   = null;
+        this.sampleCounts   = null;
+        this.totalSampleCnt = 0;
+        this.errorText      = "Kein Speicher mehr f\u00FCr die Aufzeichnung\n"
+                                        + "der Audio-Daten verf\u00FCgbar.";
+        System.gc();
       }
     }
     return status;
@@ -160,9 +160,9 @@ public class AudioDataQueue extends InputStream
     final byte n = this.sampleCounts[ i ];
     if( n == Byte.MAX_VALUE ) {
       if( ensureSize() ) {
-	this.sampleValues[ this.size ] = this.sampleValues[ i ];
-	this.sampleCounts[ this.size ] = 1;
-	this.size++;
+        this.sampleValues[ this.size ] = this.sampleValues[ i ];
+        this.sampleCounts[ this.size ] = 1;
+        this.size++;
       }
     } else {
       this.sampleCounts[ i ]++;

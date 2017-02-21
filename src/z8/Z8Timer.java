@@ -72,22 +72,22 @@ public class Z8Timer
     boolean rv = false;
     if( this.loopMode || (this.counter > 0) ) {
       while( cycles > 0 ) {
-	if( cycles < this.div4Counter ) {
-	  this.div4Counter -= cycles;
-	  cycles = 0;
-	} else {
-	  cycles -= this.div4Counter;
-	  this.div4Counter = 4;
-	  if( decPreCounter() )
-	    rv = true;
-	}
+        if( cycles < this.div4Counter ) {
+          this.div4Counter -= cycles;
+          cycles = 0;
+        } else {
+          cycles -= this.div4Counter;
+          this.div4Counter = 4;
+          if( decPreCounter() )
+            rv = true;
+        }
       }
     }
     return rv;
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private boolean decPreCounter()
   {
@@ -110,7 +110,7 @@ public class Z8Timer
     if( this.counter == 0 ) {
       rv = true;
       if( this.loopMode )
-	this.counter = this.counterInit;
+        this.counter = this.counterInit;
     }
     return rv;
   }

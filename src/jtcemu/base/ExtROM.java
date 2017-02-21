@@ -50,7 +50,7 @@ public class ExtROM implements Comparable<ExtROM>
     if( this.fileBytes != null ) {
       int idx = addr - this.begAddr;
       if( (idx >= 0) && (idx < this.fileBytes.length) )
-	rv = (int) this.fileBytes[ idx ] & 0xFF;
+        rv = (int) this.fileBytes[ idx ] & 0xFF;
     }
     return rv;
   }
@@ -70,9 +70,9 @@ public class ExtROM implements Comparable<ExtROM>
       this.endAddr = this.begAddr + this.fileBytes.length - 1;
     }
     this.text = String.format(
-			"%%%04X  %s",
-			this.begAddr,
-			this.file.getPath() );
+                        "%%%04X  %s",
+                        this.begAddr,
+                        this.file.getPath() );
   }
 
 
@@ -83,11 +83,11 @@ public class ExtROM implements Comparable<ExtROM>
       int  bufSize = 0x1000;
       long fileLen = file.length();
       if( fileLen > 0 ) {
-	if( fileLen > 0x10000 ) {
-	  bufSize = 0x10000;
-	} else {
-	  bufSize = (int) fileLen;
-	}
+        if( fileLen > 0x10000 ) {
+          bufSize = 0x10000;
+        } else {
+          bufSize = (int) fileLen;
+        }
       }
       in = new FileInputStream( this.file );
 
@@ -96,33 +96,33 @@ public class ExtROM implements Comparable<ExtROM>
       int n = 0;
       int b = in.read();
       while( b != -1 ) {
-	if( n >= 0x10000 ) {
-	  throw new IOException( "Datei zu gro\u00DF" );
-	}
-	buf.write( b );
-	b = in.read();
-	n++;
+        if( n >= 0x10000 ) {
+          throw new IOException( "Datei zu gro\u00DF" );
+        }
+        buf.write( b );
+        b = in.read();
+        n++;
       }
       if( buf.size() > 0 ) {
-	byte[] fileBytes = buf.toByteArray();
-	if( fileBytes != null ) {
-	  this.fileBytes = fileBytes;
-	  this.endAddr   = this.begAddr + this.fileBytes.length - 1;
-	}
+        byte[] fileBytes = buf.toByteArray();
+        if( fileBytes != null ) {
+          this.fileBytes = fileBytes;
+          this.endAddr   = this.begAddr + this.fileBytes.length - 1;
+        }
       }
     }
     finally {
       if( in != null ) {
-	try {
-	  in.close();
-	}
-	catch( IOException ex ) {}
+        try {
+          in.close();
+        }
+        catch( IOException ex ) {}
       }
     }
   }
 
 
-	/* --- Comparable --- */
+        /* --- Comparable --- */
 
   @Override
   public int compareTo( ExtROM data )
@@ -131,7 +131,7 @@ public class ExtROM implements Comparable<ExtROM>
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public boolean equals( Object o )
@@ -139,40 +139,40 @@ public class ExtROM implements Comparable<ExtROM>
     boolean rv = false;
     if( o != null ) {
       if( o == this ) {
-	rv = true;
+        rv = true;
       } else {
-	if( o instanceof ExtROM ) {
-	  rv          = true;
-	  ExtROM data = (ExtROM) o;
-	  if( this.begAddr != data.getBegAddress() ) {
-	    rv = false;
-	  } else {
-	    if( (this.fileBytes != null) && (data.fileBytes != null) ) {
-	      if( this.fileBytes.length == data.fileBytes.length ) {
-		for( int i = 0; i < this.fileBytes.length; i++ ) {
-		  if( this.fileBytes[ i ] != data.fileBytes[ i ] ) {
-		    rv = false;
-		    break;
-		  }
-		}
-	      } else {
-		rv = false;
-	      }
-	    } else {
-	      int n1 = 0;
-	      if( this.fileBytes != null ) {
-		n1 = this.fileBytes.length;
-	      }
-	      int n2 = 0;
-	      if( data.fileBytes != null ) {
-		n2 = data.fileBytes.length;
-	      }
-	      if( n1 != n2 ) {
-		rv = false;
-	      }
-	    }
-	  }
-	}
+        if( o instanceof ExtROM ) {
+          rv          = true;
+          ExtROM data = (ExtROM) o;
+          if( this.begAddr != data.getBegAddress() ) {
+            rv = false;
+          } else {
+            if( (this.fileBytes != null) && (data.fileBytes != null) ) {
+              if( this.fileBytes.length == data.fileBytes.length ) {
+                for( int i = 0; i < this.fileBytes.length; i++ ) {
+                  if( this.fileBytes[ i ] != data.fileBytes[ i ] ) {
+                    rv = false;
+                    break;
+                  }
+                }
+              } else {
+                rv = false;
+              }
+            } else {
+              int n1 = 0;
+              if( this.fileBytes != null ) {
+                n1 = this.fileBytes.length;
+              }
+              int n2 = 0;
+              if( data.fileBytes != null ) {
+                n2 = data.fileBytes.length;
+              }
+              if( n1 != n2 ) {
+                rv = false;
+              }
+            }
+          }
+        }
       }
     }
     return rv;

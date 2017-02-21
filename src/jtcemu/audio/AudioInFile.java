@@ -30,10 +30,10 @@ public class AudioInFile extends AudioIn
 
 
   public AudioInFile(
-		Z8       z8,
-		AudioFrm audioFrm,
-		File     file,
-		boolean  monitorPlay )
+                Z8       z8,
+                AudioFrm audioFrm,
+                File     file,
+                boolean  monitorPlay )
   {
     super( z8 );
     this.audioFrm         = audioFrm;
@@ -48,7 +48,7 @@ public class AudioInFile extends AudioIn
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   protected byte[] readFrame()
@@ -57,25 +57,25 @@ public class AudioInFile extends AudioIn
     byte[]           buf = this.frameBuf;
     if( (in != null) && (buf != null) ) {
       try {
-	if( in.read( buf ) == buf.length ) {
-	  if( isMonitorPlayActive() ) {
-	    writeMonitorLine( buf );
+        if( in.read( buf ) == buf.length ) {
+          if( isMonitorPlayActive() ) {
+            writeMonitorLine( buf );
           }
-	  this.framePos++;
-	  if( this.progressStepCnt > 0 ) {
-	    --this.progressStepCnt;
-	  } else {
-	    this.progressStepCnt = this.progressStepSize;
-	    this.audioFrm.fireProgressUpdate(
-			(double) this.framePos / (double) this.frameCount );
-	  }
-	} else {
-	  buf = null;
-	  this.audioFrm.fireDisable();
-	}
+          this.framePos++;
+          if( this.progressStepCnt > 0 ) {
+            --this.progressStepCnt;
+          } else {
+            this.progressStepCnt = this.progressStepSize;
+            this.audioFrm.fireProgressUpdate(
+                        (double) this.framePos / (double) this.frameCount );
+          }
+        } else {
+          buf = null;
+          this.audioFrm.fireDisable();
+        }
       }
       catch( IOException ex ) {
-	this.errorText = ex.getMessage();
+        this.errorText = ex.getMessage();
       }
     }
     return buf;
@@ -84,36 +84,36 @@ public class AudioInFile extends AudioIn
 
   @Override
   public AudioFormat startAudio(
-			int   cyclesPerSecond,
-			int   sampleRate,
-			float thresholdValue )
+                        int   cyclesPerSecond,
+                        int   sampleRate,
+                        float thresholdValue )
   {
     AudioFormat fmt = null;
     if( (this.in == null) && (cyclesPerSecond > 0) ) {
       try {
-	this.in         = AudioSystem.getAudioInputStream( this.file );
-	fmt             = this.in.getFormat();
-	this.frameCount = this.in.getFrameLength();
-	if( this.frameCount > 0 ) {
-	  this.progressStepSize = (int) this.frameCount / 100;
-	  this.progressStepCnt  = this.progressStepSize;
-	  this.progressEnabled  = true;
-	}
+        this.in         = AudioSystem.getAudioInputStream( this.file );
+        fmt             = this.in.getFormat();
+        this.frameCount = this.in.getFrameLength();
+        if( this.frameCount > 0 ) {
+          this.progressStepSize = (int) this.frameCount / 100;
+          this.progressStepCnt  = this.progressStepSize;
+          this.progressEnabled  = true;
+        }
       }
       catch( UnsupportedAudioFileException ex ) {
-	this.errorText = "Das Dateiformat wird nicht unterst\u00FCtzt.";
+        this.errorText = "Das Dateiformat wird nicht unterst\u00FCtzt.";
       }
       catch( Exception ex ) {
-	this.errorText = "Die Datei kann nicht ge\u00F6ffnet werden.\n\n"
-				      + ex.getMessage();
+        this.errorText = "Die Datei kann nicht ge\u00F6ffnet werden.\n\n"
+                                      + ex.getMessage();
       }
       if( (this.in != null) || (fmt != null) ) {
-	this.frameBuf       = new byte[ fmt.getFrameSize() ];
-	this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
-						/ fmt.getFrameRate() );
-	this.thresholdValue = thresholdValue;
+        this.frameBuf       = new byte[ fmt.getFrameSize() ];
+        this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
+                                                / fmt.getFrameRate() );
+        this.thresholdValue = thresholdValue;
       } else {
-	stopAudio();
+        stopAudio();
       }
     }
     setAudioFormat( fmt );
@@ -135,7 +135,7 @@ public class AudioInFile extends AudioIn
     this.progressEnabled = false;
     if( in != null ) {
       try {
-	in.close();
+        in.close();
       }
       catch( Exception ex ) {}
     }

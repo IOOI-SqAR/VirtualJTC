@@ -51,29 +51,29 @@ public class SaveDlg extends BaseDlg implements ActionListener
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					1.0, 0.0,
-					GridBagConstraints.CENTER,
-					GridBagConstraints.HORIZONTAL,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        1.0, 0.0,
+                                        GridBagConstraints.CENTER,
+                                        GridBagConstraints.HORIZONTAL,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
 
     // Bereich: Adressbereich
     JPanel panelAddr = new JPanel( new GridBagLayout() );
     panelAddr.setBorder( BorderFactory.createTitledBorder(
-						"Zu speichernder Bereich" ) );
+                                                "Zu speichernder Bereich" ) );
     add( panelAddr, gbc );
 
     GridBagConstraints gbcAddr = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
     panelAddr.add( new JLabel( textBegAddr + ":" ), gbcAddr );
 
@@ -104,13 +104,13 @@ public class SaveDlg extends BaseDlg implements ActionListener
     add( panelFmt, gbc );
 
     GridBagConstraints gbcFmt = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
     ButtonGroup grpFmt = new ButtonGroup();
 
@@ -206,11 +206,11 @@ public class SaveDlg extends BaseDlg implements ActionListener
     while( addr < 0xFC00 ) {
       int b = this.memory.getMemByte( addr, false );
       if( b == 0x0D ) {
-	has0D = true;
+        has0D = true;
       }
       else if( b == 0 ) {
-	endAddr = addr;
-	break;
+        endAddr = addr;
+        break;
       }
       addr++;
     }
@@ -221,15 +221,15 @@ public class SaveDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
   {
     Object src = e.getSource();
     if( (src == this.fldEndAddr)
-	|| (src == this.fldFileBegAddr)
-	|| (src == this.btnSave) )
+        || (src == this.fldFileBegAddr)
+        || (src == this.btnSave) )
     {
       doSave();
     }
@@ -243,38 +243,38 @@ public class SaveDlg extends BaseDlg implements ActionListener
       this.fldBegAddr.transferFocus();
     }
     else if( (src == this.btnFmtJTC)
-	     || (src == this.btnFmtTAP)
-	     || (src == this.btnFmtBIN)
-	     || (src == this.btnFmtHEX) )
+             || (src == this.btnFmtTAP)
+             || (src == this.btnFmtBIN)
+             || (src == this.btnFmtHEX) )
     {
       updFmtFields();
     }
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private void doSave()
   {
     try {
       int addr = GUIUtil.parseHex4(
-				this.fldBegAddr.getText(),
-				textBegAddr );
+                                this.fldBegAddr.getText(),
+                                textBegAddr );
 
       int endAddr = GUIUtil.parseHex4(
-				this.fldEndAddr.getText(),
-				textEndAddr );
+                                this.fldEndAddr.getText(),
+                                textEndAddr );
       if( endAddr < addr ) {
-	throw new IOException( "Die Endadresse kann nicht vor der"
-					+ " Anfangsadresse liegen!" );
+        throw new IOException( "Die Endadresse kann nicht vor der"
+                                        + " Anfangsadresse liegen!" );
       }
 
       int    fileBegAddr = addr;
       String text        = this.fldFileBegAddr.getText();
       if( text != null ) {
-	text = text.trim();
-	if( text.length() > 0 )
-	  fileBegAddr = GUIUtil.parseHex4( text, textFileBegAddr );
+        text = text.trim();
+        if( text.length() > 0 )
+          fileBegAddr = GUIUtil.parseHex4( text, textFileBegAddr );
       }
 
       boolean jtcSelected = this.btnFmtJTC.isSelected();
@@ -283,117 +283,117 @@ public class SaveDlg extends BaseDlg implements ActionListener
       File    file        = null;
       if( jtcSelected ) {
         file = FileDlg.showFileSaveDlg(
-				this,
-				"JTC-Datei speichern",
-				Main.getLastPathFile(),
-				GUIUtil.jtcFileFilter );
+                                this,
+                                "JTC-Datei speichern",
+                                Main.getLastPathFile(),
+                                GUIUtil.jtcFileFilter );
       } else if( tapSelected ) {
         file = FileDlg.showFileSaveDlg(
-				this,
-				"KC-TAP-Datei speichern",
-				Main.getLastPathFile(),
-				GUIUtil.tapFileFilter );
+                                this,
+                                "KC-TAP-Datei speichern",
+                                Main.getLastPathFile(),
+                                GUIUtil.tapFileFilter );
       } else if( hexSelected ) {
         file = FileDlg.showFileSaveDlg(
-				this,
-				"HEX-Datei speichern",
-				Main.getLastPathFile(),
-				GUIUtil.hexFileFilter );
+                                this,
+                                "HEX-Datei speichern",
+                                Main.getLastPathFile(),
+                                GUIUtil.hexFileFilter );
       } else {
         file = FileDlg.showFileSaveDlg(
-				this,
-				"BIN-Datei speichern",
-				Main.getLastPathFile(),
-				GUIUtil.binaryFileFilter );
+                                this,
+                                "BIN-Datei speichern",
+                                Main.getLastPathFile(),
+                                GUIUtil.binaryFileFilter );
       }
       if( file != null ) {
-	if( hexSelected ) {
-	  Writer out = null;
-	  try {
-	    out = new BufferedWriter( new FileWriter( file ) );
+        if( hexSelected ) {
+          Writer out = null;
+          try {
+            out = new BufferedWriter( new FileWriter( file ) );
 
-	    int cnt = 1;
-	    while( (addr <= endAddr) && (cnt > 0) ) {
-	      cnt = writeHexSegment( out, addr, endAddr, fileBegAddr );
-	      addr += cnt;
-	      fileBegAddr += cnt;
-	    }
-	    out.write( ':' );
-	    writeHexByte( out, 0 );
-	    writeHexByte( out, 0 );
-	    writeHexByte( out, 0 );
-	    writeHexByte( out, 1 );
-	    writeHexByte( out, 0xFF );
-	    out.write( 0x0D );
-	    out.write( 0x0A );
-	    out.close();
-	    out = null;
-	    Main.setLastFile( file );
-	    doClose();
-	  }
-	  finally {
-	    if( out != null ) {
-	      try {
-		out.close();
-	      }
-	      catch( IOException ex ) {}
-	    }
-	  }
+            int cnt = 1;
+            while( (addr <= endAddr) && (cnt > 0) ) {
+              cnt = writeHexSegment( out, addr, endAddr, fileBegAddr );
+              addr += cnt;
+              fileBegAddr += cnt;
+            }
+            out.write( ':' );
+            writeHexByte( out, 0 );
+            writeHexByte( out, 0 );
+            writeHexByte( out, 0 );
+            writeHexByte( out, 1 );
+            writeHexByte( out, 0xFF );
+            out.write( 0x0D );
+            out.write( 0x0A );
+            out.close();
+            out = null;
+            Main.setLastFile( file );
+            doClose();
+          }
+          finally {
+            if( out != null ) {
+              try {
+                out.close();
+              }
+              catch( IOException ex ) {}
+            }
+          }
 
-	} else {
+        } else {
 
-	  // alle anderen Formate sind binear -> OutputStream oeffnen
-	  OutputStream out = null;
-	  try {
-	    out = new BufferedOutputStream( new FileOutputStream( file ) );
-	    if( jtcSelected ) {
-	      writeJTCHeader( out, addr, endAddr, fileBegAddr );
-	      while( addr <= endAddr ) {
-		out.write( this.memory.getMemByte( addr++, false ) );
-	      }
-	    } else if( tapSelected ) {
-	      String s = "\u00C3KC-TAPE by AF.\u0020";
-	      int    n = s.length();
-	      for( int i = 0; i < n; i++ ) {
-		out.write( s.charAt( i ) );
-	      }
+          // alle anderen Formate sind binear -> OutputStream oeffnen
+          OutputStream out = null;
+          try {
+            out = new BufferedOutputStream( new FileOutputStream( file ) );
+            if( jtcSelected ) {
+              writeJTCHeader( out, addr, endAddr, fileBegAddr );
+              while( addr <= endAddr ) {
+                out.write( this.memory.getMemByte( addr++, false ) );
+              }
+            } else if( tapSelected ) {
+              String s = "\u00C3KC-TAPE by AF.\u0020";
+              int    n = s.length();
+              for( int i = 0; i < n; i++ ) {
+                out.write( s.charAt( i ) );
+              }
 
-	      int blkNum = 1;
-	      out.write( blkNum++ );
-	      writeJTCHeader( out, addr, endAddr, fileBegAddr );
+              int blkNum = 1;
+              out.write( blkNum++ );
+              writeJTCHeader( out, addr, endAddr, fileBegAddr );
 
-	      n = 0;
-	      while( addr <= endAddr ) {
-		if( n == 0 ) {
-		  out.write( (addr + 128) > endAddr ? 0xFF : blkNum++ );
-		  n = 128;
-		}
-		out.write( this.memory.getMemByte( addr++, false ) );
-		--n;
-	      }
-	      while( n > 0 ) {
-		out.write( 0 );
-		--n;
-	      }
-	    } else {
-	      while( addr <= endAddr ) {
-		out.write( this.memory.getMemByte( addr++, false ) );
-	      }
-	    }
-	    out.close();
-	    out = null;
-	    Main.setLastFile( file );
-	    doClose();
-	  }
-	  finally {
-	    if( out != null ) {
-	      try {
-		out.close();
-	      }
-	      catch( IOException ex ) {}
-	    }
-	  }
-	}
+              n = 0;
+              while( addr <= endAddr ) {
+                if( n == 0 ) {
+                  out.write( (addr + 128) > endAddr ? 0xFF : blkNum++ );
+                  n = 128;
+                }
+                out.write( this.memory.getMemByte( addr++, false ) );
+                --n;
+              }
+              while( n > 0 ) {
+                out.write( 0 );
+                --n;
+              }
+            } else {
+              while( addr <= endAddr ) {
+                out.write( this.memory.getMemByte( addr++, false ) );
+              }
+            }
+            out.close();
+            out = null;
+            Main.setLastFile( file );
+            doClose();
+          }
+          finally {
+            if( out != null ) {
+              try {
+                out.close();
+              }
+              catch( IOException ex ) {}
+            }
+          }
+        }
       }
     }
     catch( Exception ex ) {
@@ -422,16 +422,16 @@ public class SaveDlg extends BaseDlg implements ActionListener
    * Rueckabewert: Anzahl der geschriebenen Bytes
    */
   private int writeHexSegment(
-			Writer out,
-			int    addr,
-			int    endAddr,
-			int    fileBegAddr ) throws IOException
+                        Writer out,
+                        int    addr,
+                        int    endAddr,
+                        int    fileBegAddr ) throws IOException
   {
     int cnt = 0;
     if( (addr >= 0) && (addr <= endAddr) ) {
       cnt = endAddr - addr + 1;
       if( cnt > 32 ) {
-	cnt = 32;
+        cnt = 32;
       }
       out.write( ':' );
       writeHexByte( out, cnt );
@@ -443,9 +443,9 @@ public class SaveDlg extends BaseDlg implements ActionListener
 
       int cks = (cnt & 0xFF) + (hFileBegAddr & 0xFF) + (fileBegAddr & 0xFF);
       for( int i = 0; i < cnt; i++ ) {
-	int b = this.memory.getMemByte( addr++, false );
-	writeHexByte( out, b );
-	cks += b;
+        int b = this.memory.getMemByte( addr++, false );
+        writeHexByte( out, b );
+        cks += b;
       }
       writeHexByte( out, 0 - cks );
       out.write( 0x0D );
@@ -458,7 +458,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
   private void updFmtFields()
   {
     boolean reqHeader  = (this.btnFmtJTC.isSelected()
-					|| this.btnFmtTAP.isSelected());
+                                        || this.btnFmtTAP.isSelected());
     boolean reqBegAddr = this.btnFmtHEX.isSelected();
     this.labelFileBegAddr.setEnabled( reqHeader || reqBegAddr );
     this.fldFileBegAddr.setEditable( reqHeader || reqBegAddr );
@@ -468,10 +468,10 @@ public class SaveDlg extends BaseDlg implements ActionListener
 
 
   private void writeJTCHeader(
-			OutputStream out,
-			int          begAddr,
-			int          endAddr,
-			int          fileBegAddr ) throws IOException
+                        OutputStream out,
+                        int          begAddr,
+                        int          endAddr,
+                        int          fileBegAddr ) throws IOException
   {
     int    n    = 11;
     int    src  = 0;
@@ -479,11 +479,11 @@ public class SaveDlg extends BaseDlg implements ActionListener
     if( text != null ) {
       int len = text.length();
       while( (src < len) && (n > 0) ) {
-	char ch = text.charAt( src++ );
-	if( (ch >= '\u0020') && (ch <= 0xFF) ) {
-	  out.write( ch );
-	  --n;
-	}
+        char ch = text.charAt( src++ );
+        if( (ch >= '\u0020') && (ch <= 0xFF) ) {
+          out.write( ch );
+          --n;
+        }
       }
     }
     while( n > 0 ) {

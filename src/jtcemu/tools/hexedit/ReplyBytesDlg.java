@@ -41,11 +41,11 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
 
 
   public ReplyBytesDlg(
-		Window      owner,
-		String      title,
-		InputFormat inputFmt,
-		boolean     bigEndian,
-		String      text )
+                Window      owner,
+                String      title,
+                InputFormat inputFmt,
+                boolean     bigEndian,
+                String      text )
   {
     super( owner );
     this.approvedBytes     = null;
@@ -59,13 +59,13 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						0.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.NONE,
-						new Insets( 5, 5, 0, 5 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                0.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.NONE,
+                                                new Insets( 5, 5, 0, 5 ),
+                                                0, 0 );
 
 
     // Eingabebereich
@@ -140,25 +140,25 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
 
     if( inputFmt != null ) {
       switch( inputFmt ) {
-	case HEX8:
-	  this.btnHex8.setSelected( true );
-	  break;
+        case HEX8:
+          this.btnHex8.setSelected( true );
+          break;
 
-	case DEC8:
-	  this.btnDec8.setSelected( true );
-	  break;
+        case DEC8:
+          this.btnDec8.setSelected( true );
+          break;
 
-	case DEC16:
-	  this.btnDec16.setSelected( true );
-	  break;
+        case DEC16:
+          this.btnDec16.setSelected( true );
+          break;
 
-	case DEC32:
-	  this.btnHex8.setSelected( true );
-	  break;
+        case DEC32:
+          this.btnHex8.setSelected( true );
+          break;
 
-	case STRING:
-	  this.btnString.setSelected( true );
-	  break;
+        case STRING:
+          this.btnString.setSelected( true );
+          break;
       }
     }
 
@@ -171,13 +171,13 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     add( panelInput, gbc );
 
     GridBagConstraints gbcInput = new GridBagConstraints(
-						0, 0,
-						1, 1,
-						1.0, 0.0,
-						GridBagConstraints.WEST,
-						GridBagConstraints.HORIZONTAL,
-						new Insets( 0, 0, 0, 0 ),
-						0, 0 );
+                                                0, 0,
+                                                1, 1,
+                                                1.0, 0.0,
+                                                GridBagConstraints.WEST,
+                                                GridBagConstraints.HORIZONTAL,
+                                                new Insets( 0, 0, 0, 0 ),
+                                                0, 0 );
 
     this.fldInput = new JTextField();
     if( text != null ) {
@@ -187,7 +187,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     panelInput.add( this.fldInput, gbcInput );
 
     this.btnPaste = GUIUtil.createImageButton(
-				this,
+                                this,
                                 "/images/edit/paste.png",
                                 "Einf\u00FCgen" );
     this.btnPaste.addActionListener( this );
@@ -251,7 +251,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -259,31 +259,31 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     if( e != null ) {
       Object src = e.getSource();
       if( (src == this.btnHex8)
-	  || (src == this.btnDec8)
-	  || (src == this.btnDec16)
-	  || (src == this.btnDec32)
-	  || (src == this.btnString) )
+          || (src == this.btnDec8)
+          || (src == this.btnDec16)
+          || (src == this.btnDec32)
+          || (src == this.btnString) )
       {
-	updByteOrderFields();
-	this.fldInput.requestFocus();
+        updByteOrderFields();
+        this.fldInput.requestFocus();
       }
       else if( (src == this.btnLittleEndian) || (src == this.btnBigEndian) ) {
-	this.fldInput.requestFocus();
+        this.fldInput.requestFocus();
       }
       else if( (src == this.fldInput) || (src == this.btnOK) ) {
-	doApprove();
+        doApprove();
       }
       else if( src == this.btnCancel ) {
-	doClose();
+        doClose();
       }
       else if( src == this.btnPaste ) {
-	this.fldInput.paste();
+        this.fldInput.paste();
       }
     }
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void windowOpened( WindowEvent e )
@@ -292,7 +292,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private void doApprove()
   {
@@ -302,101 +302,101 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
       boolean     bigEndian = this.btnBigEndian.isSelected();
       String      text      = this.fldInput.getText();
       if( text != null ) {
-	int len = text.length();
-	if( len > 0 ) {
-	  if( this.btnString.isSelected() ) {
-	    inputFmt = InputFormat.STRING;
-	    rv       = new byte[ len ];
-	    for( int i = 0; i < len; i++ ) {
-	      char ch = text.charAt( i );
-	      if( (ch < 0x20) || (ch > 0x7E) ) {
-		throw new ParseException(
-			String.format(
-				"Das Zeichen \'%c\' ist kein ASCII-Zeichen.",
-				ch ),
-			i );
-	      }
-	      rv[ i ] = (byte) ch;
-	    }
-	  } else {
-	    inputFmt         = InputFormat.HEX8;
-	    int bytesPerItem = 1;
-	    int radix        = 16;
-	    if( this.btnDec8.isSelected() ) {
-	      inputFmt = InputFormat.DEC8;
-	      radix    = 10;
-	    }
-	    else if( this.btnDec16.isSelected() ) {
-	      inputFmt     = InputFormat.DEC16;
-	      bytesPerItem = 2;
-	      radix        = 10;
-	    }
-	    else if( this.btnDec32.isSelected() ) {
-	      inputFmt     = InputFormat.DEC32;
-	      bytesPerItem = 4;
-	      radix        = 10;
-	    }
-	    String[] items = text.toUpperCase().split( "[\\s,:;]" );
-	    if( items != null ) {
-	      if( items.length > 0 ) {
-		ByteArrayOutputStream buf = new ByteArrayOutputStream(
-						items.length * bytesPerItem );
-		for( int i = 0; i < items.length; i++ ) {
-		  String itemText = items[ i ];
-		  if( itemText != null ) {
-		    if( itemText.length() > 0 ) {
-		      try {
-			int value = Integer.parseInt( items[ i ], radix );
-			int pos   = i * bytesPerItem;
-			if( this.btnBigEndian.isSelected() ) {
-			  for( int k = bytesPerItem - 1; k >= 0; --k ) {
-			    if( k > 0 ) {
-			      buf.write( (value >> (k * 8)) & 0xFF );
-			    } else {
-			      buf.write( value & 0xFF );
-			    }
-			  }
-			} else {
-			  for( int k = 0; k < bytesPerItem; k++ ) {
-			    buf.write( value & 0xFF );
-			    value >>= 8;
-			  }
-			}
-		      }
-		      catch( NumberFormatException ex ) {
-			throw new ParseException(
-				String.format(
-					"%s: ung\u00FCltiges Format",
-					items[ i ] ),
-				i );
-		      }
-		    }
-		  }
-		}
-		rv = buf.toByteArray();
-	      }
-	    }
-	  }
-	}
+        int len = text.length();
+        if( len > 0 ) {
+          if( this.btnString.isSelected() ) {
+            inputFmt = InputFormat.STRING;
+            rv       = new byte[ len ];
+            for( int i = 0; i < len; i++ ) {
+              char ch = text.charAt( i );
+              if( (ch < 0x20) || (ch > 0x7E) ) {
+                throw new ParseException(
+                        String.format(
+                                "Das Zeichen \'%c\' ist kein ASCII-Zeichen.",
+                                ch ),
+                        i );
+              }
+              rv[ i ] = (byte) ch;
+            }
+          } else {
+            inputFmt         = InputFormat.HEX8;
+            int bytesPerItem = 1;
+            int radix        = 16;
+            if( this.btnDec8.isSelected() ) {
+              inputFmt = InputFormat.DEC8;
+              radix    = 10;
+            }
+            else if( this.btnDec16.isSelected() ) {
+              inputFmt     = InputFormat.DEC16;
+              bytesPerItem = 2;
+              radix        = 10;
+            }
+            else if( this.btnDec32.isSelected() ) {
+              inputFmt     = InputFormat.DEC32;
+              bytesPerItem = 4;
+              radix        = 10;
+            }
+            String[] items = text.toUpperCase().split( "[\\s,:;]" );
+            if( items != null ) {
+              if( items.length > 0 ) {
+                ByteArrayOutputStream buf = new ByteArrayOutputStream(
+                                                items.length * bytesPerItem );
+                for( int i = 0; i < items.length; i++ ) {
+                  String itemText = items[ i ];
+                  if( itemText != null ) {
+                    if( itemText.length() > 0 ) {
+                      try {
+                        int value = Integer.parseInt( items[ i ], radix );
+                        int pos   = i * bytesPerItem;
+                        if( this.btnBigEndian.isSelected() ) {
+                          for( int k = bytesPerItem - 1; k >= 0; --k ) {
+                            if( k > 0 ) {
+                              buf.write( (value >> (k * 8)) & 0xFF );
+                            } else {
+                              buf.write( value & 0xFF );
+                            }
+                          }
+                        } else {
+                          for( int k = 0; k < bytesPerItem; k++ ) {
+                            buf.write( value & 0xFF );
+                            value >>= 8;
+                          }
+                        }
+                      }
+                      catch( NumberFormatException ex ) {
+                        throw new ParseException(
+                                String.format(
+                                        "%s: ung\u00FCltiges Format",
+                                        items[ i ] ),
+                                i );
+                      }
+                    }
+                  }
+                }
+                rv = buf.toByteArray();
+              }
+            }
+          }
+        }
       }
       if( rv != null ) {
-	this.approvedBytes     = rv;
-	this.approvedText      = text;
-	this.approvedInputFmt  = inputFmt;
-	this.approvedBigEndian = false;
-	doClose();
+        this.approvedBytes     = rv;
+        this.approvedText      = text;
+        this.approvedInputFmt  = inputFmt;
+        this.approvedBigEndian = false;
+        doClose();
       }
     }
     catch( Exception ex ) {
       String msg = ex.getMessage();
       if( msg == null ) {
-	msg = getClass().getName();
+        msg = getClass().getName();
       }
       JOptionPane.showMessageDialog(
-		this,
-		msg,
-		"Fehler",
-		JOptionPane.ERROR_MESSAGE );
+                this,
+                msg,
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE );
     }
   }
 

@@ -18,10 +18,10 @@ import javax.swing.border.Border;
 public class KeyFld extends JComponent implements MouseListener
 {
   private static final Border borderSelected
-			= BorderFactory.createLoweredBevelBorder();
+                        = BorderFactory.createLoweredBevelBorder();
 
   private static final Border borderUnselected
-			= BorderFactory.createRaisedBevelBorder();
+                        = BorderFactory.createRaisedBevelBorder();
 
   private static final Font keyFont = new Font( "SansSerif", Font.BOLD, 12 );
   private static final Font cmdFont = new Font( "SansSerif", Font.PLAIN, 8 );
@@ -43,22 +43,22 @@ public class KeyFld extends JComponent implements MouseListener
 
 
   public KeyFld(
-		KeyboardFrm keyboardFrm,
-		Image       baseImage,
-		String      baseText,
-		String      cmdText,
-		Image       shiftImage,
-		String      shiftText,
-		String      shiftCmdText )
+                KeyboardFrm keyboardFrm,
+                Image       baseImage,
+                String      baseText,
+                String      cmdText,
+                Image       shiftImage,
+                String      shiftText,
+                String      shiftCmdText )
   {
     this.keyboardFrm = keyboardFrm;
     setValues(
-	baseImage,
-	baseText,
-	cmdText,
-	shiftImage,
-	shiftText,
-	shiftCmdText );
+        baseImage,
+        baseText,
+        cmdText,
+        shiftImage,
+        shiftText,
+        shiftCmdText );
 
     this.clicked  = false;
     this.selected = false;
@@ -81,12 +81,12 @@ public class KeyFld extends JComponent implements MouseListener
 
 
   public void setValues(
-		Image  baseImage,
-		String baseText,
-		String cmdText,
-		Image  shiftImage,
-		String shiftText,
-		String shiftCmdText )
+                Image  baseImage,
+                String baseText,
+                String cmdText,
+                Image  shiftImage,
+                String shiftText,
+                String shiftCmdText )
   {
     this.baseImage    = baseImage;
     this.baseText     = baseText;
@@ -102,16 +102,16 @@ public class KeyFld extends JComponent implements MouseListener
     String toolTipText = null;
     if( (this.baseImage != null) && (this.baseText != null) ) {
       if( (shiftImage != null) && (this.shiftText != null) ) {
-	toolTipText = this.baseText + " / " + this.shiftText;
+        toolTipText = this.baseText + " / " + this.shiftText;
       } else {
-	toolTipText = this.baseText;
+        toolTipText = this.baseText;
       }
     }
     setToolTipText( toolTipText );
   }
 
 
-	/* --- MouseListener --- */
+        /* --- MouseListener --- */
 
   @Override
   public void mouseClicked( MouseEvent e )
@@ -124,8 +124,8 @@ public class KeyFld extends JComponent implements MouseListener
   public void mouseEntered( MouseEvent e )
   {
     if( (e.getComponent() == this)
-	&& this.clicked
-	&& !this.keyboardFrm.getKeepKeysPressed() )
+        && this.clicked
+        && !this.keyboardFrm.getKeepKeysPressed() )
     {
       setSelected( true );
     }
@@ -136,8 +136,8 @@ public class KeyFld extends JComponent implements MouseListener
   public void mouseExited( MouseEvent e )
   {
     if( (e.getComponent() == this)
-	&& this.clicked
-	&& !this.keyboardFrm.getKeepKeysPressed() )
+        && this.clicked
+        && !this.keyboardFrm.getKeepKeysPressed() )
     {
       setSelected( false );
     }
@@ -149,10 +149,10 @@ public class KeyFld extends JComponent implements MouseListener
   {
     if( e.getComponent() == this ) {
       if( this.keyboardFrm.getKeepKeysPressed() ) {
-	setSelected( !this.selected );
+        setSelected( !this.selected );
       } else {
-	this.clicked = true;
-	setSelected( true );
+        this.clicked = true;
+        setSelected( true );
       }
     }
   }
@@ -162,7 +162,7 @@ public class KeyFld extends JComponent implements MouseListener
   public void mouseReleased( MouseEvent e )
   {
     if( (e.getComponent() == this)
-	&& !this.keyboardFrm.getKeepKeysPressed() )
+        && !this.keyboardFrm.getKeepKeysPressed() )
     {
       this.clicked = false;
       setSelected( false );
@@ -170,7 +170,7 @@ public class KeyFld extends JComponent implements MouseListener
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public Dimension getPreferredSize()
@@ -178,8 +178,8 @@ public class KeyFld extends JComponent implements MouseListener
     if( this.prefSize == null ) {
       ensureWidthsCalculated();
       this.prefSize = new Dimension(
-				(3 * MARGIN) + this.wBase + this.wCmd,
-				(3 * MARGIN) + 12 + 12 );
+                                (3 * MARGIN) + this.wBase + this.wCmd,
+                                (3 * MARGIN) + 12 + 12 );
     }
     return this.prefSize;
   }
@@ -195,9 +195,9 @@ public class KeyFld extends JComponent implements MouseListener
     if( this.shiftCmdText != null ) {
       g.setFont( cmdFont );
       g.drawString(
-		this.shiftCmdText,
-		getWidth() - this.wShift - MARGIN,
-		MARGIN + 12 );
+                this.shiftCmdText,
+                getWidth() - this.wShift - MARGIN,
+                MARGIN + 12 );
     }
     else if( this.shiftImage != null ) {
       g.drawImage( this.shiftImage, MARGIN, MARGIN, this );
@@ -216,22 +216,22 @@ public class KeyFld extends JComponent implements MouseListener
     if( this.cmdText != null ) {
       g.setFont( cmdFont );
       g.drawString(
-		this.cmdText,
-		getWidth() - this.wCmd - MARGIN,
-		MARGIN + 12 + MARGIN + 12 );
+                this.cmdText,
+                getWidth() - this.wCmd - MARGIN,
+                MARGIN + 12 + MARGIN + 12 );
     }
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private void ensureWidthsCalculated()
   {
     if( this.wBase < 0 ) {
       if( this.baseImage != null ) {
-	this.wBase = getImageWidth( this.baseImage );
+        this.wBase = getImageWidth( this.baseImage );
       } else {
-	this.wBase = textWidth( this.baseText, keyFont );
+        this.wBase = textWidth( this.baseText, keyFont );
       }
     }
     if( this.wCmd < 0 ) {
@@ -239,13 +239,13 @@ public class KeyFld extends JComponent implements MouseListener
     }
     if( this.wShift < 0 ) {
       if( this.shiftCmdText != null ) {
-	this.wShift = textWidth( this.shiftCmdText, cmdFont );
+        this.wShift = textWidth( this.shiftCmdText, cmdFont );
       }
       else if( this.shiftImage != null ) {
-	this.wShift = getImageWidth( this.shiftImage );
+        this.wShift = getImageWidth( this.shiftImage );
       }
       else if( this.shiftText != null ) {
-	this.wShift = textWidth( this.shiftText, keyFont );
+        this.wShift = textWidth( this.shiftText, keyFont );
       }
     }
   }
@@ -269,7 +269,7 @@ public class KeyFld extends JComponent implements MouseListener
     if( text != null ) {
       FontMetrics fm = getFontMetrics( font );
       if( fm != null )
-	w = fm.stringWidth( text );
+        w = fm.stringWidth( text );
     }
     return w;
   }

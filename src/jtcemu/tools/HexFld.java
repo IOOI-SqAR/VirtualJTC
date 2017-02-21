@@ -19,9 +19,9 @@ import javax.swing.text.*;
 
 
 public class HexFld extends PlainDocument
-			implements
-				ActionListener,
-				FocusListener
+                        implements
+                                ActionListener,
+                                FocusListener
 {
   private boolean          dataChanged;
   private boolean          editMode;
@@ -112,12 +112,12 @@ public class HexFld extends PlainDocument
   {
     if( this.editMode ) {
       if( !this.dataChanged ) {
-	this.value = this.orgValue;
+        this.value = this.orgValue;
       }
       if( value ) {
-	this.value |= mask;
+        this.value |= mask;
       } else {
-	this.value &= ~mask;
+        this.value &= ~mask;
       }
       checkValue();
     }
@@ -155,7 +155,7 @@ public class HexFld extends PlainDocument
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -165,7 +165,7 @@ public class HexFld extends PlainDocument
   }
 
 
-	/* --- FocusListener --- */
+        /* --- FocusListener --- */
 
   @Override
   public void focusGained( FocusEvent e )
@@ -182,27 +182,27 @@ public class HexFld extends PlainDocument
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void insertString(
-			int          offs,
-			String       text,
-			AttributeSet a ) throws BadLocationException
+                        int          offs,
+                        String       text,
+                        AttributeSet a ) throws BadLocationException
   {
     if( text != null ) {
       int len = text.length();
       int pos = 0;
       while( (pos < len) && (getLength() < this.digitBuf.length) ) {
-	char ch = Character.toUpperCase( text.charAt( pos++ ) );
-	if( ((ch >= 0) && (ch <= '9')) || ((ch >= 'A') && (ch <= 'F')) )
-	  super.insertString( offs++, Character.toString( ch ), a );
+        char ch = Character.toUpperCase( text.charAt( pos++ ) );
+        if( ((ch >= 0) && (ch <= '9')) || ((ch >= 'A') && (ch <= 'F')) )
+          super.insertString( offs++, Character.toString( ch ), a );
       }
     }
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private void checkText()
   {
@@ -210,16 +210,16 @@ public class HexFld extends PlainDocument
       this.value  = -1;
       String text = this.textFld.getText();
       if( text != null ) {
-	if( !text.isEmpty() ) {
-	  try {
-	    this.value = Integer.parseInt( text, 16 );
-	  }
-	  catch( NumberFormatException ex ) {}
-	} else {
-	  this.value = this.orgValue;
-	}
+        if( !text.isEmpty() ) {
+          try {
+            this.value = Integer.parseInt( text, 16 );
+          }
+          catch( NumberFormatException ex ) {}
+        } else {
+          this.value = this.orgValue;
+        }
       } else {
-	this.value = this.orgValue;
+        this.value = this.orgValue;
       }
       checkValue();
     }
@@ -240,7 +240,7 @@ public class HexFld extends PlainDocument
     if( this.changeListeners != null ) {
       ChangeEvent e = new ChangeEvent( this );
       for( int i = 0; i < this.changeListeners.length; i++ ) {
-	this.changeListeners[ i ].stateChanged( e );
+        this.changeListeners[ i ].stateChanged( e );
       }
     }
   }

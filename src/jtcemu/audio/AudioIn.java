@@ -68,13 +68,13 @@ public abstract class AudioIn extends AudioIO
     if( v != -1 ) {
       int d = this.maxValue - this.minValue;
       if( this.lastPhase ) {
-	if( v < this.minValue + (d / 3) ) {
-	  this.lastPhase = false;
-	}
+        if( v < this.minValue + (d / 3) ) {
+          this.lastPhase = false;
+        }
       } else {
-	if( v > this.maxValue - (d / 3) ) {
-	  this.lastPhase = true;
-	}
+        if( v > this.maxValue - (d / 3) ) {
+          this.lastPhase = true;
+        }
       }
     }
     return this.lastPhase;
@@ -100,20 +100,20 @@ public abstract class AudioIn extends AudioIO
 
       this.sampleBitMask = 0;
       for( int i = 0; i < sampleSizeInBits; i++ ) {
-	this.sampleBitMask = (this.sampleBitMask << 1) | 1;
+        this.sampleBitMask = (this.sampleBitMask << 1) | 1;
       }
       this.sampleSizeInBytes = (sampleSizeInBits + 7) / 8;
       this.channelCount      = fmt.getChannels();
       this.bigEndian         = fmt.isBigEndian();
       this.dataSigned        = fmt.getEncoding().equals(
-					AudioFormat.Encoding.PCM_SIGNED );
+                                        AudioFormat.Encoding.PCM_SIGNED );
 
       this.sampleSignMask = 0;
       if( this.dataSigned ) {
-	this.sampleSignMask = 1;
-	for( int i = 1; i < sampleSizeInBits; i++ ) {
-	  this.sampleSignMask <<= 1;
-	}
+        this.sampleSignMask = 1;
+        for( int i = 1; i < sampleSizeInBits; i++ ) {
+          this.sampleSignMask <<= 1;
+        }
       }
 
       /*
@@ -126,7 +126,7 @@ public abstract class AudioIn extends AudioIO
       float frameRate = fmt.getFrameRate();
       this.adjustPeriodLen = (int) frameRate / 256;
       if( this.adjustPeriodLen < 1 ) {
-	this.adjustPeriodLen = 1;
+        this.adjustPeriodLen = 1;
       }
       this.adjustPeriodCnt  = this.adjustPeriodLen;
       this.firstCall        = true;
@@ -156,7 +156,7 @@ public abstract class AudioIn extends AudioIO
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private int readSample()
   {
@@ -165,17 +165,17 @@ public abstract class AudioIn extends AudioIO
     if( frameData != null ) {
       int offset = this.selectedChannel * this.sampleSizeInBytes;
       if( offset + this.sampleSizeInBytes <= frameData.length ) {
-	value = 0;
-	if( this.bigEndian ) {
-	  for( int i = 0; i < this.sampleSizeInBytes; i++ ) {
-	    value = (value << 8) | ((int) frameData[ offset + i ] & 0xFF);
-	  }
-	} else {
-	  for( int i = this.sampleSizeInBytes - 1; i >= 0; --i ) {
-	    value = (value << 8) | ((int) frameData[ offset + i ] & 0xFF);
-	  }
-	}
-	value &= this.sampleBitMask;
+        value = 0;
+        if( this.bigEndian ) {
+          for( int i = 0; i < this.sampleSizeInBytes; i++ ) {
+            value = (value << 8) | ((int) frameData[ offset + i ] & 0xFF);
+          }
+        } else {
+          for( int i = this.sampleSizeInBytes - 1; i >= 0; --i ) {
+            value = (value << 8) | ((int) frameData[ offset + i ] & 0xFF);
+          }
+        }
+        value &= this.sampleBitMask;
       }
     }
     return value;
@@ -194,82 +194,82 @@ public abstract class AudioIn extends AudioIO
     int rv = -1;
     if( this.cyclesPerFrame > 0 ) {
       if( this.firstCall ) {
-	this.firstCall  = false;
-	this.lastCycles = this.z8.getTotalCycles();
+        this.firstCall  = false;
+        this.lastCycles = this.z8.getTotalCycles();
 
       } else {
 
-	long totalCycles = this.z8.getTotalCycles();
-	int  diffCycles  = this.z8.calcDiffCycles(
-						this.lastCycles,
-						totalCycles );
+        long totalCycles = this.z8.getTotalCycles();
+        int  diffCycles  = this.z8.calcDiffCycles(
+                                                this.lastCycles,
+                                                totalCycles );
 
-	if( diffCycles > 0 ) {
-	  currentCycles( totalCycles, diffCycles );
-	  if( totalCycles > this.lastCycles ) {
+        if( diffCycles > 0 ) {
+          currentCycles( totalCycles, diffCycles );
+          if( totalCycles > this.lastCycles ) {
 
-	    // bis zum naechsten auszuwertenden Samples lesen
-	    int nSamples = diffCycles / this.cyclesPerFrame;
-	    if( nSamples > 0 ) {
-	      int v = 0;
-	      int i = nSamples;
-	      do {
-		v = readSample();
-		if( v != -1 ) {
+            // bis zum naechsten auszuwertenden Samples lesen
+            int nSamples = diffCycles / this.cyclesPerFrame;
+            if( nSamples > 0 ) {
+              int v = 0;
+              int i = nSamples;
+              do {
+                v = readSample();
+                if( v != -1 ) {
 
-		  // dynamische Mittelwertbestimmung
-		  if( this.adjustPeriodCnt > 0 ) {
-		    --this.adjustPeriodCnt;
-		  } else {
-		    this.adjustPeriodCnt = this.adjustPeriodLen;
-		    if( this.minValue < this.maxValue ) {
-		      this.minValue++;
-		    }
-		    if( this.maxValue > this.minValue ) {
-		      --this.maxValue;
-		    }
-		  }
+                  // dynamische Mittelwertbestimmung
+                  if( this.adjustPeriodCnt > 0 ) {
+                    --this.adjustPeriodCnt;
+                  } else {
+                    this.adjustPeriodCnt = this.adjustPeriodLen;
+                    if( this.minValue < this.maxValue ) {
+                      this.minValue++;
+                    }
+                    if( this.maxValue > this.minValue ) {
+                      --this.maxValue;
+                    }
+                  }
 
-		  // Wenn gelesender Wert negativ ist, Zahl korrigieren
-		  if( this.dataSigned && ((v & this.sampleSignMask) != 0) ) {
-		    v |= ~this.sampleBitMask;
-		  }
+                  // Wenn gelesender Wert negativ ist, Zahl korrigieren
+                  if( this.dataSigned && ((v & this.sampleSignMask) != 0) ) {
+                    v |= ~this.sampleBitMask;
+                  }
 
-		  // Minimum-/Maximum-Werte und Mittelwert aktualisieren
-		  if( v < this.minValue ) {
-		    this.minValue = v;
-		  }
-		  else if( v > this.maxValue ) {
-		    this.maxValue = v;
-		  }
+                  // Minimum-/Maximum-Werte und Mittelwert aktualisieren
+                  if( v < this.minValue ) {
+                    this.minValue = v;
+                  }
+                  else if( v > this.maxValue ) {
+                    this.maxValue = v;
+                  }
 
-		  // aktueller Low/High-Status ermitteln
-		  int m = (this.maxValue - this.minValue) / 2;
-		  int t = Math.round( (float) m * this.thresholdValue );
-		  int d = Math.abs( v - this.minValue - m );
-		  if( d > t ) {
-		    this.volumeStatus = true;
-		    this.thresholdCounter = 0;
-		  } else {
-		    if( this.thresholdCounter < this.nThresholdSamples ) {
-		      this.thresholdCounter++;
-		    } else {
-		      this.volumeStatus     = false;
-		      this.thresholdCounter = 0;
-		    }
-		  }
-		  rv = v;
-		}
-	      } while( --i > 0 );
+                  // aktueller Low/High-Status ermitteln
+                  int m = (this.maxValue - this.minValue) / 2;
+                  int t = Math.round( (float) m * this.thresholdValue );
+                  int d = Math.abs( v - this.minValue - m );
+                  if( d > t ) {
+                    this.volumeStatus = true;
+                    this.thresholdCounter = 0;
+                  } else {
+                    if( this.thresholdCounter < this.nThresholdSamples ) {
+                      this.thresholdCounter++;
+                    } else {
+                      this.volumeStatus     = false;
+                      this.thresholdCounter = 0;
+                    }
+                  }
+                  rv = v;
+                }
+              } while( --i > 0 );
 
-	      /*
-	       * Anzahl der verstrichenen Taktzyklen auf den Wert
-	       * des letzten gelesenen Samples korrigieren
-	       */
-	      this.lastCycles += (nSamples * this.cyclesPerFrame);
-	    }
-	  }
-	}
+              /*
+               * Anzahl der verstrichenen Taktzyklen auf den Wert
+               * des letzten gelesenen Samples korrigieren
+               */
+              this.lastCycles += (nSamples * this.cyclesPerFrame);
+            }
+          }
+        }
       }
     }
     return rv;

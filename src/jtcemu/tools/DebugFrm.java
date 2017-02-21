@@ -20,12 +20,12 @@ import z8.*;
 
 
 public class DebugFrm extends BaseFrm
-			implements
-				ActionListener,
-				ChangeListener,
-				ListSelectionListener,
-				MouseListener,
-				Z8Debugger
+                        implements
+                                ActionListener,
+                                ChangeListener,
+                                ListSelectionListener,
+                                MouseListener,
+                                Z8Debugger
 {
   private static DebugFrm instance = null;
 
@@ -99,7 +99,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -107,68 +107,68 @@ public class DebugFrm extends BaseFrm
     Object src = e.getSource();
     if( src != null ) {
       if( src == this.btnFlagC ) {
-	this.fldRegFLAGS.setEditBit( 0x80, this.btnFlagC.isSelected() );
+        this.fldRegFLAGS.setEditBit( 0x80, this.btnFlagC.isSelected() );
       } else if( src == this.btnFlagZ ) {
-	this.fldRegFLAGS.setEditBit( 0x40, this.btnFlagZ.isSelected() );
+        this.fldRegFLAGS.setEditBit( 0x40, this.btnFlagZ.isSelected() );
       } else if( src == this.btnFlagS ) {
-	this.fldRegFLAGS.setEditBit( 0x20, this.btnFlagS.isSelected() );
+        this.fldRegFLAGS.setEditBit( 0x20, this.btnFlagS.isSelected() );
       } else if( src == this.btnFlagV ) {
-	this.fldRegFLAGS.setEditBit( 0x10, this.btnFlagV.isSelected() );
+        this.fldRegFLAGS.setEditBit( 0x10, this.btnFlagV.isSelected() );
       } else if( (src == this.mnuStop) || (src == this.btnStop) ) {
-	setDebugAction( Z8.DebugAction.STOP );
+        setDebugAction( Z8.DebugAction.STOP );
       } else if( (src == this.mnuStepOver) || (src == this.btnStepOver) ) {
-	setDebugAction( Z8.DebugAction.STEP_OVER );
+        setDebugAction( Z8.DebugAction.STEP_OVER );
       } else if( (src == this.mnuStepInto) || (src == this.btnStepInto) ) {
-	setDebugAction( Z8.DebugAction.STEP_INTO );
+        setDebugAction( Z8.DebugAction.STEP_INTO );
       } else if( (src == this.mnuRunToRET) || (src == this.btnRunToRET) ) {
-	setDebugAction( Z8.DebugAction.RUN_TO_RET );
+        setDebugAction( Z8.DebugAction.RUN_TO_RET );
       } else if( (src == this.mnuRun) || (src == this.btnRun) ) {
-	setDebugAction( Z8.DebugAction.RUN );
+        setDebugAction( Z8.DebugAction.RUN );
       } else if( (src == this.mnuRemoveBreakpoint)
-		 || (src == this.popupRemoveBreakpoint) )
+                 || (src == this.popupRemoveBreakpoint) )
       {
-	doRemoveBreakpoint();
+        doRemoveBreakpoint();
       } else if( (src == this.mnuEnableBreakpoint)
-		 || (src == this.popupEnableBreakpoint) )
+                 || (src == this.popupEnableBreakpoint) )
       {
-	doBreakpointEnabled( true );
+        doBreakpointEnabled( true );
       } else if( (src == this.mnuDisableBreakpoint)
-		 || (src == this.popupDisableBreakpoint) )
+                 || (src == this.popupDisableBreakpoint) )
       {
-	doBreakpointEnabled( false );
+        doBreakpointEnabled( false );
       } else if( (src == this.mnuEnableAllBreakpoints)
-		 || (src == this.popupEnableAllBreakpoints) )
+                 || (src == this.popupEnableAllBreakpoints) )
       {
-	doAllBreakpointsEnabled( true );
+        doAllBreakpointsEnabled( true );
       } else if( (src == this.mnuDisableAllBreakpoints)
-		 || (src == this.popupDisableAllBreakpoints) )
+                 || (src == this.popupDisableAllBreakpoints) )
       {
-	doAllBreakpointsEnabled( false );
+        doAllBreakpointsEnabled( false );
       } else {
-	GUIUtil.setWaitCursor( this, true );
-	if( src == this.mnuClose ) {
-	  doClose();
-	}
-	else if( (src == this.mnuAddBreakpoint)
-		 || (src == this.popupAddBreakpoint) )
-	{
-	  doAddBreakpoint();
-	}
-	else if( (src == this.mnuRemoveAllBreakpoints)
-		 || (src == this.popupRemoveAllBreakpoints) )
-	{
-	  doRemoveAllBreakpoints();
-	}
-	else if( src == this.mnuHelpContent ) {
-	  HelpFrm.open( "/help/debugger.htm" );
-	}
-	GUIUtil.setWaitCursor( this, false );
+        GUIUtil.setWaitCursor( this, true );
+        if( src == this.mnuClose ) {
+          doClose();
+        }
+        else if( (src == this.mnuAddBreakpoint)
+                 || (src == this.popupAddBreakpoint) )
+        {
+          doAddBreakpoint();
+        }
+        else if( (src == this.mnuRemoveAllBreakpoints)
+                 || (src == this.popupRemoveAllBreakpoints) )
+        {
+          doRemoveAllBreakpoints();
+        }
+        else if( src == this.mnuHelpContent ) {
+          HelpFrm.open( "/help/debugger.htm" );
+        }
+        GUIUtil.setWaitCursor( this, false );
       }
     }
   }
 
 
-	/* --- ChangeListener --- */
+        /* --- ChangeListener --- */
 
   @Override
   public void stateChanged( ChangeEvent e )
@@ -182,7 +182,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-	/* --- ListSelectionListener --- */
+        /* --- ListSelectionListener --- */
 
   @Override
   public void valueChanged( ListSelectionEvent e )
@@ -192,7 +192,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-	/* --- MouseListener --- */
+        /* --- MouseListener --- */
 
   @Override
   public void mouseClicked( MouseEvent e )
@@ -235,7 +235,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-	/* --- Z8Debugger --- */
+        /* --- Z8Debugger --- */
 
   @Override
   public void z8DebugStatusChanged( Z8 z8 )
@@ -243,35 +243,35 @@ public class DebugFrm extends BaseFrm
     if( z8 == this.z8 ) {
       final Z8.RunMode runMode = z8.getRunMode();
       EventQueue.invokeLater(
-		new Runnable()
-		{
-		  public void run()
-		  {
-		    debugStatusChanged( runMode );
-		  }
-		} );
+                new Runnable()
+                {
+                  public void run()
+                  {
+                    debugStatusChanged( runMode );
+                  }
+                } );
     }
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   protected boolean doClose()
   {
     boolean state = true;
     if( !this.z8.wasQuitFired()
-	&& (this.z8.getRunMode() == Z8.RunMode.DEBUG_STOP) )
+        && (this.z8.getRunMode() == Z8.RunMode.DEBUG_STOP) )
     {
       if( JOptionPane.showConfirmDialog(
-		this,
-		"Mit Schlie\u00DFen des Debuggers wird\n"
-			+ "die Programmausf\u00FChrung fortgesetzt.",
-		"Hinweis",
-		JOptionPane.OK_CANCEL_OPTION,
-		JOptionPane.WARNING_MESSAGE ) != JOptionPane.YES_OPTION )
+                this,
+                "Mit Schlie\u00DFen des Debuggers wird\n"
+                        + "die Programmausf\u00FChrung fortgesetzt.",
+                "Hinweis",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.WARNING_MESSAGE ) != JOptionPane.YES_OPTION )
       {
-	state = false;
+        state = false;
       }
     }
     if( state ) {
@@ -295,7 +295,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-	/* --- private Konstruktoren und Methoden --- */
+        /* --- private Konstruktoren und Methoden --- */
 
   private DebugFrm( Z8 z8 )
   {
@@ -307,9 +307,9 @@ public class DebugFrm extends BaseFrm
     this.editMode    = false;
     this.grp15Flds   = new HexFld[ 16 ];
     this.regFlds     = new HexFld[
-				Main.getBooleanProperty(
-					"jtcemu.z8.emulate_registers_80toEF",
-					false ) ? 0xF0 : 0x80 ];
+                                Main.getBooleanProperty(
+                                        "jtcemu.z8.emulate_registers_80toEF",
+                                        false ) ? 0xF0 : 0x80 ];
 
 
     // Menu
@@ -332,47 +332,47 @@ public class DebugFrm extends BaseFrm
     mnuBar.add( mnuDebug );
 
     this.mnuStop = createJMenuItem(
-			"Programmausf\u00FChrung anhalten",
-			KeyEvent.VK_F4, 0 );
+                        "Programmausf\u00FChrung anhalten",
+                        KeyEvent.VK_F4, 0 );
     mnuDebug.add( this.mnuStop );
 
     this.mnuRun = createJMenuItem(
-			"Programmausf\u00FChrung bis Haltepunkt fortsetzen",
-			KeyEvent.VK_F5, 0 );
+                        "Programmausf\u00FChrung bis Haltepunkt fortsetzen",
+                        KeyEvent.VK_F5, 0 );
     this.mnuRun.setEnabled( false );
     mnuDebug.add( this.mnuRun );
 
     this.mnuStepOver = createJMenuItem(
-				"Einzelschritt \u00FCber Aufruf hinweg",
-				KeyEvent.VK_F6, 0 );
+                                "Einzelschritt \u00FCber Aufruf hinweg",
+                                KeyEvent.VK_F6, 0 );
     this.mnuStepOver.setEnabled( false );
     mnuDebug.add( this.mnuStepOver );
 
     this.mnuStepInto = createJMenuItem(
-				"Einzelschritt in Aufruf hinein",
-				KeyEvent.VK_F7, 0 );
+                                "Einzelschritt in Aufruf hinein",
+                                KeyEvent.VK_F7, 0 );
     this.mnuStepInto.setEnabled( false );
     mnuDebug.add( this.mnuStepInto );
 
     this.mnuRunToRET = createJMenuItem(
-				"Bis RETURN ausf\u00FChren",
-				KeyEvent.VK_F8, 0 );
+                                "Bis RETURN ausf\u00FChren",
+                                KeyEvent.VK_F8, 0 );
     this.mnuRunToRET.setEnabled( false );
     mnuDebug.add( this.mnuRunToRET );
     mnuDebug.addSeparator();
 
     this.mnuAddBreakpoint = createJMenuItem(
-				"Haltepunkt hinzuf\u00FCgen...",
-				KeyEvent.VK_F9, 0 );
+                                "Haltepunkt hinzuf\u00FCgen...",
+                                KeyEvent.VK_F9, 0 );
     mnuDebug.add( this.mnuAddBreakpoint );
 
     this.mnuRemoveBreakpoint = createJMenuItem(
-				"Haltepunkt entfernen",
-				KeyEvent.VK_DELETE, 0 );
+                                "Haltepunkt entfernen",
+                                KeyEvent.VK_DELETE, 0 );
     mnuDebug.add( this.mnuRemoveBreakpoint );
 
     this.mnuRemoveAllBreakpoints = createJMenuItem(
-					"Alle Haltepunkte entfernen" );
+                                        "Alle Haltepunkte entfernen" );
     mnuDebug.add( this.mnuRemoveAllBreakpoints );
     mnuDebug.addSeparator();
 
@@ -383,11 +383,11 @@ public class DebugFrm extends BaseFrm
     mnuDebug.add( this.mnuDisableBreakpoint );
 
     this.mnuEnableAllBreakpoints = createJMenuItem(
-				"Alle Haltepunkte aktivieren" );
+                                "Alle Haltepunkte aktivieren" );
     mnuDebug.add( this.mnuEnableAllBreakpoints );
 
     this.mnuDisableAllBreakpoints = createJMenuItem(
-				"Alle Haltepunkte deaktivieren" );
+                                "Alle Haltepunkte deaktivieren" );
     mnuDebug.add( this.mnuDisableAllBreakpoints );
 
 
@@ -404,7 +404,7 @@ public class DebugFrm extends BaseFrm
     this.mnuPopup = new JPopupMenu();
 
     this.popupAddBreakpoint = createJMenuItem(
-					"Haltepunkt hinzuf\u00FCgen..." );
+                                        "Haltepunkt hinzuf\u00FCgen..." );
     this.mnuPopup.add( this.popupAddBreakpoint );
 
     this.popupRemoveBreakpoint = createJMenuItem( "Haltepunkt entfernen" );
@@ -412,7 +412,7 @@ public class DebugFrm extends BaseFrm
     this.mnuPopup.add( this.popupRemoveBreakpoint );
 
     this.popupRemoveAllBreakpoints = createJMenuItem(
-					"Alle Haltepunkte entfernen" );
+                                        "Alle Haltepunkte entfernen" );
     this.popupRemoveAllBreakpoints.setEnabled( false );
     this.mnuPopup.add( this.popupRemoveAllBreakpoints );
     this.mnuPopup.addSeparator();
@@ -426,12 +426,12 @@ public class DebugFrm extends BaseFrm
     this.mnuPopup.add( this.popupDisableBreakpoint );
 
     this.popupEnableAllBreakpoints = createJMenuItem(
-				"Alle Haltepunkte aktivieren" );
+                                "Alle Haltepunkte aktivieren" );
     this.popupEnableAllBreakpoints.setEnabled( false );
     this.mnuPopup.add( this.popupEnableAllBreakpoints );
 
     this.popupDisableAllBreakpoints = createJMenuItem(
-				"Alle Haltepunkte deaktivieren" );
+                                "Alle Haltepunkte deaktivieren" );
     this.popupDisableAllBreakpoints.setEnabled( false );
     this.mnuPopup.add( this.popupDisableAllBreakpoints );
 
@@ -440,13 +440,13 @@ public class DebugFrm extends BaseFrm
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
 
     // Werkzeugleiste
@@ -458,36 +458,36 @@ public class DebugFrm extends BaseFrm
     add( toolBar, gbc );
 
     this.btnRun = GUIUtil.createImageButton(
-			this,
-			"/images/debug/run.png",
-			"Bis Haltepunkt ausf\u00FChren" );
+                        this,
+                        "/images/debug/run.png",
+                        "Bis Haltepunkt ausf\u00FChren" );
     this.btnRun.setEnabled( false );
     toolBar.add( this.btnRun );
 
     this.btnStop = GUIUtil.createImageButton(
-			this,
-			"/images/debug/stop.png",
-			"Programmausf\u00FChrung anhalten" );
+                        this,
+                        "/images/debug/stop.png",
+                        "Programmausf\u00FChrung anhalten" );
     toolBar.add( this.btnStop );
 
     this.btnStepOver = GUIUtil.createImageButton(
-			this,
-			"/images/debug/step_over.png",
-			"\u00DCber Aufruf springen" );
+                        this,
+                        "/images/debug/step_over.png",
+                        "\u00DCber Aufruf springen" );
     this.btnStepOver.setEnabled( false );
     toolBar.add( this.btnStepOver );
 
     this.btnStepInto = GUIUtil.createImageButton(
-			this,
-			"/images/debug/step_into.png",
-			"In Aufruf springen" );
+                        this,
+                        "/images/debug/step_into.png",
+                        "In Aufruf springen" );
     this.btnStepInto.setEnabled( false );
     toolBar.add( this.btnStepInto );
 
     this.btnRunToRET = GUIUtil.createImageButton(
-			this,
-			"/images/debug/step_up.png",
-			"Bis RETURN ausf\u00FChren" );
+                        this,
+                        "/images/debug/step_up.png",
+                        "Bis RETURN ausf\u00FChren" );
     this.btnRunToRET.setEnabled( false );
     toolBar.add( this.btnRunToRET );
 
@@ -500,13 +500,13 @@ public class DebugFrm extends BaseFrm
     add( panelReg, gbc );
 
     GridBagConstraints gbcReg = new GridBagConstraints(
-					1, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.CENTER,
-					GridBagConstraints.NONE,
-					new Insets( 5, 2, 2, 2 ),
-					0, 0 );
+                                        1, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.CENTER,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 2, 2, 2 ),
+                                        0, 0 );
 
     panelReg.add( new JLabel( "SIO" ), gbcReg );
     gbcReg.gridx++;
@@ -552,15 +552,15 @@ public class DebugFrm extends BaseFrm
       HexFld fld = new HexFld( 2 );
       this.grp15Flds[ i ] = fld;
       if( i == 15 ) {
-	gbcReg.insets.right = 5;
+        gbcReg.insets.right = 5;
       }
       panelReg.add( fld.getComponent(), gbcReg );
     }
-    this.grp15Flds[ 0 ].setReadOnly( true );	// SIO
-    this.grp15Flds[ 2 ].setReadOnly( true );	// T1
-    this.grp15Flds[ 3 ].setReadOnly( true );	// PRE1
-    this.grp15Flds[ 4 ].setReadOnly( true );	// T0
-    this.grp15Flds[ 5 ].setReadOnly( true );	// PRE0
+    this.grp15Flds[ 0 ].setReadOnly( true );        // SIO
+    this.grp15Flds[ 2 ].setReadOnly( true );        // T1
+    this.grp15Flds[ 3 ].setReadOnly( true );        // PRE1
+    this.grp15Flds[ 4 ].setReadOnly( true );        // T0
+    this.grp15Flds[ 5 ].setReadOnly( true );        // PRE0
 
     gbcReg.insets.top   = 5;
     gbcReg.insets.right = 2;
@@ -576,22 +576,22 @@ public class DebugFrm extends BaseFrm
     while( (reg >= 0) && (reg < this.regFlds.length) ) {
       gbcReg.insets.right = 2;
       if( reg == 0 ) {
-	gbcReg.insets.bottom = 5;
+        gbcReg.insets.bottom = 5;
       }
       gbcReg.gridx = 0;
       gbcReg.gridy++;
       panelReg.add(
-		new JLabel( Integer.toHexString( reg >> 4 ).toUpperCase() ),
-		gbcReg );
+                new JLabel( Integer.toHexString( reg >> 4 ).toUpperCase() ),
+                gbcReg );
       for( int i = 0; i < 16; i++ ) {
-	gbcReg.gridx++;
-	if( (reg == 0) && (i < 2) ) {
-	  this.regFlds[ reg + i ] = null;
-	} else {
-	  HexFld fld = new HexFld( 2 );
-	  this.regFlds[ reg + i ] = fld;
-	  panelReg.add( fld.getComponent(), gbcReg );
-	}
+        gbcReg.gridx++;
+        if( (reg == 0) && (i < 2) ) {
+          this.regFlds[ reg + i ] = null;
+        } else {
+          HexFld fld = new HexFld( 2 );
+          this.regFlds[ reg + i ] = fld;
+          panelReg.add( fld.getComponent(), gbcReg );
+        }
       }
       reg -= 0x10;
     }
@@ -619,13 +619,13 @@ public class DebugFrm extends BaseFrm
     add( panelFlags, gbc );
 
     GridBagConstraints gbcFlags = new GridBagConstraints(
-					1, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 0, 5 ),
-					0, 0 );
+                                        1, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 0, 5 ),
+                                        0, 0 );
 
     this.btnFlagC = new JCheckBox( "Carry" );
     this.btnFlagC.addActionListener( this );
@@ -655,7 +655,7 @@ public class DebugFrm extends BaseFrm
     // Bereich Haltepunkte
     JPanel panelBreakpoint = new JPanel( new BorderLayout() );
     panelBreakpoint.setBorder( BorderFactory.createTitledBorder(
-							"Haltepunkte" ) );
+                                                        "Haltepunkte" ) );
     gbc.fill       = GridBagConstraints.BOTH;
     gbc.weightx    = 1.0;
     gbc.weighty    = 1.0;
@@ -669,27 +669,27 @@ public class DebugFrm extends BaseFrm
     this.listBreakpoint.addListSelectionListener( this );
     this.listBreakpoint.addMouseListener( this );
     panelBreakpoint.add(
-		new JScrollPane( this.listBreakpoint ),
-		BorderLayout.CENTER );
+                new JScrollPane( this.listBreakpoint ),
+                BorderLayout.CENTER );
 
 
     // Bereich Programmausfuehrung
     JPanel panelPC = new JPanel( new GridBagLayout() );
     panelPC.setBorder( BorderFactory.createTitledBorder(
-						"Programmausf\u00FChrung" ) );
+                                                "Programmausf\u00FChrung" ) );
     gbc.gridheight = 1;
     gbc.gridx      = 0;
     gbc.gridy++;
     add( panelPC, gbc );
 
     GridBagConstraints gbcPC = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.EAST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 2, 2 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.EAST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 2, 2 ),
+                                        0, 0 );
 
     panelPC.add( new JLabel( "Stack:" ), gbcPC );
     gbcPC.insets.top = 2;
@@ -789,83 +789,83 @@ public class DebugFrm extends BaseFrm
   {
     if( runMode != null ) {
       switch( runMode ) {
-	case RUNNING:
-	  if( this.editMode ) {
-	    this.editMode = false;
+        case RUNNING:
+          if( this.editMode ) {
+            this.editMode = false;
 
-	    this.mnuStop.setEnabled( true );
-	    this.mnuStepOver.setEnabled( false );
-	    this.mnuStepInto.setEnabled( false );
-	    this.mnuRunToRET.setEnabled( false );
-	    this.mnuRun.setEnabled( false );
+            this.mnuStop.setEnabled( true );
+            this.mnuStepOver.setEnabled( false );
+            this.mnuStepInto.setEnabled( false );
+            this.mnuRunToRET.setEnabled( false );
+            this.mnuRun.setEnabled( false );
 
-	    this.btnStop.setEnabled( true );
-	    this.btnStepOver.setEnabled( false );
-	    this.btnStepInto.setEnabled( false );
-	    this.btnRunToRET.setEnabled( false );
-	    this.btnRun.setEnabled( false );
+            this.btnStop.setEnabled( true );
+            this.btnStepOver.setEnabled( false );
+            this.btnStepInto.setEnabled( false );
+            this.btnRunToRET.setEnabled( false );
+            this.btnRun.setEnabled( false );
 
-	    disableRegEdit( this.grp15Flds, 0xF0, false );
-	    disableRegEdit( this.regFlds, 0, false );
-	    updFlagCheckBoxes( false );
+            disableRegEdit( this.grp15Flds, 0xF0, false );
+            disableRegEdit( this.regFlds, 0, false );
+            updFlagCheckBoxes( false );
 
-	    this.fldPC.clearValue();
-	    this.fldReass.setText( "" );
-	    this.fldStackMode.setText( "" );
-	    this.fldStackValues.setText( "" );
-	  }
-	  break;
+            this.fldPC.clearValue();
+            this.fldReass.setText( "" );
+            this.fldStackMode.setText( "" );
+            this.fldStackValues.setText( "" );
+          }
+          break;
 
-	case DEBUG_STOP:
-	  this.editMode = true;
+        case DEBUG_STOP:
+          this.editMode = true;
 
-	  this.mnuStop.setEnabled( false );
-	  this.mnuStepOver.setEnabled( true );
-	  this.mnuStepInto.setEnabled( true );
-	  this.mnuRunToRET.setEnabled( true );
-	  this.mnuRun.setEnabled( true );
+          this.mnuStop.setEnabled( false );
+          this.mnuStepOver.setEnabled( true );
+          this.mnuStepInto.setEnabled( true );
+          this.mnuRunToRET.setEnabled( true );
+          this.mnuRun.setEnabled( true );
 
-	  this.btnStop.setEnabled( false );
-	  this.btnStepOver.setEnabled( true );
-	  this.btnStepInto.setEnabled( true );
-	  this.btnRunToRET.setEnabled( true );
-	  this.btnRun.setEnabled( true );
+          this.btnStop.setEnabled( false );
+          this.btnStepOver.setEnabled( true );
+          this.btnStepInto.setEnabled( true );
+          this.btnRunToRET.setEnabled( true );
+          this.btnRun.setEnabled( true );
 
-	  enableRegEdit( this.grp15Flds, 0xF0 );
-	  enableRegEdit( this.regFlds, 0 );
-	  updFlagCheckBoxes( true );
+          enableRegEdit( this.grp15Flds, 0xF0 );
+          enableRegEdit( this.regFlds, 0 );
+          updFlagCheckBoxes( true );
 
-	  StringBuilder buf = new StringBuilder( 128 );
-	  if( this.z8.isInternalStackEnabled() ) {
-	    this.fldStackMode.setText( "intern" );
-	    int sp = this.grp15Flds[ SPL - 0xF0 ].getOrgValue();
-	    for( int i = 0; i < 16; i++ ) {
-	      if( i > 0 ) {
-		buf.append( (char) '\u0020' );
-	      }
-	      buf.append( String.format(
-				"%02X",
-				this.z8.viewRegValue( sp++ ) ) );
-	    }
-	  } else {
-	    this.fldStackMode.setText( "extern" );
-	    int sp = (this.grp15Flds[ SPH - 0xF0 ].getOrgValue() << 8)
-				| this.grp15Flds[ SPL - 0xF0 ].getOrgValue();
-	    for( int i = 0; i < 16; i++ ) {
-	      if( i > 0 ) {
-		buf.append( (char) '\u0020' );
-	      }
-	      buf.append( String.format(
-			"%02X",
-			this.memory.getMemByte( sp++, false ) ) );
-	    }
-	  }
-	  this.fldStackValues.setText( buf.toString() );
+          StringBuilder buf = new StringBuilder( 128 );
+          if( this.z8.isInternalStackEnabled() ) {
+            this.fldStackMode.setText( "intern" );
+            int sp = this.grp15Flds[ SPL - 0xF0 ].getOrgValue();
+            for( int i = 0; i < 16; i++ ) {
+              if( i > 0 ) {
+                buf.append( (char) '\u0020' );
+              }
+              buf.append( String.format(
+                                "%02X",
+                                this.z8.viewRegValue( sp++ ) ) );
+            }
+          } else {
+            this.fldStackMode.setText( "extern" );
+            int sp = (this.grp15Flds[ SPH - 0xF0 ].getOrgValue() << 8)
+                                | this.grp15Flds[ SPL - 0xF0 ].getOrgValue();
+            for( int i = 0; i < 16; i++ ) {
+              if( i > 0 ) {
+                buf.append( (char) '\u0020' );
+              }
+              buf.append( String.format(
+                        "%02X",
+                        this.memory.getMemByte( sp++, false ) ) );
+            }
+          }
+          this.fldStackValues.setText( buf.toString() );
 
-	  int addr = this.z8.getPC();
-	  this.fldPC.setValue( addr );
-	  updReassFld();
-	  break;
+          int addr = this.z8.getPC();
+          this.fldPC.setValue( addr );
+          updReassFld();
+          break;
       }
       updStatusText( runMode );
     }
@@ -877,35 +877,35 @@ public class DebugFrm extends BaseFrm
     Integer addr = GUIUtil.askHex4( this, "Haltepunkt", null );
     if( addr != null ) {
       try {
-	Z8Breakpoint bp = new Z8Breakpoint( addr.intValue() );
-	if( this.breakpoints != null ) {
-	  int idx = Arrays.binarySearch( this.breakpoints, bp );
-	  if( idx < 0 ) {
-	    Z8Breakpoint[] a = new Z8Breakpoint[
-					this.breakpoints.length + 1 ];
-	    idx     = -(idx + 1);
-	    int dst = 0;
-	    for( int i = 0; i < this.breakpoints.length; i++ ) {
-	      if( i == idx ) {
-		if( dst < a.length ) {
-		  a[ dst++ ] = bp;
-		}
-	      }
-	      if( dst < a.length ) {
-		a[ dst++ ] = this.breakpoints[ i ];
-	      }
-	    }
-	    if( (idx == this.breakpoints.length) && (dst < a.length) ) {
-	      a[ dst++ ] = bp;
-	    }
-	    this.breakpoints = a;
-	  }
-	  updBreakpointList( idx );
-	} else {
-	  this.breakpoints      = new Z8Breakpoint[ 1 ];
-	  this.breakpoints[ 0 ] = bp;
-	  updBreakpointList( 0 );
-	}
+        Z8Breakpoint bp = new Z8Breakpoint( addr.intValue() );
+        if( this.breakpoints != null ) {
+          int idx = Arrays.binarySearch( this.breakpoints, bp );
+          if( idx < 0 ) {
+            Z8Breakpoint[] a = new Z8Breakpoint[
+                                        this.breakpoints.length + 1 ];
+            idx     = -(idx + 1);
+            int dst = 0;
+            for( int i = 0; i < this.breakpoints.length; i++ ) {
+              if( i == idx ) {
+                if( dst < a.length ) {
+                  a[ dst++ ] = bp;
+                }
+              }
+              if( dst < a.length ) {
+                a[ dst++ ] = this.breakpoints[ i ];
+              }
+            }
+            if( (idx == this.breakpoints.length) && (dst < a.length) ) {
+              a[ dst++ ] = bp;
+            }
+            this.breakpoints = a;
+          }
+          updBreakpointList( idx );
+        } else {
+          this.breakpoints      = new Z8Breakpoint[ 1 ];
+          this.breakpoints[ 0 ] = bp;
+          updBreakpointList( 0 );
+        }
       }
       catch( ClassCastException ex ) {}
     }
@@ -916,7 +916,7 @@ public class DebugFrm extends BaseFrm
   {
     if( this.breakpoints.length > 0 ) {
       for( int i = 0; i < this.breakpoints.length; i++ ) {
-	this.breakpoints[ i ].setEnabled( state );
+        this.breakpoints[ i ].setEnabled( state );
       }
       updBreakpointList( -1 );
       updActionFields();
@@ -938,11 +938,11 @@ public class DebugFrm extends BaseFrm
   private void doRemoveAllBreakpoints()
   {
     if( JOptionPane.showConfirmDialog(
-		this,
-		"M\u00F6chten Sie alle Haltepunkte entfernen?",
-		"Best\u00E4tigung",
-		JOptionPane.YES_NO_OPTION,
-		JOptionPane.QUESTION_MESSAGE ) == JOptionPane.YES_OPTION )
+                this,
+                "M\u00F6chten Sie alle Haltepunkte entfernen?",
+                "Best\u00E4tigung",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE ) == JOptionPane.YES_OPTION )
     {
       this.breakpoints = new Z8Breakpoint[ 0 ];
       updBreakpointList( -1 );
@@ -958,8 +958,8 @@ public class DebugFrm extends BaseFrm
       Z8Breakpoint[] a = new Z8Breakpoint[ this.breakpoints.length - 1 ];
       int   p = 0;
       for( int i = 0; (i < this.breakpoints.length) && (p < a.length); i++ ) {
-	if( i != idx )
-	  a[ p++ ] = this.breakpoints[ i ];
+        if( i != idx )
+          a[ p++ ] = this.breakpoints[ i ];
       }
       this.breakpoints = a;
       updBreakpointList( -1 );
@@ -973,10 +973,10 @@ public class DebugFrm extends BaseFrm
     for( int i = 0; i < fields.length; i++ ) {
       HexFld fld = fields[ i ];
       if( fld != null ) {
-	if( useEdits && !fld.isReadOnly() && fld.wasDataChanged() ) {
-	  this.z8.setRegValue( addr + i, fld.getValue() );
-	}
-	fld.clearValue();
+        if( useEdits && !fld.isReadOnly() && fld.wasDataChanged() ) {
+          this.z8.setRegValue( addr + i, fld.getValue() );
+        }
+        fld.clearValue();
       }
     }
   }
@@ -988,7 +988,7 @@ public class DebugFrm extends BaseFrm
     Object       obj        = this.listBreakpoint.getSelectedValue();
     if( obj != null ) {
       if( obj instanceof Z8Breakpoint )
-	breakpoint = (Z8Breakpoint) obj;
+        breakpoint = (Z8Breakpoint) obj;
     }
     return breakpoint;
   }
@@ -999,7 +999,7 @@ public class DebugFrm extends BaseFrm
     for( int i = 0; i < fields.length; i++ ) {
       HexFld fld = fields[ i ];
       if( fld != null )
-	fld.setValue( this.z8.viewRegValue( addr + i ) );
+        fld.setValue( this.z8.viewRegValue( addr + i ) );
     }
   }
 
@@ -1106,7 +1106,7 @@ public class DebugFrm extends BaseFrm
     StringBuilder buf  = new StringBuilder( 128 );
     for( int i = 0; i < 4; i++ ) {
       if( i > 0 ) {
-	buf.append( (char) '\n' );
+        buf.append( (char) '\n' );
       }
       this.reassembler.reassemble( buf, addr );
       addr = this.reassembler.getNextAddr() & 0xFFFF;
@@ -1120,21 +1120,21 @@ public class DebugFrm extends BaseFrm
     String statusText = "Bereit";
     if( runMode != null ) {
       switch( runMode ) {
-	case RUNNING:
-	  statusText = "Programmausf\u00Fchrung l\u00E4uft...";
-	  break;
+        case RUNNING:
+          statusText = "Programmausf\u00Fchrung l\u00E4uft...";
+          break;
 
-	case INST_HALT:
-	  statusText = "HALT-Befehl erreicht";
-	  break;
+        case INST_HALT:
+          statusText = "HALT-Befehl erreicht";
+          break;
 
-	case INST_STOP:
-	  statusText = "STOP-Befehl erreicht";
-	  break;
+        case INST_STOP:
+          statusText = "STOP-Befehl erreicht";
+          break;
 
-	case DEBUG_STOP:
-	  statusText = "Programmausf\u00Fchrung angehalten";
-	  break;
+        case DEBUG_STOP:
+          statusText = "Programmausf\u00Fchrung angehalten";
+          break;
       }
     }
     this.labelStatus.setText( statusText );

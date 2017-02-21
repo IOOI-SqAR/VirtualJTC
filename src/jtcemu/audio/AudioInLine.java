@@ -38,7 +38,7 @@ public class AudioInLine extends AudioIn
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   /*
    * Mit dieser Methode erfaehrt die Klasse den aktuellen
@@ -57,7 +57,7 @@ public class AudioInLine extends AudioIn
       this.maxValue   = 0;
       DataLine line   = this.dataLine;
       if( line != null )
-	line.flush();
+        line.flush();
 
     } else {
 
@@ -83,19 +83,19 @@ public class AudioInLine extends AudioIn
     if( (line != null) && (audioDataBuf != null) && (frameBuf != null) ) {
       
       if( this.audioDataPos >= this.audioDataLen ) {
-	this.audioDataLen = line.read(
-				this.audioDataBuf,
-				0,
-				this.audioDataBuf.length );
-	this.audioDataPos = 0;
+        this.audioDataLen = line.read(
+                                this.audioDataBuf,
+                                0,
+                                this.audioDataBuf.length );
+        this.audioDataPos = 0;
       }
       if( this.audioDataPos + frameBuf.length <= this.audioDataLen ) {
-	System.arraycopy(
-		audioDataBuf,
-		this.audioDataPos,
-		frameBuf, 0,
-		frameBuf.length );
-	this.audioDataPos += frameBuf.length;
+        System.arraycopy(
+                audioDataBuf,
+                this.audioDataPos,
+                frameBuf, 0,
+                frameBuf.length );
+        this.audioDataPos += frameBuf.length;
       }
     }
     return frameBuf;
@@ -104,9 +104,9 @@ public class AudioInLine extends AudioIn
 
   @Override
   public AudioFormat startAudio(
-			int   cyclesPerSecond,
-			int   sampleRate,
-			float thresholdValue )
+                        int   cyclesPerSecond,
+                        int   sampleRate,
+                        float thresholdValue )
   {
     AudioFormat fmt = null;
     if( this.dataLine != null ) {
@@ -114,43 +114,43 @@ public class AudioInLine extends AudioIn
     } else {
       if( cyclesPerSecond > 0 ) {
 
-	// Audio-Eingabekanal oeffnen
-	TargetDataLine line = null;
-	if( sampleRate > 0 ) {
-	  line = openTargetDataLine( sampleRate );
-	} else {
-	  for( int i = 0;
-	       (line == null) && (i < this.sampleRates.length);
-	       i++ )
-	  {
-	    line = openTargetDataLine( this.sampleRates[ i ] );
-	  }
-	}
+        // Audio-Eingabekanal oeffnen
+        TargetDataLine line = null;
+        if( sampleRate > 0 ) {
+          line = openTargetDataLine( sampleRate );
+        } else {
+          for( int i = 0;
+               (line == null) && (i < this.sampleRates.length);
+               i++ )
+          {
+            line = openTargetDataLine( this.sampleRates[ i ] );
+          }
+        }
 
         if( line != null ) {
-	  fmt                 = line.getFormat();
-	  this.dataLine       = line;
-	  this.maxPauseCycles = cyclesPerSecond;	// 1 Sekunde
+          fmt                 = line.getFormat();
+          this.dataLine       = line;
+          this.maxPauseCycles = cyclesPerSecond;        // 1 Sekunde
           this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
-						/ fmt.getFrameRate() );
-	  this.thresholdValue = thresholdValue;
+                                                / fmt.getFrameRate() );
+          this.thresholdValue = thresholdValue;
 
-	  // Buffer fuer ein Frame anlegen
-	  this.frameBuf = new byte[ fmt.getFrameSize() ];
+          // Buffer fuer ein Frame anlegen
+          this.frameBuf = new byte[ fmt.getFrameSize() ];
 
-	  // Buffer fuer Leseoperationen anlegen
-	  int r = Math.round( fmt.getFrameRate() );
-	  int n = this.dataLine.getBufferSize() / 32;
-	  if( n > r / 2 ) {		// max. 1/2 Sekunde puffern
-	    n = r / 2 ;
-	  }
-	  if( n < 1 ) {
-	    n = 1;
-	  }
-	  this.audioDataBuf = new byte[ n * this.frameBuf.length ];
-	  this.audioDataLen = 0;
-	  this.audioDataPos = this.audioDataLen;
-	  setAudioFormat( fmt );
+          // Buffer fuer Leseoperationen anlegen
+          int r = Math.round( fmt.getFrameRate() );
+          int n = this.dataLine.getBufferSize() / 32;
+          if( n > r / 2 ) {                // max. 1/2 Sekunde puffern
+            n = r / 2 ;
+          }
+          if( n < 1 ) {
+            n = 1;
+          }
+          this.audioDataBuf = new byte[ n * this.frameBuf.length ];
+          this.audioDataLen = 0;
+          this.audioDataPos = this.audioDataLen;
+          setAudioFormat( fmt );
         }
       }
     }
@@ -171,7 +171,7 @@ public class AudioInLine extends AudioIn
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private TargetDataLine openTargetDataLine( int sampleRate )
   {
@@ -194,23 +194,23 @@ public class AudioInLine extends AudioIn
 
 
   private TargetDataLine openTargetDataLine(
-				int     sampleRate,
-				int     channels,
-				boolean bigEndian )
+                                int     sampleRate,
+                                int     channels,
+                                boolean bigEndian )
   {
     AudioFormat fmt = new AudioFormat(
-				sampleRate,
-				8,
-				channels,
-				true,
-				bigEndian );
+                                sampleRate,
+                                8,
+                                channels,
+                                true,
+                                bigEndian );
 
     TargetDataLine line = null;
     try {
       line = (TargetDataLine) AudioSystem.getTargetDataLine( fmt );
       if( line != null ) {
-	line.open( fmt );
-	line.start();
+        line.open( fmt );
+        line.start();
       }
     }
     catch( Exception ex ) {

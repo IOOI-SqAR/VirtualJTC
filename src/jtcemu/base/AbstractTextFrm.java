@@ -42,17 +42,17 @@ public abstract class AbstractTextFrm extends BaseFrm
     Font      font      = this.textArea.getFont();
     if( font != null ) {
       this.textArea.setFont(
-	new Font(
-		"Monospaced",
-		Font.PLAIN,
-		Main.getIntProperty( "jtcemu.print.font.size", 10 ) ) );
+        new Font(
+                "Monospaced",
+                Font.PLAIN,
+                Main.getIntProperty( "jtcemu.print.font.size", 10 ) ) );
     }
     try {
       printable = this.textArea.getPrintable( null, null );
     }
     finally {
       if( font != null ) {
-	this.textArea.setFont( font );
+        this.textArea.setFont( font );
       }
     }
     if( printable != null ) {
@@ -65,12 +65,12 @@ public abstract class AbstractTextFrm extends BaseFrm
       pj.setJobName( "JTCEMU" );
       pj.setPrintable( printable );
       if( pj.printDialog( atts ) ) {
-	try {
-	  pj.print( atts );
-	}
-	catch( PrinterException ex ) {
-	  Main.showError( this, ex );
-	}
+        try {
+          pj.print( atts );
+        }
+        catch( PrinterException ex ) {
+          Main.showError( this, ex );
+        }
       }
     }
   }
@@ -85,9 +85,9 @@ public abstract class AbstractTextFrm extends BaseFrm
     }
     catch( BadLocationException ex ) {
       if( text != null ) {
-	pos = text.length();
+        pos = text.length();
       } else {
-	pos = 0;
+        pos = 0;
       }
     }
     this.textArea.requestFocus();
@@ -101,26 +101,26 @@ public abstract class AbstractTextFrm extends BaseFrm
     // Zeile kurzzeitig markieren
     if( text != null ) {
       try {
-	int eol = text.indexOf( '\n', lineBegPos );
-	if( eol > lineBegPos ) {
-	  final JTextArea textArea = this.textArea;
-	  textArea.moveCaretPosition( eol );
-	  javax.swing.Timer timer = new javax.swing.Timer(
-			500,
-			new ActionListener()
-			{
-			  public void actionPerformed( ActionEvent e )
-			  {
-			    try {
-			      textArea.setCaretPosition( lineBegPos );
-			      textArea.moveCaretPosition( lineBegPos );
-			    }
-			    catch( IllegalArgumentException ex ) {}
-			  }
-			} );
-	  timer.setRepeats( false );
-	  timer.start();
-	}
+        int eol = text.indexOf( '\n', lineBegPos );
+        if( eol > lineBegPos ) {
+          final JTextArea textArea = this.textArea;
+          textArea.moveCaretPosition( eol );
+          javax.swing.Timer timer = new javax.swing.Timer(
+                        500,
+                        new ActionListener()
+                        {
+                          public void actionPerformed( ActionEvent e )
+                          {
+                            try {
+                              textArea.setCaretPosition( lineBegPos );
+                              textArea.moveCaretPosition( lineBegPos );
+                            }
+                            catch( IllegalArgumentException ex ) {}
+                          }
+                        } );
+          timer.setRepeats( false );
+          timer.start();
+        }
       }
       catch( IllegalArgumentException ex ) {}
     }
@@ -134,7 +134,7 @@ public abstract class AbstractTextFrm extends BaseFrm
       throw new IOException( "Datei zu gro\u00DF" );
     }
     StringBuilder buf = new StringBuilder(
-				len >= 0 ? ((int) (len + 1)) : 0x4000 );
+                                len >= 0 ? ((int) (len + 1)) : 0x4000 );
 
     String lineSep = null;
     Reader in      = null;
@@ -144,46 +144,46 @@ public abstract class AbstractTextFrm extends BaseFrm
       boolean cr = false;
       int     ch = in.read();
       while( ch != -1 ) {
-	if( ch == '\r' ) {
-	  if( cr ) {
-	    buf.append( (char) '\r' );
-	  } else {
-	    cr = true;
-	  }
-	} else if( ch == '\n' ) {
-	  buf.append( (char) '\n' );
-	  if( cr ) {
-	    cr = false;
-	    if( lineSep == null ) {
-	      lineSep = "\r\n";
-	    }
-	  } else {
-	    if( lineSep == null ) {
-	      lineSep = "\n";
-	    }
-	  }
-	} else {
-	  if( cr ) {
-	    buf.append( (char) '\n' );
-	    cr = false;
-	    if( lineSep == null ) {
-	      lineSep = "\r";
-	    }
-	  } else {
-	    buf.append( (char) ch );
-	  }
-	}
-	ch = in.read();
+        if( ch == '\r' ) {
+          if( cr ) {
+            buf.append( (char) '\r' );
+          } else {
+            cr = true;
+          }
+        } else if( ch == '\n' ) {
+          buf.append( (char) '\n' );
+          if( cr ) {
+            cr = false;
+            if( lineSep == null ) {
+              lineSep = "\r\n";
+            }
+          } else {
+            if( lineSep == null ) {
+              lineSep = "\n";
+            }
+          }
+        } else {
+          if( cr ) {
+            buf.append( (char) '\n' );
+            cr = false;
+            if( lineSep == null ) {
+              lineSep = "\r";
+            }
+          } else {
+            buf.append( (char) ch );
+          }
+        }
+        ch = in.read();
       }
       setText( buf.toString() );
       this.lineSep = lineSep;
     }
     finally {
       if( in != null ) {
-	try {
-	  in.close();
-	}
-	catch( IOException ex ) {}
+        try {
+          in.close();
+        }
+        catch( IOException ex ) {}
       }
     }
   }
@@ -207,38 +207,38 @@ public abstract class AbstractTextFrm extends BaseFrm
 
       Document doc = this.textArea.getDocument();
       if( doc != null ) {
-	int len = doc.getLength();
-	if( len > 0 ) {
-	  try {
-	    Segment seg = new Segment();
-	    seg.setPartialReturn( false );
-	    doc.getText( 0, len, seg );
-	    if( seg.array != null ) {
-	      len = Math.min( seg.count, seg.array.length );
-	      for( int i = 0; i < len; i++ ) {
-		char ch = seg.array[ i ];
-		if( ch == '\n' ) {
-		  if( this.lineSep != null ) {
-		    out.write( this.lineSep );
-		  } else {
-		    out.newLine();
-		  }
-		} else {
-		  out.write( ch );
-		}
-	      }
-	    }
-	  }
-	  catch( BadLocationException ex ) {}
-	}
+        int len = doc.getLength();
+        if( len > 0 ) {
+          try {
+            Segment seg = new Segment();
+            seg.setPartialReturn( false );
+            doc.getText( 0, len, seg );
+            if( seg.array != null ) {
+              len = Math.min( seg.count, seg.array.length );
+              for( int i = 0; i < len; i++ ) {
+                char ch = seg.array[ i ];
+                if( ch == '\n' ) {
+                  if( this.lineSep != null ) {
+                    out.write( this.lineSep );
+                  } else {
+                    out.newLine();
+                  }
+                } else {
+                  out.write( ch );
+                }
+              }
+            }
+          }
+          catch( BadLocationException ex ) {}
+        }
       }
     }
     finally {
       if( out != null ) {
-	try {
-	  out.close();
-	}
-	catch( IOException ex ) {}
+        try {
+          out.close();
+        }
+        catch( IOException ex ) {}
       }
     }
   }

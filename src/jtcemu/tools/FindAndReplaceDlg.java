@@ -35,11 +35,11 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
 
 
   public FindAndReplaceDlg(
-			Window  owner,
-			String  findText,
-			String  replaceText,
-			boolean caseSensitive,
-			boolean regularExpr )
+                        Window  owner,
+                        String  findText,
+                        String  replaceText,
+                        boolean caseSensitive,
+                        boolean regularExpr )
   {
     super( owner );
     setTitle( "Suchen und ersetzen" );
@@ -55,13 +55,13 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					1.0, 0.0,
-					GridBagConstraints.NORTHWEST,
-					GridBagConstraints.HORIZONTAL,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        1.0, 0.0,
+                                        GridBagConstraints.NORTHWEST,
+                                        GridBagConstraints.HORIZONTAL,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
 
     // Eingabefelder
@@ -69,13 +69,13 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     add( panelInput, gbc );
 
     GridBagConstraints gbcInput = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.NORTHEAST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 0, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.NORTHEAST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 0, 5, 5 ),
+                                        0, 0 );
 
     panelInput.add( new JLabel( "Suchen nach:" ), gbcInput );
     gbcInput.insets.top = 5;
@@ -104,8 +104,8 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     panelInput.add( this.fldReplace, gbcInput );
 
     this.btnCaseSensitive = new JCheckBox(
-					"Gro\u00DF-/Kleinschreibung beachten",
-					caseSensitive );
+                                        "Gro\u00DF-/Kleinschreibung beachten",
+                                        caseSensitive );
     gbcInput.fill          = GridBagConstraints.NONE;
     gbcInput.weightx       = 0.0;
     gbcInput.insets.bottom = 0;
@@ -113,8 +113,8 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     panelInput.add( this.btnCaseSensitive, gbcInput );
 
     this.btnRegularExpr = new JCheckBox(
-				"Regul\u00E4rer Ausdruck",
-				regularExpr );
+                                "Regul\u00E4rer Ausdruck",
+                                regularExpr );
     gbcInput.insets.top = 0;
     gbcInput.gridy++;
     panelInput.add( this.btnRegularExpr, gbcInput );
@@ -183,7 +183,7 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- ActionEvent --- */
+        /* --- ActionEvent --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -194,12 +194,12 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     }
     else if( (src == this.fldReplace) || (src == this.btnFind) ) {
       if( doApply() )
-	doClose();
+        doClose();
     }
     else if( src == this.btnReplaceAll ) {
       if( doApply() ) {
-	this.replaceAll = true;
-	doClose();
+        this.replaceAll = true;
+        doClose();
       }
     }
     else if( src == this.btnCancel ) {
@@ -208,7 +208,7 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private boolean doApply()
   {
@@ -219,23 +219,23 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     }
     if( text.length() > 0 ) {
       try {
-	this.caseSensitive = this.btnCaseSensitive.isSelected();
-	this.regularExpr   = this.btnRegularExpr.isSelected();
+        this.caseSensitive = this.btnCaseSensitive.isSelected();
+        this.regularExpr   = this.btnRegularExpr.isSelected();
 
-	int flags = Pattern.MULTILINE | Pattern.UNICODE_CASE;
-	if( !this.caseSensitive ) {
-	  flags |= Pattern.CASE_INSENSITIVE;
-	}
-	if( !this.regularExpr ) {
-	  flags |= Pattern.LITERAL;
-	}
-	this.pattern     = Pattern.compile( text, flags );
-	this.findText    = text;
-	this.replaceText = this.fldReplace.getText();
-	rv = true;
+        int flags = Pattern.MULTILINE | Pattern.UNICODE_CASE;
+        if( !this.caseSensitive ) {
+          flags |= Pattern.CASE_INSENSITIVE;
+        }
+        if( !this.regularExpr ) {
+          flags |= Pattern.LITERAL;
+        }
+        this.pattern     = Pattern.compile( text, flags );
+        this.findText    = text;
+        this.replaceText = this.fldReplace.getText();
+        rv = true;
       }
       catch( PatternSyntaxException ex ) {
-	Main.showError( this, ex );
+        Main.showError( this, ex );
       }
     } else {
       Main.showError( this, "Suchen nach: Eingabe erwartet" );

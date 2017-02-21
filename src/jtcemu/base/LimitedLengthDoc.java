@@ -23,26 +23,26 @@ public class LimitedLengthDoc extends PlainDocument
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void insertString(
-			int                           offs,
-			String                        text,
-			javax.swing.text.AttributeSet attrs )
-						throws BadLocationException
+                        int                           offs,
+                        String                        text,
+                        javax.swing.text.AttributeSet attrs )
+                                                throws BadLocationException
   {
     if( text != null ) {
       if( this.maxLen > 0 ) {
-	int n = this.maxLen - getLength();
-	int l = text.length();
-	if( l > n ) {
-	  super.insertString( offs, text.substring( 0, n ), attrs );
-	} else {
-	  super.insertString( offs, text, attrs );
-	}
+        int n = this.maxLen - getLength();
+        int l = text.length();
+        if( l > n ) {
+          super.insertString( offs, text.substring( 0, n ), attrs );
+        } else {
+          super.insertString( offs, text, attrs );
+        }
       } else {
-	super.insertString( offs, text, attrs );
+        super.insertString( offs, text, attrs );
       }
     }
   }

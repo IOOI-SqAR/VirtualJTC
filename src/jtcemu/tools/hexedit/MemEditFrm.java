@@ -63,7 +63,7 @@ public class MemEditFrm extends AbstractHexCharFrm
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -71,19 +71,19 @@ public class MemEditFrm extends AbstractHexCharFrm
     Object  src = e.getSource();
     if( src != null ) {
       if( src == this.fldBegAddr ) {
-	this.fldEndAddr.requestFocus();
+        this.fldEndAddr.requestFocus();
       } else if( (src == this.fldEndAddr) || (src == this.mnuRefresh) ) {
-	doRefresh();
+        doRefresh();
       } else if( src == this.mnuPrintOptions ) {
-	PrintOptionsDlg.open( this );
+        PrintOptionsDlg.open( this );
       } else if( src == this.mnuPrint ) {
-	doPrint();
+        doPrint();
       } else if( src == this.mnuClose ) {
-	doClose();
+        doClose();
       } else if( src == this.mnuCopy ) {
-	doBytesCopy();
+        doBytesCopy();
       } else if( src == this.mnuOverwrite ) {
-	doBytesOverwrite();
+        doBytesOverwrite();
       } else if( src == this.mnuSaveAddr ) {
         doSaveAddr();
       } else if( src == this.mnuGotoSavedAddr ) {
@@ -91,13 +91,13 @@ public class MemEditFrm extends AbstractHexCharFrm
       } else if( src == this.mnuSelectToSavedAddr ) {
         doGotoSavedAddr( true );
       } else if( src == this.mnuFind ) {
-	doFind();
+        doFind();
       } else if( src == this.mnuFindNext ) {
-	doFindNext();
+        doFindNext();
       } else if( src == this.mnuHelpContent ) {
-	HelpFrm.open( "/help/memeditor.htm" );
+        HelpFrm.open( "/help/memeditor.htm" );
       } else {
-	super.actionPerformed( e );
+        super.actionPerformed( e );
       }
     }
   }
@@ -136,8 +136,8 @@ public class MemEditFrm extends AbstractHexCharFrm
   public int getDataLength()
   {
     return (this.begAddr >= 0) && (this.begAddr <= this.endAddr) ?
-					this.endAddr - this.begAddr + 1
-					: 0;
+                                        this.endAddr - this.begAddr + 1
+                                        : 0;
   }
 
 
@@ -166,84 +166,84 @@ public class MemEditFrm extends AbstractHexCharFrm
   }
 
 
-	/* --- Aktionen --- */
+        /* --- Aktionen --- */
 
   private void doBytesOverwrite()
   {
     if( (this.begAddr >= 0) && (this.begAddr <= this.endAddr) ) {
       int caretPos = this.hexCharFld.getCaretPosition();
       if( (caretPos >= 0) && (this.begAddr + caretPos <= this.endAddr) ) {
-	ReplyBytesDlg dlg = new ReplyBytesDlg(
-					this,
-					"Bytes \u00FCberschreiben",
-					this.lastInputFmt,
-					this.lastBigEndian,
-					null );
-	dlg.setVisible( true );
-	byte[] a = dlg.getApprovedBytes();
-	if( a != null ) {
-	  if( a.length > 0 ) {
-	    this.lastInputFmt  = dlg.getApprovedInputFormat();
-	    this.lastBigEndian = dlg.getApprovedBigEndian();
+        ReplyBytesDlg dlg = new ReplyBytesDlg(
+                                        this,
+                                        "Bytes \u00FCberschreiben",
+                                        this.lastInputFmt,
+                                        this.lastBigEndian,
+                                        null );
+        dlg.setVisible( true );
+        byte[] a = dlg.getApprovedBytes();
+        if( a != null ) {
+          if( a.length > 0 ) {
+            this.lastInputFmt  = dlg.getApprovedInputFormat();
+            this.lastBigEndian = dlg.getApprovedBigEndian();
 
-	    boolean failed = false;
-	    int     src    = 0;
-	    int     addr   = this.begAddr + caretPos;
-	    while( src < a.length ) {
-	      if( addr > 0xFFFF ) {
-		JOptionPane.showMessageDialog(
-			this,
-			"Die von Ihnen eingegebenen Bytes gehen \u00FCber"
-				+ " die Adresse FFFF hinaus.\n"
-				+ "Es werden nur die Bytes bis FFFF"
-				+ " ge\u00E4ndert.",
-			"Warnung",
-			JOptionPane.WARNING_MESSAGE );
-		break;
-	      } else {
-		if( !this.memory.setMemByte( addr, false, a[ src ] ) ) {
-		  String msg = String.format(
-			"Die Speicherzelle mit der Adresse %04X\n"
-				+  "konnte nicht ge\u00E4ndert werden.",
-			addr );
-		  if( src == (a.length - 1) ) {
-		    JOptionPane.showMessageDialog(
-				this,
-				msg,
-				"Fehler",
-				JOptionPane.ERROR_MESSAGE );
-		  } else {
-		    boolean     cancel  = true;
-		    String[]    options = { "Weiter", "Abbrechen" };
-		    JOptionPane pane    = new JOptionPane(
-						msg,
-						JOptionPane.ERROR_MESSAGE );
-		    pane.setOptions( options );
-		    pane.createDialog( this, "Fehler" ).setVisible( true );
-		    Object value = pane.getValue();
-		    if( value != null ) {
-		      if( value.equals( options[ 0 ] ) ) {
-			cancel = false;
-		      }
-		    }
-		    if( cancel ) {
-		      break;
-		    }
-		  }
-		}
-	      }
-	      addr++;
-	      src++;
-	    }
-	    if( addr > this.endAddr ) {
-	      this.endAddr = addr - 1;
-	      this.fldEndAddr.setText(
-			String.format( "%04X", this.endAddr ) );
-	    }
-	    updView();
-	    setSelection( caretPos, caretPos + a.length - 1 );
-	  }
-	}
+            boolean failed = false;
+            int     src    = 0;
+            int     addr   = this.begAddr + caretPos;
+            while( src < a.length ) {
+              if( addr > 0xFFFF ) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Die von Ihnen eingegebenen Bytes gehen \u00FCber"
+                                + " die Adresse FFFF hinaus.\n"
+                                + "Es werden nur die Bytes bis FFFF"
+                                + " ge\u00E4ndert.",
+                        "Warnung",
+                        JOptionPane.WARNING_MESSAGE );
+                break;
+              } else {
+                if( !this.memory.setMemByte( addr, false, a[ src ] ) ) {
+                  String msg = String.format(
+                        "Die Speicherzelle mit der Adresse %04X\n"
+                                +  "konnte nicht ge\u00E4ndert werden.",
+                        addr );
+                  if( src == (a.length - 1) ) {
+                    JOptionPane.showMessageDialog(
+                                this,
+                                msg,
+                                "Fehler",
+                                JOptionPane.ERROR_MESSAGE );
+                  } else {
+                    boolean     cancel  = true;
+                    String[]    options = { "Weiter", "Abbrechen" };
+                    JOptionPane pane    = new JOptionPane(
+                                                msg,
+                                                JOptionPane.ERROR_MESSAGE );
+                    pane.setOptions( options );
+                    pane.createDialog( this, "Fehler" ).setVisible( true );
+                    Object value = pane.getValue();
+                    if( value != null ) {
+                      if( value.equals( options[ 0 ] ) ) {
+                        cancel = false;
+                      }
+                    }
+                    if( cancel ) {
+                      break;
+                    }
+                  }
+                }
+              }
+              addr++;
+              src++;
+            }
+            if( addr > this.endAddr ) {
+              this.endAddr = addr - 1;
+              this.fldEndAddr.setText(
+                        String.format( "%04X", this.endAddr ) );
+            }
+            updView();
+            setSelection( caretPos, caretPos + a.length - 1 );
+          }
+        }
       }
     }
   }
@@ -252,12 +252,12 @@ public class MemEditFrm extends AbstractHexCharFrm
   private void doGotoSavedAddr( boolean moveOp )
   {
     if( (this.savedAddr >= 0)
-	&& (this.savedAddr >= this.begAddr)
-	&& (this.savedAddr <= this.endAddr) )
+        && (this.savedAddr >= this.begAddr)
+        && (this.savedAddr <= this.endAddr) )
     {
       this.hexCharFld.setCaretPosition(
-				this.savedAddr - this.begAddr,
-				moveOp );
+                                this.savedAddr - this.begAddr,
+                                moveOp );
       updCaretPosFields();
     }
   }
@@ -273,10 +273,10 @@ public class MemEditFrm extends AbstractHexCharFrm
     }
     catch( ParseException ex ) {
       JOptionPane.showMessageDialog(
-		this,
-		ex.getMessage(),
-		"Eingabefehler",
-		JOptionPane.ERROR_MESSAGE );
+                this,
+                ex.getMessage(),
+                "Eingabefehler",
+                JOptionPane.ERROR_MESSAGE );
     }
   }
 
@@ -286,15 +286,15 @@ public class MemEditFrm extends AbstractHexCharFrm
     if( this.begAddr >= 0 ) {
       int caretPos = this.hexCharFld.getCaretPosition();
       if( caretPos >= 0 ) {
-	this.savedAddr = this.begAddr + caretPos;
-	this.mnuGotoSavedAddr.setEnabled( true );
-	this.mnuSelectToSavedAddr.setEnabled( true );
+        this.savedAddr = this.begAddr + caretPos;
+        this.mnuGotoSavedAddr.setEnabled( true );
+        this.mnuSelectToSavedAddr.setEnabled( true );
       }
     }
   }
 
 
-	/* --- Konstruktor --- */
+        /* --- Konstruktor --- */
 
   private MemEditFrm( Z8Memory memory )
   {
@@ -328,9 +328,9 @@ public class MemEditFrm extends AbstractHexCharFrm
 
     this.mnuPrint = new JMenuItem( "Drucken..." );
     this.mnuPrint.setAccelerator(
-			KeyStroke.getKeyStroke(
-				KeyEvent.VK_P,
-				InputEvent.CTRL_MASK ) );
+                        KeyStroke.getKeyStroke(
+                                KeyEvent.VK_P,
+                                InputEvent.CTRL_MASK ) );
     this.mnuPrint.setEnabled( false );
     this.mnuPrint.addActionListener( this );
     mnuFile.add( this.mnuPrint );
@@ -354,7 +354,7 @@ public class MemEditFrm extends AbstractHexCharFrm
 
     this.mnuOverwrite = new JMenuItem( "Bytes \u00FCberschreiben..." );
     this.mnuOverwrite.setAccelerator(
-		KeyStroke.getKeyStroke( KeyEvent.VK_O, Event.CTRL_MASK ) );
+                KeyStroke.getKeyStroke( KeyEvent.VK_O, Event.CTRL_MASK ) );
     this.mnuOverwrite.setEnabled( false );
     this.mnuOverwrite.addActionListener( this );
     mnuEdit.add( this.mnuOverwrite );
@@ -380,14 +380,14 @@ public class MemEditFrm extends AbstractHexCharFrm
 
     this.mnuFind = new JMenuItem( "Suchen..." );
     this.mnuFind.setAccelerator(
-		KeyStroke.getKeyStroke( KeyEvent.VK_F, Event.CTRL_MASK ) );
+                KeyStroke.getKeyStroke( KeyEvent.VK_F, Event.CTRL_MASK ) );
     this.mnuFind.setEnabled( false );
     this.mnuFind.addActionListener( this );
     mnuEdit.add( this.mnuFind );
 
     this.mnuFindNext = new JMenuItem( "Weitersuchen" );
     this.mnuFindNext.setAccelerator(
-			KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
+                        KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
     this.mnuFindNext.setEnabled( false );
     this.mnuFindNext.addActionListener( this );
     mnuEdit.add( this.mnuFindNext );
@@ -406,13 +406,13 @@ public class MemEditFrm extends AbstractHexCharFrm
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
     // Adresseingabe
     add( new JLabel( "Anfangsadresse:" ), gbc );

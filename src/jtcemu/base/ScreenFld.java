@@ -39,9 +39,9 @@ public class ScreenFld extends JComponent
       int g = ((i & 4) == 0 ? 155 : 0);
       int b = ((i & 2) == 0 ? 155 : 0);
       if( (i & 1) == 0 ) {
-	r += 100;
-	g += 100;
-	b += 100;
+        r += 100;
+        g += 100;
+        b += 100;
       }
       this.colors[ i ] = new Color( r, g, b );
     }
@@ -58,20 +58,20 @@ public class ScreenFld extends JComponent
     if( (w > 0) && (h > 0) ) {
       IndexColorModel cm = null;
       if( this.mode == Mode.M320X192 ) {
-	byte[] r = new byte[ this.colors.length ];
-	byte[] g = new byte[ this.colors.length ];
-	byte[] b = new byte[ this.colors.length ];
-	for( int i = 0; i < this.colors.length; i++ ) {
-	  r[ i ] = (byte) this.colors[ i ].getRed();
-	  g[ i ] = (byte) this.colors[ i ].getGreen();
-	  b[ i ] = (byte) this.colors[ i ].getBlue();
-	}
-	cm = new IndexColorModel( 4, this.colors.length, r, g, b );
+        byte[] r = new byte[ this.colors.length ];
+        byte[] g = new byte[ this.colors.length ];
+        byte[] b = new byte[ this.colors.length ];
+        for( int i = 0; i < this.colors.length; i++ ) {
+          r[ i ] = (byte) this.colors[ i ].getRed();
+          g[ i ] = (byte) this.colors[ i ].getGreen();
+          b[ i ] = (byte) this.colors[ i ].getBlue();
+        }
+        cm = new IndexColorModel( 4, this.colors.length, r, g, b );
       } else {
-	byte[] r = { (byte) 255, (byte) 0 };
-	byte[] g = { (byte) 255, (byte) 0 };
-	byte[] b = { (byte) 255, (byte) 0 };
-	cm = new IndexColorModel( 1, 2, r, g, b );
+        byte[] r = { (byte) 255, (byte) 0 };
+        byte[] g = { (byte) 255, (byte) 0 };
+        byte[] b = { (byte) 255, (byte) 0 };
+        cm = new IndexColorModel( 1, 2, r, g, b );
       }
       img = new BufferedImage( w, h, BufferedImage.TYPE_BYTE_INDEXED, cm );
       Graphics g = img.createGraphics();
@@ -123,26 +123,26 @@ public class ScreenFld extends JComponent
   {
     if( (mode != null) && (mode != this.mode) ) {
       if( updScale ) {
-	int hOld  = getPixelHeight( this.mode );
-	int hNew  = getPixelHeight( mode );
-	int scale = (int) Math.round( hOld * this.screenScale / hNew );
-	if( (hNew < hOld)
-	    && (hNew * scale) > (hOld * this.screenScale) )
-	{
-	  --scale;
-	}
-	else if( (hNew > hOld)
-		 && (hNew * scale) < (hOld * this.screenScale) )
-	{
-	  scale++;
-	}
-	if( scale < 1 ) {
-	  scale = 1;
-	}
-	else if( scale > 8 ) {
-	  scale = 8;
-	}
-	this.screenScale = scale;
+        int hOld  = getPixelHeight( this.mode );
+        int hNew  = getPixelHeight( mode );
+        int scale = (int) Math.round( hOld * this.screenScale / hNew );
+        if( (hNew < hOld)
+            && (hNew * scale) > (hOld * this.screenScale) )
+        {
+          --scale;
+        }
+        else if( (hNew > hOld)
+                 && (hNew * scale) < (hOld * this.screenScale) )
+        {
+          scale++;
+        }
+        if( scale < 1 ) {
+          scale = 1;
+        }
+        else if( scale > 8 ) {
+          scale = 8;
+        }
+        this.screenScale = scale;
       }
       this.mode = mode;
       updPreferredSize();
@@ -159,7 +159,7 @@ public class ScreenFld extends JComponent
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public boolean isFocusable()
@@ -189,18 +189,18 @@ public class ScreenFld extends JComponent
   }
 
 
-	/* --- private Methoden --- */
+        /* --- private Methoden --- */
 
   private Color getColor( int value )
   {
     Color rv = Color.black;
     if( (this.mode == Mode.M320X192)
-	&& (value >= 0) && (value < this.colors.length) )
+        && (value >= 0) && (value < this.colors.length) )
     {
       rv = this.colors[ value ];
     } else {
       if( value > 0 ) {
-	rv = Color.white;
+        rv = Color.white;
       }
     }
     return rv;
@@ -236,12 +236,12 @@ public class ScreenFld extends JComponent
     int rv = 64;
     switch( mode ) {
       case M128X128:
-	rv = 128;
-	break;
+        rv = 128;
+        break;
 
       case M320X192:
-	rv = 192;
-	break;
+        rv = 192;
+        break;
     }
     return rv;
   }
@@ -279,37 +279,37 @@ public class ScreenFld extends JComponent
        * Punkte zusammengefasst und als Linie gezeichnet.
        */
       for( int y = 0; y < hNorm; y++ ) {
-	Color lastColor = null;
-	int   xColorBeg = -1;
-	for( int x = 0; x < wNorm; x++ ) {
-	  Color color = getColor( this.jtcSys.getPixel( x, y ) );
-	  if( (color != null) && (color != lastColor) ) {
-	    if( (lastColor != null)
-		&& (lastColor != bgColor)
-		&& (xColorBeg >= 0) )
-	    {
-	      g.setColor( lastColor );
-	      g.fillRect(
-			xColorBeg * this.screenScale,
-			y * this.screenScale,
-			(x - xColorBeg) * this.screenScale,
-			this.screenScale );
-	    }
-	    xColorBeg = x;
-	    lastColor = color;
-	  }
-	}
-	if( (lastColor != null)
-	     && (lastColor != bgColor)
-	    && (xColorBeg >= 0) )
-	{
-	  g.setColor( lastColor );
-	  g.fillRect(
-		xColorBeg * this.screenScale,
-		y * this.screenScale,
-		(wNorm - xColorBeg) * this.screenScale,
-		this.screenScale );
-	}
+        Color lastColor = null;
+        int   xColorBeg = -1;
+        for( int x = 0; x < wNorm; x++ ) {
+          Color color = getColor( this.jtcSys.getPixel( x, y ) );
+          if( (color != null) && (color != lastColor) ) {
+            if( (lastColor != null)
+                && (lastColor != bgColor)
+                && (xColorBeg >= 0) )
+            {
+              g.setColor( lastColor );
+              g.fillRect(
+                        xColorBeg * this.screenScale,
+                        y * this.screenScale,
+                        (x - xColorBeg) * this.screenScale,
+                        this.screenScale );
+            }
+            xColorBeg = x;
+            lastColor = color;
+          }
+        }
+        if( (lastColor != null)
+             && (lastColor != bgColor)
+            && (xColorBeg >= 0) )
+        {
+          g.setColor( lastColor );
+          g.fillRect(
+                xColorBeg * this.screenScale,
+                y * this.screenScale,
+                (wNorm - xColorBeg) * this.screenScale,
+                this.screenScale );
+        }
       }
     }
   }
@@ -323,16 +323,16 @@ public class ScreenFld extends JComponent
     }
     if( this.mode == Mode.M320X192 ) {
       setPreferredSize( new Dimension(
-				(2 * margin) + (320 * this.screenScale),
-				(2 * margin) + (192 * this.screenScale) ) );
+                                (2 * margin) + (320 * this.screenScale),
+                                (2 * margin) + (192 * this.screenScale) ) );
     } else if( this.mode == Mode.M128X128 ) {
       setPreferredSize( new Dimension(
-				(2 * margin) + (128 * this.screenScale),
-				(2 * margin) + (128 * this.screenScale) ) );
+                                (2 * margin) + (128 * this.screenScale),
+                                (2 * margin) + (128 * this.screenScale) ) );
     } else {
       setPreferredSize( new Dimension(
-				(2 * margin) + (64 * this.screenScale),
-				(2 * margin) + (64 * this.screenScale) ) );
+                                (2 * margin) + (64 * this.screenScale),
+                                (2 * margin) + (64 * this.screenScale) ) );
     }
     Container parent = getParent();
     if( parent != null ) {

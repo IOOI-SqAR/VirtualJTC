@@ -52,67 +52,67 @@ public abstract class AudioOut extends AudioIO
   {
     if( this.enabled && (this.cyclesPerFrame > 0) ) {
       if( this.firstCall ) {
-	this.firstCall        = false;
-	this.firstPhaseChange = true;
-	this.lastPhase        = phase;
+        this.firstCall        = false;
+        this.firstPhaseChange = true;
+        this.lastPhase        = phase;
       } else {
 
-	if( phase != this.lastPhase ) {
-	  this.lastPhase = phase;
-	  if( this.firstPhaseChange ) {
-	    this.firstPhaseChange = false;
-	    this.lastCycles       = this.z8.getTotalCycles();
-	  } else {
-	    long totalCycles = this.z8.getTotalCycles();
-	    int  diffCycles  = this.z8.calcDiffCycles(
-						this.lastCycles,
-						totalCycles );
+        if( phase != this.lastPhase ) {
+          this.lastPhase = phase;
+          if( this.firstPhaseChange ) {
+            this.firstPhaseChange = false;
+            this.lastCycles       = this.z8.getTotalCycles();
+          } else {
+            long totalCycles = this.z8.getTotalCycles();
+            int  diffCycles  = this.z8.calcDiffCycles(
+                                                this.lastCycles,
+                                                totalCycles );
 
-	    if( diffCycles > 0 ) {
-	      currentCycles( totalCycles, diffCycles );
-	      if( totalCycles > this.lastCycles ) {
+            if( diffCycles > 0 ) {
+              currentCycles( totalCycles, diffCycles );
+              if( totalCycles > this.lastCycles ) {
 
-		// Anzahl der zu erzeugenden Samples
-		int nSamples = diffCycles / this.cyclesPerFrame;
-		if( diffCycles < this.maxPauseCycles ) {
+                // Anzahl der zu erzeugenden Samples
+                int nSamples = diffCycles / this.cyclesPerFrame;
+                if( diffCycles < this.maxPauseCycles ) {
 
-		  /*
-		   * Wenn der Abstand seit dem letzten Phasenwechsel zu gross
-		   * ist, soll die zwischenzeitliche Amplitude Null sein.
-		   * damit die Phasenlage nicht einseitig ist.
-		   * Als zu grosser Abstand wird mehr als die 6-fache Dauer
-		   * der letzten Phasenlage angenommen.
-		   * Der Faktor muss kleiner 8 sein,
-		   * damit beim 2K-Aufzeichnungsverfahren
-		   * (Amplitudenmodulation, 8 Schwingungen pro Bit)
-		   * bei einem 0-Bit die Amplitude auch Null ist.
-		   * Auf der anderen Seite muss der Faktor so gross sein,
-		   * dass beim 4K- und 6K-Aufzeichnungsverfahren
-		   * (Frequenzmodulation) die Phasenlage bei jedem
-		   * Frequenzsprung auch sicher geaendert und
-		   * die Amplitude nicht Null wird.
-		   */
-		  if( (this.lastPhaseSamples > 0)
-		      && (nSamples > 6 * this.lastPhaseSamples) )
-		  {
-		    writeSamples( nSamples, NO_PHASE_VALUE );
-		  } else {
-		    writeSamples(
-				nSamples,
-				phase ? PHASE1_VALUE : PHASE0_VALUE );
-		  }
-		}
+                  /*
+                   * Wenn der Abstand seit dem letzten Phasenwechsel zu gross
+                   * ist, soll die zwischenzeitliche Amplitude Null sein.
+                   * damit die Phasenlage nicht einseitig ist.
+                   * Als zu grosser Abstand wird mehr als die 6-fache Dauer
+                   * der letzten Phasenlage angenommen.
+                   * Der Faktor muss kleiner 8 sein,
+                   * damit beim 2K-Aufzeichnungsverfahren
+                   * (Amplitudenmodulation, 8 Schwingungen pro Bit)
+                   * bei einem 0-Bit die Amplitude auch Null ist.
+                   * Auf der anderen Seite muss der Faktor so gross sein,
+                   * dass beim 4K- und 6K-Aufzeichnungsverfahren
+                   * (Frequenzmodulation) die Phasenlage bei jedem
+                   * Frequenzsprung auch sicher geaendert und
+                   * die Amplitude nicht Null wird.
+                   */
+                  if( (this.lastPhaseSamples > 0)
+                      && (nSamples > 6 * this.lastPhaseSamples) )
+                  {
+                    writeSamples( nSamples, NO_PHASE_VALUE );
+                  } else {
+                    writeSamples(
+                                nSamples,
+                                phase ? PHASE1_VALUE : PHASE0_VALUE );
+                  }
+                }
 
-		/*
-		 * Anzahl der verstrichenen Taktzyklen auf den Wert
-		 * des letzten ausgegebenen Samples korrigieren
-		 */
-		this.lastCycles += (nSamples * this.cyclesPerFrame);
-		this.lastPhaseSamples = nSamples;
-	      }
-	    }
-	  }
-	}
+                /*
+                 * Anzahl der verstrichenen Taktzyklen auf den Wert
+                 * des letzten ausgegebenen Samples korrigieren
+                 */
+                this.lastCycles += (nSamples * this.cyclesPerFrame);
+                this.lastPhaseSamples = nSamples;
+              }
+            }
+          }
+        }
       }
     }
   }

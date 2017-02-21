@@ -50,7 +50,7 @@ public class BaseFrm extends JFrame implements WindowListener
   }
 
 
-	/* --- WindowListener --- */
+        /* --- WindowListener --- */
 
   @Override
   public void windowActivated( WindowEvent e )

@@ -45,7 +45,7 @@ public class Z8Breakpoint implements Comparable<Z8Breakpoint>
   }
 
 
-	/* --- Comparable --- */
+        /* --- Comparable --- */
 
   @Override
   public int compareTo( Z8Breakpoint bp )
@@ -54,16 +54,16 @@ public class Z8Breakpoint implements Comparable<Z8Breakpoint>
   }
 
 
-	/* --- ueberschriebene Methoden --- */
+        /* --- ueberschriebene Methoden --- */
 
   @Override
   public String toString()
   {
     if( this.text == null ) {
       if( this.enabled ) {
-	this.text = String.format( "%04X", this.addr );
+        this.text = String.format( "%04X", this.addr );
       } else {
-	this.text = String.format( "( %04X )", this.addr );
+        this.text = String.format( "( %04X )", this.addr );
       }
     }
     return text;

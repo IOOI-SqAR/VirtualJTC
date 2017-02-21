@@ -28,7 +28,7 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- ActionListener --- */
+        /* --- ActionListener --- */
 
   @Override
   public void actionPerformed( ActionEvent e )
@@ -43,7 +43,7 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
   }
 
 
-	/* --- private Konstruktoren und Methoden --- */
+        /* --- private Konstruktoren und Methoden --- */
 
   private PrintOptionsDlg( Window owner )
   {
@@ -55,13 +55,13 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
     setLayout( new GridBagLayout() );
 
     GridBagConstraints gbc = new GridBagConstraints(
-					0, 0,
-					1, 1,
-					0.0, 0.0,
-					GridBagConstraints.WEST,
-					GridBagConstraints.NONE,
-					new Insets( 5, 5, 5, 5 ),
-					0, 0 );
+                                        0, 0,
+                                        1, 1,
+                                        0.0, 0.0,
+                                        GridBagConstraints.WEST,
+                                        GridBagConstraints.NONE,
+                                        new Insets( 5, 5, 5, 5 ),
+                                        0, 0 );
 
     add( new JLabel( "Schriftgr\u00F6\u00DFe:" ), gbc );
 
@@ -81,8 +81,8 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
     add( this.comboFontSize, gbc );
 
     this.comboFontSize.setSelectedItem(
-	Integer.toString(
-		Main.getIntProperty( "jtcemu.print.font.size", 10 ) ) );
+        Integer.toString(
+                Main.getIntProperty( "jtcemu.print.font.size", 10 ) ) );
 
 
     // Knoepfe
@@ -115,8 +115,8 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
     if( obj != null ) {
       String text = obj.toString();
       if( text != null ) {
-	Main.setProperty( "jtcemu.print.font.size", text );
-	doClose();
+        Main.setProperty( "jtcemu.print.font.size", text );
+        doClose();
       }
     }
   }
