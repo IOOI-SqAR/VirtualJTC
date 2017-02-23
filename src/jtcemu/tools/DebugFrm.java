@@ -10,13 +10,15 @@ package jtcemu.tools;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.*;
 import java.util.*;
+import java.util.Timer;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import jtcemu.base.*;
 import jtcemu.Main;
 import z8.*;
+import z8.Z8.RunMode;
 
 
 public class DebugFrm extends BaseFrm
@@ -27,6 +29,8 @@ public class DebugFrm extends BaseFrm
                                 MouseListener,
                                 Z8Debugger
 {
+  private static final int DEFAULT_AUTOSTEP_FREQUENCY = 2000;
+
   private static DebugFrm instance = null;
 
   private static int SPL   = 0xFF;
@@ -66,6 +70,11 @@ public class DebugFrm extends BaseFrm
   private JButton        btnStepOver;
   private JButton        btnRun;
   private JButton        btnRunToRET;
+  private JCheckBox      autoStepCheckBox;
+  private JComboBox      autoStepModeComboBox;
+  private JLabel         autoStepLabel;
+  private JTextField     autoStepFrequency;
+  private JLabel         autoStepFrequencyUnitLabel;
   private HexFld[]       grp15Flds;
   private HexFld[]       regFlds;
   private HexFld         fldPC;
@@ -79,6 +88,8 @@ public class DebugFrm extends BaseFrm
   private JTextArea      fldReass;
   private JList          listBreakpoint;
   private JLabel         labelStatus;
+
+  private Timer          autoStepTimer;
  
 
   public static boolean close()
@@ -124,6 +135,8 @@ public class DebugFrm extends BaseFrm
         setDebugAction( Z8.DebugAction.RUN_TO_RET );
       } else if( (src == this.mnuRun) || (src == this.btnRun) ) {
         setDebugAction( Z8.DebugAction.RUN );
+      } else if( (src == this.autoStepCheckBox) ) {
+        toggleAutoStep(this.autoStepCheckBox.isSelected());
       } else if( (src == this.mnuRemoveBreakpoint)
                  || (src == this.popupRemoveBreakpoint) )
       {
@@ -168,7 +181,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-        /* --- ChangeListener --- */
+  /* --- ChangeListener --- */
 
   @Override
   public void stateChanged( ChangeEvent e )
@@ -182,7 +195,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-        /* --- ListSelectionListener --- */
+  /* --- ListSelectionListener --- */
 
   @Override
   public void valueChanged( ListSelectionEvent e )
@@ -192,7 +205,7 @@ public class DebugFrm extends BaseFrm
   }
 
 
-        /* --- MouseListener --- */
+  /* --- MouseListener --- */
 
   @Override
   public void mouseClicked( MouseEvent e )
@@ -278,6 +291,11 @@ public class DebugFrm extends BaseFrm
       this.z8.setDebugger( null );
       this.z8.setDebugAction( null );
       this.z8.setBreakpoints( null );
+      
+      if (this.autoStepTimer != null) {
+        this.autoStepTimer.cancel();
+      }
+      
       state = super.doClose();
     }
     if( state ) {
@@ -490,7 +508,24 @@ public class DebugFrm extends BaseFrm
                         "Bis RETURN ausf\u00FChren" );
     this.btnRunToRET.setEnabled( false );
     toolBar.add( this.btnRunToRET );
-
+    
+    this.autoStepCheckBox = new JCheckBox( "auto" );
+    this.autoStepCheckBox.addActionListener( this );
+    this.autoStepCheckBox.setEnabled( false );
+    toolBar.add( this.autoStepCheckBox );
+    
+    this.autoStepModeComboBox = new JComboBox( new String[] {"step over", "step into", "step out", "continue"} );
+    toolBar.add( this.autoStepModeComboBox );
+    
+    this.autoStepLabel = new JLabel(" after ");
+    toolBar.add( this.autoStepLabel );
+    
+    this.autoStepFrequency = new JTextField(5);
+    this.autoStepFrequency.setText(Integer.toString(DEFAULT_AUTOSTEP_FREQUENCY));
+    toolBar.add( this.autoStepFrequency );
+    
+    this.autoStepFrequencyUnitLabel = new JLabel("ms");
+    toolBar.add( this.autoStepFrequencyUnitLabel );
 
     // Bereich Register
     JPanel panelReg = new JPanel( new GridBagLayout() );
@@ -804,6 +839,8 @@ public class DebugFrm extends BaseFrm
             this.btnStepInto.setEnabled( false );
             this.btnRunToRET.setEnabled( false );
             this.btnRun.setEnabled( false );
+            
+            this.autoStepCheckBox.setEnabled( false );
 
             disableRegEdit( this.grp15Flds, 0xF0, false );
             disableRegEdit( this.regFlds, 0, false );
@@ -830,6 +867,8 @@ public class DebugFrm extends BaseFrm
           this.btnStepInto.setEnabled( true );
           this.btnRunToRET.setEnabled( true );
           this.btnRun.setEnabled( true );
+          
+          this.autoStepCheckBox.setEnabled( true );
 
           enableRegEdit( this.grp15Flds, 0xF0 );
           enableRegEdit( this.regFlds, 0 );
@@ -1017,6 +1056,8 @@ public class DebugFrm extends BaseFrm
     this.btnStepInto.setEnabled( false );
     this.btnRunToRET.setEnabled( false );
     this.btnRun.setEnabled( false );
+    
+    this.autoStepCheckBox.setEnabled( false );
 
     disableRegEdit( this.grp15Flds, 0xF0, true );
     disableRegEdit( this.regFlds, 0, true );
@@ -1030,6 +1071,92 @@ public class DebugFrm extends BaseFrm
     updFlagCheckBoxes( false );
     this.z8.setDebugAction( debugAction );
     updStatusText( Z8.RunMode.RUNNING );
+  }
+
+
+  private void toggleAutoStep(boolean selected)
+  {
+    if( selected ) {
+      this.autoStepFrequency.setEnabled( false );
+      
+      int autoStepFrequency = DEFAULT_AUTOSTEP_FREQUENCY;
+      
+      try {
+        autoStepFrequency = Integer.parseInt(this.autoStepFrequency.getText());
+        
+        if (autoStepFrequency <= 0) {
+          autoStepFrequency = DEFAULT_AUTOSTEP_FREQUENCY;
+        }
+      } catch (NumberFormatException e) {
+        // ingnore
+      }
+      
+      TimerTask timerTask = new TimerTask()
+      {
+        
+        @Override
+        public void run()
+        {
+          final RunMode runMode = DebugFrm.this.z8.getRunMode();
+          
+          // only fire if we aren't currently running
+          if (!Z8.RunMode.RUNNING.equals(runMode)) {
+            final String autoStepMode = (String) DebugFrm.this.autoStepModeComboBox.getSelectedItem();
+            
+            if ("step over".equals(autoStepMode)) {
+              EventQueue.invokeLater(new Runnable()
+              {
+                
+                @Override
+                public void run()
+                {
+                  setDebugAction( Z8.DebugAction.STEP_OVER );
+                }
+              });
+            } else if ("step into".equals(autoStepMode)) {
+              EventQueue.invokeLater(new Runnable()
+              {
+                
+                @Override
+                public void run()
+                {
+                  setDebugAction( Z8.DebugAction.STEP_INTO );
+                }
+              });
+            } else if ("step out".equals(autoStepMode)) {
+              EventQueue.invokeLater(new Runnable()
+              {
+                
+                @Override
+                public void run()
+                {
+                  setDebugAction( Z8.DebugAction.RUN_TO_RET );
+                }
+              });
+            } else if ("continue".equals(autoStepMode)) {
+              EventQueue.invokeLater(new Runnable()
+              {
+                
+                @Override
+                public void run()
+                {
+                  setDebugAction( Z8.DebugAction.RUN );
+                }
+              });
+            }
+          }
+        }
+      };
+      
+      this.autoStepTimer = new Timer(true);
+      this.autoStepTimer.scheduleAtFixedRate(timerTask, 0, autoStepFrequency);
+    } else {
+      if (this.autoStepTimer != null) {
+        this.autoStepTimer.cancel();
+      }
+      
+      this.autoStepFrequency.setEnabled( true );
+    }
   }
 
 
