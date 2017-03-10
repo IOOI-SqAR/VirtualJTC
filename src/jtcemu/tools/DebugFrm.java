@@ -32,6 +32,9 @@ public class DebugFrm extends BaseFrm
   private static final int DEFAULT_AUTOSTEP_FREQUENCY = 2000;
 
   private static DebugFrm instance = null;
+  
+  static Locale locale = Locale.getDefault();
+  static ResourceBundle debugFrmResourceBundle = ResourceBundle.getBundle("resources.DebugFrm", locale);
 
   private static int SPL   = 0xFF;
   private static int SPH   = 0xFE;
@@ -90,6 +93,26 @@ public class DebugFrm extends BaseFrm
   private JLabel         labelStatus;
 
   private Timer          autoStepTimer;
+  
+  
+  private enum AutoStepMode
+  {
+    STEP_OVER( debugFrmResourceBundle.getString("comboBox.autoStep.stepOver") ),
+    STEP_INTO( debugFrmResourceBundle.getString("comboBox.autoStep.stepInto") ),
+    RUN_TO_RET( debugFrmResourceBundle.getString("comboBox.autoStep.runToRET") ),
+    RUN( debugFrmResourceBundle.getString("comboBox.autoStep.run") );
+
+    private final String displayString;
+    
+    private AutoStepMode(String displayString) {
+      this.displayString = displayString;
+    }
+    
+    @Override
+    public String toString() {
+      return displayString;
+    }
+  }
  
 
   public static boolean close()
@@ -173,7 +196,7 @@ public class DebugFrm extends BaseFrm
           doRemoveAllBreakpoints();
         }
         else if( src == this.mnuHelpContent ) {
-          HelpFrm.open( "/help/debugger.htm" );
+          HelpFrm.open( debugFrmResourceBundle.getString("help.path") );
         }
         GUIUtil.setWaitCursor( this, false );
       }
@@ -278,9 +301,8 @@ public class DebugFrm extends BaseFrm
     {
       if( JOptionPane.showConfirmDialog(
                 this,
-                "Mit Schlie\u00DFen des Debuggers wird\n"
-                        + "die Programmausf\u00FChrung fortgesetzt.",
-                "Hinweis",
+                debugFrmResourceBundle.getString("dialog.confirmContinue.message"),
+                debugFrmResourceBundle.getString("dialog.confirmContinue.title"),
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.WARNING_MESSAGE ) != JOptionPane.YES_OPTION )
       {
@@ -317,7 +339,7 @@ public class DebugFrm extends BaseFrm
 
   private DebugFrm( Z8 z8 )
   {
-    setTitle( "JTCEMU Debugger" );
+    setTitle( debugFrmResourceBundle.getString("window.title") );
     this.z8          = z8;
     this.memory      = z8.getMemory();
     this.reassembler = new Z8Reassembler( z8.getMemory() );
@@ -336,84 +358,67 @@ public class DebugFrm extends BaseFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( debugFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( 'D' );
     mnuBar.add( mnuFile );
 
-    this.mnuClose = createJMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = createJMenuItem( debugFrmResourceBundle.getString("menuItem.close") );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Debuggen
-    JMenu mnuDebug = new JMenu( "Debuggen" );
+    JMenu mnuDebug = new JMenu( debugFrmResourceBundle.getString("menu.debug") );
     mnuDebug.setMnemonic( 'b' );
     mnuBar.add( mnuDebug );
 
-    this.mnuStop = createJMenuItem(
-                        "Programmausf\u00FChrung anhalten",
-                        KeyEvent.VK_F4, 0 );
+    this.mnuStop = createJMenuItem( debugFrmResourceBundle.getString("menuItem.stop"), KeyEvent.VK_F4, 0 );
     mnuDebug.add( this.mnuStop );
 
-    this.mnuRun = createJMenuItem(
-                        "Programmausf\u00FChrung bis Haltepunkt fortsetzen",
-                        KeyEvent.VK_F5, 0 );
+    this.mnuRun = createJMenuItem( debugFrmResourceBundle.getString("menuItem.run"), KeyEvent.VK_F5, 0 );
     this.mnuRun.setEnabled( false );
     mnuDebug.add( this.mnuRun );
 
-    this.mnuStepOver = createJMenuItem(
-                                "Einzelschritt \u00FCber Aufruf hinweg",
-                                KeyEvent.VK_F6, 0 );
+    this.mnuStepOver = createJMenuItem( debugFrmResourceBundle.getString("menuItem.stepOver"), KeyEvent.VK_F6, 0 );
     this.mnuStepOver.setEnabled( false );
     mnuDebug.add( this.mnuStepOver );
 
-    this.mnuStepInto = createJMenuItem(
-                                "Einzelschritt in Aufruf hinein",
-                                KeyEvent.VK_F7, 0 );
+    this.mnuStepInto = createJMenuItem( debugFrmResourceBundle.getString("menuItem.stepInto"), KeyEvent.VK_F7, 0 );
     this.mnuStepInto.setEnabled( false );
     mnuDebug.add( this.mnuStepInto );
 
-    this.mnuRunToRET = createJMenuItem(
-                                "Bis RETURN ausf\u00FChren",
-                                KeyEvent.VK_F8, 0 );
+    this.mnuRunToRET = createJMenuItem( debugFrmResourceBundle.getString("menuItem.runToRET"), KeyEvent.VK_F8, 0 );
     this.mnuRunToRET.setEnabled( false );
     mnuDebug.add( this.mnuRunToRET );
     mnuDebug.addSeparator();
 
-    this.mnuAddBreakpoint = createJMenuItem(
-                                "Haltepunkt hinzuf\u00FCgen...",
-                                KeyEvent.VK_F9, 0 );
+    this.mnuAddBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.addBreakpoint"), KeyEvent.VK_F9, 0 );
     mnuDebug.add( this.mnuAddBreakpoint );
 
-    this.mnuRemoveBreakpoint = createJMenuItem(
-                                "Haltepunkt entfernen",
-                                KeyEvent.VK_DELETE, 0 );
+    this.mnuRemoveBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.removeBreakpoint"), KeyEvent.VK_DELETE, 0 );
     mnuDebug.add( this.mnuRemoveBreakpoint );
 
-    this.mnuRemoveAllBreakpoints = createJMenuItem(
-                                        "Alle Haltepunkte entfernen" );
+    this.mnuRemoveAllBreakpoints = createJMenuItem( debugFrmResourceBundle.getString("menuItem.removeAllBreakpoints") );
     mnuDebug.add( this.mnuRemoveAllBreakpoints );
     mnuDebug.addSeparator();
 
-    this.mnuEnableBreakpoint = createJMenuItem( "Haltepunkt aktivieren" );
+    this.mnuEnableBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.enableBreakpoint") );
     mnuDebug.add( this.mnuEnableBreakpoint );
 
-    this.mnuDisableBreakpoint = createJMenuItem( "Haltepunkt deaktivieren" );
+    this.mnuDisableBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.disableBreakpoint") );
     mnuDebug.add( this.mnuDisableBreakpoint );
 
-    this.mnuEnableAllBreakpoints = createJMenuItem(
-                                "Alle Haltepunkte aktivieren" );
+    this.mnuEnableAllBreakpoints = createJMenuItem( debugFrmResourceBundle.getString("menuItem.enableAllBreakpoints") );
     mnuDebug.add( this.mnuEnableAllBreakpoints );
 
-    this.mnuDisableAllBreakpoints = createJMenuItem(
-                                "Alle Haltepunkte deaktivieren" );
+    this.mnuDisableAllBreakpoints = createJMenuItem( debugFrmResourceBundle.getString("menuItem.disableAllBreakpoints") );
     mnuDebug.add( this.mnuDisableAllBreakpoints );
 
 
     // Menu Hilfe
-    JMenu mnuHelp = new JMenu( "?" );
+    JMenu mnuHelp = new JMenu( debugFrmResourceBundle.getString("menu.help") );
     mnuBar.add( mnuHelp );
 
-    this.mnuHelpContent = new JMenuItem( "Hilfe..." );
+    this.mnuHelpContent = new JMenuItem( debugFrmResourceBundle.getString("menuItem.helpContent") );
     this.mnuHelpContent.addActionListener( this );
     mnuHelp.add( this.mnuHelpContent );
 
@@ -421,35 +426,31 @@ public class DebugFrm extends BaseFrm
     // PopupMenu
     this.mnuPopup = new JPopupMenu();
 
-    this.popupAddBreakpoint = createJMenuItem(
-                                        "Haltepunkt hinzuf\u00FCgen..." );
+    this.popupAddBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.addBreakpoint") );
     this.mnuPopup.add( this.popupAddBreakpoint );
 
-    this.popupRemoveBreakpoint = createJMenuItem( "Haltepunkt entfernen" );
+    this.popupRemoveBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.removeBreakpoint") );
     this.popupRemoveBreakpoint.setEnabled( false );
     this.mnuPopup.add( this.popupRemoveBreakpoint );
 
-    this.popupRemoveAllBreakpoints = createJMenuItem(
-                                        "Alle Haltepunkte entfernen" );
+    this.popupRemoveAllBreakpoints = createJMenuItem( debugFrmResourceBundle.getString("menuItem.removeAllBreakpoints") );
     this.popupRemoveAllBreakpoints.setEnabled( false );
     this.mnuPopup.add( this.popupRemoveAllBreakpoints );
     this.mnuPopup.addSeparator();
 
-    this.popupEnableBreakpoint = createJMenuItem( "Haltepunkt aktivieren" );
+    this.popupEnableBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.enableBreakpoint") );
     this.popupEnableBreakpoint.setEnabled( false );
     this.mnuPopup.add( this.popupEnableBreakpoint );
 
-    this.popupDisableBreakpoint = createJMenuItem( "Haltepunkt deaktivieren" );
+    this.popupDisableBreakpoint = createJMenuItem( debugFrmResourceBundle.getString("menuItem.disableBreakpoint") );
     this.popupDisableBreakpoint.setEnabled( false );
     this.mnuPopup.add( this.popupDisableBreakpoint );
 
-    this.popupEnableAllBreakpoints = createJMenuItem(
-                                "Alle Haltepunkte aktivieren" );
+    this.popupEnableAllBreakpoints = createJMenuItem( debugFrmResourceBundle.getString("menuItem.enableAllBreakpoints") );
     this.popupEnableAllBreakpoints.setEnabled( false );
     this.mnuPopup.add( this.popupEnableAllBreakpoints );
 
-    this.popupDisableAllBreakpoints = createJMenuItem(
-                                "Alle Haltepunkte deaktivieren" );
+    this.popupDisableAllBreakpoints = createJMenuItem( debugFrmResourceBundle.getString("menuItem.disableAllBreakpoints") );
     this.popupDisableAllBreakpoints.setEnabled( false );
     this.mnuPopup.add( this.popupDisableAllBreakpoints );
 
@@ -478,58 +479,58 @@ public class DebugFrm extends BaseFrm
     this.btnRun = GUIUtil.createImageButton(
                         this,
                         "/images/debug/run.png",
-                        "Bis Haltepunkt ausf\u00FChren" );
+                        debugFrmResourceBundle.getString("button.run") );
     this.btnRun.setEnabled( false );
     toolBar.add( this.btnRun );
 
     this.btnStop = GUIUtil.createImageButton(
                         this,
                         "/images/debug/stop.png",
-                        "Programmausf\u00FChrung anhalten" );
+                        debugFrmResourceBundle.getString("button.stop") );
     toolBar.add( this.btnStop );
 
     this.btnStepOver = GUIUtil.createImageButton(
                         this,
                         "/images/debug/step_over.png",
-                        "\u00DCber Aufruf springen" );
+                        debugFrmResourceBundle.getString("button.stepOver") );
     this.btnStepOver.setEnabled( false );
     toolBar.add( this.btnStepOver );
 
     this.btnStepInto = GUIUtil.createImageButton(
                         this,
                         "/images/debug/step_into.png",
-                        "In Aufruf springen" );
+                        debugFrmResourceBundle.getString("button.stepInto") );
     this.btnStepInto.setEnabled( false );
     toolBar.add( this.btnStepInto );
 
     this.btnRunToRET = GUIUtil.createImageButton(
                         this,
                         "/images/debug/step_up.png",
-                        "Bis RETURN ausf\u00FChren" );
+                        debugFrmResourceBundle.getString("button.runToRET") );
     this.btnRunToRET.setEnabled( false );
     toolBar.add( this.btnRunToRET );
     
-    this.autoStepCheckBox = new JCheckBox( "auto" );
+    this.autoStepCheckBox = new JCheckBox( debugFrmResourceBundle.getString("checkBox.autoStep") );
     this.autoStepCheckBox.addActionListener( this );
     this.autoStepCheckBox.setEnabled( false );
     toolBar.add( this.autoStepCheckBox );
     
-    this.autoStepModeComboBox = new JComboBox( new String[] {"step over", "step into", "step out", "continue"} );
+    this.autoStepModeComboBox = new JComboBox( new DefaultComboBoxModel(AutoStepMode.values()) );
     toolBar.add( this.autoStepModeComboBox );
     
-    this.autoStepLabel = new JLabel(" after ");
+    this.autoStepLabel = new JLabel( debugFrmResourceBundle.getString("label.autoStep") );
     toolBar.add( this.autoStepLabel );
     
     this.autoStepFrequency = new JTextField(5);
     this.autoStepFrequency.setText(Integer.toString(DEFAULT_AUTOSTEP_FREQUENCY));
     toolBar.add( this.autoStepFrequency );
     
-    this.autoStepFrequencyUnitLabel = new JLabel("ms");
+    this.autoStepFrequencyUnitLabel = new JLabel( debugFrmResourceBundle.getString("label.autoStep.frequencyUnit") );
     toolBar.add( this.autoStepFrequencyUnitLabel );
 
     // Bereich Register
     JPanel panelReg = new JPanel( new GridBagLayout() );
-    panelReg.setBorder( BorderFactory.createTitledBorder( "Register" ) );
+    panelReg.setBorder( BorderFactory.createTitledBorder( debugFrmResourceBundle.getString("titledBorder.registers") ) );
     gbc.gridheight = 2;
     gbc.gridy++;
     add( panelReg, gbc );
@@ -646,7 +647,7 @@ public class DebugFrm extends BaseFrm
 
     // Bereich Flags
     JPanel panelFlags = new JPanel( new GridBagLayout() );
-    panelFlags.setBorder( BorderFactory.createTitledBorder( "Flags" ) );
+    panelFlags.setBorder( BorderFactory.createTitledBorder( debugFrmResourceBundle.getString("titledBorder.flags") ) );
     gbc.fill       = GridBagConstraints.HORIZONTAL;
     gbc.weightx    = 1.0;
     gbc.gridheight = 1;
@@ -689,8 +690,7 @@ public class DebugFrm extends BaseFrm
 
     // Bereich Haltepunkte
     JPanel panelBreakpoint = new JPanel( new BorderLayout() );
-    panelBreakpoint.setBorder( BorderFactory.createTitledBorder(
-                                                        "Haltepunkte" ) );
+    panelBreakpoint.setBorder( BorderFactory.createTitledBorder( debugFrmResourceBundle.getString("titledBorder.breakpoints") ) );
     gbc.fill       = GridBagConstraints.BOTH;
     gbc.weightx    = 1.0;
     gbc.weighty    = 1.0;
@@ -710,8 +710,7 @@ public class DebugFrm extends BaseFrm
 
     // Bereich Programmausfuehrung
     JPanel panelPC = new JPanel( new GridBagLayout() );
-    panelPC.setBorder( BorderFactory.createTitledBorder(
-                                                "Programmausf\u00FChrung" ) );
+    panelPC.setBorder( BorderFactory.createTitledBorder( debugFrmResourceBundle.getString("titledBorder.programExecution") ) );
     gbc.gridheight = 1;
     gbc.gridx      = 0;
     gbc.gridy++;
@@ -876,7 +875,7 @@ public class DebugFrm extends BaseFrm
 
           StringBuilder buf = new StringBuilder( 128 );
           if( this.z8.isInternalStackEnabled() ) {
-            this.fldStackMode.setText( "intern" );
+            this.fldStackMode.setText( debugFrmResourceBundle.getString("textfield.stackMode.internal") );
             int sp = this.grp15Flds[ SPL - 0xF0 ].getOrgValue();
             for( int i = 0; i < 16; i++ ) {
               if( i > 0 ) {
@@ -887,7 +886,7 @@ public class DebugFrm extends BaseFrm
                                 this.z8.viewRegValue( sp++ ) ) );
             }
           } else {
-            this.fldStackMode.setText( "extern" );
+            this.fldStackMode.setText( debugFrmResourceBundle.getString("textfield.stackMode.external") );
             int sp = (this.grp15Flds[ SPH - 0xF0 ].getOrgValue() << 8)
                                 | this.grp15Flds[ SPL - 0xF0 ].getOrgValue();
             for( int i = 0; i < 16; i++ ) {
@@ -913,7 +912,7 @@ public class DebugFrm extends BaseFrm
 
   private void doAddBreakpoint()
   {
-    Integer addr = GUIUtil.askHex4( this, "Haltepunkt", null );
+    Integer addr = GUIUtil.askHex4( this, debugFrmResourceBundle.getString("dialog.askForBreakpoint.message"), null );
     if( addr != null ) {
       try {
         Z8Breakpoint bp = new Z8Breakpoint( addr.intValue() );
@@ -978,8 +977,8 @@ public class DebugFrm extends BaseFrm
   {
     if( JOptionPane.showConfirmDialog(
                 this,
-                "M\u00F6chten Sie alle Haltepunkte entfernen?",
-                "Best\u00E4tigung",
+                debugFrmResourceBundle.getString("dialog.doRemoveAllBreakpoints.message"),
+                debugFrmResourceBundle.getString("dialog.doRemoveAllBreakpoints.title"),
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE ) == JOptionPane.YES_OPTION )
     {
@@ -1101,48 +1100,53 @@ public class DebugFrm extends BaseFrm
           
           // only fire if we aren't currently running
           if (!Z8.RunMode.RUNNING.equals(runMode)) {
-            final String autoStepMode = (String) DebugFrm.this.autoStepModeComboBox.getSelectedItem();
+            final AutoStepMode autoStepMode = (AutoStepMode) DebugFrm.this.autoStepModeComboBox.getSelectedItem();
             
-            if ("step over".equals(autoStepMode)) {
-              EventQueue.invokeLater(new Runnable()
-              {
-                
-                @Override
-                public void run()
+            switch (autoStepMode) {
+              case STEP_OVER:
+                EventQueue.invokeLater(new Runnable()
                 {
-                  setDebugAction( Z8.DebugAction.STEP_OVER );
-                }
-              });
-            } else if ("step into".equals(autoStepMode)) {
-              EventQueue.invokeLater(new Runnable()
-              {
-                
-                @Override
-                public void run()
+                  
+                  @Override
+                  public void run()
+                  {
+                    setDebugAction( Z8.DebugAction.STEP_OVER );
+                  }
+                });
+                break;
+              case STEP_INTO:
+                EventQueue.invokeLater(new Runnable()
                 {
-                  setDebugAction( Z8.DebugAction.STEP_INTO );
-                }
-              });
-            } else if ("step out".equals(autoStepMode)) {
-              EventQueue.invokeLater(new Runnable()
-              {
-                
-                @Override
-                public void run()
+                  
+                  @Override
+                  public void run()
+                  {
+                    setDebugAction( Z8.DebugAction.STEP_INTO );
+                  }
+                });
+                break;
+              case RUN_TO_RET:
+                EventQueue.invokeLater(new Runnable()
                 {
-                  setDebugAction( Z8.DebugAction.RUN_TO_RET );
-                }
-              });
-            } else if ("continue".equals(autoStepMode)) {
-              EventQueue.invokeLater(new Runnable()
-              {
-                
-                @Override
-                public void run()
+                  
+                  @Override
+                  public void run()
+                  {
+                    setDebugAction( Z8.DebugAction.RUN_TO_RET );
+                  }
+                });
+                break;
+              case RUN:
+                EventQueue.invokeLater(new Runnable()
                 {
-                  setDebugAction( Z8.DebugAction.RUN );
-                }
-              });
+                  
+                  @Override
+                  public void run()
+                  {
+                    setDebugAction( Z8.DebugAction.RUN );
+                  }
+                });
+                break;
             }
           }
         }
@@ -1244,23 +1248,23 @@ public class DebugFrm extends BaseFrm
 
   private void updStatusText( Z8.RunMode runMode )
   {
-    String statusText = "Bereit";
+    String statusText = debugFrmResourceBundle.getString("runMode.ready");
     if( runMode != null ) {
       switch( runMode ) {
         case RUNNING:
-          statusText = "Programmausf\u00Fchrung l\u00E4uft...";
+          statusText = debugFrmResourceBundle.getString("runMode.running");;
           break;
 
         case INST_HALT:
-          statusText = "HALT-Befehl erreicht";
+          statusText = debugFrmResourceBundle.getString("runMode.instHalt");;
           break;
 
         case INST_STOP:
-          statusText = "STOP-Befehl erreicht";
+          statusText = debugFrmResourceBundle.getString("runMode.instStop");;
           break;
 
         case DEBUG_STOP:
-          statusText = "Programmausf\u00Fchrung angehalten";
+          statusText = debugFrmResourceBundle.getString("runMode.debugStop");;
           break;
       }
     }
