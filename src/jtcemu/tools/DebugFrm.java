@@ -34,8 +34,8 @@ public class DebugFrm extends BaseFrm
 
   private static DebugFrm instance = null;
   
-  static Locale locale = Locale.getDefault();
-  static ResourceBundle debugFrmResourceBundle = ResourceBundle.getBundle("resources.DebugFrm", locale);
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle debugFrmResourceBundle = ResourceBundle.getBundle("resources.DebugFrm", locale);
 
   private static int SPL   = 0xFF;
   private static int SPH   = 0xFE;

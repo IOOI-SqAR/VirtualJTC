@@ -34,8 +34,8 @@ public class TopFrm extends BaseFrm
 {
   private static final int[] screenScales = { 1, 2, 3, 4, 6, 8 };
   
-  static Locale locale = Locale.getDefault();
-  static ResourceBundle topFrmResourceBundle = ResourceBundle.getBundle("resources.TopFrm", locale);
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle topFrmResourceBundle = ResourceBundle.getBundle("resources.TopFrm", locale);
 
   private JTCSys                            jtcSys;
   private Z8                                z8;
