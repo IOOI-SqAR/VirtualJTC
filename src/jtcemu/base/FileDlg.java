@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -12,6 +13,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.File;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import jtcemu.Main;
@@ -21,7 +25,10 @@ public class FileDlg extends BaseDlg implements
                                         ActionListener,
                                         PropertyChangeListener
 {
-  private static final String defaultStatusText = "Bereit";
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle fileDlgResourceBundle = ResourceBundle.getBundle("resources.FileDlg", locale);
+
+  private static final String defaultStatusText = fileDlgResourceBundle.getString("statusText.default");
   private static       Frame  defaultOwner      = null;
 
   private boolean      forSave;
@@ -69,7 +76,7 @@ public class FileDlg extends BaseDlg implements
                         owner,
                         true,
                         title,
-                        "Speichern",
+                        fileDlgResourceBundle.getString("dialog.showFileSaveDlg.approveBtnText"),
                         preSelection,
                         fileFilters );
       dlg.setVisible( true );
@@ -93,9 +100,8 @@ public class FileDlg extends BaseDlg implements
             if( file.exists() ) {
               if( JOptionPane.showConfirmDialog(
                         this,
-                        "Die Datei existiert bereits und wird"
-                                + " \u00FCberschrieben!",
-                        "Warnung",
+                        fileDlgResourceBundle.getString("dialog.forSave.confirmOverwrite.message"),
+                        fileDlgResourceBundle.getString("dialog.forSave.confirmOverwrite.title"),
                         JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.WARNING_MESSAGE )
                                         != JOptionPane.OK_OPTION )
@@ -146,7 +152,7 @@ public class FileDlg extends BaseDlg implements
                       int pos = s.lastIndexOf( '.' );
                       if( (pos >= 0) && ((pos + 1) < s.length()) ) {
                         statusText = String.format(
-                                "%s-Datei",
+                                fileDlgResourceBundle.getString("statusText.formatstring"),
                                 s.substring( pos + 1 ).toUpperCase() );
                       }
                     }
