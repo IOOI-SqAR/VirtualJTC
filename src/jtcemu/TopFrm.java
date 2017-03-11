@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2011 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -14,7 +15,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.lang.*;
+import java.text.MessageFormat;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,6 +33,9 @@ public class TopFrm extends BaseFrm
                                 DropTargetListener
 {
   private static final int[] screenScales = { 1, 2, 3, 4, 6, 8 };
+  
+  static Locale locale = Locale.getDefault();
+  static ResourceBundle topFrmResourceBundle = ResourceBundle.getBundle("resources.TopFrm", locale);
 
   private JTCSys                            jtcSys;
   private Z8                                z8;
@@ -45,7 +49,8 @@ public class TopFrm extends BaseFrm
 
   public TopFrm( JTCSys jtcSys, Z8 z8 )
   {
-    setTitle( "JU+TE-Computer" );
+    setTitle( topFrmResourceBundle.getString("window.title") );
+    
     this.jtcSys              = jtcSys;
     this.z8                  = z8;
     this.screenOutputEnabled = false;
@@ -62,22 +67,22 @@ public class TopFrm extends BaseFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( topFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( 'D' );
-    mnuFile.add( createJMenuItem( "Laden...", KeyEvent.VK_F9, "load" ) );
-    mnuFile.add( createJMenuItem( "Speichern...", KeyEvent.VK_F8, "save" ) );
+    mnuFile.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.load"), KeyEvent.VK_F9, "load" ) );
+    mnuFile.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.save"), KeyEvent.VK_F8, "save" ) );
     mnuFile.addSeparator();
-    mnuFile.add( createJMenuItem( "Texteditor...", "edit" ) );
+    mnuFile.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.edit"), "edit" ) );
     mnuFile.addSeparator();
-    mnuFile.add( createJMenuItem( "Beenden", "quit" ) );
+    mnuFile.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.quit"), "quit" ) );
     mnuBar.add( mnuFile );
 
 
     // Menu Extra
-    JMenu mnuExtra = new JMenu( "Extra" );
+    JMenu mnuExtra = new JMenu( topFrmResourceBundle.getString("menu.extra") );
     mnuExtra.setMnemonic( 'E' );
 
-    JMenu mnuScreenScale = new JMenu( "Ansicht" );
+    JMenu mnuScreenScale = new JMenu( topFrmResourceBundle.getString("menu.screenScale") );
     mnuExtra.add( mnuScreenScale );
 
     int         screenScale = Main.getIntProperty( "jtcemu.screen.scale", 3 );
@@ -95,45 +100,35 @@ public class TopFrm extends BaseFrm
       this.scale2MenuItems.put( new Integer( v ), item );
     }
 
-    JMenu mnuScreenImg = new JMenu( "Bildschirmausgabe" );
+    JMenu mnuScreenImg = new JMenu( topFrmResourceBundle.getString("menu.screenImg") );
     mnuExtra.add( mnuScreenImg );
     mnuExtra.addSeparator();
 
-    mnuScreenImg.add( createJMenuItem(
-                                "Als Text kopieren",
-                                "screen.text.copy" ) );
-    mnuScreenImg.add( createJMenuItem(
-                                "Als Bild kopieren", "screen.image.copy" ) );
-    mnuScreenImg.add( createJMenuItem(
-                                "Als Bild speichern unter...",
-                                "screen.image.save_as" ) );
+    mnuScreenImg.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.screen.text.copy"), "screen.text.copy" ) );
+    mnuScreenImg.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.screen.image.copy"), "screen.image.copy" ) );
+    mnuScreenImg.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.screen.image.save_as"), "screen.image.save_as" ) );
 
-    mnuExtra.add( createJMenuItem( "Debugger...", "debug" ) );
-    mnuExtra.add( createJMenuItem( "Reassembler...", "reass" ) );
-    mnuExtra.add( createJMenuItem( "Speichereditor...", "memedit" ) );
-    mnuExtra.add( createJMenuItem( "Hex-Editor...", "hexedit" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.debug"), "debug" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.reass"), "reass" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.memedit"), "memedit" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.hexedit"), "hexedit" ) );
     mnuExtra.addSeparator();
-    mnuExtra.add( createJMenuItem( "Audio/Kassette...", "audio" ) );
-    mnuExtra.add( createJMenuItem( "Tastatur...", "keyboard" ) );
-    mnuExtra.add( createJMenuItem( "Einstellungen...", "settings" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.audio"), "audio" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.keyboard"), "keyboard" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.settings"), "settings" ) );
     mnuExtra.addSeparator();
-    mnuExtra.add( createJMenuItem(
-                                "Zur\u00FCcksetzen (RESET)",
-                                KeyEvent.VK_F7,
-                                "reset" ) );
-    mnuExtra.add( createJMenuItem(
-                                "Einschalten/Initialisieren",
-                                "power_on" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.reset"), KeyEvent.VK_F7, "reset" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.power_on"), "power_on" ) );
     mnuBar.add( mnuExtra );
 
 
     // Menu Hilfe
-    JMenu mnuHelp = new JMenu( "?" );
-    mnuHelp.add( createJMenuItem( "Hilfe...", "help" ) );
+    JMenu mnuHelp = new JMenu( topFrmResourceBundle.getString("menu.help") );
+    mnuHelp.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.help"), "help" ) );
     mnuHelp.addSeparator();
-    mnuHelp.add( createJMenuItem( "\u00DCber JTCEMU...", "about" ) );
-    mnuHelp.add( createJMenuItem( "Lizenzbestimmungen...", "license" ) );
-    mnuHelp.add( createJMenuItem( "Danksagung...", "thanks" ) );
+    mnuHelp.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.about"), "about" ) );
+    mnuHelp.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.license"), "license" ) );
+    mnuHelp.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.thanks"), "thanks" ) );
     mnuBar.add( mnuHelp );
 
 
@@ -156,25 +151,25 @@ public class TopFrm extends BaseFrm
     toolBar.add( GUIUtil.createImageButton(
                                 this,
                                 "/images/file/open.png",
-                                "Laden",
+                                topFrmResourceBundle.getString("button.load"),
                                 "load" ) );
 
     toolBar.add( GUIUtil.createImageButton(
                                 this,
                                 "/images/file/save.png",
-                                "Speichern",
+                                topFrmResourceBundle.getString("button.save"),
                                 "save" ) );
     toolBar.addSeparator();
 
     toolBar.add( GUIUtil.createImageButton(
                                 this,
                                 "/images/file/edit.png",
-                                "Texteditor",
+                                topFrmResourceBundle.getString("button.edit"),
                                 "edit" ) );
     toolBar.add( GUIUtil.createImageButton(
                                 this,
                                 "/images/file/audio.png",
-                                "Audio/Kassette",
+                                topFrmResourceBundle.getString("button.audio"),
                                 "audio" ) );
 
     toolBar.addSeparator();
@@ -182,7 +177,7 @@ public class TopFrm extends BaseFrm
     toolBar.add( GUIUtil.createImageButton(
                                 this,
                                 "/images/file/reset.png",
-                                "Zur\u00FCcksetzen (RESET)",
+                                topFrmResourceBundle.getString("button.reset"),
                                 "reset" ) );
 
 
@@ -228,10 +223,8 @@ public class TopFrm extends BaseFrm
     if( Main.getBooleanProperty( "jtcemu.confirm.init", true ) ) {
       if( JOptionPane.showConfirmDialog(
                 this,
-                "M\u00F6chten Sie das Aus- und wieder Einschalten emulieren\n"
-                        + "und den Emulator initialisieren?\n"
-                        + "Dabei wird der Arbeitsspeicher gel\u00F6scht.",
-                "Best\u00E4tigung",
+                topFrmResourceBundle.getString("dialog.confirm.init.message"),
+                topFrmResourceBundle.getString("dialog.confirm.init.title"),
                 JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
       {
         state = false;
@@ -247,18 +240,16 @@ public class TopFrm extends BaseFrm
   {
     boolean state = true;
     if( Main.getBooleanProperty( "jtcemu.confirm.reset", true ) ) {
-      String msg = "M\u00F6chten Sie jetzt ein RESET ausl\u00F6sen\n"
-                        + "und den Emulator zur\u00FCcksetzen?";
+      String msg = topFrmResourceBundle.getString("dialog.confirm.reset.message");
       if( (this.jtcSys.getOSType() == JTCSys.OSType.OS2K)
           || (this.jtcSys.getOSType() == JTCSys.OSType.ES1988) )
       {
-        msg += "\nWenn der A-Cursor zu sehen ist,\n"
-                        + "sollten Sie kein RESET ausl\u00F6sen!";
+        msg += topFrmResourceBundle.getString("dialog.confirm.reset.message.hint");
       }
       if( JOptionPane.showConfirmDialog(
                 this,
                 msg,
-                "Best\u00E4tigung",
+                topFrmResourceBundle.getString("dialog.confirm.reset.title"),
                 JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
       {
         state = false;
@@ -299,8 +290,8 @@ public class TopFrm extends BaseFrm
             if( actionCmd.equals( "load" ) ) {
               File file = FileDlg.showFileOpenDlg(
                                         this,
-                                        "Datei laden",
-                                        "Laden...",
+                                        topFrmResourceBundle.getString("dialog.load.title"),
+                                        topFrmResourceBundle.getString("dialog.load.message"),
                                         Main.getLastPathFile(),
                                         GUIUtil.binaryFileFilter,
                                         GUIUtil.hexFileFilter,
@@ -358,10 +349,10 @@ public class TopFrm extends BaseFrm
               doAbout();
             }
             else if( actionCmd.equals( "license" ) ) {
-              HelpFrm.open( "/help/license.htm" );
+              HelpFrm.open( topFrmResourceBundle.getString("license.path") );
             }
             else if( actionCmd.equals( "thanks" ) ) {
-              HelpFrm.open( "/help/thanks.htm" );
+              HelpFrm.open( topFrmResourceBundle.getString("thanks.path") );
             }
             else if( actionCmd.startsWith( "screen.scale." ) ) {
               if( actionCmd.length() > 13 ) {
@@ -518,29 +509,8 @@ public class TopFrm extends BaseFrm
   {
     JOptionPane.showMessageDialog(
         this,
-        "JTCEMU Version 1.1.1\n"
-                + "Emulation des JU+TE-Computers\n"
-                + "\n"
-                + "(c) 2007-2011 Jens M\u00FCller\n"
-                + "Lizenz: GNU General Public License Version 3\n"
-                + "\n"
-                + "Benutzung des Programms erfolgt auf eigene Gefahr!\n"
-                + "Jegliche Haftung und Gew\u00E4hrleistung"
-                + " ist ausgeschlossen!\n"
-                + "\n"
-                + "Der Emulator enth\u00E4lt ROM-Images der Betriebssysteme,\n"
-                + "die mit der Bauanleitung des JU+TE-Computers"
-                + " ver\u00F6ffentlicht\n"
-                + "bzw. von der Redaktion Jugend+Technik\n"
-                + "zur Verf\u00FCgung gestellt wurden.\n"
-                + "Die Urheberschaften an diesen ROM-Images liegen bei:\n"
-                + "\n"
-                + "2K-Betriebssystem und 4K-System EMR-ES 1988:\n"
-                + "(c) 1987-1988 Dr. Helmut Hoyer\n"
-                + "\n"
-                + "4K-Betriebssystem ES 2.3 und 6K-System ES 4.0:\n"
-                + "(c) 1989-1990 Harun Scheutzow",
-        "\u00DCber...",
+        topFrmResourceBundle.getString("dialog.about.message"),
+        topFrmResourceBundle.getString("dialog.about.title"),
         JOptionPane.INFORMATION_MESSAGE );
   }
 
@@ -555,14 +525,8 @@ public class TopFrm extends BaseFrm
     } else {
       JOptionPane.showMessageDialog(
                 this,
-                "Das Fenster mit der originalen Tastaturmatrix"
-                        + " steht nur zur Verf\u00FCgung,\n"
-                        + "wenn das 2K-Betriebssystem oder das EMR-ES 1988"
-                        + " aktiv ist und\n"
-                        + "die Systemroutine f\u00FCr die Tastaturabfrage"
-                        + " nicht emuliert wird\n"
-                        + "(siehe Einstellungen, Bereich System).",
-                "Hinweis",
+                topFrmResourceBundle.getString("dialog.keyboard.message"),
+                topFrmResourceBundle.getString("dialog.keyboard.title"),
                 JOptionPane.INFORMATION_MESSAGE );
     }
   }
@@ -574,8 +538,8 @@ public class TopFrm extends BaseFrm
     if( Main.getBooleanProperty( "jtcemu.confirm.quit", true ) ) {
       if( JOptionPane.showConfirmDialog(
                 this,
-                "M\u00F6chten Sie den Emulator beenden?",
-                "Best\u00E4tigung",
+                topFrmResourceBundle.getString("dialog.confirm.quit.message"),
+                topFrmResourceBundle.getString("dialog.confirm.quit.title"),
                 JOptionPane.YES_NO_OPTION ) != JOptionPane.YES_OPTION )
       {
         state = false;
@@ -635,18 +599,16 @@ public class TopFrm extends BaseFrm
           fmtNames = null;
       }
       if( fmtNames == null ) {
-        throw new IOException(
-                "Das Speichern von Bilddateien wird auf\n"
-                        + "dieser Plattform nicht unterst\u00FCtzt." );
+        throw new IOException( topFrmResourceBundle.getString("dialog.screen.image.save_as.notSupported") );
       }
       BufferedImage image = this.screenFld.createBufferedImage();
       if( image != null ) {
         File file = FileDlg.showFileSaveDlg(
                                 this,
-                                "Bilddatei speichern",
+                                topFrmResourceBundle.getString("dialog.screen.image.save_as.title"),
                                 Main.getLastPathFile(),
                                 new FileNameExtensionFilter(
-                                        "Unterst\u00FCtzte Bilddateien",
+                                        topFrmResourceBundle.getString("dialog.screen.image.save_as.supportedFormats"),
                                         fmtNames ) );
         if( file != null ) {
           String s = file.getName();
@@ -683,9 +645,7 @@ public class TopFrm extends BaseFrm
               }
             }
             if( fmt == null ) {
-              throw new IOException(
-                        "Das durch die Dateiendung angegebene Format\n"
-                                + "wird nicht unterst\u00FCtzt." );
+              throw new IOException( topFrmResourceBundle.getString("dialog.screen.image.save_as.fileTypeNotSupported") );
             }
           }
         }
@@ -777,8 +737,8 @@ public class TopFrm extends BaseFrm
     } else {
       JOptionPane.showMessageDialog(
                 this,
-                "Die Datei ist leer.",
-                "Info",
+                topFrmResourceBundle.getString("dialog.loadFile.fileEmpty.message"),
+                topFrmResourceBundle.getString("dialog.loadFile.fileEmpty.title"),
                 JOptionPane.INFORMATION_MESSAGE );
     }
   }
@@ -802,8 +762,7 @@ public class TopFrm extends BaseFrm
             errCnt++;
             if( errBuf == null ) {
               errBuf = new StringBuilder( 256 );;
-              errBuf.append( "Die ROM-Images an folgenden Adressen"
-                        + " konnten nicht geladen werden:\n" );
+              errBuf.append( topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.IOException.message") );
             }
             if( addrCol > 0 ) {
               errBuf.append( "  " );
@@ -825,13 +784,10 @@ public class TopFrm extends BaseFrm
     if( errCnt == 1 ) {
       Main.showError(
                 this,
-                "Das ROM-Image an Adresse " + errAddr + " konnte nicht"
-                        + " geladen werden.\n"
-                        + "Es bleibt das alte Image g\u00FCltig." );
+                MessageFormat.format( topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.messageformat"), errAddr ) );
     }
     else if( (errCnt > 1) && (errBuf != null) ) {
-      errBuf.append( "\n\nAn diesen Adressen bleiben die alten Images"
-                        + " g\u00FCltig." );
+      errBuf.append( topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.multipleErrors.message") );
       Main.showError( this, errBuf.toString() );
     }
     /*
