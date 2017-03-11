@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2008 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -10,7 +11,6 @@ package jtcemu;
 
 import java.awt.*;
 import java.io.*;
-import java.lang.*;
 import java.net.URL;
 import java.util.*;
 import javax.print.attribute.*;
@@ -22,6 +22,9 @@ import z8.Z8;
 public class Main
 {
   private static final String propsFileName = "jtcemu.props";
+  
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle mainResourceBundle = ResourceBundle.getBundle("resources.Main", locale);
 
   private static TopFrm                   topFrm      = null;
   private static File                     lastFile    = null;
@@ -66,8 +69,7 @@ public class Main
           properties.load( in );
 
           // Erscheinungsbild setzen
-          String lafClassName = properties.getProperty(
-                                                "jtcemu.laf.classname" );
+          String lafClassName = properties.getProperty( "jtcemu.laf.classname" );
           if( lafClassName != null ) {
             if( lafClassName.length() > 0 ) {
               try {
@@ -131,11 +133,7 @@ public class Main
                   String msg = ex.getMessage();
                   Main.showError(
                         topFrm,
-                        String.format(
-                                "ROM an Adresse %04X kann nicht"
-                                        + " geladen werden\n%s",
-                                addr,
-                                msg != null ? msg : "" ) );
+                        String.format( mainResourceBundle.getString("error.loadROMs.formatstring"), addr, msg != null ? msg : "" ) );
                 }
               }
             }
@@ -253,8 +251,9 @@ public class Main
 
   public static void putProperties( Properties props )
   {
-    if( props != null )
+    if( props != null ) {
       properties.putAll( props );
+    }
   }
 
 
@@ -280,15 +279,15 @@ public class Main
   {
     JOptionPane.showMessageDialog(
                 owner,
-                msg != null ? msg : "Unbekannter Fehler",
-                "Fehler",
+                msg != null ? msg : mainResourceBundle.getString("dialog.showError.default.message"),
+                mainResourceBundle.getString("dialog.showError.title"),
                 JOptionPane.ERROR_MESSAGE );
   }
 
 
   public static void showError( Component owner, Exception ex )
   {
-    String msg = "Unbekannter Fehler";
+    String msg = mainResourceBundle.getString("dialog.showError.default.message");
     if( ex != null ) {
       msg = ex.getMessage();
       if( msg != null ) {
