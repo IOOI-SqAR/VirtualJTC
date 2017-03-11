@@ -9,7 +9,6 @@
 package jtcemu.base;
 
 import java.awt.event.*;
-import java.lang.*;
 import javax.swing.JFrame;
 import jtcemu.Main;
 

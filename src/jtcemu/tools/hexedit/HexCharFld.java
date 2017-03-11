@@ -9,7 +9,6 @@
 package jtcemu.tools.hexedit;
 
 import java.awt.*;
-import java.lang.*;
 import javax.swing.*;
 
 

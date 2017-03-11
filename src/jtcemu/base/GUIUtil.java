@@ -13,7 +13,6 @@ import java.awt.datatransfer.*;
 import java.awt.event.ActionListener;
 import java.awt.dnd.*;
 import java.io.File;
-import java.lang.*;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.*;

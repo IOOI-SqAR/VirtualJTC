@@ -10,7 +10,6 @@ package jtcemu.base;
 
 import java.awt.*;
 import java.awt.image.*;
-import java.lang.*;
 import javax.swing.JComponent;
 
 

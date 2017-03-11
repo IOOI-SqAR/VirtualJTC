@@ -8,9 +8,6 @@
 
 package jtcemu.tools;
 
-import java.lang.*;
-
-
 public class TooManyErrorsException extends Exception
 {
   public TooManyErrorsException()

@@ -9,7 +9,6 @@
 package jtcemu.base;
 
 import java.io.*;
-import java.lang.*;
 
 
 public class FileInfo

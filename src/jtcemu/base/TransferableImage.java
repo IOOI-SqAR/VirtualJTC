@@ -10,7 +10,6 @@ package jtcemu.base;
 
 import java.awt.Image;
 import java.awt.datatransfer.*;
-import java.lang.*;
 
 
 public class TransferableImage implements ClipboardOwner, Transferable

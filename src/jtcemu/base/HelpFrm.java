@@ -11,7 +11,6 @@ package jtcemu.base;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.print.*;
-import java.lang.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;

@@ -12,8 +12,6 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.awt.print.*;
-import java.lang.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;

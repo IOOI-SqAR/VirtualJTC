@@ -11,9 +11,7 @@ package jtcemu.tools.hexedit;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayOutputStream;
-import java.lang.*;
 import java.text.ParseException;
-import java.util.EventObject;
 import javax.swing.*;
 import jtcemu.base.*;
 

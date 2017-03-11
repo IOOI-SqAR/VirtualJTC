@@ -8,7 +8,6 @@
 
 package jtcemu.base;
 
-import java.lang.*;
 import javax.swing.text.*;
 
 

@@ -9,14 +9,11 @@
 package jtcemu.tools;
 
 import java.awt.*;
-import java.awt.print.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.*;
 import java.text.CharacterIterator;
-import java.util.*;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -24,7 +21,6 @@ import javax.swing.text.*;
 import javax.swing.undo.UndoManager;
 import jtcemu.base.*;
 import jtcemu.Main;
-import z8.Z8Memory;
 
 
 public class TextEditFrm extends AbstractTextFrm

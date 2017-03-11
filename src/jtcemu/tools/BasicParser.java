@@ -9,7 +9,6 @@
 package jtcemu.tools;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.*;
 import java.text.*;
 import javax.swing.JTextArea;
 

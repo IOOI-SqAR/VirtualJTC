@@ -11,7 +11,6 @@ package jtcemu.base;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.*;
 import javax.swing.*;
 import jtcemu.Main;
 import z8.Z8Memory;

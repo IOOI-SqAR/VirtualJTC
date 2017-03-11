@@ -10,7 +10,6 @@ package jtcemu.base;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.*;
 import javax.swing.*;
 import jtcemu.Main;
 

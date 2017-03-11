@@ -14,7 +14,6 @@ package jtcemu.base;
 
 import java.awt.event.*;
 import java.io.*;
-import java.lang.*;
 import java.util.Arrays;
 import jtcemu.Main;
 import jtcemu.audio.*;

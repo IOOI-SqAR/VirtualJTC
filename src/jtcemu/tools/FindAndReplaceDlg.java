@@ -10,7 +10,6 @@ package jtcemu.tools;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.*;
 import java.util.regex.*;
 import javax.swing.*;
 import jtcemu.base.*;

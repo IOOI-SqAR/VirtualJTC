@@ -11,7 +11,6 @@ package jtcemu.tools;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.*;
 import java.util.Arrays;
 import javax.swing.JTextField;
 import javax.swing.event.*;

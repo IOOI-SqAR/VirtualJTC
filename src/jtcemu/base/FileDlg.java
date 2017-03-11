@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.File;
-import java.lang.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import jtcemu.Main;
