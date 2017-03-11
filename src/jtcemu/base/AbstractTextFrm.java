@@ -1,5 +1,6 @@
 /*
  * (c) 2007 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -13,8 +14,9 @@ import java.awt.Font;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.io.*;
-import java.lang.*;
 import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.swing.JTextArea;
@@ -24,6 +26,9 @@ import jtcemu.Main;
 
 public abstract class AbstractTextFrm extends BaseFrm
 {
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle abstractTextFrmResourceBundle = ResourceBundle.getBundle("resources.AbstractTextFrm", locale);
+
   protected String    lineSep;
   protected JTextArea textArea;
 
@@ -131,7 +136,7 @@ public abstract class AbstractTextFrm extends BaseFrm
   {
     long len = file.length();
     if( len + 1 > Integer.MAX_VALUE ) {
-      throw new IOException( "Datei zu gro\u00DF" );
+      throw new IOException( abstractTextFrmResourceBundle.getString("error.readFile.fileToLarge.message") );
     }
     StringBuilder buf = new StringBuilder(
                                 len >= 0 ? ((int) (len + 1)) : 0x4000 );
