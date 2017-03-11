@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -9,10 +10,15 @@
 package jtcemu.base;
 
 import java.io.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class ExtROM implements Comparable<ExtROM>
 {
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle extROMResourceBundle = ResourceBundle.getBundle("resources.ExtROM", locale);
+
   private int    begAddr;
   private int    endAddr;
   private File   file;
@@ -96,7 +102,7 @@ public class ExtROM implements Comparable<ExtROM>
       int b = in.read();
       while( b != -1 ) {
         if( n >= 0x10000 ) {
-          throw new IOException( "Datei zu gro\u00DF" );
+          throw new IOException( extROMResourceBundle.getString("error.reload.fileToLarge.message") );
         }
         buf.write( b );
         b = in.read();
