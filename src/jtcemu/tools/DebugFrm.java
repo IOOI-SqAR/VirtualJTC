@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
