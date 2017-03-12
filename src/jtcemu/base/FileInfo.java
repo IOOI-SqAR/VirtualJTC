@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -9,10 +10,15 @@
 package jtcemu.base;
 
 import java.io.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class FileInfo
 {
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle fileInfoResourceBundle = ResourceBundle.getBundle("resources.FileInfo", locale);
+
   public enum Format { JTC, TAP, HEX, BIN };
 
   private byte[] header;
@@ -60,6 +66,8 @@ public class FileInfo
     if( header != null ) {
       Format fmt      = null;
       String infoText = null;
+      
+      String file = fileInfoResourceBundle.getString("analyzeFile.file");
 
       if( (fileLen > 127) && (header.length > 20) ) {
         if( (header[ 16 ] == 2) || (header[ 16 ] == 3) ) {
@@ -75,15 +83,17 @@ public class FileInfo
           StringBuilder buf = new StringBuilder( 26 );
           if( header[ 16 ] == 2 ) {
             buf.append( String.format(
-                                "%s-Datei: %02X%02X-%02X%02X ",
+                                "%s-%s: %02X%02X-%02X%02X ",
                                 kcc ? "KCC" : "JTC",
+                                file,
                                 header[ 18 ] & 0xFF,
                                 header[ 17 ] & 0xFF,
                                 header[ 20 ] & 0xFF,
                                 header[ 19 ] & 0xFF ) );
           } else {
             buf.append( String.format(
-                                "KCC-Datei: %02X%02X-%02X%02X Start=%02X%02X ",
+                                "KCC-%s: %02X%02X-%02X%02X Start=%02X%02X ",
+                                file,
                                 header[ 18 ] & 0xFF,
                                 header[ 17 ] & 0xFF,
                                 header[ 20 ] & 0xFF,
@@ -117,7 +127,7 @@ public class FileInfo
             && ((header[ 33 ] == 2) || (header[ 33 ] == 3)) )
         {
           StringBuilder buf = new StringBuilder( 11 );
-          buf.append( "KC-TAP-Datei: " );
+          buf.append( "KC-TAP-" + file + ": " );
           buf.append( String.format(
                                 "%02X%02X-%02X%02X ",
                                 header[ 35 ] & 0xFF,
@@ -159,7 +169,7 @@ public class FileInfo
           begAddr[ 1 ]   = c4;
           begAddr[ 2 ]   = c5;
           begAddr[ 3 ]   = c6;
-          infoText = "Intel-HEX-Datei: " + (new String( begAddr ));
+          infoText = "Intel-HEX-" + file + ": " + (new String( begAddr ));
         }
       }
       if( fmt == null ) {
