@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -11,6 +12,9 @@ package jtcemu.base;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import jtcemu.Main;
 import z8.Z8Memory;
@@ -18,8 +22,11 @@ import z8.Z8Memory;
 
 public class LoadDlg extends BaseDlg implements ActionListener
 {
-  private static final String textBegAddr = "Laden ab Adresse";
-  private static final String textEndAddr = "Bis max. Adresse";
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle loadDlgResourceBundle = ResourceBundle.getBundle("resources.LoadDlg", locale);
+
+  private static final String textBegAddr = loadDlgResourceBundle.getString("text.begAddr");
+  private static final String textEndAddr = loadDlgResourceBundle.getString("text.EndAddr");
 
   private Z8Memory     memory;
   private byte[]       fileBytes;
@@ -51,7 +58,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
                 File     file )
   {
     super( owner );
-    setTitle( "Datei laden: " + file.getName() );
+    setTitle( loadDlgResourceBundle.getString("window.title") + file.getName() );
     this.memory    = memory;
     this.fileBytes = fileBytes;
     this.fileLen   = Math.min( fileLen, fileBytes.length );
@@ -73,7 +80,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
 
     // Bereich Dateiformat
     JPanel panelFmt = new JPanel( new GridBagLayout() );
-    panelFmt.setBorder( BorderFactory.createTitledBorder( "Dateiformat" ) );
+    panelFmt.setBorder( BorderFactory.createTitledBorder( loadDlgResourceBundle.getString("titledBorder.fileFormat") ) );
     add( panelFmt, gbc );
 
     GridBagConstraints gbcFmt = new GridBagConstraints(
@@ -113,7 +120,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
     panelFmtBtn.add( this.btnFmtHEX );
 
 
-    this.labelFileBegAddr = new JLabel( "Anfangsadresse:" );
+    this.labelFileBegAddr = new JLabel( loadDlgResourceBundle.getString("label.labelFileBegAddr") );
     gbcFmt.anchor    = GridBagConstraints.EAST;
     gbcFmt.gridwidth = 1;
     gbcFmt.gridx     = 0;
@@ -128,7 +135,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
     gbcFmt.gridx++;
     panelFmt.add( this.fldFileBegAddr, gbcFmt );
 
-    this.labelFileEndAddr = new JLabel( "Endadresse:" );
+    this.labelFileEndAddr = new JLabel( loadDlgResourceBundle.getString("label.labelFileEndAddr") );
     gbcFmt.anchor  = GridBagConstraints.EAST;
     gbcFmt.fill    = GridBagConstraints.NONE;
     gbcFmt.weightx = 0.0;
@@ -143,7 +150,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
     gbcFmt.gridx++;
     panelFmt.add( this.fldFileEndAddr, gbcFmt );
 
-    this.labelFileDesc = new JLabel( "Name:" );
+    this.labelFileDesc = new JLabel( loadDlgResourceBundle.getString("label.labelFileDesc") );
     gbcFmt.anchor     = GridBagConstraints.EAST;
     gbcFmt.fill       = GridBagConstraints.NONE;
     gbcFmt.weightx    = 0.0;
@@ -164,7 +171,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
 
     // Bereich Ladeadressen
     JPanel panelAddr = new JPanel( new GridBagLayout() );
-    panelAddr.setBorder( BorderFactory.createTitledBorder( "Ladeadressen" ) );
+    panelAddr.setBorder( BorderFactory.createTitledBorder( loadDlgResourceBundle.getString("titledBorder.addresses") ) );
     gbc.gridy++;
     add( panelAddr, gbc );
 
@@ -207,15 +214,15 @@ public class LoadDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( panelBtn,gbc );
 
-    this.btnLoad = new JButton( "Laden" );
+    this.btnLoad = new JButton( loadDlgResourceBundle.getString("button.load") );
     this.btnLoad.addActionListener( this );
     panelBtn.add( this.btnLoad );
 
-    this.btnHelp = new JButton( "Hilfe..." );
+    this.btnHelp = new JButton( loadDlgResourceBundle.getString("button.help") );
     this.btnHelp.addActionListener( this );
     panelBtn.add( this.btnHelp );
 
-    this.btnCancel = new JButton( "Abbrechen" );
+    this.btnCancel = new JButton( loadDlgResourceBundle.getString("button.cancel") );
     this.btnCancel.addActionListener( this );
     panelBtn.add( this.btnCancel );
 
@@ -322,7 +329,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
       doLoad();
     }
     else if( src == this.btnHelp ) {
-      HelpFrm.open( "/help/loadsave.htm" );
+      HelpFrm.open( loadDlgResourceBundle.getString("help.loadsave.path") );
     }
     else if( src == this.btnCancel ) {
       doClose();
@@ -387,166 +394,177 @@ public class LoadDlg extends BaseDlg implements ActionListener
         }
       }
       if( this.btnFmtJTC.isSelected() ) {
-        loadIntoMem(
-                begAddr,
-                endAddr,
-                this.fileBytes,
-                128,
-                getContentLen( 17 ) );
-        doClose();
+        handleBtnFmtJTC(endAddr, begAddr);
       }
       else if( this.btnFmtTAP.isSelected() ) {
-        boolean status = true;
-        int     nTotal = getContentLen( 34 );
-        int     nBlk   = 0;
-        int     pos    = 145;
-        int     addr   = begAddr;
-        while( (nTotal > 0)
-               && (pos < this.fileBytes.length)
-               && (addr <= endAddr) )
-        {
-          if( nBlk == 0 ) {
-            nBlk = 128;
-          } else {
-            if( !this.memory.setMemByte(
-                                addr++,
-                                false,
-                                this.fileBytes[ pos ] ) )
-            {
-              status = false;
-            }
-            --nBlk;
-            --nTotal;
-          }
-          pos++;
-        }
-        Main.setLastFile( this.file );
-        if( !status ) {
-          fireLoadedOutOfRAM();
-        }
-        doClose();
+        handleBtnFmtTAP(endAddr, begAddr);
       }
       else if( this.btnFmtBIN.isSelected() ) {
-        loadIntoMem( begAddr, endAddr, this.fileBytes, 0, -1 );
-        doClose();
+        handleBtnFmtBIN(endAddr, begAddr);
       }
       else if( this.btnFmtHEX.isSelected() ) {
-        String infoMsg = null;
-
-        ByteArrayOutputStream out = new ByteArrayOutputStream( 0x4000 );
-        ByteArrayInputStream  in  = new ByteArrayInputStream(
-                                                        this.fileBytes,
-                                                        0,
-                                                        this.fileLen );
-        boolean loop     = true;
-        int     firstAddr = -1;
-        int     curAddr  = -1;
-        int     ch       = in.read();
-        while( loop && (ch != -1) ) {
-
-          // Startmarkierung suchen
-          while( (ch != -1) && (ch != ':') ) {
-            ch = in.read();
-          }
-          if( ch != -1 ) {
-            // Segment verarbeiten
-            int cnt  = parseHex( in, 2 );
-            int addr = parseHex( in, 4 );
-            int type = parseHex( in, 2 );
-            switch( type ) {
-              case 0:                       // Data Record
-                if( cnt > 0 ) {
-                  if( firstAddr < 0 ) {
-                    firstAddr = addr;
-                    curAddr   = addr;
-                  }
-                  if( addr == curAddr ) {
-                    while( cnt > 0 ) {
-                      out.write( parseHex( in, 2 ) );
-                      --cnt;
-                      curAddr++;
-                    }
-                  } else {
-                    infoMsg = "Die Datei enth\u00E4lt mehrere nicht"
-                        + " zusammenh\u00E4ngende Datenbereiche.\n"
-                        + "Es wurde nur der erste Bereich geladen.";
-                  }
-                }
-                break;
-
-              case 1:                        // End of File Record
-                loop = false;
-                break;
-
-              case 2:                        // Extended Segment Address Record
-                while( cnt > 0 ) {
-                  if( parseHex( in, 2 ) != 0 ) {
-                    infoMsg = "Die Datei enth\u00E4lt einen Datensatz f\u00FCr"
-                        + " eine segmentierte Adresse,\n"
-                        + "der von JTCEMU nicht unterst\u00FCtzt wird.";
-                  }
-                  --cnt;
-                }
-                break;
-
-              case 3:                        // Start Segment Address Record
-              case 5:                        // Start Linear Address Record
-                // Datensatz ignorieren
-                break;
-
-              case 4:                        // Extended Linear Address Record
-                while( cnt > 0 ) {
-                  if( parseHex( in, 2 ) != 0 ) {
-                    infoMsg = "Die Datei enth\u00E4lt einen Datensatz f\u00FCr"
-                        + " eine lineare 32-Bit-Adresse,\n"
-                        + "die au\u00DFerhalb des von JTCEMU"
-                        + " emulierten Adressraumes liegt.";
-                  }
-                  --cnt;
-                }
-                break;
-
-              default:
-                infoMsg = String.format(
-                                "Die Datei enth\u00E4lt einen Datensatzart"
-                                        + " des Typs %d,\n"
-                                        + "der von JTCEMU nicht"
-                                        + " unterst\u00FCtzt wird.",
-                                type );
-            }
-            if( infoMsg != null ) {
-              if( out.size() > 0 ) {
-                infoMsg = infoMsg
-                        + "\nEs werden nur die Daten bis zu diesem Datensatz"
-                        + " geladen.";
-              } else {
-                throw new IOException( infoMsg );
-              }
-              loop = false;
-            }
-            ch = in.read();
-          }
-        }
-        in.close();
-        out.close();
-        if( infoMsg != null ) {
-          JOptionPane.showMessageDialog(
-                this,
-                infoMsg,
-                "Hinweis",
-                JOptionPane.WARNING_MESSAGE );
-        }
-        if( firstAddr >= 0 ) {
-          byte[] dataBytes = out.toByteArray();
-          if( dataBytes != null ) {
-            loadIntoMem( begAddr, endAddr, dataBytes, 0, -1 );
-            doClose();
-          }
-        }
+        handleBtnFmtHEX(endAddr, begAddr);
       }
     }
     catch( Exception ex ) {
       Main.showError( this, ex );
+    }
+  }
+
+
+  private void handleBtnFmtJTC(int endAddr, int begAddr) throws IOException
+  {
+    loadIntoMem(
+            begAddr,
+            endAddr,
+            this.fileBytes,
+            128,
+            getContentLen( 17 ) );
+    doClose();
+  }
+
+
+  private void handleBtnFmtTAP(int endAddr, int begAddr) throws IOException
+  {
+    boolean status = true;
+    int     nTotal = getContentLen( 34 );
+    int     nBlk   = 0;
+    int     pos    = 145;
+    int     addr   = begAddr;
+    while( (nTotal > 0)
+           && (pos < this.fileBytes.length)
+           && (addr <= endAddr) )
+    {
+      if( nBlk == 0 ) {
+        nBlk = 128;
+      } else {
+        if( !this.memory.setMemByte(
+                            addr++,
+                            false,
+                            this.fileBytes[ pos ] ) )
+        {
+          status = false;
+        }
+        --nBlk;
+        --nTotal;
+      }
+      pos++;
+    }
+    Main.setLastFile( this.file );
+    if( !status ) {
+      fireLoadedOutOfRAM();
+    }
+    doClose();
+  }
+
+
+  private void handleBtnFmtBIN(int endAddr, int begAddr) throws IOException
+  {
+    loadIntoMem( begAddr, endAddr, this.fileBytes, 0, -1 );
+    doClose();
+  }
+
+
+  private void handleBtnFmtHEX(int endAddr, int begAddr) throws IOException
+  {
+    String infoMsg = null;
+
+    ByteArrayOutputStream out = new ByteArrayOutputStream( 0x4000 );
+    ByteArrayInputStream  in  = new ByteArrayInputStream(
+                                                    this.fileBytes,
+                                                    0,
+                                                    this.fileLen );
+    boolean loop     = true;
+    int     firstAddr = -1;
+    int     curAddr  = -1;
+    int     ch       = in.read();
+    while( loop && (ch != -1) ) {
+
+      // Startmarkierung suchen
+      while( (ch != -1) && (ch != ':') ) {
+        ch = in.read();
+      }
+      if( ch != -1 ) {
+        // Segment verarbeiten
+        int cnt  = parseHex( in, 2 );
+        int addr = parseHex( in, 4 );
+        int type = parseHex( in, 2 );
+        switch( type ) {
+          case 0:                       // Data Record
+            if( cnt > 0 ) {
+              if( firstAddr < 0 ) {
+                firstAddr = addr;
+                curAddr   = addr;
+              }
+              if( addr == curAddr ) {
+                while( cnt > 0 ) {
+                  out.write( parseHex( in, 2 ) );
+                  --cnt;
+                  curAddr++;
+                }
+              } else {
+                infoMsg = loadDlgResourceBundle.getString("dialog.handleBtnFmtHEX.infoMsg.dataRecord.message");
+              }
+            }
+            break;
+
+          case 1:                        // End of File Record
+            loop = false;
+            break;
+
+          case 2:                        // Extended Segment Address Record
+            while( cnt > 0 ) {
+              if( parseHex( in, 2 ) != 0 ) {
+                infoMsg = loadDlgResourceBundle.getString("dialog.handleBtnFmtHEX.infoMsg.extendedSegmentAddressRecord.message");
+              }
+              --cnt;
+            }
+            break;
+
+          case 3:                        // Start Segment Address Record
+          case 5:                        // Start Linear Address Record
+            // Datensatz ignorieren
+            break;
+
+          case 4:                        // Extended Linear Address Record
+            while( cnt > 0 ) {
+              if( parseHex( in, 2 ) != 0 ) {
+                infoMsg = loadDlgResourceBundle.getString("dialog.handleBtnFmtHEX.infoMsg.extendedLinearAddressRecord.message");
+              }
+              --cnt;
+            }
+            break;
+
+          default:
+            infoMsg = String.format( loadDlgResourceBundle.getString("dialog.handleBtnFmtHEX.infoMsg.default.message"), type );
+        }
+        if( infoMsg != null ) {
+          if( out.size() > 0 ) {
+            infoMsg = infoMsg
+                    + loadDlgResourceBundle.getString("dialog.handleBtnFmtHEX.infoMsg.message.hint");
+          } else {
+            throw new IOException( infoMsg );
+          }
+          loop = false;
+        }
+        ch = in.read();
+      }
+    }
+    in.close();
+    out.close();
+    if( infoMsg != null ) {
+      JOptionPane.showMessageDialog(
+            this,
+            infoMsg,
+            loadDlgResourceBundle.getString("dialog.handleBtnFmtHEX.infoMsg.title"),
+            JOptionPane.WARNING_MESSAGE );
+    }
+    if( firstAddr >= 0 ) {
+      byte[] dataBytes = out.toByteArray();
+      if( dataBytes != null ) {
+        loadIntoMem( begAddr, endAddr, dataBytes, 0, -1 );
+        doClose();
+      }
     }
   }
 
@@ -643,8 +661,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
       } else if( (ch >= 'a') && (ch <= 'f') ) {
         value = (value << 4) | ((ch - 'a' + 10) & 0x0F);
       } else {
-        throw new IOException(
-                "Datei entspricht nicht dem erwarteten HEX-Format." );
+        throw new IOException( loadDlgResourceBundle.getString("error.parseHex.parseError.message") );
       }
       --cnt;
     }
@@ -654,11 +671,7 @@ public class LoadDlg extends BaseDlg implements ActionListener
 
   private void fireLoadedOutOfRAM() throws IOException
   {
-    throw new IOException(
-                "Die Datei konnte nicht oder nicht vollst\u00E4ndig"
-                        +" in den Arbeitsspeicher geladen werden,\n"
-                        + "da der betroffene Adressbereich auch ROM,"
-                        +" Video-RAM und/oder IO-Adressen enth\u00E4lt." );
+    throw new IOException( loadDlgResourceBundle.getString("error.fireLoadedOutOfRAM.message") );
   }
 
 
