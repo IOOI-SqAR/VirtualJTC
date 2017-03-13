@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -20,6 +21,9 @@ public class KeyboardFrm extends BaseFrm
                                 ActionListener,
                                 KeyListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle keyboardFrmResourceBundle = ResourceBundle.getBundle("resources.KeyboardFrm", locale);
+
   private static KeyboardFrm instance = null;
 
   private Map<Character,KeyFld> char2Key = new Hashtable<Character,KeyFld>();
@@ -28,7 +32,7 @@ public class KeyboardFrm extends BaseFrm
   private KeyFld[] keys0 = {
         createKeyCodeFld(
                         GUIUtil.readImage( this, "/images/key/space.png" ),
-                        "Leer",
+                        keyboardFrmResourceBundle.getString("keys0.space"),
                         null,
                         null,
                         null,
@@ -61,7 +65,7 @@ public class KeyboardFrm extends BaseFrm
                         null,
                         null,
                         null,
-                        KeyEvent.VK_CONTROL ),
+                        KeyEvent.VK_SHIFT ),
         createKeyCharFld( 'A', null,    null, null ),
         createKeyCharFld( 'S', "GOSUB", null, null ),
         createKeyCharFld( 'D', null,    null, null ),
@@ -91,10 +95,10 @@ public class KeyboardFrm extends BaseFrm
   private KeyFld[] keys3 = {
         createKeyCodeFld(
                         GUIUtil.readImage( this, "/images/key/down.png" ),
-                        "Runter",
+                        keyboardFrmResourceBundle.getString("keys3.down"),
                         null,
                         GUIUtil.readImage( this, "/images/key/up.png" ),
-                        "Hoch",
+                        keyboardFrmResourceBundle.getString("keys3.up"),
                         null,
                         KeyEvent.VK_DOWN,
                         KeyEvent.VK_UP ),
@@ -268,7 +272,8 @@ public class KeyboardFrm extends BaseFrm
 
   private KeyboardFrm( TopFrm topFrm, JTCSys jtcSys )
   {
-    setTitle( "JTCEMU Tastatur" );
+    setTitle( keyboardFrmResourceBundle.getString("window.title") );
+    
     this.topFrm          = topFrm;
     this.jtcSys          = jtcSys;
     this.ignoreKeyChar   = false;
@@ -283,30 +288,28 @@ public class KeyboardFrm extends BaseFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( keyboardFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( 'D' );
     mnuBar.add( mnuFile );
 
-    this.mnuReset = new JMenuItem( "Zur\u00FCcksetzen (RESET)" );
+    this.mnuReset = new JMenuItem( keyboardFrmResourceBundle.getString("menuItem.reset") );
     this.mnuReset.setAccelerator(
                         KeyStroke.getKeyStroke( KeyEvent.VK_F7, 0 ) );
     this.mnuReset.addActionListener( this );
     mnuFile.add( this.mnuReset );
     mnuFile.addSeparator();
 
-    this.mnuClose = new JMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = new JMenuItem( keyboardFrmResourceBundle.getString("menuItem.close") );
     this.mnuClose.addActionListener( this );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Einstellungen
-    JMenu mnuSettings = new JMenu( "Einstellungen" );
+    JMenu mnuSettings = new JMenu( keyboardFrmResourceBundle.getString("menu.settings") );
     mnuSettings.setMnemonic( 'E' );
     mnuBar.add( mnuSettings );
 
-    this.mnuKeepKeysPressed = new JCheckBoxMenuItem(
-                                "Tasten gedr\u00FCckt halten",
-                                this.keepKeysPressed );
+    this.mnuKeepKeysPressed = new JCheckBoxMenuItem( keyboardFrmResourceBundle.getString("menuItem.keepKeysPressed"), this.keepKeysPressed );
     this.mnuKeepKeysPressed.addActionListener( this );
     mnuSettings.add( this.mnuKeepKeysPressed );
 
@@ -458,10 +461,10 @@ public class KeyboardFrm extends BaseFrm
       this.keys1[ 11 ].setValues( null, "-", "LIST", null, "=", null );
       this.keys2[ 0 ].setValues(
                 GUIUtil.readImage( this, "/images/key/left.png" ),
-                "Links",
+                keyboardFrmResourceBundle.getString("updKeys.left"),
                 null,
                 GUIUtil.readImage( this, "/images/key/right.png" ),
-                "Rechts",
+                keyboardFrmResourceBundle.getString("updKeys.right"),
                 null );
       this.char2Key.put( new Character( '=' ), this.keys1[ 11 ] );
       this.code2Key.put( new Integer( KeyEvent.VK_LEFT ), this.keys2[ 0 ] );
