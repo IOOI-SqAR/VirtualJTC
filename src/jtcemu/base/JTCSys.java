@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -14,7 +15,11 @@ package jtcemu.base;
 
 import java.awt.event.*;
 import java.io.*;
+import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import jtcemu.Main;
 import jtcemu.audio.*;
 import z8.*;
@@ -26,6 +31,9 @@ public class JTCSys implements
                         Z8Memory,
                         Z8PCListener
 {
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle jtcSysResourceBundle = ResourceBundle.getBundle("resources.JTCSys", locale);
+
   public static enum OSType { OS2K, ES1988, ES23, ES40 };
 
   private static final int[][] keyMatrix2kNormal = {
@@ -1082,8 +1090,7 @@ public class JTCSys implements
       }
     }
     if( !done ) {
-      throw new IOException( "Resource " + resource
-                                + " kann nicht geladen werden." );
+      throw new IOException( MessageFormat.format( jtcSysResourceBundle.getString("error.readFile.cantLoadResource.messageformat"), resource) );
     }
     return buf.toByteArray();
   }
