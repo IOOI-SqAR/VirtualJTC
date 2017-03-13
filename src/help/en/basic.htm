@@ -1,0 +1,361 @@
+<html>
+<body>
+  <h1>Tiny-MP-BASIC</h1>
+    Tiny-MP-BASIC ist der Dialekt des BASIC-Interpreters,
+    den der Einchipmikrorechner U883 in seinem ROM enth&auml;lt.
+    Dieser BASIC-Dialekt ist recht einfach und bietet eine
+    16-Bit-Ganzzahlarithmetik, d.h., die numerischen Werte k&ouml;nnen
+    von -32767 bis 32767 reichen.
+    Flie&szlig;kommazahlen und Zeichenkettenverarbeitung werden nicht geboten.
+  <br/><br/>
+
+  <h2><a name="format">1. Komprimiertes Speicherformat</a></h2>
+    Das BASIC-Programm muss im Arbeitsspeicher in einem speziell
+    komprimierten Format vorliegen.
+    Bei diesem Format bestehen die Anweisungen nur aus einem Zeichen,
+    Leerzeichen sind nur in Zeichenketten und Kommentaren zugelassen
+    und %0D steht f&uuml;r das Zeilenende.
+  <br/><br/>
+    Die Zeilennummern werden als 16-Bit-Zahlen gespeichert,
+    wobei das h&ouml;chstwertige Bit,
+    dass normalerweise das Vorzeichen darstellt,
+    immer gesetzt ist.
+  <br/><br/>
+    Es ist die Aufgabe eines Editors,
+    ein BASIC-Programm in diese komprinierte Form zu &uuml;berf&uuml;hren.
+    Daher ist es m&ouml;glich, dass sich die Namen der Anweisungen
+    und in geringem Umfang auch die Syntax von Editor zu Editor unterscheiden.
+  <br/><br/>
+    Alle Betriebssystemversionen des JU+TE-Computers
+    enthalten einen Editor zur Eingabe und zur Anzeige von BASIC-Programmen,
+    jedoch gibt es beim 2K-Betriebssystem und beim EMR-ES&nbsp;1988
+    <a href="os2k_usage.htm#row_number_limits">Einschr&auml;nkungen</a>
+    bzgl. der Zeilennummern.
+    Mit dem im Emulator integrierten <a href="texteditor.htm">Texteditor</a>
+    kann man ebenfalls BASIC-Programme eingeben und sich anzeigen lassen.
+  <br/><br/>
+
+  <h2>2. Anweisungen</h2>
+    <table border="1">
+      <tr><th>Anweisung</th><th>Komprimierte Form</th></tr>
+      <tr><td valign="top" nowrap>CALL &lt;Ausdruck&gt;</td><td>C</td></tr>
+      <tr>
+	<td valign="top" nowrap>ELSE ; &lt;Anweisungen&gt; [ ; ...]</td>
+	<td>&gt;</td>
+      </tr>
+      <tr><td valign="top" nowrap>END</td><td>E</td></tr>
+      <tr><td valign="top" nowrap>GOSUB &lt;Ausdruck&gt;</td><td>S</td></tr>
+      <tr><td valign="top" nowrap>GOTO &lt;Ausdruck&gt;</td><td>G</td></tr>
+      <tr>
+	<td valign="top" nowrap>
+	  IF &lt;Bedingung&gt; THEN &lt;Anweisung&gt; [ ; ...]
+	</td>
+	<td>F &lt;Bedingung&gt; ;</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>
+	  INPUT [ &lt;Zeichenkette&gt; ] &lt;Variable&gt;
+	</td>
+	<td>I</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>
+	  LET &lt;Variable&gt; = &lt;Ausdruck&gt; [ , ...]
+	</td>
+	<td>L</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>
+	  PRINT [ &lt;Zeichenkette&gt; ] [ &lt;Ausdruck&gt; ] [ , ] [...]
+	</td>
+	<td>P</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>
+	  PTH [ &lt;Zeichenkette&gt; ] [ &lt;Ausdruck&gt; ] [ , ] [...]
+	</td>
+	<td>H</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>
+	  PROC [ &lt;Variablenliste&gt; ] = &lt;Name&gt; &lt;Argumentliste&gt;
+	</td>
+	<td>O</td>
+      </tr>
+      <tr><td valign="top" nowrap>RETURN</td><td>R</td></tr>
+      <tr><td valign="top" nowrap>REM &lt;Kommentar&gt;</td><td>M</td></tr>
+      <tr><td valign="top" nowrap>STOP</td><td>T</td></tr>
+      <tr><td valign="top" nowrap>TOFF</td><td>/</td></tr>
+      <tr>
+	<td valign="top" nowrap>TRAP &lt;Bedingung&gt; TO &lt;Ausdruck&gt;</td>
+	<td>! &lt;Bedingung&gt; ,</td>
+      </tr>
+      <tr><td valign="top" nowrap>WAIT &lt;Ausdruck&gt;</td><td>W</td></tr>
+    </table>
+  <br/><br/>
+
+  <h3><a name="if_then_else">2.1. Besonderheiten bei IF...THEN...ELSE</a></h3>
+    Die <em>ELSE</em>-Anweisung muss als erste Anweisung in der Zeile stehen,
+    die der <em>IF</em>-Anweisung unmittelbar folgt.
+    Hinter dem <em>ELSE</em> ist ein Semikolon erforderlich,
+    dann folgen die Anweisungen des ELSE-Zweiges.
+  <br/><br/>
+    Beispiel:<br/>
+    <tt>
+      100 IF A&lt;10 THEN PRINT "A&lt;10"<br/>
+      110 ELSE; PRINT "A&gt;=10"
+    </tt>
+  <br/><br/>
+    Ein <em>ELSE</em> in der gleichen Zeile mit der
+    <em>IF</em>-Anweisung hat keine Wirkung.
+  <br/><br/>
+    Wenn mehrere <em>IF</em>-Anweisungen in einer Zeile stehen,
+    benutzen diese alle den gleichen <em>ELSE</em>-Zweig, d.h.,
+    wenn eine <em>IF</em>-Anweisung nicht erf&uuml;llt ist, egal welche,
+    werden immer die Anweisungen hinter dem <em>ELSE</em> in der
+    n&auml;chsten Zeile ausgef&uuml;hrt.
+    Weitere <em>ELSE</em>-Anweisungen haben keine Wirkung.
+  <br/><br/>
+
+  <h2>3. Prozeduren</h2>
+    Prozeduren k&ouml;nnen Werte zur&uuml;ckliefern.
+    Diese werden in die Variablen geschrieben,
+    die in der optionalen Variablenliste angegeben sind.
+    Die Variablenliste ist eine in eckigen Klammern eingeschlossene
+    und mit Kommas getrennte Aneinanderreihung von Variablen.
+  <br/><br/>
+    Die Paramter der Prozeduren werden ebenfalls in eckigen Klammern
+    eingeschlossen.
+    Folgende Prozeduren kennt das Tiny-MP-BASIC:
+  <br/>
+    <table border="1">
+      <tr><th>Name und Syntax</th><th>Bedeutung</th></tr>
+      <tr>
+	<td valign="top" nowrap>GETEB [ &lt;Adresse&gt; ]</td>
+	<td>Liest ein Byte aus dem Arbeitsspeicher</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GETEW [ &lt;Adresse&gt; ]</td>
+	<td>Liest ein 16-Bit-Wort aus dem Arbeitsspeicher</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GETR [ &lt;Register&gt; ]</td>
+	<td>Liest ein Register</td></tr>
+      <tr>
+	<td valign="top" nowrap>GETRR [ &lt;Register&gt; ]</td>
+	<td>Liest ein Doppelregister</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>PTC [ &lt;ASCII-Code&gt; ]</td>
+	<td>Gibt das Zeichen entsprechennd dem ASCII-Code aus</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>SETEB [ &lt;Adresse&gt; , &lt;Wert&gt; ]</td>
+	<td>Schreibt ein Byte in den RAM</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>SETEW [ &lt;Adresse&gt; , &lt;Wert&gt; ]</td>
+	<td>Schreibt ein 16-Bit-Wort in den RAM</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>SETR [ &lt;Register&gt; , &lt;Wert&gt; ]</td>
+	<td>Schreibt einen Wert in ein Register</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>SETRR [ &lt;Register&gt; , &lt;Wert&gt; ]</td>
+	<td>Schreibt einen Wert in ein Doppelregister</td>
+      </tr>
+    </table>
+  <br/><br/>
+
+  <h2>4. Zeichenketten</h2>
+    Bei den Anweisungen <em>INPUT</em>, <em>PRINT</em> und <em>PTH</em>
+    sind Zeichenketten erlaubt.
+    Eine Zeichenkette beginnt und endet mit Anf&uuml;hrungszeichen.
+    Alle Zeichen dazwischen werden auf dem Bildschirm ausgegeben.
+  <br/><br/>
+
+  <h2>5. Bedingungen</h2>
+    Hinter den Schl&uuml;sselw&ouml;rtern <em>IF</em> und <em>TRAP</em>
+    wird eine Bedingung erwartet.
+    Die Syntax f&uuml;r eine Bedingung ist:
+  <br/><br/>
+    <tt>&lt;Ausdruck&gt; &lt;Vergleichsoperator&gt; &lt;Ausdruck&gt;</tt>
+  <br/><br/>
+    Tiny-MP-BASIC kennt folgende Vergleichsoperatoren:<br/>
+    <table border="1">
+      <tr><th>Vergleichsoperator</th><th>Bedeutung</th></tr>
+      <tr><td>&lt;</td><td>Kleiner</td>
+      <tr><td>&lt;=</td><td>Kleiner oder gleich</td>
+      <tr><td>=</td><td>Gleich</td>
+      <tr><td>&gt;=</td><td>Gr&ouml;&szlig;er oder gleich</td>
+      <tr><td>&gt;</td><td>Gr&ouml;&szlig;er</td>
+      <tr><td>&lt;&gt;</td><td>Ungleich</td>
+    </table>
+  <br/><br/>
+
+  <h2>6. Ausdr&uuml;cke</h2>
+    Ein Ausdruck besteht aus
+    <a href="basic.htm#dec_number">Dezimalzahlen</a>,
+    <a href="basic.htm#hex_number">Hexadezimalzahlen</a>,
+    <a href="basic.htm#variable">Variablen</a> und/oder
+    <a href="basic.htm#function">Funktionen</a>,
+    die mit Operatoren verkn&uuml;pft und mit runden Klammern
+    beliebig geschachtelt werden k&ouml;nnen.
+    Folgende Operatoren sind m&ouml;glich:<br/>
+    <table border="1">
+      <tr><th>Operator</th><th>Bedeutung</th></tr>
+      <tr><td>+</td><td>Addition</td>
+      <tr><td>-</td><td>Subtraktion</td>
+      <tr><td>*</td><td>Multiplikation</td>
+      <tr><td>/</td><td>Ganzzahlige Division</td>
+      <tr><td>$M</td><td>Modulo (Rest der ganzzahligen Division)</td>
+      <tr><td>$A</td><td>Bitweises UND (AND)</td>
+      <tr><td>$O</td><td>Bitweises ODER (OR)</td>
+      <tr><td>$X</td><td>Bitweises ausschlie&szlig;endes ODER (XOR)</td>
+    </table>
+  <br/><br/>
+    Es gibt keine Vorrangarithmetik, d.h., die Operatoren werden streng
+    von links nach rechts abgearbeitet.
+  <br/><br/>
+    <tt>LET A=1+2*3</tt>
+  <br/><br/>
+    weist der Variablen <em>A</em> den Wert 9 zu,
+    und nicht, wie es mathematisch richtig w&auml;re, den Wert 7.
+    Um eine andere Reihenfolge zu erreichen,
+    m&uuml;ssen die Teilausdr&uuml;cke in runde Klammern
+    eingeschlossen werden, z.B.:
+  <br/><br/>
+    <tt>LET A=1+(2*3)</tt>
+  <br/><br/>
+
+  <h3><a name="dec_number">6.1. Dezimalzahlen</a></h3>
+    Dezimalzahlen bestehen aus den Ziffern <em>0</em> bis <em>9</em>
+    und k&ouml;nnen,
+    sofern sie am Anfang eines Ausdrucks oder geschachtelten Ausdrucks stehen,
+    auch ein Minus als Vorzeichen enthalten.
+  <br/><br/>
+
+  <h3><a name="hex_number">6.2. Hexadezimalzahlen</a></h3>
+    Hexadezimalzahlen beginnen mit einem Prozentzeichen gefolgt
+    von den gro&szlig; geschriebenen Hexadezimalziffern.
+    Der Wert einer Hexadezimalzahl darf <tt>%FFFF</tt>
+    nicht &uuml;berschreiten.
+  <br/><br/>
+
+  <h3><a name="variable">6.3. Variablen</a></h3>
+    Es gibt 26 numerische Variablen,
+    deren Namen jeweils nur aus einem Buchstaben bestehen
+    (<em>A</em> bis <em>Z</em>).
+    Zeichenkettenvariablen gibt es nicht.
+  <br/><br/>
+
+  <h3><a name="function">6.4. Funktionen</a></h3>
+    Folgende Funktionen kennt das Tiny-MP-BASIC:
+  <br/>
+    <table border="1">
+      <tr><th>Name und Syntax</th><th>Bedeutung</th></tr>
+      <tr>
+	<td valign="top" nowrap>ABS [ &lt;Ausdruck&gt; ]</td>
+	<td>Absoluter Betrag</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GETEB [ &lt;Adresse&gt; ]</td>
+	<td>Liest ein Byte aus dem Arbeitsspeicher</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GETEW [ &lt;Adresse&gt; ]</td>
+	<td>Liest ein 16-Bit-Wort aus dem Arbeitsspeicher</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GETR [ &lt;Register&gt; ]</td>
+	<td>Liest ein Register</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GETR [ &lt;Register&gt; ]</td>
+	<td>Liest ein Doppelregister</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>GTC</td>
+	<td>
+	  Wartet auf einen Tastendruck und liefert den ASCII-Code
+	  im unteren Byte zur&uuml;ck
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>INPUT</td>
+	<td>
+	  Wartet auf die Eingabe einer Zahl und liefert deren Wert zur&uuml;ck
+	</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>NOT [ &lt;Ausdruck&gt; ]</td>
+	<td>Logisches Komplement</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>RL [ &lt;Ausdruck&gt; ]</td>
+	<td>Rotiert den 16-Bit-Ausdruck um ein Bit nach links</td>
+      </tr>
+      <tr>
+	<td valign="top" nowrap>RR [ &lt;Ausdruck&gt; ]</td>
+	<td>Rotiert den 16-Bit-Ausdruck um ein Bit nach rechts</td>
+      </tr>
+    </table>
+  <br/><br/>
+    Die Argumente werden in eckigen Klammern eingeschlossen.
+  <br/><br/>
+
+  <h2>7. BASIC-Fehlermeldungen</h2>
+    <table border="1">
+      <tr>
+	<td valign="top"><em>ERROR 0</em></td>
+	<td>
+	  Syntaxfehler,<br/>
+	  <em>CONT</em> ohne <em>STOP</em> oder<br/>
+	  Programmende ohne <em>END</em> bzw. <em>STOP</em><br/>
+	</td>
+      </tr>
+      <tr>
+	<td><em>ERROR 1</em></td>
+	<td>Mehr als 15 <em>GOSUB</em>-Aufrufe verschachtelt</td>
+      </tr>
+      <tr>
+	<td><em>ERROR 2</em></td>
+	<td><em>RETURN</em> ohne <em>GOSUB</em></td>
+      </tr>
+      <tr>
+	<td><em>ERROR 4</em></td>
+	<td>Division durch Null</td>
+      </tr>
+      <tr>
+	<td><em>ERROR 8</em></td>
+	<td>&Uuml;berschreitung des zul&auml;ssigen Zahlenbereichs</td>
+      </tr>
+    </table>
+  <br/>
+    Bei gleichzeitigem Auftreten mehrerer Fehler werden die einzelnen
+    Fehlernummern addiert und als Summe ausgegeben.
+  <br/><br/>
+
+  <h2>8. Literatur</h2>
+    <table border="0">
+      <tr>
+        <td valign="top">[1]</td>
+        <td valign="top">
+	  Dr. Hoyer, Helmut: JU+TE Computer selbst gebaut,
+	  Zeitschrift <em>Jugend+Technik</em>, Heft 12/1987, Seiten 930-932,
+	  Verlag Junge Welt, Berlin 1987
+	</td>
+      </tr>
+      <tr>
+        <td valign="top">[2]</td>
+        <td valign="top">
+	  Dr. Hoyer, Helmut: JU+TE Computer selbst gebaut,
+	  Zeitschrift <em>Jugend+Technik</em>, Heft 1/1988, Seiten 70-74,
+	  Verlag Junge Welt, Berlin 1988
+	</td>
+      </tr>
+    </table>
+</body>
+</html>
+

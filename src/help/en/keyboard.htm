@@ -1,0 +1,152 @@
+<html>
+<body>
+  <h1>Tastatur</h1>
+    Der Emulator bildet die originalen Tastaturen nach.
+    Das sind beim 2K-Betriebssystem die Tastatur nach
+    <a href="keyboard.htm#literature">[1]</a>,
+    beim EMR-ES&nbsp;1988 die nach <a href="keyboard.htm#literature">[2]</a>
+    und beim ES&nbsp;4.0 die Tastatur nach
+    <a href="keyboard.htm#literature">[3]</a>.
+    F&uuml;r das ES&nbsp;2.3 ist die Tastatur-Hardware in der zugeh&ouml;rigen
+    Betriebssystembeschreibung zu finden.
+    Allerdings ist diese niemals in einer Publikation erschienen.
+  <br/><br/>
+
+  <h2>1. Tastatur beim 2K-Betriebssystem und beim EMR-ES&nbsp;1988</h2>
+    Diese Tastatur besteht aus zwei Ebenen, die mit einer Shift-Taste
+    umgeschaltet werden.
+    M&ouml;chte man ein Zeichen aus der Shift-Ebene eingeben,
+    muss zuerst die Shift-Taste gedr&uuml;ckt und wieder losgelassen werden.
+    Das 2K-Betriebssystem und das EMR-ES&nbsp;1988 merkt sich das Dr&uuml;cken
+    der Shift-Taste und signalisiert es mit einem horizontalen Strich
+    am rechten unteren Bildschirmrand.
+    Anschlie&szlig;end ist nun die eigentliche Taste zu dr&uuml;cken,
+    woraufhin das Zeichen eingegeben und der Shift-Modus wieder verlassen wird.
+  <br/><br/>
+    Der Emulator m&uuml;sste nun bei der Eingabe eines Shift-Zeichens
+    die gleiche Vorgehensweise simulieren,
+    d.h., vor der eigentlichen Taste das Dr&uuml;cken der Shift-Taste
+    f&uuml;r eine gewisse Zeit nachbilden.
+    Dabei kann der Emulator nur hoffen, dass das Betriebssystem
+    das Dr&uuml;cken der Shift-Taste auch erkannt hat.
+    Je k&uuml;rzer die Zeit, desto wahrscheinlicher ist eine Fehleingabe
+    und je l&auml;nger die Zeit, desto tr&auml;ger erfolgt die Eingabe.
+    Wie auch immer, es ist einfach keine befriedigende L&ouml;sung,
+    wenn der Emulator von sich aus das Dr&uuml;cken der Shift-Taste
+    nachbilden muss.
+    Aus diesem Grund bietet der Emulator folgende zwei L&ouml;sungen an:
+  <br/>
+    <ol>
+      <li>
+	Der Emulator greift in das Betriebssystem ein
+	und emuliert die gesamte Systemroutine f&uuml;r die Abfrage
+	der Tastatur.
+      </li>
+      <li>
+	Die Shift-Taste wird direkt auf der Tastatur des Arbeitsplatzrechners
+	abgebildet.
+      </li>
+    </ol>
+  <br/><br/>
+
+  <h3>1.1. Emulation der Systemroutine f&uuml;r die Abfrage der Tastatur</h3>
+    Immer wenn die Programmausf&uuml;hrung auf die Adresse %0C56
+    (dynamische Tastaturabfrage) st&ouml;&szlig;t,
+    greift der Emulator ein und schreibt den Code des eingegebenen Zeichens
+    oder eine 0, falls keine Taste gedr&uuml;ckt ist,
+    in das entsprechende Prozessorregister.
+    Anschlie&szlig;end wird ein RETURN-Befehl ausgef&uuml;hrt.
+    Die originale Systemroutine f&uuml;r die Abfrage der Tastatur,
+    die auch den Shift-Modus verwaltet, wird damit &uuml;bergangen.
+  <br/><br/>
+    Diese L&ouml;sung ist f&uuml;r den Anwender sehr komfortabel,
+    aber vielleicht in manchen F&auml;llen nicht erw&uuml;nscht.
+    Deshalb kann man die Emulation der Systemroutine
+    in den <a href="settings.htm">Einstellungen</a> ausschalten.
+  <br/><br/>
+    <b>Achtung!</b> Beim EMR-ES&nbsp;1988 wurde gegen&uuml;ber
+    dem 2K-Betriebssystem die Tastenbelegung dahingehend ge&auml;ndert,
+    dass <em>Cursor links</em> und <em>Cursor rechts</em>
+    weggefallenen sind.
+    Das EMR-ES&nbsp;1988 kann aber trotzdem die Steuercodes daf&uuml;r
+    verarbeiten.
+    Aus diesem Grund wertet auch die Emulation der Systemroutine
+    f&uuml;r die Abfrage der Tastatur diese beiden Cursor-Tasten aus.
+  <br/><br/>
+
+  <h3>1.2. Direkte Abbildung der Shift-Taste</h3>
+    Unabh&auml;ngig von der ersten L&ouml;sung wird immer
+    die originale Tastaturmatrix emuliert.
+    Allerdings hat das nur dann eine Wirkung,
+    wenn entweder die o.g. L&ouml;sung ausgeschaltet ist
+    oder aber die Tastaturmatrix unter Umgehung der Systemroutine
+    abgefragt wird.
+  <br/><br/>
+    Die Emulation der Tastaturmatrix erfolgt in der Form,
+    dass die Control- bzw. Strg-Taste auf der Tastatur
+    des Arbeitsplatzrechners die Funktion der Shift-Taste
+    auf der emulierten Tastatur &uuml;bernimmt.
+    Wenn also die erste L&ouml;sung nicht genutzt wird,
+    kann man mit der Control- bzw. Strg-Taste den Shift-Modus
+    des Jugend+Technik-Computers manuell ein- und ausschalten.
+  <br/><br/>
+    Diese L&ouml;sung bietet zwar eine hohe Kompatibilit&auml;t,
+    jedoch ist die Eingabe mancher Zeichen etwas umst&auml;ndlich.
+    Insbesondere muss man wissen,
+    welche Zeichen auf der emulierten Tastatur in der Shift-Ebene liegen,
+    da bei denen vorher die Control- bzw. Strg-Taste bet&auml;tigt werden muss.
+    Zur ihrer Unterst&uuml;tzung bietet der Emulator ein Fenster an,
+    in dem die originale Tastaturmatrix zu sehen ist
+    (Men&uuml;punkt <em>Tastatur...</em> im Men&uuml; <em>Extra</em>).
+    Allerdings kann man dieses Fenster nur &ouml;ffnen,
+    wenn die Emulation der Systemroutine f&uuml;r die Tastaturabfrage
+    deaktiviert ist,
+    denn nur dann wird die orginale Tastaturmatrix vom Betriebssystem
+    auch abgefragt.
+  <br/><br/>
+
+  <h2>2. Tastatur bei ES&nbsp;2.3 und ES&nbsp;4.0</h2>
+    Diese beiden Betriebssysteme werten die Shift-Tasten zusammen
+    mit den eigentlichen Tasten aus, d.h.,
+    im Gegensatz zum 2K-Betriebssystem bzw. EMR-ES&nbsp;1988
+    merkt sich das Betriebssystem nicht,
+    ob vorher eine Shift-Taste gedr&uuml;ckt und wieder losgelassen wurde.
+    Dadurch kann JTCEMU das Dr&uuml;cken der Shift-Tasten problemlos
+    simulieren.
+    Das Emulieren der Systemroutine f&uuml;r die Abfrage der Tastatur
+    ist somit nicht notwendig.
+    Auch muss man nicht wissen, wie die Tasten in der originalen
+    Tastaturmatrix angeordnet sind,
+    sodass ein spezielles Fenster daf&uuml;r auch nicht gebraucht wird.
+  <br/><br/>
+
+  <h2><a name="literature">3. Literatur</a></h2>
+    <table border="0">
+      <tr>
+	<td valign="top">[1]</td>
+	<td valign="top">
+	  Dr. Hoyer, Helmut: JU+TE Computer selbst gebaut,
+	  Zeitschrift <em>Jugend+Technik</em>, Heft 11/1987, Seiten 860-862,
+          Verlag Junge Welt, Berlin 1987
+	</td>
+      </tr>
+      <tr>
+	<td valign="top">[2]</td>
+	<td valign="top">
+	  Dr. Hoyer, Helmut / Klotz, Norbert:
+	  Tiny - der kleine Selbstbau-Computer,
+          Verlag Junge Welt GmbH, Berlin 1989
+	</td>
+      </tr>
+      <tr>
+	<td valign="top">[3]</td>
+	<td valign="top">
+	  Scheutzow, Harun: Betriebssystem ES4.0 f&uuml;r den JU+TE-Computer,
+	  Sonderdruck zum Jugend+Technik-Artikel in Heft 6/1990 Seite 82ff,
+          Verlag Junge Welt GmbH, Berlin 1990
+	</td>
+      </tr>
+    </table>
+</body>
+</html>
+
