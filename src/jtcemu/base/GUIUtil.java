@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -23,32 +24,35 @@ import jtcemu.Main;
 
 public class GUIUtil
 {
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle guiUtilResourceBundle = ResourceBundle.getBundle("resources.GUIUtil", locale);
+
   public static FileFilter basicFileFilter = new FileNameExtensionFilter(
-                                        "BASIC-Dateien (*.bas)",
+                                        guiUtilResourceBundle.getString("basicFileFilter.description"),
                                         "bas" );
 
   public static FileFilter binaryFileFilter = new FileNameExtensionFilter(
-                                        "Bin\u00E4rdateien (*.bin)",
+                                        guiUtilResourceBundle.getString("binaryFileFilter.description"),
                                         "bin" );
 
   public static FileFilter hexFileFilter = new FileNameExtensionFilter(
-                                        "Hex-Dateien (*.hex)",
+                                        guiUtilResourceBundle.getString("hexFileFilter.description"),
                                         "hex" );
 
   public static FileFilter jtcFileFilter = new FileNameExtensionFilter(
-                                        "JTC-Dateien (*.jtc)",
+                                        guiUtilResourceBundle.getString("jtcFileFilter.description"),
                                         "jtc" );
 
   public static FileFilter romFileFilter = new FileNameExtensionFilter(
-                                        "ROM-Dateien (*.bin; *.rom)",
+                                        guiUtilResourceBundle.getString("romFileFilter.description"),
                                         "bin", "rom" );
 
   public static FileFilter tapFileFilter = new FileNameExtensionFilter(
-                                        "TAP-Dateien (*.tap)",
+                                        guiUtilResourceBundle.getString("tapFileFilter.description"),
                                         "tap" );
 
   public static FileFilter textFileFilter = new FileNameExtensionFilter(
-                                        "Textdateien (*.asc, *.log, *.txt)",
+                                        guiUtilResourceBundle.getString("textFileFilter.description"),
                                         "asc", "log", "txt" );
 
 
@@ -112,16 +116,16 @@ public class GUIUtil
             rv = Integer.valueOf( text );
             if( (rv != null) && (minValue != null) ) {
               if( rv.intValue() < minValue.intValue() ) {
-                Main.showError( owner, "Zahl zu klein!" );
+                Main.showError( owner, guiUtilResourceBundle.getString("error.askDecimal.numberToSmall.message") );
                 rv = null;
               }
             }
           }
           catch( NumberFormatException ex ) {
-            Main.showError( owner, "Ung\u00FCltige Eingabe" );
+            Main.showError( owner, guiUtilResourceBundle.getString("error.askDecimal.numberFormatException.message") );
           }
         } else {
-          Main.showError( owner, "Eingabe erwartet" );
+          Main.showError( owner, guiUtilResourceBundle.getString("error.askDecimal.inputToShort.message") );
         }
       } else {
         break;
@@ -237,7 +241,7 @@ public class GUIUtil
                       } else {
                         Main.showError(
                                 owner,
-                                "Bitte nur eine Datei hier hineinziehen!" );
+                                guiUtilResourceBundle.getString("error.fileDrop.moreThanOneFileDropped.message") );
                         file = null;
                         break;
                       }
@@ -317,16 +321,16 @@ public class GUIUtil
           done  = true;
         } else {
           throw new ParseException(
-                        fldName +  " muss eine Hexadezimalzahl sein!",
+                        fldName +  guiUtilResourceBundle.getString("error.parseHex4.parseException.notHex.message"),
                         i );
         }
         if( (value & ~0xFFFF) != 0 ) {
-          throw new ParseException( fldName + ": Wert ist zu gro\u00DF!", i );
+          throw new ParseException( fldName + guiUtilResourceBundle.getString("error.parseHex4.parseException.overflow.message"), i );
         }
       }
     }
     if( !done ) {
-      throw new ParseException( fldName + ": Eingabe erwartet", 0 );
+      throw new ParseException( fldName + guiUtilResourceBundle.getString("error.parseHex4.parseException.empty.message"), 0 );
     }
     return value;
   }
