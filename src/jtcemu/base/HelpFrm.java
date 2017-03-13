@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -28,6 +29,9 @@ public class HelpFrm extends BaseFrm
                                 HyperlinkListener,
                                 Printable
 {
+  private static Locale locale = Locale.getDefault();
+  private static ResourceBundle helpFrmResourceBundle = ResourceBundle.getBundle("resources.HelpFrm", locale);
+
   private static class URLStackEntry
   {
     public URL    url;
@@ -159,8 +163,7 @@ public class HelpFrm extends BaseFrm
 
     if( (w < 1.0) || (h < 1.0) ) {
       throw new PrinterException(
-                "Die Seite hat keinen bedruckbaren Bereich,\n"
-                        + "da die R\u00E4nder zu gro\u00DF sind." );
+                helpFrmResourceBundle.getString("error.print.noPrintableArea.message") );
     }
 
 
@@ -215,10 +218,10 @@ public class HelpFrm extends BaseFrm
 
   private HelpFrm()
   {
-    setTitle( "JTCEMU Hilfe" );
+    setTitle( helpFrmResourceBundle.getString("window.title") );
     this.timer    = new javax.swing.Timer( 500, this );
     this.urlStack = new Stack<URLStackEntry>();
-    this.urlHome  = getClass().getResource( "/help/home.htm" );
+    this.urlHome  = getClass().getResource( helpFrmResourceBundle.getString("help.home.path") );
 
 
     // Menu
@@ -227,41 +230,41 @@ public class HelpFrm extends BaseFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( helpFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( 'D' );
     mnuBar.add( mnuFile );
 
-    this.mnuPrint = createJMenuItem( "Drucken...", KeyEvent.VK_P );
+    this.mnuPrint = createJMenuItem( helpFrmResourceBundle.getString("menuItem.print"), KeyEvent.VK_P );
     mnuFile.add( this.mnuPrint );
     mnuFile.addSeparator();
 
-    this.mnuClose = createJMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = createJMenuItem( helpFrmResourceBundle.getString("menuItem.close") );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Bearbeiten
-    JMenu mnuEdit = new JMenu( "Bearbeiten" );
+    JMenu mnuEdit = new JMenu( helpFrmResourceBundle.getString("menu.edit") );
     mnuEdit.setMnemonic( 'B' );
     mnuBar.add( mnuEdit );
 
-    this.mnuCopy = createJMenuItem( "Kopieren", KeyEvent.VK_C );
+    this.mnuCopy = createJMenuItem( helpFrmResourceBundle.getString("menuItem.copy"), KeyEvent.VK_C );
     this.mnuCopy.setEnabled( false );
     mnuEdit.add( this.mnuCopy );
     mnuEdit.addSeparator();
 
-    this.mnuSelectAll = createJMenuItem( "Alles ausw\u00E4hlen" );
+    this.mnuSelectAll = createJMenuItem( helpFrmResourceBundle.getString("menuItem.selectAll") );
     mnuEdit.add( this.mnuSelectAll );
 
 
     // Menu Navigation
-    JMenu mnuNav = new JMenu( "Navigation" );
+    JMenu mnuNav = new JMenu( helpFrmResourceBundle.getString("menu.nav") );
     mnuNav.setMnemonic( 'N' );
     mnuBar.add( mnuNav );
 
-    this.mnuBack = createJMenuItem( "Zur\u00FCck", KeyEvent.VK_B );
+    this.mnuBack = createJMenuItem( helpFrmResourceBundle.getString("menuItem.back"), KeyEvent.VK_B );
     mnuNav.add( this.mnuBack );
 
-    this.mnuHome = createJMenuItem( "Startseite", KeyEvent.VK_H );
+    this.mnuHome = createJMenuItem( helpFrmResourceBundle.getString("menuItem.home"), KeyEvent.VK_H );
     mnuNav.add( this.mnuHome );
 
 
@@ -287,20 +290,20 @@ public class HelpFrm extends BaseFrm
     this.btnBack = GUIUtil.createImageButton(
                                 this,
                                 "/images/nav/back.png",
-                                "Zur\u00FCck" );
+                                helpFrmResourceBundle.getString("button.back") );
     toolBar.add( this.btnBack );
 
     this.btnHome = GUIUtil.createImageButton(
                                 this,
                                 "/images/nav/home.png",
-                                "Startseite" );
+                                helpFrmResourceBundle.getString("button.home") );
     toolBar.add( this.btnHome );
     toolBar.addSeparator();
 
     this.btnPrint = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/print.png",
-                                "Drucken" );
+                                helpFrmResourceBundle.getString("button.print") );
     toolBar.add( this.btnPrint );
 
     add( toolBar, gbc );
@@ -368,7 +371,7 @@ public class HelpFrm extends BaseFrm
     try {
 
       // Optionen setzen
-      String                   jobName = "JU+TE-Computer Hilfe";
+      String                   jobName = helpFrmResourceBundle.getString("doPrint.jobName");
       PrintRequestAttributeSet attrs   = Main.getPrintRequestAttributeSet();
       attrs.add( new Copies( 1 ) );
       attrs.add( new JobName( jobName, Locale.getDefault() ) );
@@ -480,8 +483,8 @@ public class HelpFrm extends BaseFrm
         catch( IOException ex ) {
           JOptionPane.showMessageDialog(
                 this,
-                "Die Hilfeseite kann nicht angezeigt werden.",
-                "Fehler",
+                helpFrmResourceBundle.getString("dialog.setUrl.error.message"),
+                helpFrmResourceBundle.getString("dialog.setUrl.error.title"),
                 JOptionPane.ERROR_MESSAGE );
         }
       }
