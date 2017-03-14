@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -23,11 +24,15 @@
 package jtcemu.audio;
 
 import java.io.InputStream;
-import java.lang.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class AudioDataQueue extends InputStream
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle audioDataQueueResourceBundle = ResourceBundle.getBundle("resources.AudioDataQueue", locale);
+
   private byte[] sampleValues;
   private byte[] sampleCounts;
   private int    totalSampleCnt;
@@ -145,8 +150,7 @@ public class AudioDataQueue extends InputStream
         this.sampleValues   = null;
         this.sampleCounts   = null;
         this.totalSampleCnt = 0;
-        this.errorText      = "Kein Speicher mehr f\u00FCr die Aufzeichnung\n"
-                                        + "der Audio-Daten verf\u00FCgbar.";
+        this.errorText      = audioDataQueueResourceBundle.getString("error.outOfMemory.message");
         System.gc();
       }
     }
