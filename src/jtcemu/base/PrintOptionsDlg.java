@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -10,12 +11,18 @@ package jtcemu.base;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import jtcemu.Main;
 
 
 public class PrintOptionsDlg extends BaseDlg implements ActionListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle printOptionsDlgResourceBundle = ResourceBundle.getBundle("resources.PrintOptionsDlg", locale);
+
   private JComboBox comboFontSize;
   private JButton   btnOK;
   private JButton   btnCancel;
@@ -47,7 +54,7 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
   private PrintOptionsDlg( Window owner )
   {
     super( owner );
-    setTitle( "Druckoptionen" );
+    setTitle( printOptionsDlgResourceBundle.getString("window.title") );
 
 
     // Fensterinhalt
@@ -62,7 +69,7 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
                                         new Insets( 5, 5, 5, 5 ),
                                         0, 0 );
 
-    add( new JLabel( "Schriftgr\u00F6\u00DFe:" ), gbc );
+    add( new JLabel( printOptionsDlgResourceBundle.getString("label.fontsize") ), gbc );
 
     this.comboFontSize = new JComboBox();
     this.comboFontSize.setEditable( false );
@@ -92,11 +99,11 @@ public class PrintOptionsDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( panelBtn,gbc );
 
-    this.btnOK = new JButton( "OK" );
+    this.btnOK = new JButton( printOptionsDlgResourceBundle.getString("button.ok") );
     this.btnOK.addActionListener( this );
     panelBtn.add( this.btnOK );
 
-    this.btnCancel = new JButton( "Abbrechen" );
+    this.btnCancel = new JButton( printOptionsDlgResourceBundle.getString("button.cancel") );
     this.btnCancel.addActionListener( this );
     panelBtn.add( this.btnCancel );
 
