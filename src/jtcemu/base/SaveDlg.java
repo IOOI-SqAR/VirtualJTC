@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -11,6 +12,9 @@ package jtcemu.base;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import jtcemu.Main;
 import z8.Z8Memory;
@@ -18,9 +22,12 @@ import z8.Z8Memory;
 
 public class SaveDlg extends BaseDlg implements ActionListener
 {
-  private static final String textBegAddr     = "Anfangsadresse";
-  private static final String textEndAddr     = "Endadresse";
-  private static final String textFileBegAddr = "Abweichende Anfangsadresse";
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle saveDlgResourceBundle = ResourceBundle.getBundle("resources.SaveDlg", locale);
+
+  private static final String textBegAddr     = saveDlgResourceBundle.getString("text.begAddr");
+  private static final String textEndAddr     = saveDlgResourceBundle.getString("text.endAddr");
+  private static final String textFileBegAddr = saveDlgResourceBundle.getString("text.fileBegAddr");
 
   private Z8Memory     memory;
   private JTextField   fldBegAddr;
@@ -41,7 +48,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
   public SaveDlg( Window owner, Z8Memory memory )
   {
     super( owner );
-    setTitle( "Datei speichern" );
+    setTitle( saveDlgResourceBundle.getString("window.title") );
     this.memory = memory;
 
 
@@ -60,8 +67,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
 
     // Bereich: Adressbereich
     JPanel panelAddr = new JPanel( new GridBagLayout() );
-    panelAddr.setBorder( BorderFactory.createTitledBorder(
-                                                "Zu speichernder Bereich" ) );
+    panelAddr.setBorder( BorderFactory.createTitledBorder( saveDlgResourceBundle.getString("titledBorder.ramToSave") ) );
     add( panelAddr, gbc );
 
     GridBagConstraints gbcAddr = new GridBagConstraints(
@@ -97,7 +103,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
 
     // Bereich Dateiformat
     JPanel panelFmt = new JPanel( new GridBagLayout() );
-    panelFmt.setBorder( BorderFactory.createTitledBorder( "Dateiformat" ) );
+    panelFmt.setBorder( BorderFactory.createTitledBorder( saveDlgResourceBundle.getString("titledBorder.fileFormat") ) );
     gbc.gridy++;
     add( panelFmt, gbc );
 
@@ -147,7 +153,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
     gbcFmt.gridx += 3;
     panelFmt.add( this.fldFileBegAddr, gbcFmt );
 
-    this.labelFileDesc = new JLabel( "Name in der Datei:" );
+    this.labelFileDesc = new JLabel( saveDlgResourceBundle.getString("label.labelFileDesc") );
     gbcFmt.fill       = GridBagConstraints.NONE;
     gbcFmt.weightx    = 0.0;
     gbcFmt.insets.top = 0;
@@ -178,15 +184,15 @@ public class SaveDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( panelBtn,gbc );
 
-    this.btnSave = new JButton( "Speichern..." );
+    this.btnSave = new JButton( saveDlgResourceBundle.getString("button.save") );
     this.btnSave.addActionListener( this );
     panelBtn.add( this.btnSave );
 
-    this.btnHelp = new JButton( "Hilfe..." );
+    this.btnHelp = new JButton( saveDlgResourceBundle.getString("button.help") );
     this.btnHelp.addActionListener( this );
     panelBtn.add( this.btnHelp );
 
-    this.btnCancel = new JButton( "Abbrechen" );
+    this.btnCancel = new JButton( saveDlgResourceBundle.getString("button.cancel") );
     this.btnCancel.addActionListener( this );
     panelBtn.add( this.btnCancel );
 
@@ -232,7 +238,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
       doSave();
     }
     else if( src == this.btnHelp ) {
-      HelpFrm.open( "/help/loadsave.htm" );
+      HelpFrm.open( saveDlgResourceBundle.getString("help.loadsave.path") );
     }
     else if( src == this.btnCancel ) {
       doClose();
@@ -263,8 +269,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
                                 this.fldEndAddr.getText(),
                                 textEndAddr );
       if( endAddr < addr ) {
-        throw new IOException( "Die Endadresse kann nicht vor der"
-                                        + " Anfangsadresse liegen!" );
+        throw new IOException( saveDlgResourceBundle.getString("error.doSave.addressOrderError.message") );
       }
 
       int    fileBegAddr = addr;
@@ -282,25 +287,25 @@ public class SaveDlg extends BaseDlg implements ActionListener
       if( jtcSelected ) {
         file = FileDlg.showFileSaveDlg(
                                 this,
-                                "JTC-Datei speichern",
+                                saveDlgResourceBundle.getString("dialog.doSave.jtc.title"),
                                 Main.getLastPathFile(),
                                 GUIUtil.jtcFileFilter );
       } else if( tapSelected ) {
         file = FileDlg.showFileSaveDlg(
                                 this,
-                                "KC-TAP-Datei speichern",
+                                saveDlgResourceBundle.getString("dialog.doSave.tap.title"),
                                 Main.getLastPathFile(),
                                 GUIUtil.tapFileFilter );
       } else if( hexSelected ) {
         file = FileDlg.showFileSaveDlg(
                                 this,
-                                "HEX-Datei speichern",
+                                saveDlgResourceBundle.getString("dialog.doSave.hex.title"),
                                 Main.getLastPathFile(),
                                 GUIUtil.hexFileFilter );
       } else {
         file = FileDlg.showFileSaveDlg(
                                 this,
-                                "BIN-Datei speichern",
+                                saveDlgResourceBundle.getString("dialog.doSave.binary.title"),
                                 Main.getLastPathFile(),
                                 GUIUtil.binaryFileFilter );
       }
