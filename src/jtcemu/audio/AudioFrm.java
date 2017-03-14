@@ -11,7 +11,6 @@ package jtcemu.audio;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.lang.*;
 import java.util.*;
 import javax.sound.sampled.*;
 import javax.swing.*;

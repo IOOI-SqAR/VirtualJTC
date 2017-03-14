@@ -9,7 +9,6 @@
 
 package jtcemu.audio;
 
-import java.lang.*;
 import javax.sound.sampled.*;
 import jtcemu.base.JTCSys;
 import z8.Z8;

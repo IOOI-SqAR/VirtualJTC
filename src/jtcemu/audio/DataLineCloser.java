@@ -12,7 +12,6 @@
 
 package jtcemu.audio;
 
-import java.lang.*;
 import javax.sound.sampled.*;
 
 
