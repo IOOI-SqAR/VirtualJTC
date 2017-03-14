@@ -241,7 +241,14 @@ public class ScreenFld extends JComponent
       case M320X192:
         rv = 192;
         break;
+        
+      case M64X64:
+        break;
+        
+      default:
+        break;
     }
+    
     return rv;
   }
 
