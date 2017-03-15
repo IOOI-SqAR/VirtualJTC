@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2011 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -12,6 +13,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.ParseException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.JTextComponent;
@@ -24,6 +28,9 @@ public class ReassFrm extends AbstractTextFrm implements
                                                 ActionListener,
                                                 CaretListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle reassFrmResourceBundle = ResourceBundle.getBundle("resources.ReassFrm", locale);
+
   private static ReassFrm instance = null;
 
   private Z8Reassembler  z8Reass;
@@ -95,7 +102,7 @@ public class ReassFrm extends AbstractTextFrm implements
         this.textArea.selectAll();
       }
       else if( src == this.mnuHelpContent ) {
-        HelpFrm.open( "/help/reassembler.htm" );
+        HelpFrm.open( reassFrmResourceBundle.getString("help.path") );
       }
     }
   }
@@ -135,7 +142,7 @@ public class ReassFrm extends AbstractTextFrm implements
 
   private ReassFrm( Z8Memory memory )
   {
-    setTitle( "JTCEMU Reassenbler" );
+    setTitle( reassFrmResourceBundle.getString("window.title") );
     this.z8Reass      = new Z8Reassembler( memory );
     this.lastFile     = null;
     this.selectionFld = null;
@@ -147,11 +154,11 @@ public class ReassFrm extends AbstractTextFrm implements
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( reassFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( 'D' );
     mnuBar.add( mnuFile );
 
-    this.mnuReassemble = new JMenuItem( "Reassemblieren" );
+    this.mnuReassemble = new JMenuItem( reassFrmResourceBundle.getString("menuItem.reassemble") );
     this.mnuReassemble.setAccelerator(
                         KeyStroke.getKeyStroke(
                                         KeyEvent.VK_R,
@@ -160,7 +167,7 @@ public class ReassFrm extends AbstractTextFrm implements
     mnuFile.add( this.mnuReassemble );
     mnuFile.addSeparator();
 
-    this.mnuSaveAs = new JMenuItem( "Speichern unter..." );
+    this.mnuSaveAs = new JMenuItem( reassFrmResourceBundle.getString("menuItem.saveAs") );
     this.mnuSaveAs.setAccelerator(
                 KeyStroke.getKeyStroke(
                         KeyEvent.VK_S,
@@ -170,11 +177,11 @@ public class ReassFrm extends AbstractTextFrm implements
     mnuFile.add( this.mnuSaveAs );
     mnuFile.addSeparator();
 
-    this.mnuPrintOptions = new JMenuItem( "Druckoptionen..." );
+    this.mnuPrintOptions = new JMenuItem( reassFrmResourceBundle.getString("menuItem.printOptions") );
     this.mnuPrintOptions.addActionListener( this );
     mnuFile.add( this.mnuPrintOptions );
 
-    this.mnuPrint = new JMenuItem( "Drucken..." );
+    this.mnuPrint = new JMenuItem( reassFrmResourceBundle.getString("menuItem.print") );
     this.mnuPrint.setAccelerator( KeyStroke.getKeyStroke(
                                         KeyEvent.VK_P,
                                         InputEvent.CTRL_MASK ) );
@@ -183,17 +190,17 @@ public class ReassFrm extends AbstractTextFrm implements
     mnuFile.add( this.mnuPrint );
     mnuFile.addSeparator();
 
-    this.mnuClose = new JMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = new JMenuItem( reassFrmResourceBundle.getString("menuItem.close") );
     this.mnuClose.addActionListener( this );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Bearbeiten
-    JMenu mnuEdit = new JMenu( "Bearbeiten" );
+    JMenu mnuEdit = new JMenu( reassFrmResourceBundle.getString("menu.edit") );
     mnuEdit.setMnemonic( 'B' );
     mnuBar.add( mnuEdit );
 
-    this.mnuCopy = new JMenuItem( "Kopieren" );
+    this.mnuCopy = new JMenuItem( reassFrmResourceBundle.getString("menuItem.copy") );
     this.mnuCopy.setAccelerator( KeyStroke.getKeyStroke(
                                         KeyEvent.VK_C,
                                         InputEvent.CTRL_MASK ) );
@@ -202,17 +209,17 @@ public class ReassFrm extends AbstractTextFrm implements
     mnuEdit.add( this.mnuCopy );
     mnuEdit.addSeparator();
 
-    this.mnuSelectAll = new JMenuItem( "Alles ausw\u00E4hlen" );
+    this.mnuSelectAll = new JMenuItem( reassFrmResourceBundle.getString("menuItem.selectAll") );
     this.mnuSelectAll.setEnabled( false );
     this.mnuSelectAll.addActionListener( this );
     mnuEdit.add( this.mnuSelectAll );
 
 
     // Menu Hilfe
-    JMenu mnuHelp = new JMenu( "?" );
+    JMenu mnuHelp = new JMenu( reassFrmResourceBundle.getString("menu.help") );
     mnuBar.add( mnuHelp );
 
-    this.mnuHelpContent = new JMenuItem( "Hilfe..." );
+    this.mnuHelpContent = new JMenuItem( reassFrmResourceBundle.getString("menuItem.helpContent") );
     this.mnuHelpContent.addActionListener( this );
     mnuHelp.add( this.mnuHelpContent );
 
@@ -234,7 +241,7 @@ public class ReassFrm extends AbstractTextFrm implements
                                         new Insets( 5, 5, 5, 5 ),
                                         0, 0 );
 
-    panelHead.add( new JLabel( "Anfangsadresse:" ), gbcHead );
+    panelHead.add( new JLabel( reassFrmResourceBundle.getString("label.startAddress") ), gbcHead );
 
     this.fldBegAddr = new JTextField( 4 );
     this.fldBegAddr.addActionListener( this );
@@ -247,7 +254,7 @@ public class ReassFrm extends AbstractTextFrm implements
     gbcHead.fill    = GridBagConstraints.NONE;
     gbcHead.weightx = 0.0;
     gbcHead.gridx++;
-    panelHead.add( new JLabel( "Endadresse:" ), gbcHead );
+    panelHead.add( new JLabel( reassFrmResourceBundle.getString("label.endAddress") ), gbcHead );
 
     this.fldEndAddr = new JTextField( 4 );
     this.fldEndAddr.addActionListener( this );
@@ -285,12 +292,12 @@ public class ReassFrm extends AbstractTextFrm implements
   private void doReassemble()
   {
     try {
-      int    begAddr = GUIUtil.parseHex4( this.fldBegAddr, "Anfangsadresse" );
+      int    begAddr = GUIUtil.parseHex4( this.fldBegAddr, reassFrmResourceBundle.getString("doReassemble.begAddr") );
       int    endAddr = begAddr;
       String text    = this.fldEndAddr.getText();
       if( text != null ) {
         if( !text.isEmpty() ) {
-          endAddr = GUIUtil.parseHex4( this.fldEndAddr, "Endadresse" );
+          endAddr = GUIUtil.parseHex4( this.fldEndAddr, reassFrmResourceBundle.getString("doReassemble.endAddr") );
         }
       }
       StringBuilder buf = new StringBuilder( 0x4000 );
@@ -307,7 +314,7 @@ public class ReassFrm extends AbstractTextFrm implements
       JOptionPane.showMessageDialog(
                         this,
                         ex.getMessage(),
-                        "Eingabefehler",
+                        reassFrmResourceBundle.getString("dialog.doReassemble.inputError.title"),
                         JOptionPane.ERROR_MESSAGE );
     }
   }
@@ -317,7 +324,7 @@ public class ReassFrm extends AbstractTextFrm implements
   {
     File file = FileDlg.showFileSaveDlg(
                                 this,
-                                "Textdatei speichern",
+                                reassFrmResourceBundle.getString("dialog.doReassemble.fileSaveDlg.title"),
                                 this.lastFile != null ?
                                         this.lastFile
                                         : Main.getLastPathFile(),
