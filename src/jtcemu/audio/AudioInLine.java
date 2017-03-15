@@ -119,10 +119,10 @@ public class AudioInLine extends AudioIn
           line = openTargetDataLine( sampleRate );
         } else {
           for( int i = 0;
-               (line == null) && (i < this.sampleRates.length);
+               (line == null) && (i < sampleRates.length);
                i++ )
           {
-            line = openTargetDataLine( this.sampleRates[ i ] );
+            line = openTargetDataLine( sampleRates[ i ] );
           }
         }
 

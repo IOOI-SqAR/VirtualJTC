@@ -88,8 +88,7 @@ public class AudioOutLine extends AudioOut
         if( sampleRate > 0 ) {
           line = openSourceDataLine( sampleRate );
         } else {
-          int[] sampleRates = this.forDataTransfer ?
-                                this.sampleRatesData : this.sampleRatesSound;
+          int[] sampleRates = this.forDataTransfer ? sampleRatesData : sampleRatesSound;
           for( int i = 0; (line == null) && (i < sampleRates.length); i++ )
             line = openSourceDataLine( sampleRates[ i ] );
         }
