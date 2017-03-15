@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -11,6 +12,9 @@
 package jtcemu.audio;
 
 import java.io.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.sound.sampled.*;
 import jtcemu.base.JTCSys;
 import z8.Z8;
@@ -18,6 +22,9 @@ import z8.Z8;
 
 public class AudioOutFile extends AudioOut
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle audioOutFileResourceBundle = ResourceBundle.getBundle("resources.AudioOutFile", locale);
+
   private AudioFrm             audioFrm;
   private File                 file;
   private AudioFileFormat.Type fileType;
@@ -115,12 +122,10 @@ public class AudioOutFile extends AudioOut
                 this.file );
       }
       catch( Exception ex ) {
-        this.errorText = "Die Sound-Datei kann nicht gespeichert werden.\n\n"
-                                                          + ex.getMessage();
+        this.errorText = audioOutFileResourceBundle.getString("error.stopAudio.unknownError.errorText") + ex.getMessage();
       }
     } else {
-      this.errorText = "Die Sound-Datei wurde nicht gespeichert,\n"
-                                + "da keine Audio-Daten erzeugt wurden.";
+      this.errorText = audioOutFileResourceBundle.getString("error.stopAudio.noAudioCreated.errorText");
     }
   }
 
