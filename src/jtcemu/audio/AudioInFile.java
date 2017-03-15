@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -11,12 +12,18 @@
 package jtcemu.audio;
 
 import java.io.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.sound.sampled.*;
 import z8.Z8;
 
 
 public class AudioInFile extends AudioIn
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle audioInFileResourceBundle = ResourceBundle.getBundle("resources.AudioInFile", locale);
+
   private AudioFrm         audioFrm;
   private File             file;
   private boolean          monitorPlay;
@@ -100,11 +107,10 @@ public class AudioInFile extends AudioIn
         }
       }
       catch( UnsupportedAudioFileException ex ) {
-        this.errorText = "Das Dateiformat wird nicht unterst\u00FCtzt.";
+        this.errorText = audioInFileResourceBundle.getString("error.startAudio.unsupportedAudioFile.errorText");
       }
       catch( Exception ex ) {
-        this.errorText = "Die Datei kann nicht ge\u00F6ffnet werden.\n\n"
-                                      + ex.getMessage();
+        this.errorText = audioInFileResourceBundle.getString("error.startAudio.unknownError.errorText") + ex.getMessage();
       }
       if( (this.in != null) || (fmt != null) ) {
         this.frameBuf       = new byte[ fmt.getFrameSize() ];
