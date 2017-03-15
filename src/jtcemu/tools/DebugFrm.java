@@ -30,13 +30,13 @@ public class DebugFrm extends BaseFrm
                                 MouseListener,
                                 Z8Debugger
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle debugFrmResourceBundle = ResourceBundle.getBundle("resources.DebugFrm", locale);
+
   private static final int DEFAULT_AUTOSTEP_FREQUENCY = 2000;
 
   private static DebugFrm instance = null;
   
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle debugFrmResourceBundle = ResourceBundle.getBundle("resources.DebugFrm", locale);
-
   private static int SPL   = 0xFF;
   private static int SPH   = 0xFE;
   private static int FLAGS = 0xFC;
