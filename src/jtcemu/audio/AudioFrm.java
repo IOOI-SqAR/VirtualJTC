@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -25,6 +26,9 @@ public class AudioFrm extends BaseFrm implements ActionListener
   private static final int[] sampleRates = {
                                 96000, 48000, 44100, 32000,
                                 22050, 16000, 11025, 8000 };
+
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle audioFrmResourceBundle = ResourceBundle.getBundle("resources.AudioFrm", locale);
 
   private static AudioFrm instance = null;
 
@@ -146,7 +150,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
         doDisable();
       }
       else if( src == this.btnHelp ) {
-        HelpFrm.open( "/help/audio.htm" );
+        HelpFrm.open( audioFrmResourceBundle.getString("help.path") );
       }
       else if( src == this.btnClose ) {
         doClose();
@@ -206,7 +210,8 @@ public class AudioFrm extends BaseFrm implements ActionListener
     this.lastFile        = null;
     this.audioFmt        = null;
     this.audioIO         = null;
-    setTitle( "JTCEMU Audio/Kassette" );
+    
+    setTitle( audioFrmResourceBundle.getString("window.title") );
 
 
     // Fensterinhalt
@@ -224,7 +229,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     // Bereich Funktion
     JPanel panelFct = new JPanel( new GridBagLayout() );
-    panelFct.setBorder( BorderFactory.createTitledBorder( "Funktion" ) );
+    panelFct.setBorder( BorderFactory.createTitledBorder( audioFrmResourceBundle.getString("titledBorder.function") ) );
     add( panelFct, gbc );
 
     GridBagConstraints gbcFct = new GridBagConstraints(
@@ -238,38 +243,37 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     ButtonGroup grpFct = new ButtonGroup();
 
-    this.btnSoundOut = new JRadioButton( "T\u00F6ne ausgeben", true );
+    this.btnSoundOut = new JRadioButton( audioFrmResourceBundle.getString("button.soundOut"), true );
     grpFct.add( this.btnSoundOut );
     this.btnSoundOut.addActionListener( this );
     panelFct.add( this.btnSoundOut, gbcFct );
 
-    this.btnDataOut = new JRadioButton( "Daten am Audio-Ausgang ausgeben" );
+    this.btnDataOut = new JRadioButton( audioFrmResourceBundle.getString("button.dataOut") );
     grpFct.add( this.btnDataOut );
     this.btnDataOut.addActionListener( this );
     gbcFct.insets.top = 0;
     gbcFct.gridy++;
     panelFct.add( this.btnDataOut, gbcFct );
 
-    this.btnDataIn = new JRadioButton( "Daten vom Audio-Eingang lesen" );
+    this.btnDataIn = new JRadioButton( audioFrmResourceBundle.getString("button.dataIn") );
     grpFct.add( this.btnDataIn );
     this.btnDataIn.addActionListener( this );
     gbcFct.gridy++;
     panelFct.add( this.btnDataIn, gbcFct );
 
-    this.btnFileOut = new JRadioButton( "Sound-Datei speichern" );
+    this.btnFileOut = new JRadioButton( audioFrmResourceBundle.getString("button.fileOut") );
     grpFct.add( this.btnFileOut );
     this.btnFileOut.addActionListener( this );
     gbcFct.gridy++;
     panelFct.add( this.btnFileOut, gbcFct );
 
-    this.btnFileIn = new JRadioButton( "Sound-Datei lesen" );
+    this.btnFileIn = new JRadioButton( audioFrmResourceBundle.getString("button.fileIn") );
     grpFct.add( this.btnFileIn );
     this.btnFileIn.addActionListener( this );
     gbcFct.gridy++;
     panelFct.add( this.btnFileIn, gbcFct );
 
-    this.btnFileLastIn = new JRadioButton(
-                                "Letzte Sound-Datei (noch einmal) lesen" );
+    this.btnFileLastIn = new JRadioButton( audioFrmResourceBundle.getString("button.fileLastIn") );
     grpFct.add( this.btnFileLastIn );
     this.btnFileLastIn.addActionListener( this );
     gbcFct.insets.bottom = 5;
@@ -279,7 +283,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     // Bereich Optionen
     JPanel panelOpt = new JPanel( new GridBagLayout() );
-    panelOpt.setBorder( BorderFactory.createTitledBorder( "Optionen" ) );
+    panelOpt.setBorder( BorderFactory.createTitledBorder( audioFrmResourceBundle.getString("titledBorder.options") ) );
     gbc.gridy++;
     add( panelOpt, gbc );
 
@@ -292,7 +296,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
                                                 new Insets( 5, 5, 5, 5 ),
                                                 0, 0 );
 
-    this.labelSampleRate = new JLabel( "Abtastrate (Hz):" );
+    this.labelSampleRate = new JLabel( audioFrmResourceBundle.getString("label.sampleRate") );
     panelOpt.add( this.labelSampleRate, gbcOpt );
 
     this.comboSampleRate = new JComboBox();
@@ -305,7 +309,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     gbcOpt.gridx++;
     panelOpt.add( this.comboSampleRate, gbcOpt );
 
-    this.labelSpeed   = new JLabel( "Geschwindigkeit [%]:" );
+    this.labelSpeed   = new JLabel( audioFrmResourceBundle.getString("label.speed") );
     gbcOpt.insets.top = 5;
     gbcOpt.gridwidth  = 1;
     gbcOpt.gridx      = 0;
@@ -324,7 +328,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     gbcOpt.gridx++;
     panelOpt.add( this.spinnerSpeed, gbcOpt );
 
-    this.labelThreshold = new JLabel( "Schwellwert [%]:" );
+    this.labelThreshold = new JLabel( audioFrmResourceBundle.getString("label.threshold") );
     gbcOpt.gridx = 0;
     gbcOpt.gridy++;
     panelOpt.add( this.labelThreshold, gbcOpt );
@@ -348,7 +352,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     gbcOpt.gridx++;
     panelOpt.add( this.sliderThreshold, gbcOpt );
 
-    this.labelChannel = new JLabel( "Aktiver Kanal:" );
+    this.labelChannel = new JLabel( audioFrmResourceBundle.getString("label.channel") );
     gbcOpt.fill       = GridBagConstraints.NONE;
     gbcOpt.weightx    = 0.0;
     gbcOpt.gridwidth  = 1;
@@ -358,19 +362,19 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     ButtonGroup grpChannel = new ButtonGroup();
 
-    this.btnChannel0 = new JRadioButton( "Links", true );
+    this.btnChannel0 = new JRadioButton( audioFrmResourceBundle.getString("button.channel0"), true );
     grpChannel.add( this.btnChannel0 );
     this.btnChannel0.addActionListener( this );
     gbcOpt.gridx++;
     panelOpt.add( this.btnChannel0, gbcOpt );
 
-    this.btnChannel1 = new JRadioButton( "Rechts", false );
+    this.btnChannel1 = new JRadioButton( audioFrmResourceBundle.getString("button.channel1"), false );
     grpChannel.add( this.btnChannel1 );
     this.btnChannel1.addActionListener( this );
     gbcOpt.gridx++;
     panelOpt.add( this.btnChannel1, gbcOpt );
 
-    this.btnMonitorPlay  = new JCheckBox( "Mith\u00F6ren", false );
+    this.btnMonitorPlay  = new JCheckBox( audioFrmResourceBundle.getString("button.monitorPlay"), false );
     gbcOpt.insets.bottom = 5;
     gbcOpt.gridwidth     = GridBagConstraints.REMAINDER;
     gbcOpt.gridx         = 0;
@@ -385,7 +389,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
     // Bereich Status
     JPanel panelStatus = new JPanel( new GridBagLayout() );
-    panelStatus.setBorder( BorderFactory.createTitledBorder( "Status" ) );
+    panelStatus.setBorder( BorderFactory.createTitledBorder( audioFrmResourceBundle.getString("titledBorder.status") ) );
 
     GridBagConstraints gbcStatus = new GridBagConstraints(
                                                 0, 0,
@@ -396,14 +400,14 @@ public class AudioFrm extends BaseFrm implements ActionListener
                                                 new Insets( 5, 5, 5, 5 ),
                                                 0, 0 );
 
-    this.labelFileName = new JLabel( "Datei:" );
+    this.labelFileName = new JLabel( audioFrmResourceBundle.getString("label.fileName") );
     panelStatus.add( this.labelFileName, gbcStatus );
 
-    this.labelFormat = new JLabel( "Format:" );
+    this.labelFormat = new JLabel( audioFrmResourceBundle.getString("label.format") );
     gbcStatus.gridy++;
     panelStatus.add( this.labelFormat, gbcStatus );
 
-    this.labelProgress = new JLabel( "Fortschritt:" );
+    this.labelProgress = new JLabel( audioFrmResourceBundle.getString("label.progress") );
     gbcStatus.gridy++;
     panelStatus.add( this.labelProgress, gbcStatus );
 
@@ -435,19 +439,19 @@ public class AudioFrm extends BaseFrm implements ActionListener
     // Knoepfe
     JPanel panelBtn = new JPanel( new GridLayout( 4, 1, 5, 5 ) );
 
-    this.btnEnable = new JButton( "Aktivieren" );
+    this.btnEnable = new JButton( audioFrmResourceBundle.getString("button.enable") );
     this.btnEnable.addActionListener( this );
     panelBtn.add( this.btnEnable );
 
-    this.btnDisable = new JButton( "Deaktivieren" );
+    this.btnDisable = new JButton( audioFrmResourceBundle.getString("button.disable") );
     this.btnDisable.addActionListener( this );
     panelBtn.add( this.btnDisable );
 
-    this.btnHelp = new JButton( "Hilfe..." );
+    this.btnHelp = new JButton( audioFrmResourceBundle.getString("button.help") );
     this.btnHelp.addActionListener( this );
     panelBtn.add( this.btnHelp );
 
-    this.btnClose = new JButton( "Schlie\u00DFen" );
+    this.btnClose = new JButton( audioFrmResourceBundle.getString("button.close") );
     this.btnClose.addActionListener( this );
     panelBtn.add( this.btnClose );
 
@@ -535,7 +539,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     if( file == null ) {
       if( this.readFileFilter == null ) {
         this.readFileFilter = createFileFilter(
-                                        "Audiodateien",
+                                        audioFrmResourceBundle.getString("doEnableAudioInFile.readFileFilter.message"),
                                         AudioFileFormat.Type.AIFC,
                                         AudioFileFormat.Type.AIFF,
                                         AudioFileFormat.Type.AU,
@@ -544,8 +548,8 @@ public class AudioFrm extends BaseFrm implements ActionListener
       }
       file = FileDlg.showFileOpenDlg(
                                 this,
-                                "Sound-Datei \u00F6ffnen",
-                                "\u00D6ffnen",
+                                audioFrmResourceBundle.getString("dialog.doEnableAudioInFile.fileOpenDlg.title"),
+                                audioFrmResourceBundle.getString("dialog.doEnableAudioInFile.fileOpenDlg.approveBtnText"),
                                 Main.getLastPathFile(),
                                 this.readFileFilter );
     }
@@ -603,12 +607,12 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     if( this.writeFileFilter == null ) {
       this.writeFileFilter = createFileFilter(
-                                        "Unterst\u00FCtzte Audiodateien",
+                                        audioFrmResourceBundle.getString("doEnableAudioOutFile.writeFileFilter.message"),
                                         AudioSystem.getAudioFileTypes() );
     }
     File file = FileDlg.showFileSaveDlg(
                                 this,
-                                "Sound-Datei speichern",
+                                audioFrmResourceBundle.getString("dialog.doEnableAudioOutFile.fileSaveDlg.title"),
                                 Main.getLastPathFile(),
                                 this.writeFileFilter );
     if( file != null ) {
@@ -716,9 +720,9 @@ public class AudioFrm extends BaseFrm implements ActionListener
     }
 
     StringBuilder buf = new StringBuilder( 64 );
-    buf.append( "Das Dateiformat wird nicht unterst\u00FCtzt." );
+    buf.append( audioFrmResourceBundle.getString("error.getAudioFileType.fileFormatNotSupported.message") );
     if( !types.isEmpty() ) {
-      buf.append( "\nM\u00F6gliche Dateiendungen sind:\n" );
+      buf.append( audioFrmResourceBundle.getString("error.getAudioFileType.fileFormatNotSupported.possibleExtensions") );
       String delim = null;
       for( AudioFileFormat.Type fileType : types ) {
         String ext = fileType.getExtension();
@@ -756,7 +760,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
           break;
         default:
           buf.append( channels );
-          buf.append( " Kan\u00E4le" );
+          buf.append( audioFrmResourceBundle.getString("getAudioFormatText.channels") );
           break;
       }
     }
@@ -838,10 +842,9 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     if( errorText == null ) {
       if( this.comboSampleRate.getSelectedIndex() > 0 ) {
-        errorText = "Es kann kein Audiokanal mit den angegebenen"
-                                + " Optionen ge\u00F6ffnet werden.";
+        errorText = audioFrmResourceBundle.getString("error.showError.hasComboSampleRate.errorText");
       } else {
-        errorText = "Es kann kein Audiokanal ge\u00F6ffnet werden.";
+        errorText = audioFrmResourceBundle.getString("error.showError.errorText");
       }
     }
     Main.showError( this, errorText );
@@ -852,9 +855,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
   {
     Main.showError(
         this,
-        "Das Mith\u00F6ren ist nicht m\u00F6glich,\n"
-                + "da das \u00D6ffnen eines Audiokanals mit dem Format\n"
-                + "der Sound-Datei fehlgeschlagen ist." );
+        audioFrmResourceBundle.getString("error.showErrorNoMonitorPlay.errorText") );
   }
 
 
