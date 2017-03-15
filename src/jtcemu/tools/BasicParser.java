@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2009 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -10,11 +11,17 @@ package jtcemu.tools;
 
 import java.io.ByteArrayOutputStream;
 import java.text.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.JTextArea;
 
 
 public class BasicParser
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle basicParserResourceBundle = ResourceBundle.getBundle("resources.BasicParser", locale);
+
   private CharacterIterator     iter;
   private JTextArea             logOut;
   private ByteArrayOutputStream codeBuf;
@@ -77,17 +84,17 @@ public class BasicParser
       }
     }
     catch( TooManyErrorsException ex ) {
-      this.logOut.append( "\nAbgebrochen augrund zu vieler Fehler\n" );
+      this.logOut.append( basicParserResourceBundle.getString("error.parse.tooManyErrorsException.errorText") );
     }
     this.logOut.append( "\n" );
     this.logOut.append( Integer.toString( this.errorCnt ) );
-    this.logOut.append( " Fehler" );
+    this.logOut.append( basicParserResourceBundle.getString("error.parse.errorTextModule.0") );
     if( this.warningCnt == 1 ) {
-      this.logOut.append( " und 1 Warnung" );
+      this.logOut.append( basicParserResourceBundle.getString("error.parse.errorTextModule.1") );
     } else if( this.warningCnt > 1 ) {
-      this.logOut.append( " und " );
+      this.logOut.append( basicParserResourceBundle.getString("error.parse.errorTextModule.2") );
       this.logOut.append( Integer.toString( this.warningCnt ) );
-      this.logOut.append( " Warnungen" );
+      this.logOut.append( basicParserResourceBundle.getString("error.parse.errorTextModule.3") );
     }
     this.logOut.append( "\n" );
     return (this.errorCnt == 0);
@@ -114,7 +121,7 @@ public class BasicParser
             if( !errDone ) {
               basicLineNum = (basicLineNum * 10) + (ch - '0');
               if( basicLineNum > 32767 ) {
-                putError( "Zeilennummer zu gro\u00DF", -1 );
+                putError( basicParserResourceBundle.getString("error.parseLine.lineNumberToLarge.errorText"), -1 );
                 errDone = true;
               }
             }
@@ -123,12 +130,7 @@ public class BasicParser
           if( !errDone && !this.allowAllBasicLineNums ) {
             int lByte = basicLineNum & 0xFF;
             if( (lByte == 0x00) || (lByte == 0x0D) ) {
-              putError(
-                "Zeilennummer " + Integer.toString( basicLineNum )
-                        + " beim 2K- und 4K-Betriebssystem nicht erlaubt,"
-                        + " da ihre bin\u00E4re Form %00 oder %0D"
-                        + " enth\u00E4lt",
-                -1 );
+              putError(MessageFormat.format( basicParserResourceBundle.getString("error.parseLine.illegalLineNumber.messageformat"), Integer.toString( basicLineNum )), -1 );
               errDone = true;
             }
           }
@@ -137,7 +139,7 @@ public class BasicParser
               && (basicLineNum <= this.lastBasicLineNum) )
           {
             putError(
-                "Zeilennummer muss gr\u00F6\u00DFer als die vorherige sein",
+                basicParserResourceBundle.getString("error.parseLine.nextLineNumberMustBeLargerThanPrevious.errorText"),
                 -1 );
             errDone = true;
           }
@@ -160,8 +162,7 @@ public class BasicParser
               putCode( ';' );
             }
           } else {
-            throwParseException( "Mindestens die erste Zeile muss eine"
-                                        + " BASIC-Zeilennummer haben!" );
+            throwParseException( basicParserResourceBundle.getString("error.parseLine.atLeastTheFirstLineMustHaveALineNumber.errorText") );
           }
         }
 
@@ -287,10 +288,10 @@ public class BasicParser
           putCode( 'W' );
           parseExpr();
         } else {
-          throwParseException( instName + ": Unbekannte Anweisung" );
+          throwParseException( instName + basicParserResourceBundle.getString("error.parseInst.unknownInstruction.errorText") );
         }
       } else {
-        throwParseException( "Anweisung erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parseInst.missingInstruction.errorText") );
       }
     }
   }
@@ -299,17 +300,14 @@ public class BasicParser
   private void parseELSE() throws ParseException
   {
     if( !this.firstInstInLine ) {
-      throwParseException( "ELSE muss die erste Anweisung"
-                + " in der hinter IF folgenden Zeile sein"
-                + " (mit eigener BASIC-Zeilennummer)" );
+      throwParseException( basicParserResourceBundle.getString("error.parseELSE.isNotFirstInstInLine.errorText") );
     }
     if( !this.prevLineHasIF ) {
-      throwParseException( "ELSE: vorherige Zeile enth\u00E4lt kein IF" );
+      throwParseException( basicParserResourceBundle.getString("error.parseELSE.prevLineHasNoIF.errorText") );
     }
     putCode( '>' );
     if( skipSpaces() != ';' ) {
-      throwParseException( "Hinter ELSE m\u00FCssen ein Semikolon und"
-                                + " dahinter die Anweisungen folgen" );
+      throwParseException( basicParserResourceBundle.getString("error.parseELSE.missingSemicolon.errorText") );
     }
   }
 
@@ -381,7 +379,7 @@ public class BasicParser
       putCode( ch );
       this.iter.next();
       if( skipSpaces() != '=' ) {
-        throwParseException( "\'=\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parseLET.equalsSignExpected.errorText") );
       }
       putCode( '=' );
       this.iter.next();
@@ -448,12 +446,12 @@ public class BasicParser
         }
       }
       if( skipSpaces() != ']' ) {
-        throwParseException( "\']\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parsePROC.closingSquaredBraceExpected.errorText") );
       }
       putCode( ']' );
       this.iter.next();
       if( skipSpaces() != '=' ) {
-        throwParseException( "\'=\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parsePROC.equalsSignExpected.errorText") );
       }
       putCode( '=' );
       this.iter.next();
@@ -478,7 +476,7 @@ public class BasicParser
       putCode( procName );
       parseArgList( 2 );
     } else {
-      throwParseException( procName + ": Unbekannte Prozedur" );
+      throwParseException( procName + basicParserResourceBundle.getString("error.parsePROC.unknownProcedure.errorText") );
     }
   }
 
@@ -509,7 +507,7 @@ public class BasicParser
           putCode( ';' );
         } else {
           throw new ParseException(
-                        "TO anstelle " + name + " erwartet",
+                        MessageFormat.format(basicParserResourceBundle.getString("error.parseTRAP.wrongTokenFound.messageformat"), name),
                         this.iter.getIndex() );
         }
       } else {
@@ -524,7 +522,7 @@ public class BasicParser
   {
     if( argCnt > 0 ) {
       if( skipSpaces() != '[' ) {
-        throwParseException( "\'[\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parseArgList.openingSquaredBracketExpected.errorText") );
       }
       putCode( '[' );
       this.iter.next();
@@ -534,7 +532,7 @@ public class BasicParser
         --argCnt;
         if( argCnt > 0 ) {
           if( skipSpaces() != ',' ) {
-            throwParseException( "\',\' erwartet" );
+            throwParseException( basicParserResourceBundle.getString("error.parseArgList.commaExpected.errorText") );
           }
           putCode( ',' );
           this.iter.next();
@@ -543,7 +541,7 @@ public class BasicParser
         }
       }
       if( skipSpaces() != ']' ) {
-        throwParseException( "\']\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parseArgList.closingSquaredBracketExpected.errorText") );
       }
       putCode( ']' );
       this.iter.next();
@@ -575,8 +573,7 @@ public class BasicParser
       this.iter.next();
       parseExpr();
     } else {
-      throwParseException( "Vergleichsoperator \'<\', \'<=\', \'=\', \'>\'"
-                                        + " oder \'>=\' erwartet" );
+      throwParseException( basicParserResourceBundle.getString("error.parseCondExpr.comparisonOperatorExpected.errorText") );
     }
   }
 
@@ -604,7 +601,7 @@ public class BasicParser
         if( (ch == 'A') || (ch == 'M') || (ch == 'O') || (ch == 'X') ) {
           putCode( ch );
         } else {
-          throwParseException( "\'A\', \'M\', \'O\' oder \'X\' erwartet" );
+          throwParseException( basicParserResourceBundle.getString("error.parseExpr.a_m_o_x_Expected.errorText") );
         }
       }
       ch = this.iter.next();
@@ -622,7 +619,7 @@ public class BasicParser
       this.iter.next();
       parseExpr();
       if( skipSpaces() != ')' ) {
-        throwParseException( "\')\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parsePrimExpr.closingRoundBracketExpected.errorText") );
       }
       putCode( ')' );
       this.iter.next();
@@ -650,10 +647,10 @@ public class BasicParser
         } else if( funcName.equals( "GTC" ) || funcName.equals( "INPUT" ) ) {
           putCode( funcName );
         } else {
-          throwParseException( funcName + ": Unbekannte Funktion" );
+          throwParseException( funcName + basicParserResourceBundle.getString("error.parsePrimExpr.unknownFunction.errorText") );
         }
       } else {
-        throwParseException( "Ziffer, Buchstabe, \'(\' oder \'%\' erwartet" );
+        throwParseException( basicParserResourceBundle.getString("error.parsePrimExpr.openingRoundBracketOrNumberOrLetterOrPercentSignExpected.errorText") );
       }
     }
   }
@@ -669,7 +666,7 @@ public class BasicParser
       while( (ch >= '0') && (ch <= '9') ) {
         v = (v * 10) + (ch - '0');
         if( v > 32767 ) {
-          throwParseException( "Zahl zu gro\u00DF" );
+          throwParseException( basicParserResourceBundle.getString("error.parseDecNumber.numberToLarge.errorText") );
         }
         putCode( ch );
         ch = this.iter.next();
@@ -693,7 +690,7 @@ public class BasicParser
           v = (v << 4) | (ch + 10 - 'A');
         }
         if( v >= 0x10000 ) {
-          throwParseException( "Hexadezimalzahl zu gro\u00DF" );
+          throwParseException( basicParserResourceBundle.getString("error.parseHexNumber.numberToLarge.errorText") );
         }
         ch = Character.toUpperCase( this.iter.next() );
       }
@@ -716,22 +713,20 @@ public class BasicParser
           if( ch == '\n' ) {
             this.lineNum++;
             if( !warnNL ) {
-              putWarning( "Zeilenumbruch in Zeichenkette" );
+              putWarning( basicParserResourceBundle.getString("error.parseOptStringLiteral.lineBreakFound.errorText") );
               warnNL = true;
             }
           }
           else if( (ch < 0x20) || (ch > 0x5F) ) {
             if( !warnNotPrintable ) {
-              putWarning( "Zeichenkette enth\u00E4lt Zeichen \'" + ch + "\',"
-                        + " welches nicht im Zeichensatz des JU+TE-Computers"
-                        + " vorkommt" );
+              putWarning( MessageFormat.format(basicParserResourceBundle.getString("error.parseOptStringLiteral.notPrintable.messageformat"), ch, null) );
               warnNotPrintable = true;
             }
           }
           putCode( ch );
         } else {
           if( !warnNotASCII ) {
-            putWarning( "Nicht-ASCII-Zeichen in Zeichenkette ignoriert" );
+            putWarning( basicParserResourceBundle.getString("error.parseOptStringLiteral.notASCII.errorText") );
             warnNotASCII = true;
           }
         }
@@ -741,7 +736,7 @@ public class BasicParser
         putCode( ch );
         this.iter.next();
       } else {
-        throwParseException( "Zeichenkette nicht abgeschlossen" );
+        throwParseException( basicParserResourceBundle.getString("error.parseOptStringLiteral.stringNotTerminated.errorText") );
       }
     }
   }
@@ -774,7 +769,7 @@ public class BasicParser
                 String msg,
                 int    errorOffset ) throws TooManyErrorsException
   {
-    putMessage( "Fehler", msg );
+    putMessage( basicParserResourceBundle.getString("putError.message"), msg );
     if( (this.logOut != null) && (errorOffset >= this.lineOffset) ) {
       StringBuilder buf = new StringBuilder( 256 );
       int           pos = this.lineOffset;
@@ -804,7 +799,7 @@ public class BasicParser
 
   private void putWarning( String msg )
   {
-    putMessage( "Warnung", msg );
+    putMessage( basicParserResourceBundle.getString("putWarning.message"), msg );
     this.warningCnt++;
   }
 
@@ -813,10 +808,10 @@ public class BasicParser
   {
     if( (msgText != null) && (this.logOut != null) ) {
       this.logOut.append( msgType );
-      this.logOut.append( " in Zeile " );
+      this.logOut.append( basicParserResourceBundle.getString("putMessage.logTextModule.0") );
       this.logOut.append( Integer.toString( this.lineNum ) );
       if( this.curBasicLineNum >= 0 ) {
-        this.logOut.append( ", BASIC-Zeile " );
+        this.logOut.append( basicParserResourceBundle.getString("putMessage.logTextModule.1") );
         this.logOut.append( Integer.toString( this.curBasicLineNum ) );
       }
       this.logOut.append( ": " );
@@ -857,18 +852,18 @@ public class BasicParser
   private void throwUnexpectedChar( char ch ) throws ParseException
   {
     if( ch == CharacterIterator.DONE ) {
-      throwParseException( "Unerwartetes Programmende" );
+      throwParseException( basicParserResourceBundle.getString("error.throwUnexpectedChar.unexpectedProgramEnd.errorText") );
     } else if( ch == '\n' ) {
-      throwParseException( "Unerwartetes Zeilenende" );
+      throwParseException( basicParserResourceBundle.getString("error.throwUnexpectedChar.unexpectedLineBreak.errorText") );
     } else {
-      throwParseException( "Unerwartetes Zeichen: \'" + ch + "\'" );
+      throwParseException( MessageFormat.format(basicParserResourceBundle.getString("error.throwUnexpectedChar.unexpectedCharacter.messageformat"), ch) );
     }
   }
 
 
   private void throwVarExpected() throws ParseException
   {
-    throwParseException( "Variable erwartet" );
+    throwParseException( basicParserResourceBundle.getString("error.throwVarExpected.variableExpected.errorText") );
   }
 }
 
