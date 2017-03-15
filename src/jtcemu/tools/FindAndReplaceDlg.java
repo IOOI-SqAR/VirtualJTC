@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -10,6 +11,8 @@ package jtcemu.tools;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.*;
 import javax.swing.*;
 import jtcemu.base.*;
@@ -18,6 +21,9 @@ import jtcemu.Main;
 
 public class FindAndReplaceDlg extends BaseDlg implements ActionListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle findAndReplaceDlgResourceBundle = ResourceBundle.getBundle("resources.FindAndReplaceDlg", locale);
+
   private Pattern    pattern;
   private String     findText;
   private String     replaceText;
@@ -41,7 +47,9 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
                         boolean regularExpr )
   {
     super( owner );
-    setTitle( "Suchen und ersetzen" );
+    
+    setTitle( findAndReplaceDlgResourceBundle.getString("window.title") );
+    
     this.pattern       = null;
     this.findText      = null;
     this.replaceText   = null;
@@ -76,10 +84,10 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
                                         new Insets( 5, 0, 5, 5 ),
                                         0, 0 );
 
-    panelInput.add( new JLabel( "Suchen nach:" ), gbcInput );
+    panelInput.add( new JLabel( findAndReplaceDlgResourceBundle.getString("label.panelInput.searchFor") ), gbcInput );
     gbcInput.insets.top = 5;
     gbcInput.gridy++;
-    panelInput.add( new JLabel( "Ersetzen durch:" ), gbcInput );
+    panelInput.add( new JLabel( findAndReplaceDlgResourceBundle.getString("label.panelInput.replaceBy") ), gbcInput );
 
     this.fldFind = new JTextField();
     if( findText != null ) {
@@ -103,7 +111,7 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     panelInput.add( this.fldReplace, gbcInput );
 
     this.btnCaseSensitive = new JCheckBox(
-                                        "Gro\u00DF-/Kleinschreibung beachten",
+                                        findAndReplaceDlgResourceBundle.getString("button.caseSensitive"),
                                         caseSensitive );
     gbcInput.fill          = GridBagConstraints.NONE;
     gbcInput.weightx       = 0.0;
@@ -112,7 +120,7 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     panelInput.add( this.btnCaseSensitive, gbcInput );
 
     this.btnRegularExpr = new JCheckBox(
-                                "Regul\u00E4rer Ausdruck",
+                                findAndReplaceDlgResourceBundle.getString("button.regularExpr"),
                                 regularExpr );
     gbcInput.insets.top = 0;
     gbcInput.gridy++;
@@ -126,15 +134,15 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
     gbc.gridx++;
     add( panelBtn,gbc );
 
-    this.btnFind = new JButton( "Suchen" );
+    this.btnFind = new JButton( findAndReplaceDlgResourceBundle.getString("button.find") );
     this.btnFind.addActionListener( this );
     panelBtn.add( this.btnFind );
 
-    this.btnReplaceAll = new JButton( "Alle ersetzen" );
+    this.btnReplaceAll = new JButton( findAndReplaceDlgResourceBundle.getString("button.replaceAll") );
     this.btnReplaceAll.addActionListener( this );
     panelBtn.add( this.btnReplaceAll );
 
-    this.btnCancel = new JButton( "Abbrechen" );
+    this.btnCancel = new JButton( findAndReplaceDlgResourceBundle.getString("button.cancel") );
     this.btnCancel.addActionListener( this );
     panelBtn.add( this.btnCancel );
 
@@ -237,7 +245,7 @@ public class FindAndReplaceDlg extends BaseDlg implements ActionListener
         Main.showError( this, ex );
       }
     } else {
-      Main.showError( this, "Suchen nach: Eingabe erwartet" );
+      Main.showError( this, findAndReplaceDlgResourceBundle.getString("error.doApply.inputExpected.errorText") );
     }
     return rv;
   }
