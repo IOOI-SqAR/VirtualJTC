@@ -1,5 +1,6 @@
 /*
  * (c) 2010-2011 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -13,6 +14,8 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.swing.*;
@@ -32,6 +35,9 @@ public abstract class AbstractHexCharFrm
                                         MouseWheelListener,
                                         Printable
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle abstractHexCharFrmResourceBundle = ResourceBundle.getBundle("resources.AbstractHexCharFrm", locale);
+
   private static final int PRINT_FONT_SIZE = 10;
 
   protected HexCharFld                hexCharFld;
@@ -83,7 +89,7 @@ public abstract class AbstractHexCharFrm
                                         new Insets( 5, 5, 5, 5 ),
                                         0, 0 );
 
-    panel.add( new JLabel( "Hexadezimal:" ), gbc );
+    panel.add( new JLabel( abstractHexCharFrmResourceBundle.getString("label.createCaretPosFld.hexadecimal") ), gbc );
 
     this.fldCaretHex = new JTextField();
     this.fldCaretHex.addActionListener( this );
@@ -95,7 +101,7 @@ public abstract class AbstractHexCharFrm
     gbc.fill    = GridBagConstraints.NONE;
     gbc.weightx = 0.0;
     gbc.gridx++;
-    panel.add( new JLabel( "Dezimal:" ), gbc );
+    panel.add( new JLabel( abstractHexCharFrmResourceBundle.getString("label.createCaretPosFld.decimal") ), gbc );
 
     this.fldCaretDec = new JTextField();
     this.fldCaretDec.addActionListener( this );
@@ -179,8 +185,7 @@ public abstract class AbstractHexCharFrm
   protected Component createValueFld()
   {
     JPanel panel = new JPanel( new GridBagLayout() );
-    panel.setBorder( BorderFactory.createTitledBorder(
-                        "Dezimalwerte der Bytes ab Cursor-Position" ) );
+    panel.setBorder( BorderFactory.createTitledBorder( abstractHexCharFrmResourceBundle.getString("titledBorder.createValueFld") ) );
 
     GridBagConstraints gbcValue = new GridBagConstraints(
                                         0, 0,
@@ -238,12 +243,12 @@ public abstract class AbstractHexCharFrm
     gbcValue.gridy++;
     panel.add( panelOpt, gbcValue );
 
-    this.btnValueSigned = new JCheckBox( "Vorzeichenbehaftet", true );
+    this.btnValueSigned = new JCheckBox( abstractHexCharFrmResourceBundle.getString("button.valueSigned"), true );
     this.btnValueSigned.addActionListener( this );
     this.btnValueSigned.setEnabled( false );
     panelOpt.add( this.btnValueSigned, gbcValue );
 
-    this.btnLittleEndian = new JCheckBox( "Little Endian", true );
+    this.btnLittleEndian = new JCheckBox( abstractHexCharFrmResourceBundle.getString("button.littleEndian"), true );
     this.btnLittleEndian.addActionListener( this );
     this.btnLittleEndian.setEnabled( false );
     panelOpt.add( this.btnLittleEndian, gbcValue );
@@ -637,7 +642,7 @@ public abstract class AbstractHexCharFrm
     int    rowHeight = PRINT_FONT_SIZE + 1;
     int    nRows     = ((int) pf.getImageableHeight() - 1) / rowHeight;
     if( nRows < 1 ) {
-      throw new PrinterException( "Druckbarer Bereich zu klein" );
+      throw new PrinterException( abstractHexCharFrmResourceBundle.getString("error.print.printableAreaTooSmall.errorText") );
     }
     int dataLen = getDataLength();
     int pos     = nRows * HexCharFld.BYTES_PER_ROW * pageNum;
@@ -749,7 +754,7 @@ public abstract class AbstractHexCharFrm
   {
     ReplyBytesDlg dlg = new ReplyBytesDlg(
                                         this,
-                                        "Bytes suchen",
+                                        abstractHexCharFrmResourceBundle.getString("dialog.doFind.replyBytesDlg.title"),
                                         this.lastInputFmt,
                                         this.lastBigEndian,
                                         this.lastFindText );
@@ -818,8 +823,8 @@ public abstract class AbstractHexCharFrm
           } else {
             JOptionPane.showMessageDialog(
                         this,
-                        "Byte-Folge nicht gefunden",
-                        "Information",
+                        abstractHexCharFrmResourceBundle.getString("dialog.doFindNext.notFound.message"),
+                        abstractHexCharFrmResourceBundle.getString("dialog.doFindNext.notFound.title"),
                         JOptionPane.INFORMATION_MESSAGE );
           }
         }
@@ -832,11 +837,11 @@ public abstract class AbstractHexCharFrm
   {
     PrintRequestAttributeSet atts = Main.getPrintRequestAttributeSet();
     atts.add( new Copies( 1 ) );
-    atts.add( new JobName( "JTCEMU", Locale.getDefault() ) );
+    atts.add( new JobName( abstractHexCharFrmResourceBundle.getString("doPrint.jobName"), Locale.getDefault() ) );
 
     PrinterJob pj = PrinterJob.getPrinterJob();
     pj.setCopies( 1 );
-    pj.setJobName( "JTCEMU" );
+    pj.setJobName( abstractHexCharFrmResourceBundle.getString("doPrint.jobName") );
     pj.setPrintable( this );
     if( pj.printDialog( atts ) ) {
       try {
@@ -911,8 +916,8 @@ public abstract class AbstractHexCharFrm
     if( !done ) {
       JOptionPane.showMessageDialog(
                 this,
-                "Ung\u00FCltige Eingabe",
-                "Fehler",
+                abstractHexCharFrmResourceBundle.getString("dialog.setCaretPosition.invalidInput.message"),
+                abstractHexCharFrmResourceBundle.getString("dialog.setCaretPosition.invalidInput.title"),
                 JOptionPane.ERROR_MESSAGE );
     }
   }
