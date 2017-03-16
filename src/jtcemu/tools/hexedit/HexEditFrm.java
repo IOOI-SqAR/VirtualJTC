@@ -1,5 +1,6 @@
 /*
  * (c) 2010-2011 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -9,12 +10,12 @@
 package jtcemu.tools.hexedit;
 
 import java.awt.*;
-import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
-import java.lang.*;
-import java.util.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.naming.SizeLimitExceededException;
 import javax.swing.*;
 import jtcemu.Main;
@@ -25,6 +26,9 @@ public class HexEditFrm
                 extends AbstractHexCharFrm
                 implements DropTargetListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle hexEditFrmResourceBundle = ResourceBundle.getBundle("resources.HexEditFrm", locale);
+
   private static final int BUF_EXTEND = 0x2000;
 
   private static HexEditFrm instance = null;
@@ -163,7 +167,7 @@ public class HexEditFrm
       } else if( src == this.mnuFindNext ) {
         doFindNext();
       } else if( src == this.mnuHelpContent ) {
-        HelpFrm.open( "/help/hexeditor.htm" );
+        HelpFrm.open( hexEditFrmResourceBundle.getString("help.path") );
       } else {
         super.actionPerformed( e );
       }
@@ -253,33 +257,33 @@ public class HexEditFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( hexEditFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( KeyEvent.VK_D );
     mnuBar.add( mnuFile );
 
-    this.mnuNew = createJMenuItem( "Neu" );
+    this.mnuNew = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.new") );
     mnuFile.add( this.mnuNew );
 
-    this.mnuOpen = createJMenuItem( "\u00D6ffnen..." );
+    this.mnuOpen = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.open") );
     mnuFile.add( this.mnuOpen );
     mnuFile.addSeparator();
 
     this.mnuSave = createJMenuItem(
-                "Speichern",
+                hexEditFrmResourceBundle.getString("menuItem.save"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_S, Event.CTRL_MASK ) );
     this.mnuSave.setEnabled( false );
     mnuFile.add( this.mnuSave );
 
-    this.mnuSaveAs = createJMenuItem( "Speichern unter..." );
+    this.mnuSaveAs = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.saveAs") );
     this.mnuSaveAs.setEnabled( false );
     mnuFile.add( this.mnuSaveAs );
     mnuFile.addSeparator();
 
-    this.mnuPrintOptions = createJMenuItem( "Druckoptionen..." );
+    this.mnuPrintOptions = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.printOptions") );
     mnuFile.add( this.mnuPrintOptions );
 
     this.mnuPrint = createJMenuItem(
-                        "Drucken...",
+                        hexEditFrmResourceBundle.getString("menuItem.print"),
                         KeyStroke.getKeyStroke(
                                 KeyEvent.VK_P,
                                 InputEvent.CTRL_MASK ) );
@@ -287,82 +291,82 @@ public class HexEditFrm
     mnuFile.add( this.mnuPrint );
     mnuFile.addSeparator();
 
-    this.mnuClose = createJMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.close") );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Bearbeiten
-    JMenu mnuEdit = new JMenu( "Bearbeiten" );
+    JMenu mnuEdit = new JMenu( hexEditFrmResourceBundle.getString("menu.edit") );
     mnuEdit.setMnemonic( KeyEvent.VK_B );
     mnuBar.add( mnuEdit );
 
-    this.mnuBytesCopy = createJMenuItem( "Markierte Bytes kopieren" );
+    this.mnuBytesCopy = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.bytesCopy") );
     this.mnuBytesCopy.setEnabled( false );
     mnuEdit.add( this.mnuBytesCopy );
 
-    this.mnuBytesSave = createJMenuItem( "Markierte Bytes speichern..." );
+    this.mnuBytesSave = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.bytesSave") );
     this.mnuBytesSave.setEnabled( false );
     mnuEdit.add( this.mnuBytesSave );
     mnuEdit.addSeparator();
 
     this.mnuBytesInsert = createJMenuItem(
-                "Bytes einf\u00FCgen...",
+                hexEditFrmResourceBundle.getString("menuItem.bytesInsert"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_I, Event.CTRL_MASK ) );
     this.mnuBytesInsert.setEnabled( false );
     mnuEdit.add( this.mnuBytesInsert );
 
     this.mnuBytesOverwrite = createJMenuItem(
-                "Bytes \u00FCberschreiben...",
+                hexEditFrmResourceBundle.getString("menuItem.bytesOverwrite"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_O, Event.CTRL_MASK ) );
     this.mnuBytesOverwrite.setEnabled( false );
     mnuEdit.add( this.mnuBytesOverwrite );
 
     this.mnuBytesAppend = createJMenuItem(
-                "Bytes am Ende anh\u00E4ngen...",
+                hexEditFrmResourceBundle.getString("menuItem.bytesAppend"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_E, Event.CTRL_MASK ) );
     mnuEdit.add( this.mnuBytesAppend );
     mnuEdit.addSeparator();
 
     this.mnuBytesRemove = createJMenuItem(
-                "Bytes entfernen",
+                hexEditFrmResourceBundle.getString("menuItem.bytesRemove"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_DELETE, 0 ) );
     this.mnuBytesRemove.setEnabled( false );
     mnuEdit.add( this.mnuBytesRemove );
     mnuEdit.addSeparator();
 
-    this.mnuSavePos = createJMenuItem( "Position merken" );
+    this.mnuSavePos = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.savePos") );
     this.mnuSavePos.setEnabled( false );
     mnuEdit.add( this.mnuSavePos );
 
     this.mnuGotoSavedPos = createJMenuItem(
-                                "Zur gemerkten Position springen" );
+        hexEditFrmResourceBundle.getString("menuItem.gotoSavedPos") );
     this.mnuGotoSavedPos.setEnabled( false );
     mnuEdit.add( this.mnuGotoSavedPos );
 
     this.mnuSelectToSavedPos = createJMenuItem(
-                                "Bis zur gemerkten Position markieren" );
+        hexEditFrmResourceBundle.getString("menuItem.selectToSavedPos") );
     this.mnuSelectToSavedPos.setEnabled( false );
     mnuEdit.add( this.mnuSelectToSavedPos );
     mnuEdit.addSeparator();
 
     this.mnuFind = createJMenuItem(
-                "Suchen...",
+        hexEditFrmResourceBundle.getString("menuItem.find"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_F, Event.CTRL_MASK ) );
     this.mnuFind.setEnabled( false );
     mnuEdit.add( this.mnuFind );
 
     this.mnuFindNext = createJMenuItem(
-                "Weitersuchen",
+        hexEditFrmResourceBundle.getString("menuItem.findNext"),
                 KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
     this.mnuFindNext.setEnabled( false );
     mnuEdit.add( this.mnuFindNext );
 
 
     // Menu Hilfe
-    JMenu mnuHelp = new JMenu( "?" );
+    JMenu mnuHelp = new JMenu( hexEditFrmResourceBundle.getString("menu.help") );
     mnuBar.add( mnuHelp );
 
-    this.mnuHelpContent = createJMenuItem( "Hilfe..." );
+    this.mnuHelpContent = createJMenuItem( hexEditFrmResourceBundle.getString("menuItem.helpContent") );
     mnuHelp.add( this.mnuHelpContent );
 
 
@@ -390,19 +394,19 @@ public class HexEditFrm
     this.btnNew = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/new.png",
-                                "Neu" );
+                                hexEditFrmResourceBundle.getString("button.new") );
     toolBar.add( this.btnNew );
 
     this.btnOpen = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/open.png",
-                                "\u00D6ffnen" );
+                                hexEditFrmResourceBundle.getString("button.open") );
     toolBar.add( this.btnOpen );
 
     this.btnSave = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/save.png",
-                                "Speichern" );
+                                hexEditFrmResourceBundle.getString("button.save") );
     this.btnSave.setEnabled( false );
     toolBar.add( this.btnSave );
     toolBar.addSeparator();
@@ -410,7 +414,7 @@ public class HexEditFrm
     this.btnFind = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/find.png",
-                                "Suchen" );
+                                hexEditFrmResourceBundle.getString("button.find") );
     this.btnFind.setEnabled( false );
     toolBar.add( this.btnFind );
 
@@ -426,7 +430,7 @@ public class HexEditFrm
     gbc.fill    = GridBagConstraints.HORIZONTAL;
     gbc.weighty = 0.0;
     gbc.gridy++;
-    add( createCaretPosFld( "Cursor-Position" ), gbc );
+    add( createCaretPosFld( hexEditFrmResourceBundle.getString("label.caretPos") ), gbc );
 
     // Anzeige der Dezimalwerte der Bytes ab Cursor-Position
     gbc.gridy++;
@@ -452,7 +456,7 @@ public class HexEditFrm
   {
     ReplyBytesDlg dlg = new ReplyBytesDlg(
                                         this,
-                                        "Bytes anh\u00E4ngen",
+                                        hexEditFrmResourceBundle.getString("dialog.doBytesAppend.replyBytesDlg.title"),
                                         this.lastInputFmt,
                                         this.lastBigEndian,
                                         null );
@@ -483,7 +487,7 @@ public class HexEditFrm
     if( (caretPos >= 0) && (caretPos < this.fileLen) ) {
       ReplyBytesDlg dlg = new ReplyBytesDlg(
                                         this,
-                                        "Bytes einf\u00FCgen",
+                                        hexEditFrmResourceBundle.getString("dialog.doBytesInsert.replyBytesDlg.title"),
                                         this.lastInputFmt,
                                         this.lastBigEndian,
                                         null );
@@ -514,7 +518,7 @@ public class HexEditFrm
     if( (caretPos >= 0) && (caretPos < this.fileLen) ) {
       ReplyBytesDlg dlg = new ReplyBytesDlg(
                                         this,
-                                        "Bytes \u00FCberschreiben",
+                                        hexEditFrmResourceBundle.getString("dialog.doBytesOverwrite.replyBytesDlg.title"),
                                         this.lastInputFmt,
                                         this.lastBigEndian,
                                         null );
@@ -566,13 +570,12 @@ public class HexEditFrm
       String msg = null;
       if( m2 > m1 ) {
         msg = String.format(
-                "M\u00F6chten Sie die %d markierten Bytes entfernen?",
+            hexEditFrmResourceBundle.getString("doBytesRemove.removeBytes.formatString"),
                 m2 - m1 + 1);
       }
       else if( m2 == m1 ) {
         msg = String.format(
-                "M\u00F6chten das markierte Byte mit dem hexadezimalen"
-                        + " Wert %02X entfernen?",
+            hexEditFrmResourceBundle.getString("doBytesRemove.removeByte.formatString"),
                 this.fileBytes[ m1 ] );
       }
       if( msg != null ) {
@@ -580,7 +583,7 @@ public class HexEditFrm
                                         msg,
                                         JOptionPane.QUESTION_MESSAGE,
                                         JOptionPane.YES_NO_OPTION );
-        pane.createDialog( this, "Best\u00E4tigung" ).setVisible( true );
+        pane.createDialog( this, hexEditFrmResourceBundle.getString("dialog.doBytesRemove.removeDialog.title") ).setVisible( true );
         Object option = pane.getValue();
         if( option != null ) {
           if( option.equals( JOptionPane.YES_OPTION ) ) {
@@ -630,7 +633,7 @@ public class HexEditFrm
         }
         File file = FileDlg.showFileSaveDlg(
                                         this,
-                                        "Datei speichern",
+                                        hexEditFrmResourceBundle.getString("dialog.doBytesSave.fileSaveDlg.title"),
                                         presetDir );
         if( file != null ) {
           try {
@@ -684,8 +687,8 @@ public class HexEditFrm
     if( confirmDataSaved() ) {
       File file = FileDlg.showFileOpenDlg(
                                 this,
-                                "Datei \u00F6ffnen",
-                                "\u00D6ffnen",
+                                hexEditFrmResourceBundle.getString("dialog.doOpen.fileOpenDlg.title"),
+                                hexEditFrmResourceBundle.getString("dialog.doOpen.fileOpenDlg.approveBtnText"),
                                 Main.getLastPathFile() );
       if( file != null )
         openFile( file );
@@ -700,7 +703,7 @@ public class HexEditFrm
     if( forceFileDlg || (file == null) ) {
       file = FileDlg.showFileSaveDlg(
                 this,
-                "Datei speichern",
+                hexEditFrmResourceBundle.getString("dialog.doSave.fileSaveDlg.title"),
                 file != null ? file : Main.getLastPathFile() );
     }
     if( file != null ) {
@@ -765,18 +768,20 @@ public class HexEditFrm
     if( this.dataChanged ) {
       setState( Frame.NORMAL );
       toFront();
-      String[] options = { "Speichern", "Verwerfen", "Abbrechen" };
+      String[] options = { 
+          hexEditFrmResourceBundle.getString("confirmDataSaved.options.save"), 
+          hexEditFrmResourceBundle.getString("confirmDataSaved.options.discard"), 
+          hexEditFrmResourceBundle.getString("confirmDataSaved.options.cancel") 
+      };
       int      selOpt  = JOptionPane.showOptionDialog(
                                 this,
-                                "Die Datei wurde ge\u00E4ndert und nicht"
-                                        +" gespeichert.\n"
-                                        + "M\u00F6chten Sie jetzt speichern?",
-                                "Daten ge\u00E4ndert",
+                                hexEditFrmResourceBundle.getString("dialog.confirmDataSaved.optionDialog.message"),
+                                hexEditFrmResourceBundle.getString("dialog.confirmDataSaved.optionDialog.title"),
                                 JOptionPane.YES_NO_CANCEL_OPTION,
                                 JOptionPane.WARNING_MESSAGE,
                                 null,
                                 options,
-                                "Speichern" );
+                                hexEditFrmResourceBundle.getString("dialog.confirmDataSaved.optionDialog.initialValue") );
       if( selOpt == 0 ) {
         rv = doSave( false );
       }
@@ -799,8 +804,7 @@ public class HexEditFrm
       if( reqLen >= this.fileBytes.length ) {
         int n = Math.min( reqLen + BUF_EXTEND, Integer.MAX_VALUE );
         if( n < reqLen) {
-          throw new SizeLimitExceededException( "Die max. zul\u00E4ssige"
-                        + " Dateigr\u00F6\u00DFe wurde erreicht." );
+          throw new SizeLimitExceededException( hexEditFrmResourceBundle.getString("error.insertBytes.sizeLimitExceeded.errorText") );
         }
         byte[] tmpBuf = new byte[ n ];
         if( dstPos > 0 ) {
@@ -913,18 +917,18 @@ public class HexEditFrm
 
   private static void throwFileTooBig() throws IOException
   {
-    throw new IOException( "Datei ist zu gro\u00DF!" );
+    throw new IOException( hexEditFrmResourceBundle.getString("error.throwFileTooBig.errorText") );
   }
 
 
   private void updTitle()
   {
     StringBuilder buf = new StringBuilder( 128 );
-    buf.append( "JTCEMU Hex-Editor: " );
+    buf.append( hexEditFrmResourceBundle.getString("window.title") );
     if( this.file != null ) {
       buf.append( file.getPath() );
     } else {
-      buf.append( "Neue Datei" );
+      buf.append( hexEditFrmResourceBundle.getString("window.title.newDocument") );
     }
     setTitle( buf.toString() );
   }
