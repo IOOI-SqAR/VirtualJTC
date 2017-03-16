@@ -1,5 +1,6 @@
 /*
  * (c) 2007-2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -14,6 +15,8 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.CharacterIterator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -34,6 +37,9 @@ public class TextEditFrm extends AbstractTextFrm
                                 MouseListener,
                                 UndoableEditListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle textEditFrmResourceBundle = ResourceBundle.getBundle("resources.TextEditFrm", locale);
+
   private static TextEditFrm instance = null;
 
   private JTCSys         jtcSys;
@@ -96,17 +102,18 @@ public class TextEditFrm extends AbstractTextFrm
   {
     boolean rv = false;
     if( this.dataChanged ) {
-      String[]    options = { "Speichern", "Verwerfen", "Abbrechen" };
+      String[]    options = { 
+          textEditFrmResourceBundle.getString("confirmDataSaved.options.save"), 
+          textEditFrmResourceBundle.getString("confirmDataSaved.options.discard"), 
+          textEditFrmResourceBundle.getString("confirmDataSaved.options.cancel")
+      };
       JOptionPane pane    = new JOptionPane(
-                "Der Text wurde ge\u00E4ndert, aber nicht gespeichert.\n"
-                        + "Sie k\u00F6nnen den Text jetzt speichern,"
-                        + " verwerfern\n"
-                        + "oder die Aktion abbrechen.",
+                textEditFrmResourceBundle.getString("confirmDataSaved.message"),
                 JOptionPane.WARNING_MESSAGE );
       pane.setOptions( options );
       pane.setInitialValue( options[ 0 ] );
       pane.setWantsInput( false );
-      pane.createDialog( this, "Daten ge\u00E4ndert" ).setVisible( true );
+      pane.createDialog( this, textEditFrmResourceBundle.getString("confirmDataSaved.title") ).setVisible( true );
       Object value = pane.getValue();
       if( value != null ) {
         if( value.equals( options[ 0 ] ) ) {
@@ -216,7 +223,7 @@ public class TextEditFrm extends AbstractTextFrm
         doPrgBasic( true, false );
       }
       else if( src == this.mnuHelpContent ) {
-        HelpFrm.open( "/help/texteditor.htm" );
+        HelpFrm.open( textEditFrmResourceBundle.getString("help.path") );
       }
       else if( src == this.mnuBasicIntoEmuOpt ) {
         doPrgBasic( true, true );
@@ -494,18 +501,18 @@ public class TextEditFrm extends AbstractTextFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( textEditFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( 'D' );
     mnuBar.add( mnuFile );
 
-    this.mnuNew = new JMenuItem( "Neuer Text" );
+    this.mnuNew = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.new") );
     this.mnuNew.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_N,
                                                 InputEvent.CTRL_MASK ) );
     this.mnuNew.addActionListener( this );
     mnuFile.add( this.mnuNew );
 
-    this.mnuOpen = new JMenuItem( "\u00D6ffnen..." );
+    this.mnuOpen = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.open") );
     this.mnuOpen.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_O,
                                                 InputEvent.CTRL_MASK ) );
@@ -513,28 +520,26 @@ public class TextEditFrm extends AbstractTextFrm
     mnuFile.add( this.mnuOpen );
     mnuFile.addSeparator();
 
-    this.mnuLoadBasicMemE000 = new JMenuItem(
-                        "BASIC-Programm aus Arbeitsspeicher ab E000 laden" );
+    this.mnuLoadBasicMemE000 = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.loadBasicMemE000") );
     this.mnuLoadBasicMemE000.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_B,
                                                 InputEvent.CTRL_MASK ) );
     this.mnuLoadBasicMemE000.addActionListener( this );
     mnuFile.add( this.mnuLoadBasicMemE000 );
 
-    this.mnuLoadBasicMemWith = new JMenuItem(
-                        "BASIC-Programm aus Arbeitsspeicher laden..." );
+    this.mnuLoadBasicMemWith = new JMenuItem(textEditFrmResourceBundle.getString("menuItem.loadBasicMemWith") );
     this.mnuLoadBasicMemWith.addActionListener( this );
     mnuFile.add( this.mnuLoadBasicMemWith );
     mnuFile.addSeparator();
 
-    this.mnuSave = new JMenuItem( "Speichern" );
+    this.mnuSave = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.save") );
     this.mnuSave.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_S,
                                                 InputEvent.CTRL_MASK ) );
     this.mnuSave.addActionListener( this );
     mnuFile.add( this.mnuSave );
 
-    this.mnuSaveAs = new JMenuItem( "Speichern unter..." );
+    this.mnuSaveAs = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.saveAs") );
     this.mnuSaveAs.setAccelerator(
                 KeyStroke.getKeyStroke(
                         KeyEvent.VK_S,
@@ -543,11 +548,11 @@ public class TextEditFrm extends AbstractTextFrm
     mnuFile.add( this.mnuSaveAs );
     mnuFile.addSeparator();
 
-    this.mnuPrintOptions = new JMenuItem( "Druckoptionen..." );
+    this.mnuPrintOptions = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.printOptions") );
     this.mnuPrintOptions.addActionListener( this );
     mnuFile.add( this.mnuPrintOptions );
 
-    this.mnuPrint = new JMenuItem( "Drucken..." );
+    this.mnuPrint = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.print") );
     this.mnuPrint.setAccelerator( KeyStroke.getKeyStroke(
                                         KeyEvent.VK_P,
                                         InputEvent.CTRL_MASK ) );
@@ -555,17 +560,17 @@ public class TextEditFrm extends AbstractTextFrm
     mnuFile.add( this.mnuPrint );
     mnuFile.addSeparator();
 
-    this.mnuClose = new JMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.close") );
     this.mnuClose.addActionListener( this );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Bearbeiten
-    JMenu mnuEdit = new JMenu( "Bearbeiten" );
+    JMenu mnuEdit = new JMenu( textEditFrmResourceBundle.getString("menu.edit") );
     mnuEdit.setMnemonic( 'B' );
     mnuBar.add( mnuEdit );
 
-    this.mnuUndo = new JMenuItem( "R\u00FCckg\u00E4ngig" );
+    this.mnuUndo = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.undo") );
     this.mnuUndo.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_Z,
                                                 InputEvent.CTRL_MASK ) );
@@ -574,7 +579,7 @@ public class TextEditFrm extends AbstractTextFrm
     mnuEdit.add( this.mnuUndo );
     mnuEdit.addSeparator();
 
-    this.mnuCut = new JMenuItem( "Ausschneiden" );
+    this.mnuCut = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.cut") );
     this.mnuCut.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_X,
                                                 InputEvent.CTRL_MASK ) );
@@ -582,7 +587,7 @@ public class TextEditFrm extends AbstractTextFrm
     this.mnuCut.addActionListener( this );
     mnuEdit.add( this.mnuCut );
 
-    this.mnuCopy = new JMenuItem( "Kopieren" );
+    this.mnuCopy = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.copy") );
     this.mnuCopy.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_C,
                                                 InputEvent.CTRL_MASK ) );
@@ -590,7 +595,7 @@ public class TextEditFrm extends AbstractTextFrm
     this.mnuCopy.addActionListener( this );
     mnuEdit.add( this.mnuCopy );
 
-    this.mnuPaste = new JMenuItem( "Einf\u00FCgen" );
+    this.mnuPaste = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.paste") );
     this.mnuPaste.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_V,
                                                 InputEvent.CTRL_MASK ) );
@@ -599,19 +604,19 @@ public class TextEditFrm extends AbstractTextFrm
     mnuEdit.add( this.mnuPaste );
     mnuEdit.addSeparator();
 
-    this.mnuSelectAll = new JMenuItem( "Alles ausw\u00E4hlen" );
+    this.mnuSelectAll = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.selectAll") );
     this.mnuSelectAll.addActionListener( this );
     mnuEdit.add( this.mnuSelectAll );
     mnuEdit.addSeparator();
 
-    this.mnuFindAndReplace = new JMenuItem( "Suchen und ersetzen..." );
+    this.mnuFindAndReplace = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.findAndReplace") );
     this.mnuFindAndReplace.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_F,
                                                 InputEvent.CTRL_MASK ) );
     this.mnuFindAndReplace.addActionListener( this );
     mnuEdit.add( this.mnuFindAndReplace );
 
-    this.mnuReplace = new JMenuItem( "Ersetzen" );
+    this.mnuReplace = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.replace") );
     this.mnuReplace.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_R,
                                                 InputEvent.CTRL_MASK ) );
@@ -619,7 +624,7 @@ public class TextEditFrm extends AbstractTextFrm
     this.mnuReplace.addActionListener( this );
     mnuEdit.add( this.mnuReplace );
 
-    this.mnuFindNext = new JMenuItem( "Weitersuchen" );
+    this.mnuFindNext = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.findNext") );
     this.mnuFindNext.setEnabled( false );
     this.mnuFindNext.setAccelerator(
                         KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
@@ -627,7 +632,7 @@ public class TextEditFrm extends AbstractTextFrm
     mnuEdit.add( this.mnuFindNext );
     mnuEdit.addSeparator();
 
-    this.mnuGoto = new JMenuItem( "Gehe zu Zeile..." );
+    this.mnuGoto = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.goto") );
     this.mnuGoto.setAccelerator( KeyStroke.getKeyStroke(
                                                 KeyEvent.VK_G,
                                                 InputEvent.CTRL_MASK ) );
@@ -636,33 +641,31 @@ public class TextEditFrm extends AbstractTextFrm
 
 
     // Menu Programmierung
-    JMenu mnuPrg = new JMenu( "Programmierung" );
+    JMenu mnuPrg = new JMenu( textEditFrmResourceBundle.getString("menu.prg") );
     mnuPrg.setMnemonic( 'P' );
     mnuBar.add( mnuPrg );
 
-    this.mnuBasicParse = new JMenuItem(
-                        "BASIC-Programm syntaktisch pr\u00FCfen" );
+    this.mnuBasicParse = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.basicParse") );
     this.mnuBasicParse.addActionListener( this );
     mnuPrg.add( this.mnuBasicParse );
 
-    this.mnuBasicIntoEmu = new JMenuItem(
-                        "BASIC-Programm in Arbeitsspeicher laden" );
+    this.mnuBasicIntoEmu = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.basicIntoEmu") );
     this.mnuBasicIntoEmu.setAccelerator(
                         KeyStroke.getKeyStroke( KeyEvent.VK_F9, 0 ) );
     this.mnuBasicIntoEmu.addActionListener( this );
     mnuPrg.add( this.mnuBasicIntoEmu );
 
     this.mnuBasicIntoEmuOpt = new JMenuItem(
-                        "BASIC-Programm in Arbeitsspeicher laden mit..." );
+        textEditFrmResourceBundle.getString("menuItem.basicIntoEmuOpt") );
     this.mnuBasicIntoEmuOpt.addActionListener( this );
     mnuPrg.add( this.mnuBasicIntoEmuOpt );
 
 
     // Menu Hilfe
-    JMenu mnuHelp = new JMenu( "?" );
+    JMenu mnuHelp = new JMenu( textEditFrmResourceBundle.getString("menu.help") );
     mnuBar.add( mnuHelp );
 
-    this.mnuHelpContent = new JMenuItem( "Hilfe..." );
+    this.mnuHelpContent = new JMenuItem( textEditFrmResourceBundle.getString("menuItem.helpContent") );
     this.mnuHelpContent.addActionListener( this );
     mnuHelp.add( this.mnuHelpContent );
 
@@ -691,32 +694,32 @@ public class TextEditFrm extends AbstractTextFrm
     this.btnNew = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/new.png",
-                                "Neu" );
+                                textEditFrmResourceBundle.getString("button.new") );
     toolBar.add( this.btnNew );
 
     this.btnOpen = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/open.png",
-                                "\u00D6ffnen" );
+                                textEditFrmResourceBundle.getString("button.open") );
     toolBar.add( this.btnOpen );
 
     this.btnSave = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/save.png",
-                                "Speichern" );
+                                textEditFrmResourceBundle.getString("button.save") );
     toolBar.add( this.btnSave );
 
     this.btnPrint = GUIUtil.createImageButton(
                                 this,
                                 "/images/file/print.png",
-                                "Drucken" );
+                                textEditFrmResourceBundle.getString("button.print") );
     toolBar.add( this.btnPrint );
     toolBar.addSeparator();
 
     this.btnUndo = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/undo.png",
-                                "R\u00FCckg\u00E4ngig" );
+                                textEditFrmResourceBundle.getString("button.undo") );
     this.btnUndo.setEnabled( false );
     toolBar.add( this.btnUndo );
     toolBar.addSeparator();
@@ -724,21 +727,21 @@ public class TextEditFrm extends AbstractTextFrm
     this.btnCut = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/cut.png",
-                                "Ausschneiden" );
+                                textEditFrmResourceBundle.getString("button.cut") );
     this.btnCut.setEnabled( false );
     toolBar.add( this.btnCut );
 
     this.btnCopy = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/copy.png",
-                                "Kopieren" );
+                                textEditFrmResourceBundle.getString("button.copy") );
     this.btnCopy.setEnabled( false );
     toolBar.add( this.btnCopy );
 
     this.btnPaste = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/paste.png",
-                                "Einf\u00FCgen" );
+                                textEditFrmResourceBundle.getString("button.paste") );
     this.btnPaste.setEnabled( false );
     toolBar.add( this.btnPaste );
     toolBar.addSeparator();
@@ -746,7 +749,7 @@ public class TextEditFrm extends AbstractTextFrm
     this.btnFindAndReplace = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/find.png",
-                                "Suchen und Ersetzen..." );
+                                textEditFrmResourceBundle.getString("button.findAndReplace") );
     toolBar.add( this.btnFindAndReplace );
 
 
@@ -839,7 +842,7 @@ public class TextEditFrm extends AbstractTextFrm
       if( addr == null ) {
         addr = GUIUtil.askHex4(
                         this,
-                        "Anfangsadresse des BASIC-Programms",
+                        textEditFrmResourceBundle.getString("doLoadBasicMem.askHex4.basicAddr"),
                         this.basicAddrFetch );
       }
       if( addr != null ) {
@@ -850,8 +853,7 @@ public class TextEditFrm extends AbstractTextFrm
         {
           Main.showError(
                 this,
-                "An der entsprechenden Adresse befindet sich\n"
-                        + "im Arbeitsspeicher kein BASIC-Programm." );
+                textEditFrmResourceBundle.getString("error.doLoadBasicMem.noBasicProgramFound.errorText") );
         } else {
           StringBuilder buf = new StringBuilder( 0x4000 );
           while( (a < 0xFFFF) && (b != 0) ) {
@@ -966,7 +968,7 @@ public class TextEditFrm extends AbstractTextFrm
           }
           setText( buf.toString() );
           this.logArea.setText( "" );
-          this.labelStatus.setText( "BASIC-Programm geladen" );
+          this.labelStatus.setText( textEditFrmResourceBundle.getString("label.status.basicProgramLoaded") );
           this.basicAddrFetch = addr;
           this.file           = null;
           this.undoMngr.discardAllEdits();
@@ -999,8 +1001,8 @@ public class TextEditFrm extends AbstractTextFrm
     if( confirmDataSaved() ) {
       File file = FileDlg.showFileOpenDlg(
                                 this,
-                                "Textdatei \u00F6ffnen",
-                                "\u00D6ffnen",
+                                textEditFrmResourceBundle.getString("dialog.doOpen.title"),
+                                textEditFrmResourceBundle.getString("dialog.doOpen.approveBtnText"),
                                 Main.getLastPathFile(),
                                 GUIUtil.textFileFilter,
                                 GUIUtil.basicFileFilter );
@@ -1054,7 +1056,7 @@ public class TextEditFrm extends AbstractTextFrm
     catch( BadLocationException ex ) {
       lineNum = null;
     }
-    lineNum = GUIUtil.askDecimal( this, "Zeile", lineNum, new Integer( 1 ) );
+    lineNum = GUIUtil.askDecimal( this, textEditFrmResourceBundle.getString("doGoto.askDecimal.line"), lineNum, new Integer( 1 ) );
     if( lineNum != null )
       gotoLine( lineNum.intValue() );
   }
@@ -1081,7 +1083,7 @@ public class TextEditFrm extends AbstractTextFrm
           if( askOpt || (addr == null) ) {
             addr = GUIUtil.askHex4(
                         this,
-                        "Anfangsadresse des BASIC-Programms",
+                        textEditFrmResourceBundle.getString("doPrgBasic.askHex4.basicAddr"),
                         addr != null ?
                                 addr
                                 : new Integer( this.basicAddrFetch ) );
@@ -1096,8 +1098,7 @@ public class TextEditFrm extends AbstractTextFrm
                 }
                 this.logArea.append(
                         String.format(
-                                "BASIC-Programm in Speicherbereich"
-                                        + " %04X-%04X geladen\n",
+                            textEditFrmResourceBundle.getString("doPrgBasic.logArea.formatString"),
                                 addr,
                                 a - 1 ) );
               }
@@ -1128,7 +1129,7 @@ public class TextEditFrm extends AbstractTextFrm
     if( forceFileDlg || (file == null) ) {
       file = FileDlg.showFileSaveDlg(
                 this,
-                "Textdatei speichern",
+                textEditFrmResourceBundle.getString("doSave.fileSaveDlg.title"),
                 this.file != null ?  this.file : Main.getLastPathFile(),
                 GUIUtil.textFileFilter,
                 GUIUtil.basicFileFilter );
@@ -1140,7 +1141,7 @@ public class TextEditFrm extends AbstractTextFrm
         Main.setLastFile( file );
         fireDataUnchanged( false );
         updTitle();
-        this.labelStatus.setText( "Datei gespeichert" );
+        this.labelStatus.setText( textEditFrmResourceBundle.getString("label.status.fileSaved") );
         rv = true;
       }
       catch( IOException ex ) {
@@ -1204,8 +1205,8 @@ public class TextEditFrm extends AbstractTextFrm
       if( !found ) {
         JOptionPane.showMessageDialog(
                 this,
-                "Text nicht gefunden",
-                "Hinweis",
+                textEditFrmResourceBundle.getString("dialog.findNext.textNotFound.message"),
+                textEditFrmResourceBundle.getString("dialog.findNext.textNotFound.title"),
                 JOptionPane.INFORMATION_MESSAGE );
       }
     }
@@ -1258,7 +1259,7 @@ public class TextEditFrm extends AbstractTextFrm
       updUndoBtn();
       fireDataUnchanged( false );
       updTitle();
-      this.labelStatus.setText( "Datei geladen" );
+      this.labelStatus.setText( textEditFrmResourceBundle.getString("label.status.fileLoaded") );
     }
     catch( IOException ex ) {
       Main.showError( this, ex );
@@ -1272,7 +1273,10 @@ public class TextEditFrm extends AbstractTextFrm
    */
   private void processLineAction( String text )
   {
-    final String[] lineBegTexts = { "Fehler in Zeile ", "Warnung in Zeile " };
+    final String[] lineBegTexts = { 
+        textEditFrmResourceBundle.getString("processLineAction.lineBegTexts.0"), 
+        textEditFrmResourceBundle.getString("processLineAction.lineBegTexts.1") 
+    };
     if( text != null ) {
       int pos = -1;
       for( int i = 0; i < lineBegTexts.length; i++ ) {
@@ -1323,9 +1327,9 @@ public class TextEditFrm extends AbstractTextFrm
   private void updTitle()
   {
     if( this.file != null ) {
-      setTitle( "JTCEMU Texteditor: " + file.getPath() );
+      setTitle( textEditFrmResourceBundle.getString("window.title")+ ": " + file.getPath() );
     } else {
-      setTitle( "JTCEMU Texteditor: Neuer Text" );
+      setTitle( textEditFrmResourceBundle.getString("window.title")+ ": " + textEditFrmResourceBundle.getString("window.title.newDocument") );
     }
   }
 
