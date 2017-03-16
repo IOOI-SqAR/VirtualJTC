@@ -1,5 +1,6 @@
 /*
  * (c) 2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -12,6 +13,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.ParseException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import jtcemu.base.*;
 import z8.Z8Memory;
@@ -19,6 +23,9 @@ import z8.Z8Memory;
 
 public class MemEditFrm extends AbstractHexCharFrm
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle memEditFrmResourceBundle = ResourceBundle.getBundle("resources.MemEditFrm", locale);
+
   private static MemEditFrm instance = null;
 
   private Z8Memory    memory;
@@ -94,7 +101,7 @@ public class MemEditFrm extends AbstractHexCharFrm
       } else if( src == this.mnuFindNext ) {
         doFindNext();
       } else if( src == this.mnuHelpContent ) {
-        HelpFrm.open( "/help/memeditor.htm" );
+        HelpFrm.open( memEditFrmResourceBundle.getString("help.path") );
       } else {
         super.actionPerformed( e );
       }
@@ -174,7 +181,7 @@ public class MemEditFrm extends AbstractHexCharFrm
       if( (caretPos >= 0) && (this.begAddr + caretPos <= this.endAddr) ) {
         ReplyBytesDlg dlg = new ReplyBytesDlg(
                                         this,
-                                        "Bytes \u00FCberschreiben",
+                                        memEditFrmResourceBundle.getString("dialog.doBytesOverwrite.replyBytesDlg.title"),
                                         this.lastInputFmt,
                                         this.lastBigEndian,
                                         null );
@@ -192,33 +199,30 @@ public class MemEditFrm extends AbstractHexCharFrm
               if( addr > 0xFFFF ) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Die von Ihnen eingegebenen Bytes gehen \u00FCber"
-                                + " die Adresse FFFF hinaus.\n"
-                                + "Es werden nur die Bytes bis FFFF"
-                                + " ge\u00E4ndert.",
-                        "Warnung",
+                        memEditFrmResourceBundle.getString("dialog.doBytesOverwrite.messageDialog.message"),
+                        memEditFrmResourceBundle.getString("dialog.doBytesOverwrite.messageDialog.title"),
                         JOptionPane.WARNING_MESSAGE );
                 break;
               } else {
                 if( !this.memory.setMemByte( addr, false, a[ src ] ) ) {
-                  String msg = String.format(
-                        "Die Speicherzelle mit der Adresse %04X\n"
-                                +  "konnte nicht ge\u00E4ndert werden.",
-                        addr );
+                  String msg = String.format( memEditFrmResourceBundle.getString("dialog.doBytesOverwrite.couldNotEditRAM.formatString"), addr );
                   if( src == (a.length - 1) ) {
                     JOptionPane.showMessageDialog(
                                 this,
                                 msg,
-                                "Fehler",
+                                memEditFrmResourceBundle.getString("dialog.doBytesOverwrite.couldNotEditRAM.title"),
                                 JOptionPane.ERROR_MESSAGE );
                   } else {
                     boolean     cancel  = true;
-                    String[]    options = { "Weiter", "Abbrechen" };
+                    String[]    options = { 
+                        memEditFrmResourceBundle.getString("doBytesOverwrite.options.continue"), 
+                        memEditFrmResourceBundle.getString("doBytesOverwrite.options.cancel") 
+                    };
                     JOptionPane pane    = new JOptionPane(
                                                 msg,
                                                 JOptionPane.ERROR_MESSAGE );
                     pane.setOptions( options );
-                    pane.createDialog( this, "Fehler" ).setVisible( true );
+                    pane.createDialog( this, memEditFrmResourceBundle.getString("dialog.doBytesOverwrite.couldNotEditRAM.title") ).setVisible( true );
                     Object value = pane.getValue();
                     if( value != null ) {
                       if( value.equals( options[ 0 ] ) ) {
@@ -265,8 +269,8 @@ public class MemEditFrm extends AbstractHexCharFrm
   private void doRefresh()
   {
     try {
-      int begAddr  = GUIUtil.parseHex4( this.fldBegAddr, "Anfangsadresse" );
-      this.endAddr = GUIUtil.parseHex4( this.fldEndAddr, "Endadresse" );
+      int begAddr  = GUIUtil.parseHex4( this.fldBegAddr, memEditFrmResourceBundle.getString("doRefresh.parseHex4.begAddr") );
+      this.endAddr = GUIUtil.parseHex4( this.fldEndAddr, memEditFrmResourceBundle.getString("doRefresh.parseHex4.endAddr") );
       this.begAddr = begAddr;
       updView();
     }
@@ -274,7 +278,7 @@ public class MemEditFrm extends AbstractHexCharFrm
       JOptionPane.showMessageDialog(
                 this,
                 ex.getMessage(),
-                "Eingabefehler",
+                memEditFrmResourceBundle.getString("dialog.doRefresh.messageDialog.title"),
                 JOptionPane.ERROR_MESSAGE );
     }
   }
@@ -303,7 +307,7 @@ public class MemEditFrm extends AbstractHexCharFrm
     this.savedAddr = -1;
     this.lastFile  = null;
     this.textFind  = null;
-    setTitle( "JTCEMU Speichereditor" );
+    setTitle( memEditFrmResourceBundle.getString("window.title") );
 
 
     // Menu
@@ -312,20 +316,20 @@ public class MemEditFrm extends AbstractHexCharFrm
 
 
     // Menu Datei
-    JMenu mnuFile = new JMenu( "Datei" );
+    JMenu mnuFile = new JMenu( memEditFrmResourceBundle.getString("menu.file") );
     mnuFile.setMnemonic( KeyEvent.VK_D );
     mnuBar.add( mnuFile );
 
-    this.mnuRefresh = new JMenuItem( "Aktualisieren" );
+    this.mnuRefresh = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.refresh") );
     this.mnuRefresh.addActionListener( this );
     mnuFile.add( this.mnuRefresh );
     mnuFile.addSeparator();
 
-    this.mnuPrintOptions = new JMenuItem( "Druckoptionen..." );
+    this.mnuPrintOptions = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.printOptions") );
     this.mnuPrintOptions.addActionListener( this );
     mnuFile.add( this.mnuPrintOptions );
 
-    this.mnuPrint = new JMenuItem( "Drucken..." );
+    this.mnuPrint = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.print") );
     this.mnuPrint.setAccelerator(
                         KeyStroke.getKeyStroke(
                                 KeyEvent.VK_P,
@@ -335,23 +339,23 @@ public class MemEditFrm extends AbstractHexCharFrm
     mnuFile.add( this.mnuPrint );
     mnuFile.addSeparator();
 
-    this.mnuClose = new JMenuItem( "Schlie\u00DFen" );
+    this.mnuClose = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.close") );
     this.mnuClose.addActionListener( this );
     mnuFile.add( this.mnuClose );
 
 
     // Menu Bearbeiten
-    JMenu mnuEdit = new JMenu( "Bearbeiten" );
+    JMenu mnuEdit = new JMenu( memEditFrmResourceBundle.getString("menu.edit") );
     mnuEdit.setMnemonic( KeyEvent.VK_B );
     mnuBar.add( mnuEdit );
 
-    this.mnuCopy = new JMenuItem( "Markierte Bytes kopieren" );
+    this.mnuCopy = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.copy") );
     this.mnuCopy.setEnabled( false );
     this.mnuCopy.addActionListener( this );
     mnuEdit.add( this.mnuCopy );
     mnuEdit.addSeparator();
 
-    this.mnuOverwrite = new JMenuItem( "Bytes \u00FCberschreiben..." );
+    this.mnuOverwrite = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.overwrite") );
     this.mnuOverwrite.setAccelerator(
                 KeyStroke.getKeyStroke( KeyEvent.VK_O, Event.CTRL_MASK ) );
     this.mnuOverwrite.setEnabled( false );
@@ -359,32 +363,30 @@ public class MemEditFrm extends AbstractHexCharFrm
     mnuEdit.add( this.mnuOverwrite );
     mnuEdit.addSeparator();
 
-    this.mnuSaveAddr = new JMenuItem( "Adresse merken" );
+    this.mnuSaveAddr = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.saveAddr") );
     this.mnuSaveAddr.setEnabled( false );
     this.mnuSaveAddr.addActionListener( this );
     mnuEdit.add( this.mnuSaveAddr );
 
-    this.mnuGotoSavedAddr = new JMenuItem(
-                                "Zur gemerkten Adresse springen" );
+    this.mnuGotoSavedAddr = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.gotoSavedAddr") );
     this.mnuGotoSavedAddr.setEnabled( false );
     this.mnuGotoSavedAddr.addActionListener( this );
     mnuEdit.add( this.mnuGotoSavedAddr );
 
-    this.mnuSelectToSavedAddr = new JMenuItem(
-                                "Bis zur gemerkten Adresse markieren" );
+    this.mnuSelectToSavedAddr = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.selectToSavedAddr") );
     this.mnuSelectToSavedAddr.setEnabled( false );
     this.mnuSelectToSavedAddr.addActionListener( this );
     mnuEdit.add( this.mnuSelectToSavedAddr );
     mnuEdit.addSeparator();
 
-    this.mnuFind = new JMenuItem( "Suchen..." );
+    this.mnuFind = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.find") );
     this.mnuFind.setAccelerator(
                 KeyStroke.getKeyStroke( KeyEvent.VK_F, Event.CTRL_MASK ) );
     this.mnuFind.setEnabled( false );
     this.mnuFind.addActionListener( this );
     mnuEdit.add( this.mnuFind );
 
-    this.mnuFindNext = new JMenuItem( "Weitersuchen" );
+    this.mnuFindNext = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.findNext") );
     this.mnuFindNext.setAccelerator(
                         KeyStroke.getKeyStroke( KeyEvent.VK_F3, 0 ) );
     this.mnuFindNext.setEnabled( false );
@@ -393,10 +395,10 @@ public class MemEditFrm extends AbstractHexCharFrm
 
 
     // Menu Hilfe
-    JMenu mnuHelp = new JMenu( "?" );
+    JMenu mnuHelp = new JMenu( memEditFrmResourceBundle.getString("menu.help") );
     mnuBar.add( mnuHelp );
 
-    this.mnuHelpContent = new JMenuItem( "Hilfe..." );
+    this.mnuHelpContent = new JMenuItem( memEditFrmResourceBundle.getString("menuItem.helpContent") );
     this.mnuHelpContent.addActionListener( this );
     mnuHelp.add( this.mnuHelpContent );
 
@@ -414,7 +416,7 @@ public class MemEditFrm extends AbstractHexCharFrm
                                         0, 0 );
 
     // Adresseingabe
-    add( new JLabel( "Anfangsadresse:" ), gbc );
+    add( new JLabel( memEditFrmResourceBundle.getString("label.startAddress") ), gbc );
 
     this.fldBegAddr = new JTextField( 4 );
     this.fldBegAddr.addActionListener( this );
@@ -426,7 +428,7 @@ public class MemEditFrm extends AbstractHexCharFrm
     gbc.fill    = GridBagConstraints.NONE;
     gbc.weightx = 0.0;
     gbc.gridx++;
-    add( new JLabel( "Endadresse:" ), gbc );
+    add( new JLabel( memEditFrmResourceBundle.getString("label.endAddress") ), gbc );
 
     this.fldEndAddr = new JTextField( 4 );
     this.fldEndAddr.addActionListener( this );
@@ -449,7 +451,7 @@ public class MemEditFrm extends AbstractHexCharFrm
     gbc.fill    = GridBagConstraints.HORIZONTAL;
     gbc.weighty = 0.0;
     gbc.gridy++;
-    add( createCaretPosFld( "Adresse" ), gbc );
+    add( createCaretPosFld( memEditFrmResourceBundle.getString("label.caretPos") ), gbc );
 
     // Anzeige der Dezimalwerte der Bytes ab Cursor-Position
     gbc.gridy++;
