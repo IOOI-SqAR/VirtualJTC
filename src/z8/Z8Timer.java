@@ -8,8 +8,6 @@
 
 package z8;
 
-import java.lang.*;
-
 
 public class Z8Timer
 {
