@@ -1,5 +1,6 @@
 /*
  * (c) 2010 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -12,12 +13,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.swing.*;
 import jtcemu.base.*;
 
 
 public class ReplyBytesDlg extends BaseDlg implements ActionListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle replyBytesDlgResourceBundle = ResourceBundle.getBundle("resources.ReplyBytesDlg", locale);
+
   public enum InputFormat { HEX8, DEC8, DEC16, DEC32, STRING };
 
   private byte[]       approvedBytes;
@@ -50,7 +57,8 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     this.approvedText      = null;
     this.approvedInputFmt  = null;
     this.approvedBigEndian = false;
-    setTitle( title != null ? title : "Eingabe" );
+
+    setTitle( title != null ? title : replyBytesDlgResourceBundle.getString("window.title") );
 
 
     // Fensterinhalt
@@ -67,16 +75,16 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
 
 
     // Eingabebereich
-    add( new JLabel( "Bytes eingeben als:" ), gbc );
+    add( new JLabel( replyBytesDlgResourceBundle.getString("label.enterBytesAs") ), gbc );
 
-    this.labelByteOrder = new JLabel( "Byte-Anordnung:" );
+    this.labelByteOrder = new JLabel( replyBytesDlgResourceBundle.getString("label.byteOrder") );
     gbc.gridx++;
     add( this.labelByteOrder, gbc );
 
     ButtonGroup grpType  = new ButtonGroup();
     ButtonGroup grpOrder = new ButtonGroup();
 
-    this.btnHex8 = new JRadioButton( "8-Bit hexadezimale Zahlen", true );
+    this.btnHex8 = new JRadioButton( replyBytesDlgResourceBundle.getString("button.hex8"), true );
     this.btnHex8.setMnemonic( KeyEvent.VK_H );
     this.btnHex8.addActionListener( this );
     grpType.add( this.btnHex8 );
@@ -85,14 +93,14 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( this.btnHex8, gbc );
 
-    this.btnLittleEndian = new JRadioButton( "Little Endian", !bigEndian );
+    this.btnLittleEndian = new JRadioButton( replyBytesDlgResourceBundle.getString("button.littleEndian"), !bigEndian );
     this.btnLittleEndian.setMnemonic( KeyEvent.VK_L );
     this.btnLittleEndian.addActionListener( this );
     grpOrder.add( this.btnLittleEndian );
     gbc.gridx++;
     add( this.btnLittleEndian, gbc );
   
-    this.btnDec8 = new JRadioButton( "8-Bit Dezimalzahlen", false );
+    this.btnDec8 = new JRadioButton( replyBytesDlgResourceBundle.getString("button.dec8"), false );
     this.btnDec8.setMnemonic( KeyEvent.VK_8 );
     this.btnDec8.addActionListener( this );
     grpType.add( this.btnDec8 );
@@ -100,14 +108,14 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( this.btnDec8, gbc );
 
-    this.btnBigEndian = new JRadioButton( "Big Endian", bigEndian );
+    this.btnBigEndian = new JRadioButton( replyBytesDlgResourceBundle.getString("button.bigEndian"), bigEndian );
     this.btnBigEndian.setMnemonic( KeyEvent.VK_B );
     this.btnBigEndian.addActionListener( this );
     grpOrder.add( this.btnBigEndian );
     gbc.gridx++;
     add( this.btnBigEndian, gbc );
   
-    this.btnDec16 = new JRadioButton( "16-Bit Dezimalzahlen", false );
+    this.btnDec16 = new JRadioButton( replyBytesDlgResourceBundle.getString("button.dec16"), false );
     this.btnDec16.setMnemonic( KeyEvent.VK_6 );
     this.btnDec16.addActionListener( this );
     grpType.add( this.btnDec16 );
@@ -115,14 +123,14 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( this.btnDec16, gbc );
 
-    this.btnDec32 = new JRadioButton( "32-Bit Dezimalzahlen", false );
+    this.btnDec32 = new JRadioButton( replyBytesDlgResourceBundle.getString("button.dec32"), false );
     this.btnDec32.setMnemonic( KeyEvent.VK_3 );
     this.btnDec32.addActionListener( this );
     grpType.add( this.btnDec32 );
     gbc.gridy++;
     add( this.btnDec32, gbc );
 
-    this.btnString = new JRadioButton( "ASCII-Zeichenkette", false );
+    this.btnString = new JRadioButton( replyBytesDlgResourceBundle.getString("button.string"), false );
     this.btnString.setMnemonic( KeyEvent.VK_A );
     this.btnString.addActionListener( this );
     grpType.add( this.btnString );
@@ -134,7 +142,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     gbc.insets.bottom = 0;
     gbc.gridwidth     = 2;
     gbc.gridy++;
-    add( new JLabel( "Eingabe:" ), gbc );
+    add( new JLabel( replyBytesDlgResourceBundle.getString("label.input") ), gbc );
 
     if( inputFmt != null ) {
       switch( inputFmt ) {
@@ -187,7 +195,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     this.btnPaste = GUIUtil.createImageButton(
                                 this,
                                 "/images/edit/paste.png",
-                                "Einf\u00FCgen" );
+                                replyBytesDlgResourceBundle.getString("button.paste") );
     this.btnPaste.addActionListener( this );
     gbcInput.fill        = GridBagConstraints.NONE;
     gbcInput.weightx     = 0.0;
@@ -205,11 +213,11 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
     gbc.gridy++;
     add( panelBtn, gbc );
 
-    this.btnOK = new JButton( "OK" );
+    this.btnOK = new JButton( replyBytesDlgResourceBundle.getString("button.ok") );
     this.btnOK.addActionListener( this );
     panelBtn.add( this.btnOK );
 
-    this.btnCancel = new JButton( "Abbrechen" );
+    this.btnCancel = new JButton( replyBytesDlgResourceBundle.getString("button.cancel") );
     this.btnCancel.addActionListener( this );
     panelBtn.add( this.btnCancel );
 
@@ -308,11 +316,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
             for( int i = 0; i < len; i++ ) {
               char ch = text.charAt( i );
               if( (ch < 0x20) || (ch > 0x7E) ) {
-                throw new ParseException(
-                        String.format(
-                                "Das Zeichen \'%c\' ist kein ASCII-Zeichen.",
-                                ch ),
-                        i );
+                throw new ParseException( String.format( replyBytesDlgResourceBundle.getString("error.doApprove.noASCII.errorText"), ch ), i );
               }
               rv[ i ] = (byte) ch;
             }
@@ -363,9 +367,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
                       }
                       catch( NumberFormatException ex ) {
                         throw new ParseException(
-                                String.format(
-                                        "%s: ung\u00FCltiges Format",
-                                        items[ i ] ),
+                                String.format( replyBytesDlgResourceBundle.getString("error.doApprove.numberFormatException.formatString"), items[ i ] ),
                                 i );
                       }
                     }
@@ -393,7 +395,7 @@ public class ReplyBytesDlg extends BaseDlg implements ActionListener
       JOptionPane.showMessageDialog(
                 this,
                 msg,
-                "Fehler",
+                replyBytesDlgResourceBundle.getString("dialog.doApprove.messageDialog.title"),
                 JOptionPane.ERROR_MESSAGE );
     }
   }
