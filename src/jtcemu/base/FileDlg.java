@@ -25,8 +25,8 @@ public class FileDlg extends BaseDlg implements
                                         ActionListener,
                                         PropertyChangeListener
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle fileDlgResourceBundle = ResourceBundle.getBundle("resources.FileDlg", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle fileDlgResourceBundle = ResourceBundle.getBundle("resources.FileDlg", locale);
 
   private static final String defaultStatusText = fileDlgResourceBundle.getString("statusText.default");
   private static       Frame  defaultOwner      = null;

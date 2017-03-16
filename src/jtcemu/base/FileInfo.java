@@ -16,8 +16,8 @@ import java.util.ResourceBundle;
 
 public class FileInfo
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle fileInfoResourceBundle = ResourceBundle.getBundle("resources.FileInfo", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle fileInfoResourceBundle = ResourceBundle.getBundle("resources.FileInfo", locale);
 
   public enum Format { JTC, TAP, HEX, BIN };
 

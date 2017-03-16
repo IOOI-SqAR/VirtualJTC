@@ -21,11 +21,11 @@ import z8.Z8;
 
 public class Main
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle mainResourceBundle = ResourceBundle.getBundle("resources.Main", locale);
+
   private static final String propsFileName = "jtcemu.props";
   
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle mainResourceBundle = ResourceBundle.getBundle("resources.Main", locale);
-
   private static TopFrm                   topFrm      = null;
   private static File                     lastFile    = null;
   private static File                     propsFile   = null;

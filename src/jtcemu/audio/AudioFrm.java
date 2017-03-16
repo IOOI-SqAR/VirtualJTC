@@ -23,12 +23,12 @@ import z8.Z8;
 
 public class AudioFrm extends BaseFrm implements ActionListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle audioFrmResourceBundle = ResourceBundle.getBundle("resources.AudioFrm", locale);
+
   private static final int[] sampleRates = {
                                 96000, 48000, 44100, 32000,
                                 22050, 16000, 11025, 8000 };
-
-  private static final Locale locale = Locale.getDefault();
-  private static final ResourceBundle audioFrmResourceBundle = ResourceBundle.getBundle("resources.AudioFrm", locale);
 
   private static AudioFrm instance = null;
 

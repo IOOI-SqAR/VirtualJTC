@@ -16,8 +16,8 @@ import java.util.ResourceBundle;
 
 public class ExtROM implements Comparable<ExtROM>
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle extROMResourceBundle = ResourceBundle.getBundle("resources.ExtROM", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle extROMResourceBundle = ResourceBundle.getBundle("resources.ExtROM", locale);
 
   private int    begAddr;
   private int    endAddr;

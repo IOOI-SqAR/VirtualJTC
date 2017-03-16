@@ -26,8 +26,8 @@ import jtcemu.Main;
 
 public abstract class AbstractTextFrm extends BaseFrm
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle abstractTextFrmResourceBundle = ResourceBundle.getBundle("resources.AbstractTextFrm", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle abstractTextFrmResourceBundle = ResourceBundle.getBundle("resources.AbstractTextFrm", locale);
 
   protected String    lineSep;
   protected JTextArea textArea;

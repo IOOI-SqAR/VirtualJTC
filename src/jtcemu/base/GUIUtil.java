@@ -24,8 +24,8 @@ import jtcemu.Main;
 
 public class GUIUtil
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle guiUtilResourceBundle = ResourceBundle.getBundle("resources.GUIUtil", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle guiUtilResourceBundle = ResourceBundle.getBundle("resources.GUIUtil", locale);
 
   public static FileFilter basicFileFilter = new FileNameExtensionFilter(
                                         guiUtilResourceBundle.getString("basicFileFilter.description"),

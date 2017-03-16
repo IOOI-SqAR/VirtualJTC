@@ -31,8 +31,8 @@ public class JTCSys implements
                         Z8Memory,
                         Z8PCListener
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle jtcSysResourceBundle = ResourceBundle.getBundle("resources.JTCSys", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle jtcSysResourceBundle = ResourceBundle.getBundle("resources.JTCSys", locale);
 
   public static enum OSType { OS2K, ES1988, ES23, ES40 };
 

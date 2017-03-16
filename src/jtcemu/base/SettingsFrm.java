@@ -24,10 +24,10 @@ public class SettingsFrm extends BaseFrm
                                 ChangeListener,
                                 ListSelectionListener
 {
-  private static final int MAX_MARGIN = 199;
-
   private static final Locale locale = Locale.getDefault();
   private static final ResourceBundle settingsFrmResourceBundle = ResourceBundle.getBundle("resources.SettingsFrm", locale);
+
+  private static final int MAX_MARGIN = 199;
 
   private static SettingsFrm instance = null;
 

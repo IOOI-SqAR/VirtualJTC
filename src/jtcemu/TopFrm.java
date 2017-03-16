@@ -32,11 +32,11 @@ public class TopFrm extends BaseFrm
                                 ActionListener,
                                 DropTargetListener
 {
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle topFrmResourceBundle = ResourceBundle.getBundle("resources.TopFrm", locale);
+
   private static final int[] screenScales = { 1, 2, 3, 4, 6, 8 };
   
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle topFrmResourceBundle = ResourceBundle.getBundle("resources.TopFrm", locale);
-
   private JTCSys                            jtcSys;
   private Z8                                z8;
   private Map<Integer,JRadioButtonMenuItem> scale2MenuItems;

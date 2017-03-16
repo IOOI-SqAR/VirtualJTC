@@ -29,8 +29,8 @@ public class HelpFrm extends BaseFrm
                                 HyperlinkListener,
                                 Printable
 {
-  private static Locale locale = Locale.getDefault();
-  private static ResourceBundle helpFrmResourceBundle = ResourceBundle.getBundle("resources.HelpFrm", locale);
+  private static final Locale locale = Locale.getDefault();
+  private static final ResourceBundle helpFrmResourceBundle = ResourceBundle.getBundle("resources.HelpFrm", locale);
 
   private static class URLStackEntry
   {
