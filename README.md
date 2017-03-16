@@ -1,5 +1,5 @@
 # VirtualJTC
-fork of jtcemu
+fork of JTCEMU
 
 VirtualJTC is a fork of jtcemu http://www.jens-mueller.org/jtcemu/ 
 and is an emulator of the JU+TE Computer http://hc-ddr.hucki.net/wiki/doku.php/tiny or JTC for short.
