@@ -109,6 +109,7 @@ public class TopFrm extends BaseFrm
     mnuScreenImg.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.screen.image.save_as"), "screen.image.save_as" ) );
 
     mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.debug"), "debug" ) );
+    mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.trace"), "trace" ) );
     mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.reass"), "reass" ) );
     mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.memedit"), "memedit" ) );
     mnuExtra.add( createJMenuItem( topFrmResourceBundle.getString("menuItem.hexedit"), "hexedit" ) );
@@ -137,8 +138,7 @@ public class TopFrm extends BaseFrm
 
 
     // Werkzeugleiste
-    JPanel panelToolBar = new JPanel(
-                new FlowLayout( FlowLayout.LEFT, 0, 0 ) );
+    JPanel panelToolBar = new JPanel( new FlowLayout( FlowLayout.LEFT, 0, 0 ) );
     add( panelToolBar, BorderLayout.NORTH );
 
     JToolBar toolBar = new JToolBar();
@@ -317,6 +317,9 @@ public class TopFrm extends BaseFrm
             }
             else if( actionCmd.equals( "debug" ) ) {
               DebugFrm.open( this.z8 );
+            }
+            else if( actionCmd.equals( "trace" ) ) {
+              InstructionTracerFrm.open( this.z8 );
             }
             else if( actionCmd.equals( "reass" ) ) {
               ReassFrm.open( this.jtcSys );

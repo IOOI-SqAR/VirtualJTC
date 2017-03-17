@@ -981,8 +981,11 @@ public class Z8 implements Runnable
         PCListenerItem[] pcListenerItems = this.pcListenerItems;
         if( pcListenerItems != null ) {
           for( int i = 0; i < pcListenerItems.length; i++ ) {
-            if( pcListenerItems[ i ].addr == this.pc )
+            if( pcListenerItems[ i ].addr == Z8PCListener.ALL_ADDRESSES) {
               pcListenerItems[ i ].listener.z8PCUpdate( this, this.pc );
+            } else if( pcListenerItems[ i ].addr == this.pc ) {
+              pcListenerItems[ i ].listener.z8PCUpdate( this, this.pc );
+            }
           }
         }
 
