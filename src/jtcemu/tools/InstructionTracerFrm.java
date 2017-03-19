@@ -47,8 +47,10 @@ public class InstructionTracerFrm extends AbstractTextFrm implements
   private JMenuItem      mnuCopy;
   private JMenuItem      mnuSelectAll;
   private JMenuItem      mnuHelpContent;
-  private JButton btnRun;
-  private JButton btnStop;
+  private JButton        btnRun;
+  private JButton        btnStop;
+  
+  private StringBuilder  trace = new StringBuilder();
 
 
   public static void close()
@@ -78,16 +80,10 @@ public class InstructionTracerFrm extends AbstractTextFrm implements
     Object src = e.getSource();
     if( src != null ) {
       if ( (src == this.mnuRun) || (src == this.btnRun) ) {
-        this.btnRun.setEnabled(false);
-        this.btnStop.setEnabled(true);
-        
-        this.z8.addPCListener(Z8PCListener.ALL_ADDRESSES, this.instructionTracer);
+        startTracing();
       }
       else if ( (src == this.mnuStop) || (src == this.btnStop) ) {
-        this.btnStop.setEnabled(false);
-        this.btnRun.setEnabled(true);
-        
-        this.z8.removePCListener(Z8PCListener.ALL_ADDRESSES, this.instructionTracer);
+        stopTracing();
       }
       else if( src == this.mnuSaveAs ) {
         doSaveAs();
@@ -295,23 +291,45 @@ public class InstructionTracerFrm extends AbstractTextFrm implements
 
         /* --- Aktionen --- */
 
+
+  private void startTracing()
+  {
+    this.btnRun.setEnabled(false);
+    this.btnStop.setEnabled(true);
+    
+    this.z8.addPCListener(Z8PCListener.ALL_ADDRESSES, this.instructionTracer);
+    
+    setText( instructionTracerFrmResourceBundle.getString("startTracing.message") );
+  }
+
+
+  private void stopTracing()
+  {
+    this.btnStop.setEnabled(false);
+    this.btnRun.setEnabled(true);
+    
+    setText( instructionTracerFrmResourceBundle.getString("stopTracing.message") );
+
+    this.z8.removePCListener(Z8PCListener.ALL_ADDRESSES, this.instructionTracer);
+    
+    setText( this.trace.toString() );
+    
+    this.textArea.requestFocus();
+    
+    if( this.trace.length() > 0 ) {
+      this.mnuSaveAs.setEnabled( true );
+      this.mnuPrint.setEnabled( true );
+      this.mnuSelectAll.setEnabled( true );
+    }
+  }
+
   /* (non-Javadoc)
    * @see jtcemu.tools.Appendable#appendLine(java.lang.String)
    */
   @Override
   public void appendLine(String line)
   {
-    String oldContent = this.textArea.getText();
-    String newContent = oldContent + line + "\n";
-    setText( newContent );
-    
-    this.textArea.requestFocus();
-    
-    if( newContent.length() > 0 ) {
-      this.mnuSaveAs.setEnabled( true );
-      this.mnuPrint.setEnabled( true );
-      this.mnuSelectAll.setEnabled( true );
-    }
+    this.trace = this.trace.append(line).append("\n");
   }
 
 
