@@ -1187,8 +1187,9 @@ public class Z8 implements Runnable
         break;
 
       case 0x09:                                        // LD r2,R1
+        b = nextByte();
         r = getWorkingRegIndex( opc >> 4 );
-        setReg( nextByte(), getRegValue( r ) );
+        setReg( b, getRegValue( r ) );
         updCycles( 6, 5 );
         break;
 

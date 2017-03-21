@@ -35,6 +35,7 @@ public class InstructionTracerFrm extends AbstractTextFrm implements
   private static InstructionTracerFrm instance = null;
 
   private InstructionTracer instructionTracer;
+  
   private Z8             z8;
   private File           lastFile;
   private JTextComponent selectionFld;
@@ -308,19 +309,40 @@ public class InstructionTracerFrm extends AbstractTextFrm implements
     this.btnStop.setEnabled(false);
     this.btnRun.setEnabled(true);
     
-    setText( instructionTracerFrmResourceBundle.getString("stopTracing.message") );
+    EventQueue.invokeLater(new Runnable()
+    {
+
+      @Override
+      public void run()
+      {
+        InstructionTracerFrm.this.setText( instructionTracerFrmResourceBundle.getString("stopTracing.message") );
+
+        InstructionTracerFrm.this.textArea.requestFocus();
+      }
+      
+    });
 
     this.z8.removePCListener(Z8PCListener.ALL_ADDRESSES, this.instructionTracer);
     
-    setText( this.trace.toString() );
     
-    this.textArea.requestFocus();
-    
-    if( this.trace.length() > 0 ) {
-      this.mnuSaveAs.setEnabled( true );
-      this.mnuPrint.setEnabled( true );
-      this.mnuSelectAll.setEnabled( true );
-    }
+    EventQueue.invokeLater(new Runnable()
+    {
+
+      @Override
+      public void run()
+      {
+        InstructionTracerFrm.this.setText( InstructionTracerFrm.this.trace.toString() );
+        
+        InstructionTracerFrm.this.textArea.requestFocus();
+        
+        if( InstructionTracerFrm.this.trace.length() > 0 ) {
+          InstructionTracerFrm.this.mnuSaveAs.setEnabled( true );
+          InstructionTracerFrm.this.mnuPrint.setEnabled( true );
+          InstructionTracerFrm.this.mnuSelectAll.setEnabled( true );
+        }
+      }
+      
+    });
   }
 
   /* (non-Javadoc)
