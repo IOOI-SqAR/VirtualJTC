@@ -1,2 +1,2 @@
-Main-Class: jtcemu.Main
+Main-Class: org.sqar.virtualjtc.jtcemu.Main
 
