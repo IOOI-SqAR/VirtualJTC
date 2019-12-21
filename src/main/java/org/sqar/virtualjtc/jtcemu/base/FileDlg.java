@@ -302,10 +302,9 @@ public class FileDlg extends BaseDlg implements
     dlg.setVisible( true );
     File   rv = null;
     String s  = dlg.getFile();
-    if( s != null ) {
-      if( !s.isEmpty() ) {
-        rv = new File( s );
-      }
+    String dir = dlg.getDirectory();
+    if( s != null && !s.isEmpty() ) {
+        rv = new File( dir, s );
     }
     return rv;
   }
