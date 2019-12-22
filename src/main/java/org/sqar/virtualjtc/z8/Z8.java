@@ -7,10 +7,14 @@
 package org.sqar.virtualjtc.z8;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Z8 implements Runnable
 {
+  private static final Logger LOGGER = Logger.getLogger(Z8.class.getName());
+
   public static class PCListenerItem
   {
     public volatile int          addr;
@@ -161,6 +165,7 @@ public class Z8 implements Runnable
   private int                       regP3M               = 0;
   private int                       regP2M               = 0;
   private int                       regTMR               = 0;
+  private int                       maxUB883XGPRNum      = 0x7F;
   private int                       maxGPRNum            = 0xEF;
   private int[]                     registers            = new int[ 0xF0 ];
   private int[]                     regOut               = new int[ 4 ];
@@ -347,6 +352,11 @@ public class Z8 implements Runnable
           break;
       }
       rv = this.registers[ r ];
+      if ( r > maxUB883XGPRNum ) {
+        // accessing upper register, probably something is going wrong here (the UB883X doesn't has them)
+        Object[] params = {Integer.toHexString(r), Integer.toHexString(rv), Integer.toHexString(this.pc)};
+        LOGGER.log(Level.INFO, "Reading value 0x{1} from register 0x{0}, at PC 0x{2}", params);
+      }
     } else {
       switch( r ) {
         case SPL:
@@ -570,6 +580,11 @@ public class Z8 implements Runnable
              && (r < this.registers.length)
              && (r <= this.maxGPRNum) )
     {
+      if ( r > maxUB883XGPRNum ) {
+        // accessing upper register, probably something is going wrong here (the UB883X doesn't has them)
+        Object[] params = {Integer.toHexString(r), Integer.toHexString(v), Integer.toHexString(this.pc)};
+        LOGGER.log(Level.INFO, "Writing value 0x{1} to register 0x{0}, at PC 0x{2}", params);
+      }
       this.registers[ r ] = v;
     } else {
       switch( r ) {
