@@ -1,0 +1,67 @@
+<html>
+<body>
+ <h1>Tastatur</h1>
+  Der Emulator bildet die originalen Tastaturen nach.
+  Das sind beim 2K-Betriebssystem die Tastatur nach
+  <a href="keyboard.htm#literature">[1]</a>,
+  beim EMR-ES&nbsp;1988 die nach <a href="keyboard.htm#literature">[2]</a>
+  und beim ES&nbsp;4.0 die Tastatur nach
+  <a href="keyboard.htm#literature">[3]</a>.
+  F&uuml;r das ES&nbsp;2.3 ist die Tastatur-Hardware in der zugeh&ouml;rigen
+  Betriebssystembeschreibung zu finden.
+  Allerdings ist diese niemals in einer Publikation erschienen.
+ <br/><br/>
+
+ <h2>1. Besonderheit beim 2K-Betriebssystem und beim EMR-ES&nbsp;1988</h2>
+  Beim 2K-Betriebssystem und beim EMR-ES&nbsp;1988 besteht
+  die originale Tastatur aus zwei Ebenen,
+  die mit einer Shift-Taste umgeschaltet werden.
+  Etwas ungew&ouml;hnlich ist jedoch, dass bei der Eingabe eines
+  Zeichens aus der Shift-Ebene die Shift-Taste und die eigentliche
+  Zeichentaste nicht zusammen sondern nacheinander zu dr&uuml;cken sind.
+  Nach dem Dr&uuml;cken der Shift-Taste merkt sich das Betriebssystem
+  den Shift-Modus und signalisiert diesen mit einem horizontalen Strich
+  am unteren rechten Bildschirmrand.
+  Nun dr&uuml;ckt man die eigentliche Zeichentaste,
+  woraufhin das Zeichen eingegeben
+  und der Shift-Modus wieder verlassen wird.
+ <br/><br/>
+  Der horizontale Strich am unteren rechten Bildschirmrand
+  ist f&uuml;r das Betriebssystem gleichzeitig auch die Merkzelle
+  (Adresse&nbsp;%FFFF im Speicher), ob Shift gedr&uuml;ckt wurde.
+  Der Emulator simuliert dieses Verhalten des Betriebssystems,
+  indem es bei Eingabe eines Zeichens aus der Shift-Ebene
+  diese Merkzelle kurzzeitig entsprechend setzt.
+  Dadurch ist machmal ein kurzzeitiges Aufleuchten des Strichs
+  am unteren rechten Bildschirmrand zu sehen.
+ <br/><br/>
+
+ <h2><a name="literature">2. Literatur</a></h2>
+  <table border="0">
+   <tr>
+    <td valign="top">[1]</td>
+    <td valign="top">
+     Dr. Hoyer, Helmut: JU+TE Computer selbst gebaut,
+     Zeitschrift <em>Jugend+Technik</em>, Heft 11/1987, Seiten 860-862,
+     Verlag Junge Welt, Berlin 1987
+    </td>
+   </tr>
+   <tr>
+    <td valign="top">[2]</td>
+    <td valign="top">
+     Dr. Hoyer, Helmut / Klotz, Norbert:
+     Tiny - der kleine Selbstbau-Computer,
+     Verlag Junge Welt GmbH, Berlin 1989
+    </td>
+   </tr>
+   <tr>
+    <td valign="top">[3]</td>
+    <td valign="top">
+     Scheutzow, Harun: Betriebssystem ES4.0 f&uuml;r den JU+TE-Computer,
+     Sonderdruck zum Jugend+Technik-Artikel in Heft 6/1990 Seite 82ff,
+     Verlag Junge Welt GmbH, Berlin 1990
+    </td>
+   </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<html>
+<body>
+ <h1>&Uuml;ber JTCEMU</h1>
+  JTCEMU ist ein Emulator, der den von Dr. Helmut Hoyer ab 1987
+  in der Zeitschrift <em>Jugend+Technik</em> ver&ouml;ffentlichten
+  <a href="../common/jtc.htm">Eigenbaucomputer</a> nachbildet.
+  Dieser Computer wird meistens <em>JU+TE-Computer</em> oder
+  <em>Ju+Te-Computer</em> genannt, manchmal aber auch einfach nur
+  <em>JUTE</em>, <em>JTC</em> oder <em>Tiny</em>.
+ <br/><br/>
+  Der Emulator enth&auml;lt sowohl das
+  <a href="../common/os2k_usage.htm">2K-Beriebssystem</a>
+  (fehlerbereinigte Version von 1988),
+  die 4K-Byte gro&szlig;en Systeme
+  <a href="../common/es1988_usage.htm">EMR-ES&nbsp;1988</a> und
+  <a href="../common/es23_usage.htm">ES&nbsp;2.3</a>
+  sowie das 6K-Betriebssystem
+  <a href="../common/es40_usage.htm">ES&nbsp;4.0</a>.
+  In den Einstellungen k&ouml;nnen Sie zwischen diesen umschalten.
+  Dabei wird auch die emulierte Hardware angepasst (z.B. Bildschirmausgabe).
+ <br/><br/>
+  Emuliert werden:
+  <ul>
+   <li>
+    Einchipmikrorechner U883 (entspricht einem Zilog Z8601-Microcontroller
+    mit 144&nbsp;Registern und 2&nbsp;KByte internem ROM)
+   </li>
+   <li>
+    je nach Einstellung 112 weitere Register (%80 bis %EF),
+    die zwar im U883 nicht, daf&uuml;r aber bei einigen
+    Z8-Microcontrollern vorhanden sind
+   </li>
+   <li>
+    je nach eingestelltem Betriebssystem
+    4, 6 oder 8&nbsp;KByte ROM<br/>
+    (davon 2&nbsp;KByte BASIC-Interpreter des U883
+    und der Rest Betriebssystem)
+   </li>
+   <li>
+    je nach Einstellung 1, 2, 8, 32 oder 64&nbsp;KByte RAM,<br/>
+    Es wird jedoch niemals RAM an den Stellen emuliert,
+    die ROM oder einen IO-Bereich enthalten.
+    Dadurch kann die tats&auml;chlich emulierte RAM-Gr&ouml;&szlig;e
+    kleiner sein als der eingestellte Wert.
+   </li>
+   <li>
+    bei 2K-Betriebssystem und 4K-System EMR-ES&nbsp;1988:
+    Grafikausgabe mit 64x64 Pixel schwarz/wei&szlig;
+   </li>
+   <li>
+    bei 4K-Betriebssystem ES&nbsp;2.3:
+    Grafikausgabe mit 128x128 Pixel schwarz/wei&szlig;
+   </li>
+   <li>
+    bei 6K-Betriebssystem ES&nbsp;4.0:
+    32&nbsp;KByte Video-RAM (vier 8&nbsp;KByte B&auml;nke)
+    f&uuml;r Grafikausgabe mit 320x192 Pixel und 16 Farben
+   </li>
+   <li><a href="../common/keyboard.htm">Tastatur</a></li>
+   <li><a href="audio.htm">Kassettenrecorderanschluss</a></li>
+   <li>
+    bei 6K-Betriebssystem optional
+    <a href="../common/rombank.htm">ROM-Bank</a>
+   </li>
+  </ul>
+ <br/>
+  Im Emulator sind auch einige Werkzeuge integriert:
+  <ul>
+   <li><a href="../common/texteditor.htm">Texteditor</a></li>
+   <li><a href="assembler.htm">Assembler</a></li>
+   <li><a href="../common/reassembler.htm">Reassembler</a></li>
+   <li><a href="debugger.htm">Debugger</a></li>
+   <li><a href="memeditor.htm">Speichereditor</a></li>
+   <li><a href="hexeditor.htm">Hex-Editor</a></li>
+</body>
+</html>

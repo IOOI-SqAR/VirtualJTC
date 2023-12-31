@@ -1,0 +1,4 @@
+Main-Class: jtcemu.platform.se.Main
+X-WWW: http://www.jens-mueller.org/jtcemu
+X-Author: Jens Mueller
+

@@ -1,0 +1,5 @@
+JavaFX-Application-Class: jtcemu.platform.fx.Main
+Main-Class: jtcemu.platform.fx.Main
+X-WWW: http://www.jens-mueller.org/jtcemu
+X-Author: Jens Mueller
+
