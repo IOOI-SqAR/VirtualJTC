@@ -25,16 +25,17 @@ public class Z8 implements Runnable
       this.addr     = addr;
       this.listener = listener;
     }
-  };
+  }
 
 
-  public enum RunMode     { RUNNING, INST_HALT, INST_STOP, DEBUG_STOP };
-  public enum DebugAction { RUN, RUN_TO_RET, STEP_INTO, STEP_OVER, STOP };
+    public enum RunMode     { RUNNING, INST_HALT, INST_STOP, DEBUG_STOP }
 
-  private enum InstType { ADD, ADC, SUB, SBC, OR, AND, TCM, TM, CP, XOR };
+    public enum DebugAction { RUN, RUN_TO_RET, STEP_INTO, STEP_OVER, STOP }
+
+    private enum InstType { ADD, ADC, SUB, SBC, OR, AND, TCM, TM, CP, XOR }
 
 
-  /*
+    /*
    * Die Tabelle dient zum Entschluesseln der Interrupt-Prioritaet.
    * Dazu werden die unteren 6 Bits des IPR als Index verwendet.
    */
@@ -165,13 +166,13 @@ public class Z8 implements Runnable
   private int                       regP3M               = 0;
   private int                       regP2M               = 0;
   private int                       regTMR               = 0;
-  private int                       maxUB883XGPRNum      = 0x7F;
+  private final int                 maxUB883XGPRNum      = 0x7F;
   private int                       maxGPRNum            = 0xEF;
-  private int[]                     registers            = new int[ 0xF0 ];
-  private int[]                     regOut               = new int[ 4 ];
-  private int[]                     portIn               = new int[ 4 ];
-  private int[]                     portOut              = new int[ 4 ];
-  private int[]                     portLastOut          = new int[ 4 ];
+  private final int[]               registers            = new int[ 0xF0 ];
+  private final int[]               regOut               = new int[ 4 ];
+  private final int[]               portIn               = new int[ 4 ];
+  private final int[]               portOut              = new int[ 4 ];
+  private final int[]               portLastOut          = new int[ 4 ];
   private int                       port3LastIn          = 0xFF;
   private volatile Z8Breakpoint[]   breakpoints          = null;
   private boolean                   flagC                = false;
@@ -184,13 +185,13 @@ public class Z8 implements Runnable
   private volatile boolean          initFired            = false;
   private volatile boolean          resetFired           = false;
   private volatile boolean          quitFired            = false;
-  private Z8Timer                   timer0               = new Z8Timer();
-  private Z8Timer                   timer1               = new Z8Timer();
+  private final Z8Timer             timer0               = new Z8Timer();
+  private final Z8Timer             timer1               = new Z8Timer();
   private Z8Memory                  memory               = null;
   private volatile Z8Debugger       debugger             = null;
   private volatile DebugAction      debugAction          = null;
   private volatile RunMode          runMode              = RunMode.RUNNING;
-  private Object                    waitMonitor          = new Object();
+  private final Object              waitMonitor          = new Object();
 
 
   public Z8( int cyclesPerSecond, Z8Memory memory, Z8IO z8io )
@@ -211,9 +212,7 @@ public class Z8 implements Runnable
     PCListenerItem[] items = null;
     if( this.pcListenerItems != null ) {
       items = new PCListenerItem[ this.pcListenerItems.length + 1 ];
-      for( int i = 0; i < this.pcListenerItems.length; i++ ) {
-        items[ i ] = this.pcListenerItems[ i ];
-      }
+        System.arraycopy(this.pcListenerItems, 0, items, 0, this.pcListenerItems.length);
     } else {
       items = new PCListenerItem[ 1 ];
     }
@@ -228,14 +227,13 @@ public class Z8 implements Runnable
       java.util.List<PCListenerItem> list = new ArrayList<PCListenerItem>(
                                                 this.pcListenerItems.length );
       boolean changed = false;
-      for( int i = 0; i < this.pcListenerItems.length; i++ ) {
-        PCListenerItem item = this.pcListenerItems[ i ];
-        if( (item.addr == addr) && (item.listener == listener) ) {
-          changed = true;
-        } else {
-          list.add( item );
+        for (PCListenerItem item : this.pcListenerItems) {
+            if ((item.addr == addr) && (item.listener == listener)) {
+                changed = true;
+            } else {
+                list.add(item);
+            }
         }
-      }
       if( changed ) {
         int n = list.size();
         if( n > 0 ) {
@@ -264,7 +262,7 @@ public class Z8 implements Runnable
           this.runMode = RunMode.RUNNING;
           this.waitMonitor.notifyAll();
         }
-        catch( IllegalMonitorStateException ex ) {}
+        catch( IllegalMonitorStateException ignored) {}
       }
     }
   }
@@ -281,7 +279,7 @@ public class Z8 implements Runnable
           this.runMode = RunMode.RUNNING;
           this.waitMonitor.notifyAll();
         }
-        catch( IllegalMonitorStateException ex ) {}
+        catch( IllegalMonitorStateException ignored) {}
       }
     }
   }
@@ -483,12 +481,12 @@ public class Z8 implements Runnable
     this.debugAction = debugAction;
     if( getRunMode() == RunMode.DEBUG_STOP ) {
       this.debugSP = getSP();
-      if( (debugAction == null) || (debugAction != DebugAction.STOP) ) {
+      if((debugAction != DebugAction.STOP)) {
         synchronized( this.waitMonitor ) {
           try {
             this.waitMonitor.notifyAll();
           }
-          catch( IllegalMonitorStateException ex ) {}
+          catch( IllegalMonitorStateException ignored) {}
         }
       }
     } else {
@@ -809,7 +807,7 @@ public class Z8 implements Runnable
           try {
             Thread.sleep( Math.min( millisToWait, 50 ) );
           }
-          catch( InterruptedException ex ) {}
+          catch( InterruptedException ignored) {}
         }
         cyclesSinceAdjust = 0;
         if( this.totalCycles > cyclesWrap ) {
@@ -829,9 +827,8 @@ public class Z8 implements Runnable
           try {
             this.waitMonitor.wait();
           }
-          catch( IllegalMonitorStateException ex ) {}
-          catch( InterruptedException ex ) {}
-          this.runMode      = RunMode.RUNNING;
+          catch(IllegalMonitorStateException | InterruptedException ignored) {}
+            this.runMode      = RunMode.RUNNING;
           this.totalCycles  = 0;
           millis1           = System.currentTimeMillis();
           if( debugger != null ) {
@@ -849,9 +846,7 @@ public class Z8 implements Runnable
       Arrays.fill( this.portIn, -1 );
 
       // Zwischenspeicher fuer Ausgangsports aktualisieren
-      for( int i = 0; i < this.portOut.length; i++ ) {
-        this.portOut[ i ] = this.portLastOut[ i ];
-      }
+        System.arraycopy(this.portLastOut, 0, this.portOut, 0, this.portOut.length);
 
       // P30: 1->0 pruefen
       if( ((this.regP3M & 0x40) == 0) && wentP3BitFrom1To0( 0x01 ) ) {
@@ -932,15 +927,13 @@ public class Z8 implements Runnable
           }
           boolean reqStop = false;
           if( breakpoints != null ) {
-            for( int i = 0; i < breakpoints.length; i++ ) {
-              Z8Breakpoint breakpoint = breakpoints[ i ];
-              if( breakpoint.isEnabled()
-                  && (pc == breakpoint.getAddress()) )
-              {
-                reqStop = true;
-                break;
+              for (Z8Breakpoint breakpoint : breakpoints) {
+                  if (breakpoint.isEnabled()
+                          && (pc == breakpoint.getAddress())) {
+                      reqStop = true;
+                      break;
+                  }
               }
-            }
           }
           if( !reqStop ) {
             if( debugAction != null ) {
@@ -974,9 +967,8 @@ public class Z8 implements Runnable
               try {
                 this.waitMonitor.wait();
               }
-              catch( IllegalMonitorStateException ex ) {}
-              catch( InterruptedException ex ) {}
-              this.runMode     = RunMode.RUNNING;
+              catch(IllegalMonitorStateException | InterruptedException ignored) {}
+                this.runMode     = RunMode.RUNNING;
               this.totalCycles = 0;
               millis1          = System.currentTimeMillis();
               debugger.z8DebugStatusChanged( this );
@@ -995,13 +987,13 @@ public class Z8 implements Runnable
         // PC-Listener?
         PCListenerItem[] pcListenerItems = this.pcListenerItems;
         if( pcListenerItems != null ) {
-          for( int i = 0; i < pcListenerItems.length; i++ ) {
-            if( pcListenerItems[ i ].addr == Z8PCListener.ALL_ADDRESSES) {
-              pcListenerItems[ i ].listener.z8PCUpdate( this, this.pc );
-            } else if( pcListenerItems[ i ].addr == this.pc ) {
-              pcListenerItems[ i ].listener.z8PCUpdate( this, this.pc );
+            for (PCListenerItem pcListenerItem : pcListenerItems) {
+                if (pcListenerItem.addr == Z8PCListener.ALL_ADDRESSES) {
+                    pcListenerItem.listener.z8PCUpdate(this, this.pc);
+                } else if (pcListenerItem.addr == this.pc) {
+                    pcListenerItem.listener.z8PCUpdate(this, this.pc);
+                }
             }
-          }
         }
 
         // Befehl ausfuehren
@@ -1021,29 +1013,26 @@ public class Z8 implements Runnable
       {
         int[] priority = null;
         int   ipr      = this.regIPR & 0x3F;
-        if( (ipr >= 0) && (ipr < iprCodings.length) ) {
-          priority = iprCodings[ ipr ];
-        }
-        if( priority == null ) {
+          priority = iprCodings[ipr];
+          if( priority == null ) {
           priority = defaultInterruptPriority;
         }
-        for( int i = 0; i < priority.length; i++ ) {
-          int irq = priority[ i ];
-          if( (irq >= 0) && (irq < interruptMasks.length) ) {
-            int m = interruptMasks[ irq ];
-            if( (this.regIRQ & this.regIMR & m) != 0 ) {
-              pushw( this.pc );
-              push( getRegValue( FLAGS ) );
-              int v   = irq * 2;
-              this.pc = (this.memory.getMemByte( v, false ) << 8)
-                                  | this.memory.getMemByte( v + 1, false );
-              this.regIRQ &= ~m;
-              this.regIMR &= 0x7F;
-              updCycles( 6, 0 );
-              break;
-            }
+          for (int irq : priority) {
+              if ((irq >= 0) && (irq < interruptMasks.length)) {
+                  int m = interruptMasks[irq];
+                  if ((this.regIRQ & this.regIMR & m) != 0) {
+                      pushw(this.pc);
+                      push(getRegValue(FLAGS));
+                      int v = irq * 2;
+                      this.pc = (this.memory.getMemByte(v, false) << 8)
+                              | this.memory.getMemByte(v + 1, false);
+                      this.regIRQ &= ~m;
+                      this.regIMR &= 0x7F;
+                      updCycles(6, 0);
+                      break;
+                  }
+              }
           }
-        }
       }
 
       // Laufzeit des Befehls ermitteln
@@ -2370,9 +2359,7 @@ public class Z8 implements Runnable
         }
       }
     } else {
-      for( int i = 0; i < this.portOut.length; i++ ) {
-        this.portLastOut[ i ] = this.portOut[ i ];
-      }
+        System.arraycopy(this.portOut, 0, this.portLastOut, 0, this.portOut.length);
     }
   }
 
