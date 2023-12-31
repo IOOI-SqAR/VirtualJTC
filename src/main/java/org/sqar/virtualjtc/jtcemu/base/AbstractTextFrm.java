@@ -21,6 +21,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.swing.JTextArea;
 import javax.swing.text.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 
 

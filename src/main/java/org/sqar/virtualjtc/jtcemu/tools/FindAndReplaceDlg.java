@@ -15,8 +15,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.regex.*;
 import javax.swing.*;
-import org.sqar.virtualjtc.jtcemu.base.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
+import org.sqar.virtualjtc.jtcemu.base.*;
 
 
 public class FindAndReplaceDlg extends BaseDlg implements ActionListener

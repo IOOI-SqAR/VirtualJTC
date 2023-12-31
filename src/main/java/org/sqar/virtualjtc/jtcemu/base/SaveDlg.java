@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 import org.sqar.virtualjtc.z8.Z8Memory;
 
@@ -29,7 +30,7 @@ public class SaveDlg extends BaseDlg implements ActionListener
   private static final String textEndAddr     = saveDlgResourceBundle.getString("text.endAddr");
   private static final String textFileBegAddr = saveDlgResourceBundle.getString("text.fileBegAddr");
 
-  private Z8Memory     memory;
+  private Z8Memory memory;
   private JTextField   fldBegAddr;
   private JTextField   fldEndAddr;
   private JTextField   fldFileBegAddr;

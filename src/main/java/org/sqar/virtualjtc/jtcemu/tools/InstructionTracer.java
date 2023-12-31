@@ -14,11 +14,11 @@ import org.sqar.virtualjtc.z8.Z8Reassembler;
 
 public class InstructionTracer implements Z8PCListener
 {
-  private Appendable    appendable;
+  private LineAppendable appendable;
   private Z8Reassembler z8Reass;
 
 
-  public InstructionTracer(Z8 z8, Appendable appendable)
+  public InstructionTracer(Z8 z8, LineAppendable appendable)
   {
     this.z8Reass    = new Z8Reassembler( z8.getMemory() );
     this.appendable = appendable;

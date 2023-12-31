@@ -16,10 +16,11 @@ import java.util.Timer;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import org.sqar.virtualjtc.jtcemu.base.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
+import org.sqar.virtualjtc.jtcemu.base.*;
 import org.sqar.virtualjtc.z8.*;
-import org.sqar.virtualjtc.z8.Z8.RunMode;
+import org.sqar.virtualjtc.z8.Z8;
 
 
 public class DebugFrm extends BaseFrm
@@ -125,7 +126,7 @@ public class DebugFrm extends BaseFrm
   public static void open( Z8 z8 )
   {
     if( instance != null ) {
-      instance.setState( Frame.NORMAL );
+      instance.setState(NORMAL);
       instance.toFront();
     } else {
       instance = new DebugFrm( z8 );
@@ -1097,7 +1098,7 @@ public class DebugFrm extends BaseFrm
         @Override
         public void run()
         {
-          final RunMode runMode = DebugFrm.this.z8.getRunMode();
+          final Z8.RunMode runMode = DebugFrm.this.z8.getRunMode();
           
           // only fire if we aren't currently running
           if (!Z8.RunMode.RUNNING.equals(runMode)) {

@@ -22,8 +22,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.undo.UndoManager;
-import org.sqar.virtualjtc.jtcemu.base.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
+import org.sqar.virtualjtc.jtcemu.base.*;
 
 
 public class TextEditFrm extends AbstractTextFrm
@@ -133,7 +134,7 @@ public class TextEditFrm extends AbstractTextFrm
   public static void open( JTCSys jtcSys )
   {
     if( instance != null ) {
-      instance.setState( Frame.NORMAL );
+      instance.setState(NORMAL);
       instance.toFront();
     } else {
       instance = new TextEditFrm( jtcSys );

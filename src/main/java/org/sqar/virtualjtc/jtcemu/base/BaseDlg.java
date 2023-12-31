@@ -11,6 +11,7 @@ package org.sqar.virtualjtc.jtcemu.base;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JDialog;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 
 

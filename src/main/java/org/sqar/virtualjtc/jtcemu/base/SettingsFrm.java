@@ -82,7 +82,7 @@ public class SettingsFrm extends BaseFrm
   public static void open( TopFrm topFrm, JTCSys jtcSys )
   {
     if( instance != null ) {
-      instance.setState( Frame.NORMAL );
+      instance.setState(NORMAL);
       instance.toFront();
     } else {
       instance = new SettingsFrm( topFrm, jtcSys );
@@ -842,7 +842,7 @@ public class SettingsFrm extends BaseFrm
       }
 
       // zum Schluss (nach JTCSys!) andere Fenster informieren
-      Frame[] frames = Frame.getFrames();
+      Frame[] frames = getFrames();
       if( frames != null ) {
         for( int i = 0; i < frames.length; i++ ) {
           Frame frm = frames[ i ];
@@ -890,7 +890,7 @@ public class SettingsFrm extends BaseFrm
   {
     Properties props = Main.getProperties();
     if( (props != null) && (this.propsFile != null) ) {
-      Frame[] frames = Frame.getFrames();
+      Frame[] frames = getFrames();
       if( frames != null ) {
         for( int i = 0; i < frames.length; i++ ) {
           Frame  f = frames[ i ];
@@ -1150,7 +1150,7 @@ public class SettingsFrm extends BaseFrm
 
   private void informLAFChanged()
   {
-    Frame[] frames = Frame.getFrames();
+    Frame[] frames = getFrames();
     if( frames != null ) {
       for( int i = 0; i< frames.length; i++ ) {
         Frame frm = frames[ i ];

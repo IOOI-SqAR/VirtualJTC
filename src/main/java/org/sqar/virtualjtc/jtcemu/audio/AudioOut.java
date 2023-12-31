@@ -11,8 +11,8 @@
 
 package org.sqar.virtualjtc.jtcemu.audio;
 
-import org.sqar.virtualjtc.jtcemu.base.JTCSys;
 import org.sqar.virtualjtc.z8.Z8;
+import org.sqar.virtualjtc.jtcemu.base.JTCSys;
 
 
 public abstract class AudioOut extends AudioIO
@@ -30,7 +30,7 @@ public abstract class AudioOut extends AudioIO
   private boolean firstPhaseChange;
 
 
-  protected AudioOut( Z8 z8, JTCSys jtcSys )
+  protected AudioOut(Z8 z8, JTCSys jtcSys )
   {
     super( z8 );
     this.jtcSys           = jtcSys;

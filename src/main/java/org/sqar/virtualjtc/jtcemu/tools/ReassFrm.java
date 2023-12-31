@@ -19,8 +19,9 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.JTextComponent;
-import org.sqar.virtualjtc.jtcemu.base.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
+import org.sqar.virtualjtc.jtcemu.base.*;
 import org.sqar.virtualjtc.z8.*;
 
 

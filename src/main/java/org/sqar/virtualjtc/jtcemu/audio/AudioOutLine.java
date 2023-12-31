@@ -10,8 +10,9 @@
 package org.sqar.virtualjtc.jtcemu.audio;
 
 import javax.sound.sampled.*;
-import org.sqar.virtualjtc.jtcemu.base.JTCSys;
+
 import org.sqar.virtualjtc.z8.Z8;
+import org.sqar.virtualjtc.jtcemu.base.JTCSys;
 
 
 public class AudioOutLine extends AudioOut
@@ -25,7 +26,7 @@ public class AudioOutLine extends AudioOut
   private int            audioDataPos;
 
 
-  public AudioOutLine( Z8 z8, JTCSys jtcSys, boolean forDataTransfer )
+  public AudioOutLine(Z8 z8, JTCSys jtcSys, boolean forDataTransfer )
   {
     super( z8, jtcSys );
     this.forDataTransfer = forDataTransfer;

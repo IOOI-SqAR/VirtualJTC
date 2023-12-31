@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 
 import javax.naming.SizeLimitExceededException;
 import javax.swing.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 import org.sqar.virtualjtc.jtcemu.base.*;
 

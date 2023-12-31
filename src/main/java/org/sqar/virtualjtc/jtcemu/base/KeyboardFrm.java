@@ -162,7 +162,7 @@ public class KeyboardFrm extends BaseFrm
   public static void open( TopFrm topFrm, JTCSys jtcSys )
   {
     if( instance != null ) {
-      instance.setState( Frame.NORMAL );
+      instance.setState(NORMAL);
       instance.toFront();
     } else {
       instance = new KeyboardFrm( topFrm, jtcSys );

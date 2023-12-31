@@ -131,7 +131,7 @@ public class Main
                 }
                 catch( IOException ex ) {
                   String msg = ex.getMessage();
-                  Main.showError(
+                  showError(
                         topFrm,
                         String.format( mainResourceBundle.getString("error.loadROMs.formatstring"), addr, msg != null ? msg : "" ) );
                 }

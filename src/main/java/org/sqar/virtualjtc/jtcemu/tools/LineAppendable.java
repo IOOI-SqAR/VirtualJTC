@@ -8,7 +8,7 @@
 
 package org.sqar.virtualjtc.jtcemu.tools;
 
-public interface Appendable
+public interface LineAppendable
 {
   void appendLine(String line);
 }

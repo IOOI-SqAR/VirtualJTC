@@ -10,12 +10,13 @@
 package org.sqar.virtualjtc.jtcemu.audio;
 
 import javax.sound.sampled.*;
+
 import org.sqar.virtualjtc.z8.Z8;
 
 
 public abstract class AudioIO
 {
-  protected Z8      z8;
+  protected Z8 z8;
   protected boolean firstCall;
   protected boolean progressEnabled;
   protected boolean lastPhase;

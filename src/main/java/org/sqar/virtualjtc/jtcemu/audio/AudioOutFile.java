@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.sound.sampled.*;
+
 import org.sqar.virtualjtc.jtcemu.base.JTCSys;
 import org.sqar.virtualjtc.z8.Z8;
 
@@ -34,8 +35,8 @@ public class AudioOutFile extends AudioOut
 
 
   public AudioOutFile(
-                Z8                   z8,
-                JTCSys               jtcSys,
+                Z8 z8,
+                JTCSys jtcSys,
                 AudioFrm             audioFrm,
                 File                 file,
                 AudioFileFormat.Type fileType,

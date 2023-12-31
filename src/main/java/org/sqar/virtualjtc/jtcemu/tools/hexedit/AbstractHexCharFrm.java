@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.swing.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 import org.sqar.virtualjtc.jtcemu.base.BaseFrm;
 

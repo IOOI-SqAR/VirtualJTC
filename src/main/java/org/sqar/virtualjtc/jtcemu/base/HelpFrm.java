@@ -19,6 +19,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.*;
 import javax.swing.*;
 import javax.swing.event.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 
 
@@ -410,7 +411,7 @@ public class HelpFrm extends BaseFrm
   private static void openInternal( String page )
   {
     if( instance != null ) {
-      instance.setState( Frame.NORMAL );
+      instance.setState(NORMAL);
       instance.toFront();
     } else {
       instance = new HelpFrm();

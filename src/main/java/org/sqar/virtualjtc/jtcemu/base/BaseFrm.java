@@ -10,6 +10,7 @@ package org.sqar.virtualjtc.jtcemu.base;
 
 import java.awt.event.*;
 import javax.swing.JFrame;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 
 

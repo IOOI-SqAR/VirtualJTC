@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.*;
+
 import org.sqar.virtualjtc.jtcemu.Main;
 
 
