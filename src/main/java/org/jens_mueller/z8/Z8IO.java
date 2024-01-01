@@ -6,7 +6,7 @@
  * Interface fuer Arbeitsspeicher
  */
 
-package z8;
+package org.jens_mueller.z8;
 
 
 public interface Z8IO

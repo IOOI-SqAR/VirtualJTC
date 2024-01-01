@@ -6,7 +6,7 @@
  * Emulation eines Timers
  */
 
-package z8;
+package org.jens_mueller.z8;
 
 
 public class Z8Timer

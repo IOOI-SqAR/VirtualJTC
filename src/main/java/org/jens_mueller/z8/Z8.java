@@ -4,7 +4,7 @@
  * Zilog Z8 Emulator
  */
 
-package z8;
+package org.jens_mueller.z8;
 
 import java.util.Arrays;
 import java.util.Random;

@@ -4,7 +4,7 @@
  * Z8-Reassembler
  */
 
-package z8;
+package org.jens_mueller.z8;
 
 import java.util.ArrayList;
 import java.util.List;

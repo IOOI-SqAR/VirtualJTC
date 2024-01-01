@@ -4,7 +4,7 @@
  * Reassemblierte Z8-Instruktion
  */
 
-package z8;
+package org.jens_mueller.z8;
 
 
 public class Z8ReassInst
