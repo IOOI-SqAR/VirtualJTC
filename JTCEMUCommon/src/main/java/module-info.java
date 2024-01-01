@@ -1,7 +1,11 @@
-module org.jens_mueller.JTCEMUCommons {
-    requires gradle.kotlin.dsl;
-    exports org.jens_mueller.jtcemu.base;
-    exports org.jens_mueller.jtcemu.tools;
-    exports org.jens_mueller.jtcemu.tools.assembler;
-    exports org.jens_mueller.z8;
+module org.jens_mueller.JTCEMUCommon {
+    exports org.jens_mueller.jtcemu.base to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+    exports org.jens_mueller.jtcemu.tools to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+    exports org.jens_mueller.jtcemu.tools.assembler to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+    exports org.jens_mueller.z8 to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+
+    opens org.jens_mueller.jtcemu.base to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+    opens org.jens_mueller.jtcemu.tools to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+    opens org.jens_mueller.jtcemu.tools.assembler to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
+    opens org.jens_mueller.z8 to org.jens_mueller.jtcemu.platform.se, org.jens_mueller.jtcemu.platform.fx;
 }

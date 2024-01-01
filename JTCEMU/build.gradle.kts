@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
+
 plugins {
     id("java")
 }
@@ -10,6 +12,8 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":JTCEMUCommon"))
+
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }

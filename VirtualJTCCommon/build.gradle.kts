@@ -1,8 +1,8 @@
 plugins {
     id("java")
-    id("java-library")
 }
 
+//name = "VirtualJTCCommon"
 group = "org.sqar.virtualjtc"
 version = "1.0-SNAPSHOT"
 

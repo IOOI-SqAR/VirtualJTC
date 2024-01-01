@@ -2,7 +2,7 @@ plugins {
   id 'java'
   id 'application'
   id 'org.javamodularity.moduleplugin' version '1.8.12'
-  id 'org.openjfx.javafxplugin' version '0.0.13'
+  id 'org.openjfx.javafxplugin' version '0.1.0'
   id 'org.beryx.jlink' version '2.25.0'
 }
 
@@ -29,19 +29,55 @@ application {
   mainClass = 'com.example.jtcemufx.HelloApplication'
 }
 
+
 javafx {
-  version = '21'
-  modules = ['javafx.controls', 'javafx.fxml']
+  version = "$javafx_version"
+  application {
+    mainClassName = "org.jens_mueller.jtcemu.platform.fx.Launcher"
+    applicationName = 'JTCemuFX'
+    modules = [ 'javafx.base','javafx.fxml','javafx.controls','javafx.graphics','javafx.web','javafx.media','javafx.swing' ]
+  }
 }
 
 dependencies {
+  implementation(project(":JTCEMUCommon"))
+
+  // here starts JavaFX
+  compileOnly "org.openjfx:javafx:$javafx_version"
+
+  compileOnly "org.openjfx:javafx-base:$javafx_version"
+  compileOnly "org.openjfx:javafx-graphics:$javafx_version"
+  compileOnly "org.openjfx:javafx-controls:$javafx_version"
+  compileOnly "org.openjfx:javafx-fxml:$javafx_version"
+  compileOnly "org.openjfx:javafx-swing:$javafx_version"
+  compileOnly "org.openjfx:javafx-media:$javafx_version"
+  compileOnly "org.openjfx:javafx-web:$javafx_version"
+
+  testImplementation 'junit:junit:4.13.1'
+}
+
+jar {
+  manifest {
+    attributes(
+            'Main-Class': 'org.jens_mueller.jtcemu.platform.fx.Launcher' // replace with you main class
+    )
+  }
+  from {
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
+dependencies {
+  implementation project(":JTCEMUCommon")
 
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 
 test {
-useJUnitPlatform()}
+  useJUnitPlatform()
+}
 
 jlink {
   imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
