@@ -1,0 +1,332 @@
+<html>
+<body>
+ <h1>Texteditor</h1>
+  Im Emulator ist ein Texteditor integriert,
+  der insbesondere f&uuml;r die Entwicklung von Assembler- und
+  <a href="basic.htm">Tiny-MP-BASIC</a>-Programmen gedacht ist.
+  Es k&ouml;nnen aber auch beliebige andere Textdateien editiert werden.
+  Neben den &uuml;blichen Editorfunktionen wie Dateien &ouml;ffnen
+  und speichern, suchen und ersetzen, Zugriff auf die Zwischenablage
+  usw. bietet er die M&ouml;glichkeit,
+  ein BASIC-Programm aus dem Arbeitsspeicher des Emulators zu laden
+  und umgekehrt wieder in den Arbeitsspeicher zu transferieren.
+ <br/><br/>
+  Nachfolgend werden nur die Funktionen beschrieben,
+  die sich von den &uuml;blichen Editorfunktionen unterscheiden.
+ <br/><br/>
+  <ul>
+   <li>
+    <a href="texteditor.htm#assemble">1. Assembler-Programm &uuml;bersetzen</a>
+   </li>
+   <li>
+    <a href="texteditor.htm#basic_to_mem">2. BASIC-Programm in Arbeitsspeicher laden</a>
+    <ul>
+     <li>
+      <a href="texteditor.htm#ext_proc">2.1. Unterst&uuml;tzung externer Prozeduren und Funktionen</a>
+     </li>
+     <li>
+      <a href="texteditor.htm#binary_code">2.2. Bin&auml;rcode in REM-Zeilen</a>
+      <ul>
+       <li>
+        <a href="texteditor.htm#brem">2.2.1. Pseudo-Anweisung <tt>BREM</tt></a>
+       </li>
+       <li>
+        <a href="texteditor.htm#asm">2.2.1. Pseudo-Anweisung <tt>ASM</tt></a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li>
+    <a href="texteditor.htm#basic_from_mem">3. BASIC-Programm aus Arbeitsspeicher laden</a>
+   </li>
+  </ul>
+ <br/>
+
+
+ <h2>
+  <a name="assemble">1. Assembler-Programm &uuml;bersetzen</a>
+ </h2>
+  Enth&auml;lt der Texteditor ein
+  <a href="asmsyntax.htm">Assembler</a>-Programm,
+  so k&ouml;nnen Sie es &uuml;bersetzen und in den Arbeitsspeicer
+  das Emulators laden.
+  Daf&uuml;r gibt es im Men&uuml; <em>Programmierung</em> die beiden
+  Eintr&auml;ge <em>Assembliere</em> und <em>Assembliere mit...</em>.
+  Beim ersten Eintrag werden die Assembler-Optionen nur einmal angezeigt,
+  beim zweiten jedesmal.
+  M&ouml;chte man also die Assembler-Optionen &auml;ndern,
+  verwendet man den zweiten des beiden Men&uuml;punkte.
+ <br/><br/>
+
+
+ <h2>
+  <a name="basic_to_mem">2. BASIC-Programm in Arbeitsspeicher laden</a>
+ </h2>
+  Der Editor enth&auml;lt einen Parser,
+  der die Syntax des angezeigten BASIC-Programms pr&uuml;ft,
+  das Programm in das komprimierte Speicherformat &uuml;berf&uuml;hrt
+  und in den Arbeitsspeicher des Emulators l&auml;dt.
+  Zu finden ist diese Funktion in Form von drei Eintr&auml;gen
+  im Men&uuml; <em>Programmierung</em>.
+  Der erste Men&uuml;punkt f&uuml;hrt nur eine
+  syntaktische Pr&uuml;fung durch,
+  die anderen beiden laden das Programm auch in den Arbeitsspeicher.
+ <br/><br/>
+  Tritt bei der syntaktischen Pr&uuml;fung ein Fehler oder
+  eine Warnung auf, wird dies im unteren Bereich des Editor ausgegeben.
+  Neben der eigentlichen Meldung wird auch die betroffene
+  BASIC-Zeile mit angezeigt.
+  Die relevante Stelle innerhalb dieser Zeile ist mit drei
+  Fragezeichen gekennzeichnet.
+ <br/><br/>
+  Um direkt von der Fehlermeldung bzw. Warnung zur betroffenen BASIC-Zeile
+  zu gelangen, klicken Sie doppelt auf die eigentliche Meldung,
+  d.h. auf die Zeile mit der Zeilennummer.
+  Der Editor setzt dann den Cursor auf die relevante BASIC-Zeile.
+ <br/><br/>
+  Der Parser beachtet streng die Besonderheiten bei
+  <a href="basic.htm#if_then_else">IF...THEN...ELSE</a>,
+  d.h. dort, wo ein <em>ELSE</em> vom BASIC-Interpreter zwar nicht
+  angemeckert wird, aber auch keine Wirkung zeigt,
+  erlaubt es der BASIC-Parser des Editors erst gar nicht.
+ <br/><br/>
+  Zus&auml;tzlich zu der vom BASIC-Interpreter vorgegebenen Syntax
+  gelten f&uuml;r den Parser folgende Regeln:
+ <br/>
+  <ul>
+   <li>Leerzeilen werden ignoriert</li>
+   <li>
+    Schl&uuml;sselw&ouml;rter, Variablen, Hexadezimalzahlen,
+    Prozedur- und Funktionsnamen k&ouml;nnen klein geschrieben werden.
+    Der Parser wandelt sie in Gro&szlig;buchstaben um.
+   </li>
+   <li>
+    Das Schl&uuml;sselwort <em>LET</em> kann entfallen.
+    Der Parser setzt es dann bei einer Zuweisung automatisch davor.
+   </li>
+   <li>
+    Enth&auml;lt eine BASIC-Zeile keine Zeilennummer,
+    wird die Zeile mit einem Semikolon getrennt an die vorherige
+    angeh&auml;ngt, d.h., aus
+    <br/><br/>
+     <tt>
+      100 A=1&#10;<br/>
+      PRINT A&#10;<br/>
+      110 END&#10;<br/>
+     </tt>
+    <br/>
+    erzeugt der Parser
+    <br/><br/>
+     <tt>
+      100 LET A=1; PRINT A&#10;<br/>
+      110 END&#10;<br/>
+     </tt>
+    <br/>
+    Daraus folgt, das die erste Zeile eine BASIC-Zeilennummer haben muss.
+    <br/><br/>
+   </li>
+   <li>
+    F&uuml;r die <em>IF</em>-Anweisung sind folgende Syntax-Varianten
+    m&ouml;glich:
+    <br/><br/>
+    <tt>
+     IF &lt;Bedingung&gt; THEN &lt;Anweisung&gt;<br/>
+     IF &lt;Bedingung&gt; THEN &lt;Zeilennummer&gt;<br/>
+     IF &lt;Bedingung&gt; &lt;Anweisung&gt;<br/>
+    </tt>
+    <br/>
+    Das Schl&uuml;sselwort <em>THEN</em> kann weggelassen werden.
+    Folgt hinter der Bedingung ein <em>GOTO</em> mit einer Zahl
+    als Zeilennummer, so kann anstelle von <em>THEN</em> auch
+    <em>GOTO</em> weggelassen werden.
+    Dies gilt jedoch nicht, wenn die Zeilennummer mit einem
+    variablen Ausdruck angegeben ist.
+   </li>
+   <li>
+    Die REM-Anweisung darf nur ASCII-Zeichen und die deutschen
+    Umlaute als Kommentar enthalten.
+    Umlaute werden entsprechend ES&nbsp;4.0 kodiert.
+   </li>
+  </ul>
+ <br/><br/>
+
+ <h3>
+  <a name="ext_proc">2.1. Unterst&uuml;tzung externer Prozeduren und Funktionen</a>
+ </h3>
+  Der Tiny-MP-BASIC-Interpreter kann durch externe Prozeduren
+  und Funktionen erweitert werden.
+  Dazu ist das Register&nbsp;8 mit der Anfangsadresse
+  einer entsprechenden Prozedurnamentabelle zu laden.
+  Wird im BASIC-Programm die Prozedur SETRR mit einer&nbsp;8
+  als erstes Argument und einem konstanten Wert als zweites
+  Argument aufgerufen, liest der BASIC-Parser die Prozedurnamentabelle
+  ein und gibt im Log-Bereich eine entsprechende Meldung aus.
+  Der BASIC-Interpreter erlaubt zwar alle Zeichen als externe
+  Prozedurnamen, allerdings kann der Texteditor nicht wissen,
+  ob eine g&uuml;ltige Prozedurnamentabelle im Speicher vorliegt.
+  Um dies zu erkennen, werden vom BASIC-Parser nur Prozedur-
+  und Funktionsnamen ber&uuml;cksichtigt,
+  die max. 32&nbsp;Zeichen lang sind und nur Buchstaben,
+  Ziffern und den Unterstrich enthalten,
+  wobei Ziffern erst ab der zweiten Stelle erlaubt sind.
+  Diese externen Prozeduren und Funktionen k&ouml;nnen wie
+  interne verwendet werden.
+  Auch die Gro&szlig;-/Kleinschreibung wird automatisch angepasst,
+  so dass darauf im BASIC-Programm nicht geachtet werden muss.
+  Allerdings kann der BASIC-Parser nicht pr&uuml;fen,
+  ob die Anzahl der Argumente stimmt,
+  denn diese Information ist in der Prozedurnamentabelle
+  nicht enthalten.
+ <br/><br/>
+  Wird eine Prozedur oder Funktion aufgerufen,
+  die keiner internen entspricht und auch in der eingelesenen
+  Tabelle nicht zu finden ist, erscheint eine Warnung.
+  So ist auch die Programmierung mit externen Prozeduren und Funktionen
+  m&ouml;glich, ohne dass zu dem Zeitpunkt die Prozedurnamentabelle
+  im Arbeitsspeicher vorhanden sein muss.
+  Eine automatische Anpassung der Gro&szlig;-/Kleinschreibung
+  findet in dem Fall nicht statt, d.h., der nicht gefundene
+  Prozedur- bzw. Funktionsname wird so wie im Texteditor geschrieben
+  in den Arbeistspeicher &uuml;bertragen.
+ <br/><br/>
+
+ <h3><a name="binary_code">2.2. Bin&auml;rcode in REM-Zeilen</a></h3>
+  Manche BASIC-Programm verwenden kleine Maschinencodeunterprogramme
+  oder Pixeldaten f&uuml;r Sprites,
+  die, um sie nicht extra laden zu m&uuml;ssen,
+  als &quot;Kommentar&quot; in eine REM-Zeile gepackt werden.
+  Nun ist die Eingabe aller bin&auml;ren Code-Werte &uuml;ber die Tastatur
+  nicht m&ouml;glich.
+  Aus diesem Grund bietet der im Texteditor enthaltene BASIC-Parser
+  eine spezielle Unterst&uuml;tzung daf&uuml;r an,
+  indem er zwei Pseudo-Anweisungen versteht, die beide
+  in eine gew&oumL;hnliche REM-Anweisung &uuml;bersetzt werden.
+ <br/><br/>
+
+ <h3><a name="brem">2.2.1. Pseudo-Anweisung <tt>BREM</tt></a></h3>
+  <tt>BREM</tt> bedeutet soviel wie <em>Binary REM</em> bzw.
+  <em>Binary Remark</em> und soll ausdr&uuml;cken,
+  dass der Kommentar mit bin&auml;ren Werten angegeben wird.
+  Konkret werden im Gegensatz zum gew&ouml;hnlichen REM-Befehl
+  die einzelnen Kommentar-Bytes nicht durch jeweils ein Zeichen,
+  sondern durch eine Dezimal- oder Hexadezimalzahl geschrieben.
+  Zur Unterscheidung muss eine Hexadezimalzahl
+  mit einem Prozentzeichen beginnen.
+ <br/><br/>
+  Beispiel:
+ <br/>
+  <tt>10 BREM %41, %42, %43</tt>
+ <br/><br/>
+  wird &uuml;bersetzt in:
+ <br/><br/>
+  <tt>10 REM ABC</tt>
+ <br/><br/>
+  Die Werte %41, %42 und %43 entsprechen den ASCII-Codes
+  der Buchstaben A, B und C.
+ <br/><br/>
+  Auf diese Art und Weise k&ouml;nnen fast beliebige Byte-Werte
+  in die Kommentarzeile geschrieben werden.
+  Das Semikolon (Wert&nbsp;59 bzw. %3B) kann jedoch nicht verwendet werden,
+  da es das Ende einer Anweisung und somit auch das Ende
+  der REM-Anweisung bedeutet.
+  Der Wert&nbsp;13 bzw. %0D gefolgt von einem Byte mit gesetztem Bit&nbsp;7
+  ist ebenfalls nicht m&ouml;glich, da das eine neue BASIC-Zeile bedeutet.
+  Beim 2K-BASIC-System und beim ES1988 k&ouml;nnen die Werte&nbsp;13
+  bzw. %0D sowie&nbsp;0 grunds&auml;tzlich nicht verwendet werden,
+  da diese dort als Zeilen- bzw. Programmende gewertet werden.
+ <br/><br/>
+  <b>Achtung!</b> Werden mehrere BREM-Anweisungen ohne Zeilenummer
+  untereinander geschrieben, so werden diese bewusst zu nur einer
+  einzigen REM-Anweisung &uuml;bersetzt,
+  um auf diese Art und Weise auch einen gr&ouml;&szlig;eren
+  Bin&aumL;rbereich im BASIC-Programm unterbringen zu k&oumL;nnen.
+ <br/><br/>
+  Beispiel:
+ <br/>
+  <tt>
+   10 BREM 65,66,67&#10;<br/>
+   REM 68,69,70&#10;<br/>
+   20 PRINT&#10;<br/>
+  </tt>
+ <br/><br/>
+  wird &uuml;bersetzt in:
+ <br/><br/>
+  <tt>
+   10 REM ABCDEF&#10;<br/>
+   20 PRINT&#10;<br/>
+ </tt>
+ <br/>
+  <b>Achtung!</b> BREM sollte nicht die letzte Anweisung in einem
+  BASIC-Programm sein, da sonst abh&auml;ngig von den konkret
+  angegebenen Byte-Werten m&ouml;glicherweise das Ende des Programms
+  nicht korrekt ermittelt werden kann.
+ <br/><br/>
+
+ <h3><a name="asm">2.2.1. Pseudo-Anweisung <tt>ASM</tt></a></h3>
+  Mit einem ASM-Befehl wird ein Assembler-Abschnitt begonnen.
+  Alle nachfolgenden Zeilen, die nicht mit einer Ziffer beginnen,
+  werden als Assembler-Quelltext betrachtet und assembliert.
+  Der vom Assembler erzeugte Code ist dann der &quot;Kommentar&quot;
+  der erzeugten REM-Anweisung.
+ <br/><br/>
+  <b>Achtung!</b> Auch bei der Pseudo-Anweisung ASM
+  gilt die Einschr&auml;nkung,
+  dass nicht alle bin&auml;ren Werte erlaubt sind.
+  Erzeugt also der Assembler ein Byte oder eine Byte-Folge,
+  welche nicht in der REM-Anweisung erlaubt sind,
+  erscheint eine entsprechende Meldung.
+ <br/><br/>
+  Intern wird dem Assembler-Abschnitt ein <tt>.org</tt>-Befehl
+  mit der aktuelle Adresse (die des ersten Bytes hinter dem erzeugten REM)
+  vorangestellt.
+  Aus diesem Grund sollte der Assembler-Abschnitt selbst keine
+  <tt>.org</tt>-Instruktion enthalten.
+ <br/><br/>
+  Die erste Zeile, die nach der ASM-Anweisung mit einer Ziffer beginnt,
+  beendet den Assembler-Block.
+  Diese Ziffer markiert den Anfang der BASIC-Zeilennummer.
+ <br/><br/>
+  Beispiel f&uuml;r ES&nbsp;4.0:
+ <br/><br/>
+  <tt>
+   10 asm&#10;<br/>
+   &nbsp;&nbsp;&nbsp;push&nbsp;rp&#10;<br/>
+   &nbsp;&nbsp;&nbsp;call&nbsp;%082d&#10;<br/>
+   &nbsp;&nbsp;&nbsp;db&nbsp;&nbsp;'Hallo',%0d,%0a,0&#10;<br/>
+   &nbsp;&nbsp;&nbsp;pop&nbsp;rp&#10;<br/>
+   &nbsp;&nbsp;&nbsp;ret&#10;<br/>
+   20 rem --- ab hier wieder BASIC ---&#10;<br/>
+   30 call&nbsp;%e003&#10;<br/>
+   40 end&#10;<br/>
+  </tt>
+ <br/>
+  <b>Achtung!</b> Enth&auml;lt ein BASIC-Programm mehrere
+  ASM-Anweisungen, wird jeder Assembler-Block eigenst&auml;ndig
+  assembliert.
+ <br/><br/>
+
+
+ <h2>
+  <a name="basic_from_mem">3. BASIC-Programm aus Arbeitsspeicher laden</a>
+ </h2>
+  Diese Funktion finden Sie in Form von zwei Eintr&auml;gen
+  im Men&uuml; <em>Datei</em>.
+  Das an der angegebenen hexadezimalen Adresse im Arbeitsspeicher
+  beginnende BASIC-Programm wird in den Editor geladen und dort angezeigt.
+  Dabei erfolgt eine Umwandlung vom
+  <a href="basic.htm#format">komprimierten Speicherformat</a>
+  in die &uuml;bliche BASIC-Darstellung, d.h.,
+  die Schl&uuml;sselw&ouml;rter werden ausgeschrieben und Leerzeichen
+  an bestimmten Stellen eingef&uuml;gt.
+ <br/><br/>
+  Mit Hilfe dieser Funktion kann auch ein im Arbeitsspeicher
+  befindliches BASIC-Programm ausgedruckt werden,
+  indem man es einfach &uuml;ber die Druckfunktion des Editors druckt.
+ <br/><br/>
+  <b>Hinweis:</b> REM-Anweisungen, die im Kommentar Bytes enthalten,
+  die keine ASCII-Zeichen und auch keine deutsche Umlaute
+  entsprechend ES&nbsp;4.0 sind,
+  werden als <a href="texteditor.htm#brem">BREM</a> angezeigt.
+</body>
+</html>

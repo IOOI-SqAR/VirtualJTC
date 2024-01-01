@@ -1,0 +1,108 @@
+<html>
+<body>
+ <h1>Debugger</h1>
+  Der Debugger dient zur Verfolgung der Programmausf&uuml;hrung im Emulator.
+  Dazu k&ouml;nnen Sie Haltepunkte setzen,
+  die Programmausf&uuml;hrung anhalten,
+  die Registerinhalte sehen und ggf. auch &auml;ndern sowie
+  einzelne Prozessorbefehle oder Unterprogramme ausf&uuml;hren
+  bzw. die Programmausf&uuml;hrung fortsetzen.
+ <br/><br/>
+  <ul>
+   <li><a href="debugger.htm#reg">1. Register</a></li>
+   <li>
+    <a href="debugger.htm#stop">2. Programmausf&uuml;hrung anhalten</a>
+   </li>
+   <li><a href="debugger.htm#break">3. Haltepunkte</a></li>
+   <li><a href="debugger.htm#exec">4. Befehle ausf&uuml;hren</a></li>
+   <li><a href="debugger.htm#cycles">5. Taktzyklen</a></li>
+  </ul>
+ <br/>
+
+
+ <h2><a name="reg">1. Register</a></h2>
+  Der Bereich f&uuml;r die Anzeige der Register teilt sich
+  oben in die Steuerregister und unten in die allgemeinen Register,
+  die auch die beiden Register f&uumL;r die Ports&nbsp;2 und 3 enthalten.
+  Die Register&nbsp;0 und 1 werden nicht angezeigt,
+  da diese beiden Ports beim JU+TE-Computer f&uuml;r den Daten- und
+  Adressbus verwendet werden und somit als Ein-/Ausgabetore
+  nicht zur Verf&uuml;gung stehen.
+ <br/><br/>
+  Haben Sie in den Einstellungen die Option
+  <a href="settings.htm#reg_count">Register %80 bis %EF emulieren</a>
+  aktiviert, erscheint im oberen Bereich des Debugger-Fensters
+  eine M&ouml;glichkeit zur Umschaltung der Anzeige
+  der Register bis&nbsp;%80 und ab %80.
+  Diese ist aktiv, wenn die Programmausf&uuml;hrung angehalten wurde
+  (siehe weiter unten).
+  Die Umschaltm&ouml;glichkeit schaltet konkret zwischen den
+  Registerbereichen %10 bis %7F und %80 bis %EF um.
+  Die Register 2 bis %0F und die Steuerregister sind immer sichtbar.
+ <br/><br/>
+
+
+ <h2><a name="stop">2. Programmausf&uuml;hrung anhalten</a></h2>
+  Die Programmausf&uuml;hrung wird mit dem Men&uuml;punkt
+  <em>Programmausf&uuml;hrung anhalten</em> im Men&uuml; <em>Debuggen</em>
+  oder bei Erreichen eines aktiven Haltepunktes angehalten.
+  Beim Anhalten werden die aktuellen Werte der Prozessorregister angezeigt
+  und die Registergruppe, auf die der Register Pointer&nbsp;RP
+  (Register&nbsp;%FD) zeigt, farblich hervorgehoben.
+ <br/><br/>
+  Die Registerinhalte k&ouml;nnen Sie nun &auml;ndern.
+  Ge&auml;nderte Werte werden ebenfalls farblich hervorgehoben.
+  M&ouml;chten Sie einen ge&auml;nderten Wert wieder zur&uuml;cksetzen,
+  ist das &uuml;ber ein Kontextmen&uuml;
+  (rechte Maustraste &uuml;ber dem Register) m&ouml;glich.
+ <br/><br/>
+  Um Missverst&auml;ndnisse zu vermeiden, k&ouml;nnen die Register
+  2, 3, SIO, T1, PRE1, T0 und PRE0 nicht ge&auml;ndert werden.
+  Diese Register haben n&auml;mlich beim Lesen und Schreiben eine
+  unterschiedliche Bedeutung.
+ <br/><br/>
+
+
+ <h2><a name="break">3. Haltepunkte</a></h2>
+  Die Funktionen zum Verwalten der Haltepunkte finden Sie im Men&uuml;
+  <em>Debuggen</em> und im Kontextmen&uuml; &uuml;ber den Bereich
+  <em>Haltepunkte&nbsp;auf...</em> am rechten Fensterrand.
+ <br/><br/>
+  Es gibt drei Arten von Haltepunkten:
+ <br/>
+  <ul>
+   <li>Haltepunkte auf eine Programmadresse (PC-Adresse)</li>
+   <li>Haltepunkte auf einen Speicherzugriff</li>
+   <li>Haltepunkte auf einen Registerzugriff</li>
+  </ul>
+ <br/>
+  Bei den Haltepunkten m&uuml;ssen die Adressen bzw. Registernummern
+  mit ihrem hexadezimalen Wert angegeben werden.
+  Des Weiteren k&ouml;nnen sie auch inaktiv gesetzt werden,
+  d.h., bei diesen wird dann nicht angehalten.
+  Aktive Haltepunkte werden mit einem kleinen Stoppsymbol markiert.
+ <br/><br/>
+
+
+ <h2><a name="exec">4. Befehle ausf&uuml;hren</a></h2>
+  Mit den weiteren Funktionen im Men&uuml; <em>Debuggen</em>
+  k&ouml;nnen Sie einzelne Befehle oder Befehlsgruppe ausf&uuml;hren
+  oder die Programmausf&uuml;hrung generell fortsetzen.
+  An aktiven Haltepunkten wird jedoch angehalten,
+  solange der Debugger ge&ouml;ffnet ist.
+ <br/><br/>
+
+
+ <h2><a name="cycles">5. Taktzyklen</a></h2>
+  Die Taktzyklen werden mitgez&auml;hlt und unten links angezeigt.
+  Der Taktzyklenz&auml;hler kann mit einem Click auf
+  <em>Zur&uuml;cksetzen</em> beliebig oft wieder auf Null gesetzt werden.
+  Damit kann l&auml;sst sich z.B. die Laufzeit von
+  Programmcodeabschnitten ermitteln.
+  Dazu setzt man je einen Haltepunkt auf den Anfang und das Ende
+  des betreffenden Programmcodeabschnitts,
+  setzt beim Erreichen des ersten Haltepunkt den Taktzyklenz&auml;hler
+  zur&uuml;ck, startet die Programmausf&uuml;hrung wieder und
+  liest beim zweiten Haltepunkt die Anzahl der Taktzyklen ab.
+</body>
+</html>

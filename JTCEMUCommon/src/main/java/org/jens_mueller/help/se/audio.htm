@@ -1,0 +1,243 @@
+<html>
+<body>
+ <h1>Audio/Kassette</h1>
+  Der JU+TE-Computer verwendet als Massenspeicher einen Kassettenrecorder.
+  Beim Emulator werden dagegen die Dateien &uuml;blicherweise nicht mehr
+  auf Kassette, sondern im Dateisystem des Emulatorrechners gespeichert.
+  Trotzdem kann JTCEMU den Anschluss f&uuml;r den Kassettenrecorder
+  emulieren, und zwar wahlweise &uuml;ber das Sound-System
+  oder &uuml;ber Sound- bzw. Tape-Dateien.
+ <br/><br/>
+  Damit der Kassettenrecorderanschluss emuliert wird,
+  m&uuml;ssen Sie im Hauptfenster &uuml;ber das Men&uuml;
+  <em>Extra</em> das Fenster <em>Audio/Kassette</em> &ouml;ffnen
+  und darin eine entsprechende Audiofunktion aktivieren.
+  Dieses Fenster enth&auml;lt je ein Unterfenster f&uuml;r die Emulation
+  des Kassettenrecorderanschlusses eingangsseitig und ausgangsseitig.
+  Beim <a href="../common/os2k_usage.htm">2K-Betriebssystem</a>
+  kommt noch ein drittes Unterfenster f&uuml;r die Emulation
+  des Lautsprechers hinzu, denn dessen Hardware ist etwas anders
+  ausgef&uuml;hrt als die des Ausgangs zum Kassettenrecorder.
+ <br/><br/>
+  <ul>
+   <li>
+    <a href="audio.htm#tape_in">1. Eingang Kassette</a>
+    <ul>
+     <li>
+      <a href="audio.htm#line_in">1.1. Audiodaten von Sound-System lesen</a>
+     </li>
+     <li>
+      <a href="audio.htm#file_in">1.2. Audiodaten aus Sound- oder Tape-Datei lesen</a>
+     </li>
+     <li>
+      <a href="audio.htm#last_file_in">1.3. Letzte Sound- oder Tape-Datei noch einmal lesen</a>
+     </li>
+     <li>
+      <a href="audio.htm#dnd">1.4. Drag &amp; Drop</a>
+     </li>
+    </ul>
+   </li>
+   <li><a href="audio.htm#tape_out">2. Ausgang Kassette</a></li>
+   <li><a href="audio.htm#loudspeaker">3. Lautsprecher</a></li>
+   <li>
+    <a href="audio.htm#fileformats">4. Unterst&uuml;tzte Dateiformate</a>
+   </li>
+  </ul>
+ <br/>
+
+
+ <h2><a name="tape_in">1. Eingang Kassette</a></h2>
+  Die Funktionen in diesem Unterfenster dienen zur Emulation
+  des Anschlusses f&uuml;r den Kassettenrecorder f&uuml;r
+  die Daten&uuml;bertragung zum JU+TE-Computer hin, d.h. zum Einlesen
+  von auf Kassette gespeicherten Programmen und Daten.
+  Als Datenquelle stehen zur Verf&uuml;gung:
+ <br/>
+  <ul>
+   <li>Sound-System</li>
+   <li>Sound-/Tape-Dateien</li>
+  </ul>
+ <br/>
+
+ <h3><a name="line_in">1.1. Audiodaten von Sound-System lesen</a></h3>
+  Diese Funktion dient dazu, Programme und Daten direkt
+  von Kassette einzulesen. Dazu muss der Kassettenrecorder
+  am Emulatorrechner angeschlossenen werden.
+  Des Weiteren ist sicherzustellen, dass im Betriebssystem
+  der Audiokanal bzw. das betreffende Audioger&auml;t aufgeregelt ist
+  und somit die Audiodaten den Emulator auch erreichen.
+  Wenn im JTCEMU die Audiofunktion aktiviert ist,
+  sehen Sie anhand der Pegelanzeige,
+  ob der Emulator Audiodaten empf&auml;ngt.
+  Ist das der Fall, geben Sie im emulierten JU+TE-Computer
+  das Kommando zum Einlesen von Kassette ein,
+  best&auml;tigen aber noch nicht mit Enter
+  (nicht relevant beim 2K-System und beim BASIC im ES1988).
+  Anschlie&szlig;end starten Sie am Kassettenrecorder das Abspielen.
+  Sobald der Vorton zu h&ouml;ren ist, beginnen Sie das Laden mit Enter
+  bzw. im 2K-System und im ES1988-BASIC mit Shift-O.
+ <br/><br/>
+  Bevor Sie die Audiofunktion aktivieren, k&ouml;nnen Sie im Bereich
+  <em>Optionen</em> das Ger&auml;t ausw&auml;hlen,
+  von dem die Audiodaten gelesen werden sollen.
+  Das Ger&auml;t kann ein physischer Anschluss, ein reales Ger&auml;t
+  oder auch eine Softwarekomponente (z.B. Treiber) sein.
+  Normalerweise k&ouml;nnen Sie die Auswahl auf <em>Standard</em>
+  stehen lassen.
+  Sinnvoll ist die Auswahl jedoch dann, wenn z.B. per USB
+  ein weiteres Audioger&auml;t angeschlossen ist
+  und Sie dieses verwenden m&ouml;chten.
+ <br/><br/>
+  Eine weitere Option ist die <em>Abtastrate</em>.
+  Steht sie auf <em>Standard</em>,
+  probiert JTCEMU mehrere g&auml;ngige Abtastraten durch,
+  angefangen mit 44,1&nbsp;KHz (CD-Qualit&auml;t).
+  Die manuelle Auswahl der Abtastrate ist nur in speziellen
+  Ausnahmef&auml;llen notwendig.
+ <br/><br/>
+  JTCEMU versucht den Audiokanal in Stereo zu &ouml;ffnen,
+  auch wenn die Kassettenaufzeichnung nur Mono ist.
+  Der Grund ist folgender: Hat man einen Stereo-Kassettenrecorder
+  angeschlossen und spielt dort die Kassette ab, wird das Band
+  an zwei unterschiedlichen (benachbarten) Stellen abgetastet.
+  Dadurch hat auch jeder Kanal (links und rechts) trotz Mono-Aufzeichnung
+  leicht unterschiedliche Audiodaten.
+  Wird nun am Emulatorrechner dieses Stereo-Signal in Mono gelesen,
+  werden die beiden Kan&auml;le einfach zusammengemischt,
+  was die Qualit&auml;t der Audiodaten verschlechtern kann.
+  Besser ist, nur von einem Kanal zu lesen, meistens dem linken.
+  Aus diesem Grund gibt es in den Optionen die M&ouml;glichkeit,
+  den aktiven Kanal (links oder rechts) auszuw&auml;hlen.
+  Sollte sich wider Erwarten der Audiokanal nur in Mono &ouml;ffnen lassen,
+  ist diese Auswahlm&ouml;glichkeit gedimmt.
+ <br/><br/>
+  Beim <a href="../common/os2k_usage.htm">2K-Betriebssystem</a>
+  gibt es noch als weitere Option den <em>Schwellwert</em>.
+  Diese Einstellm&ouml;glichkeit entspricht dem Potentiometer
+  in der realen Hardware.
+  Das 2K-Betriebssystem verwendet zur Speicherung auf Kassette
+  ein Amplituden-Modulationsverfahren.
+  Deshalb muss am realen JU+TE-Computer und somit auch in der Emulation
+  der Schwellwert eingestellt werden, ab wann eine gewisse Amplitude
+  als 1-Pegel gewertet wird.
+  Dieser Wert muss durch Ausprobieren gefunden werden.
+  Als Hilfestellung gibt es sowohl im Original als auch im Emulator
+  (rechts neben dem Schieberegler) eine LED.
+  Der Schieberegler ist so einzustellen, dass beim Vorton die LED
+  dauerhaft leuchtet, nach dem Vorton flackert und nach der Aufnahme
+  dunkel bleibt.
+ <br/><br/>
+  <b>Achtung!</b> Aufgrund der Amplituden-Modulation darf der Befehl
+  zum Einlesen (Shift-O) erst dann eingegeben werden,
+  wenn der Vorton zu h&ouml;ren ist.
+  Startet man schon vor dem Vorton das Einlesen,
+  wird es nicht erfolgreich sein.
+ <br/><br/>
+
+ <h3>
+  <a name="file_in">1.2. Audiodaten aus Sound- oder Tape-Datei lesen</a>
+ </h3>
+  Diese Funktion wird verwendet, wenn sich die Kassettenaufzeichnung
+  in einer Sound- oder Tape-Datei befindet
+  (siehe <a href="audio.htm#fileformats">Unterst&uuml;tzte Dateiformate</a>).
+  Beim Aktivieren der Funktion wird man nach der gew&uuml;nschten Datei
+  gefragt.
+  Hat man diese ausgw&auml;hlt, muss man sie noch <em>Abspielen</em>.
+  Wie bei einem realen Kassettenrecorder kann man auch auf
+  <em>Pause</em> dr&uuml;cken.
+ <br/><br/>
+  Hat die Sound-Datei mehrere Kan&auml;e (Stereo),
+  ist auch die Auswahl des aktiven Kanals m&ouml;glich.
+  Des Weiteren kann man den ausgew&auml;hlten Kanal auch mith&ouml;ren.
+  Dieser wird dann auf der Standard-Sound-Ausgabe wiedergegeben.
+  Ein spezielles Audioger&auml;t kann f&uuml;r das Mith&ouml;ren
+  nicht gew&auml;hlt werden.
+ <br/><br/>
+  Zum Verk&uuml;rzen der Wartezeit beim Einlesen gibt es die
+  Schaltfl&auml;che <em>Turbo</em>,
+  die beim Abspielen gedr&uuml;ckt werden kann.
+  Diese schaltet bis zum Ende des Abspielens den Emulator
+  auf maximale Geschwindigkeit.
+ <br/><br/>
+  <b>Achtung!</b> Turbo und Mith&ouml;ren schlie&szlig;en sich
+  gegenseitig aus.
+ <br/><br/>
+
+ <h3>
+  <a name="last_file_in">1.3. Letzte Sound- oder Tape-Datei noch einmal lesen</a>
+ </h3>
+  Diese Funktion unterscheidet sich von der vorherigen nur dadurch,
+  dass kein Dateiauswahldialog erscheint,
+  sondern die vorher schon einmal ausgew&auml;hlte Datei
+  noch einmal gelesen wird.
+  Dementsprechend steht die Funktion nur zur Verf&uuml;gung,
+  wenn schon mal eine Datei ausgew&auml;hlt wurde.
+  Sinnvoll ist die Funktion, wenn man beim Einlesen
+  einen Fehler gemacht hat und deshalb noch einmal einlesen muss.
+ <br/><br/>
+
+ <h3><a name="dnd">1.4. Drag &amp; Drop</a></h3>
+  Man kann eine Sound- bzw. Tape-Datei auch zum Einlesen &ouml;ffnen,
+  indem man sie per Drag &amp; Drop in das Fenster <em>Audio/Kassette</em>
+  zieht und im Unterfenster <em>Eingang Kassette</em>
+  &uuml;ber dem Feld <em>Datei</em> losl&auml;sst.
+ <br/><br/>
+
+
+ <h2><a name="tape_out">2. Ausgang Kassette</a></h2>
+  Diese Funktion dient dazu, die am emulierten Kassettenrecorderanschluss
+  ausgegebenen T&ouml;ne h&ouml;rbar zu machen und bzw. oder
+  in eine Sound- bzw. Tape-Datei zu speichern.
+ <br/><br/>
+  M&ouml;chten Sie die ausgegebenen T&ouml;ne h&ouml;ren,
+  dann klicken Sie die Funktion
+  <em>Audiodaten &uuml;ber Sound-System ausgeben</em> an.
+  Als Optionen stehen die Auswahl des Ger&auml;tes
+  und der Abtastrate zur Verf&uuml;gung (beschrieben im Abschnitt
+  <a href="audio.htm#line_in">Audiodaten von Sound-System lesen</a>).
+ <br/><br/>
+  Zum Speichern in eine Datei w&auml;hlen Sie die Funktion
+  <em>Audiodaten aufnehmen und in Datei speichern</em>.
+  Bei dieser Funktion nimmt JTCEMU die am emulierten
+  Kassettenrecorderanchluss ausgegebenen T&ouml;ne erst einmal auf
+  und merkt sie sich intern.
+  Nach Deaktivieren der Audiofunktion k&ouml;nnen Sie dann
+  diese interne Aufnahme wiedergeben oder als Sound-
+  bzw. Tape-Datei speichern.
+ <br/><br/>
+  <b>Achtung</b> Die Aufnahme beginnt mit dem ersten Phasenwechsel
+  nach Aktivieren der Audiofunktion und endet kurz nach
+  beim letzten Phasenwechsel vor dem Deaktivieren.
+  Dadurch hat die Aufnahme weder an ihrem Anfang noch an ihrem Ende
+  eine h&ouml;rbare Pause.
+  Allerdings kann es innerhalb der Aufnahme eine Pause geben.
+ <br/><br/>
+
+
+ <h2><a name="loudspeaker">3. Lautsprecher</a></h2>
+  Dieses Unterfenster gibt es nur beim
+  <a href="../common/os2k_usage.htm">2K-Betriebssystem</a>
+  und ist funktional identisch zu
+  <a href="audio.htm#tape_out">Ausgang Kassette</a>.
+  Unterschiedlich ist nur, dass dieses Unterfenster sich auf die
+  am emulierten Lautsprecheranschluss ausgegebenen T&ouml;ne bezieht.
+ <br/><br/>
+
+
+ <h2><a name="fileformats">4. Unterst&uuml;tzte Dateiformate</a></h2>
+  Die von JTCEMU unterst&uuml;tzten Dateiformate f&uuml;r Sound-Dateien
+  h&auml;ngen von der verwendeten Java-Laufzeitumgebung ab.
+  &Uuml;blicherweise wird jedoch mindestens das WAV-Format
+  mit 8- und 16-Bit PCM-Encoding untest&uuml;tzt.
+ <br/><br/>
+  Tape-Datei sind Dateien, deren Formate speziell zum Speichern
+  von Kassettenaufzeichnungen f&uuml;r Computer entwickelt wurden.
+  Im Gegensatz zu Sound-Dateien werden bei Tape-Dateien die einzelnen
+  Samples mit nur einem Bit Aufl&ouml;sung gespeichert.
+  JTCEMU unterst&uuml;tzt Tape-Dateien im CSW-Format
+  (Compressed Square Wave).
+  Es k&ouml;nnen CSW-Dateien in den Versionen&nbsp;1 und 2
+  eingelesen werden.
+  Beim Speichern wird dagegen immer Version&nbsp;2 erzeugt.
+</body>
+</html>

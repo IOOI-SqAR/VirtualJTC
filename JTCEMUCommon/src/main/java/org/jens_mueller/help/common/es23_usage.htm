@@ -1,0 +1,249 @@
+<html>
+<body>
+ <h1>Bedienung des Betriebssystems ES&nbsp;2.3</h1>
+  Das Betriebssystem beinhaltet einen BASIC-Editor
+  und einen Maschinenmonitor.
+  Nach dem Einschalten, d.h. nach dem Starten des Emulators,
+  und nach einem RESET meldet sich der BASIC-Editor.
+ <br/><br/>
+  <ul>
+   <li><a href="es23_usage.htm#basic">1. BASIC-Editor</a></li>
+   <li><a href="es23_usage.htm#mon">2. Maschinenmonitor</a></li>
+   <li><a href="es23_usage.htm#edit">3. Editierfunktionen</a></li>
+  </ul>
+ <br/><br/>
+
+
+ <h2><a name="basic">1. BASIC-Editor</a></h2>
+  Der BASIC-Editor kennt folgende Kommandos:
+ <br/><br/>
+  <table border="1">
+   <tr><th>Kommando</th><th>Bedeutung</th></tr>
+   <tr>
+    <td valign="top">C</td>
+    <td>Setzt das BASIC-Programm nach einer STOP-Anweisung fort</td>
+   </tr>
+   <tr>
+    <td valign="top">E</td>
+    <td>
+     Listet das BASIC-Programm zeilenweise auf,<br/>
+     Mit der Leertaste wird die n&auml;chste Zeile angezeigt.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top">L</td>
+    <td>
+     L&auml;dt ein Programm von Kassette auf die Standardadresse
+     f&uuml;r BASIC-Programme (%E000),<br/>
+     Das Kommando sollte erst gestartet werden,
+     wenn bereits der Vorton zu h&ouml;ren ist.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top">N</td>
+    <td>L&ouml;scht das BASIC-Programm aus dem Arbeitsspeicher</td>
+   </tr>
+   <tr>
+    <td valign="top">M</td>
+    <td>
+     Ruft den <a href="es23_usage.htm#mon">Maschinenmonitor</a> auf
+    </td>
+   </tr>
+   <tr><td valign="top">R</td><td>Startet das BASIC-Programm</td></tr>
+   <tr>
+    <td valign="top">S</td>
+    <td>Speichert ein BASIC-Programm auf Kassette</td>
+   </tr>
+   <tr>
+    <td valign="top">?X</td>
+    <td>Gibt den Wert der Variable X aus</td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>&lt;5-stellige Zahl&gt;</td>
+    <td>
+     Eingabe oder L&ouml;schen einer BASIC-Zeile,<br/>
+     Wird hinter der Zahl nichts weiter angegeben, l&ouml;scht der Editor
+     die BASIC-Zeile mit dieser Zeilennummer.
+     Anderenfalls wird eine BASIC-Zeile mit dieser Zeilennummer
+     eingegeben.
+     Dabei m&uuml;ssen die BASIC-Anweisungen in der Kurzform des
+     <a href="basic.htm#format">komprimierten Speicherformats</a>
+     geschrieben werden.
+    <br/><br/>
+     <b>Achtung!</b> Die Zeilennummer muss 5-stellig angegeben werden,
+     also z.B. <em>00010</em>.
+    </td>
+   </tr>
+  </table>
+ <br/><br/>
+
+
+ <h2><a name="mon">2. Maschinenmonitor</a></h2>
+  Der Maschinenmonitor dient zum Anzeigen und Beschreiben
+  von Speicherbereichen mit Hexadezimalzahlen und/oder ASCII-Zeichen.
+  Die Tabelle zeigt die Kommandos des Maschinenmonitors,
+  wobei alle einzugebenden Werte mit Ausnahme bei ASCII-Zeichen hexadezimal
+  (gro&szlig; geschrieben und ohne vorangestelltes Prozentzeichen)
+  angegeben werden m&uuml;ssen.
+ <br/><br/>
+  <table border="1">
+   <tr><th>Kommando</th><th>Bedeutung</th></tr>
+   <tr>
+    <td valign="top" nowrap>,aaaa xx xx xx xx</td>
+    <td>
+     Schreibt die max. 4 angegebenen Bytes in den Speicher
+     ab Adresse aaaa
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>;aaaa cccccccc</td>
+    <td>
+     Schreibt die 8 angegebenen ASCII-Zeichen in den Speicher
+     ab Adresse aaaa,<br/>
+     Es werden immer 8 Bytes geschrieben.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>?aaaa bbbb</td>
+    <td>
+     Berechnet aaaa+bbbb und aaaa-bbbb und gibt die beiden Ergebnisse aus
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Aaaaa</td>
+    <td>SIC-Editor
+     Der Speicher ab Adresse aaaa wird als ASCII angezeigt.
+     F&uuml;r die Werte %00 bis %0F werden Leerzeichen ausgegeben.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Faaaa nnnn xx</td>
+    <td>F&uuml;llt den Speicher ab Adresse aaaa mit nnnn Bytes xx</td>
+   </tr>
+   <tr>
+   <td valign="top" nowrap>Haaaa</td>
+    <td>Zeigt ab Adresse aaaa 4 Bytes hexadezimal an</td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Jaaaa</td>
+    <td>
+     Startet ein Maschinenprogramm auf Adresse aaaa mit einem CALL-Befehl,
+     d.h., das Maschinenprogramm kann mit einem RET-Befehl beendet werden.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Laaaa</td>
+    <td>
+     L&auml;dt eine Datei von Kassette in den Arbeitsspecher
+     ab Adresse aaaa,<br/>
+     Nach dem Laden wird die Anzahl der geladenen Bytes und
+     der R&uuml;ckgabecode (Null bedeutet kein Fehler) ausgegeben.
+     Tritt ein Lesefehler auf, f&auml;ngt der JU+TE-Computer an zu piepen.
+     Nun kann man das Laden entweder mit der Taste <em>B</em> abbrechen
+     oder das Band zur&uuml;ckspulen und mit der Taste <em>C</em>
+     fortsetzen, d.h. die fehlerhafte Stelle noch einmal versuchen
+     zu laden.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Maaaa bbbb nnnn</td>
+    <td>
+     Verschiebt nnnn Bytes im Arbeitsspeicher von Adresse aaaa
+     nach bbbb,<br/>
+     Das funktioniert auch bei &Uuml;berschneiden der Speicherbereiche.
+    </td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Q</td>
+    <td>Beendet den Maschinenmonitor</td>
+   </tr>
+   <tr>
+    <td valign="top" nowrap>Saaaa nnnn</td>
+    <td>
+     Speichert nnnn Bytes ab der Adresse aaaa auf Kassette,<br/>
+     Das zweite Argument gibt nicht die Endadresse sondern die Anzahl
+     der Bytes an.
+    </td>
+   </tr>
+  </table>
+ <br/><br/>
+  Es bedeuten:
+ <br/>
+  <table border="1">
+   <tr><td>aaaa bbbb nnnn</td><td>16-Bit-Hexadezimalzahlen</td></tr>
+   <tr><td>rr xx</td><td>8-Bit-Hexadezimalzahlen</td></tr>
+   <tr><td>c</td><td>ASCII-Zeichen</td></tr>
+  </table>
+ <br/><br/>
+
+
+ <h2><a name="edit">3. Editierfunktionen</a></h2>
+  Alle Eingaben erfolgen mit Hilfe eines Full-Screen-Editors.
+  Dieser bietet komfortable Editierfunktionen,
+  die in nachfolgender Tabelle gezeigt werden.
+ <br/><br/>
+  In der ersten Spalte steht der hexadezimale Code der Funktion.
+  Gibt man in einem Programm ein Zeichen mit diesem Code
+  auf dem Bildschirm aus, wird die entsprechende Funktion ausgef&uuml;hrt.
+ <br/><br/>
+  F&uuml;r manche Funktionen gibt es auf der Tastatur des Emulator-Rechners
+  keine speziellen Tasten.
+  Diese Editierfunktionen k&ouml;nnen jedoch mit Hilfe einer CTRL- bzw.
+  Strg-Tastenkombination benutzt werden (siehe letzte Spalte in der Tabelle).
+ <br/><br/>
+  <table border="1">
+   <tr>
+    <th>Code</th>
+    <th>Name</th>
+    <th>Bedeutung</th>
+    <th>CTRL-Tastenkombination</th>
+   </tr>
+   <tr><td>01</td><td></td><td>Kursor links</td><td>CTRL-A</td></tr>
+   <tr><td>02</td><td></td><td>Kursor rechts</td><td>CTRL-B</td></tr>
+   <tr><td>03</td><td></td><td>Kursor hoch</td><td>CTRL-C</td></tr>
+   <tr><td>04</td><td></td><td>Kursor runter</td><td>CTRL-D</td></tr>
+   <tr>
+    <td>05</td>
+    <td>HOM</td>
+    <td>Kursor in linke obere Ecke</td>
+    <td>CTRL-E</td>
+   </tr>
+   <tr>
+    <td>06</td>
+    <td>SOL</td>
+    <td>Kursor an Zeilenanfang</td>
+    <td>CTRL-F</td>
+   </tr>
+   <tr>
+    <td>07</td>
+    <td>DEL</td>
+    <td>Zeichen unter Cursor l&ouml;schen</td>
+    <td>CTRL-G</td>
+   </tr>
+   <tr>
+    <td>08</td>
+    <td>DBS</td>
+    <td>Zeichen links von Kursor l&ouml;schen</td>
+    <td>CTRL-H</td>
+   </tr>
+   <tr>
+    <td>09</td>
+    <td>INS</td>
+    <td>Zeichen einf&uuml;gen</td>
+    <td>CTRL-I</td>
+   </tr>
+   <tr>
+    <td>0C</td>
+    <td>CLS</td>
+    <td>Bildschirm l&ouml;schen</td>
+    <td>CTRL-L</td>
+   </tr>
+   <tr>
+    <td>0D</td>
+    <td>RET</td>
+    <td>Eingabe abschlie&szlig;en</td>
+    <td>CTRL-M</td>
+   </tr>
+  </table>
+</body>
+</html>
