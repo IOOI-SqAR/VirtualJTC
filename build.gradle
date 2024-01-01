@@ -1,7 +1,11 @@
+buildscript {
+    ext.javafx_version = '21'
+}
+
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 group 'org.sqar.virtualjtc'
@@ -15,16 +19,17 @@ java {
     targetCompatibility = '17'
 }
 
-application {
-    mainClassName = 'org.sqar.virtualjtc.jtcemu.Main'
-}
+//application {
+//    mainModule = 'org.jens_mueller.jtcemu'
+//    mainClassName = 'org.jens_mueller.jtcemu.platform.fx.Launcher'
+//}
 
 repositories {
     mavenCentral()
 }
 
 javafx {
-    version = "21"
+    version = "$javafx_version"
     application {
         mainClassName = "org.jens_mueller.jtcemu.platform.fx.Launcher"
         applicationName = 'JTCemuFX'
@@ -34,17 +39,17 @@ javafx {
 
 dependencies {
     // here starts JavaFX
-    implementation 'org.openjfx:javafx:21'
+    compileOnly "org.openjfx:javafx:$javafx_version"
 
-    implementation 'org.openjfx:javafx-base:21'
-    implementation 'org.openjfx:javafx-graphics:21'
-    implementation 'org.openjfx:javafx-controls:21'
-    implementation 'org.openjfx:javafx-fxml:21'
-    implementation 'org.openjfx:javafx-swing:21'
-    implementation 'org.openjfx:javafx-media:21'
-    implementation 'org.openjfx:javafx-web:21'
+    compileOnly "org.openjfx:javafx-base:$javafx_version"
+    compileOnly "org.openjfx:javafx-graphics:$javafx_version"
+    compileOnly "org.openjfx:javafx-controls:$javafx_version"
+    compileOnly "org.openjfx:javafx-fxml:$javafx_version"
+    compileOnly "org.openjfx:javafx-swing:$javafx_version"
+    compileOnly "org.openjfx:javafx-media:$javafx_version"
+    compileOnly "org.openjfx:javafx-web:$javafx_version"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 jar {

@@ -243,13 +243,13 @@ public class JTCSys implements Z8IO, Z8Listener, Z8Memory
     this.ramSize = readRamSize();
 
     // Resourcen lesen
-    this.u883rom          = readResource( "/rom/u883rom.bin" );
-    this.os2k_0800        = readResource( "/rom/os2k_0800.bin" );
-    this.es1988_0800      = readResource( "/rom/es1988_0800.bin" );
-    this.es1988_2000      = readResource( "/rom/es1988_2000.bin" );
-    this.es23_0800        = readResource( "/rom/es23_0800.bin" );
-    this.es40_0800        = readResource( "/rom/es40_0800.bin" );
-    this.es40RomBank_0800 = readResource( "/rom/es40c_0800.bin" );
+    this.u883rom          = readResource( "/org.jens_mueller/rom/u883rom.bin" );
+    this.os2k_0800        = readResource( "/org.jens_mueller/rom/os2k_0800.bin" );
+    this.es1988_0800      = readResource( "/org.jens_mueller/rom/es1988_0800.bin" );
+    this.es1988_2000      = readResource( "/org.jens_mueller/rom/es1988_2000.bin" );
+    this.es23_0800        = readResource( "/org.jens_mueller/rom/es23_0800.bin" );
+    this.es40_0800        = readResource( "/org.jens_mueller/rom/es40_0800.bin" );
+    this.es40RomBank_0800 = readResource( "/org.jens_mueller/rom/es40c_0800.bin" );
 
     // externe ROM-Dateien laden
     StringBuilder buf = new StringBuilder();
