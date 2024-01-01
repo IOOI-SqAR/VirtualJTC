@@ -6,7 +6,7 @@
  * Allgemeine Hilfsfunktionen
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 import java.io.Closeable;
 import java.io.BufferedReader;

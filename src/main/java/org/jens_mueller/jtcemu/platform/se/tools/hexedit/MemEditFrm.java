@@ -6,7 +6,7 @@
  * Speichereditor
  */
 
-package jtcemu.platform.se.tools.hexedit;
+package org.jens_mueller.jtcemu.platform.se.tools.hexedit;
 
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -24,12 +24,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import jtcemu.base.AppContext;
-import jtcemu.base.UserInputException;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
-import jtcemu.platform.se.base.PrintOptionsDlg;
-import z8.Z8Memory;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.platform.se.base.PrintOptionsDlg;
+import org.jens_mueller.z8.Z8Memory;
 
 
 public class MemEditFrm extends AbstractHexCharFrm

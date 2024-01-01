@@ -6,7 +6,7 @@
  * Basisklasse fuer Fenster mit einer Hex-Character-Anzeige
  */
 
-package jtcemu.platform.se.tools.hexedit;
+package org.jens_mueller.jtcemu.platform.se.tools.hexedit;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -48,9 +48,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import jtcemu.base.AppContext;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.BaseFrm;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.BaseFrm;
 
 
 public abstract class AbstractHexCharFrm

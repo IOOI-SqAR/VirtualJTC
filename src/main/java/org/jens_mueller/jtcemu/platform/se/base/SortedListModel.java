@@ -6,7 +6,7 @@
  * Sortiertes ListModel
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.util.Collection;
 import java.util.Collections;

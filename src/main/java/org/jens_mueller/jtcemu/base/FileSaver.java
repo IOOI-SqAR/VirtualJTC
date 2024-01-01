@@ -6,7 +6,9 @@
  * Speichern eines Bereichs des Arbeitsspeichers in eine Datei
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
+
+import org.jens_mueller.z8.Z8Memory;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -16,7 +18,6 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.io.IOException;
 import java.io.OutputStream;
-import z8.Z8Memory;
 
 
 public class FileSaver

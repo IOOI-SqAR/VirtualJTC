@@ -6,9 +6,9 @@
  * Haltepunkt auf eine Programmcodeadresse
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
-import z8.Z8;
+import org.jens_mueller.z8.Z8;
 
 
 public class PCBreakpoint extends AbstractBreakpoint

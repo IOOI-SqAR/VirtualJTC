@@ -6,7 +6,7 @@
  * Anzeige der Hilfetexte
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -47,9 +47,9 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public class HelpFrm extends BaseFrm

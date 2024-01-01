@@ -7,7 +7,7 @@
  * fuer die Emulation des Anschlusses des Magnettonbandgeraetes
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
@@ -16,7 +16,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.Mixer;
-import z8.Z8;
+import org.jens_mueller.z8.Z8;
 
 
 public class AudioInLine extends AudioIn

@@ -6,7 +6,7 @@
  * Wiedergabe gespeicherter Audiodaten
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.Component;
 import javax.sound.sampled.AudioFormat;
@@ -14,8 +14,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
 
 
 public class AudioPlayer implements Runnable

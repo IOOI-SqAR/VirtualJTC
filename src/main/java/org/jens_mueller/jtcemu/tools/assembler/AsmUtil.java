@@ -6,7 +6,7 @@
  * Hilfsfunktionen fuer einen Compiler/Assembler
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -19,11 +19,11 @@ import java.text.CharacterIterator;
 import java.util.Arrays;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
-import jtcemu.base.AppContext;
-import jtcemu.base.FileSaver;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.tools.TextOutput;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.FileSaver;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.tools.TextOutput;
 
 
 public class AsmUtil

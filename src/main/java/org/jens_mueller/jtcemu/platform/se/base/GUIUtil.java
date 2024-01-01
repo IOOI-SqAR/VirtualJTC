@@ -6,7 +6,7 @@
  * Hilfsfunktionen fuer Oberflaechenprogrammierung
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -44,10 +44,10 @@ import javax.swing.RootPaneContainer;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public class GUIUtil

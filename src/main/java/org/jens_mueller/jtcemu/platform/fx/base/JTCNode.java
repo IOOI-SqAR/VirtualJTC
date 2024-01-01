@@ -6,7 +6,7 @@
  * Inhalt des Tabs fuer Bildschirm und Tastatur
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import java.io.File;
 import java.util.TimerTask;
@@ -33,26 +33,28 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import jtcemu.base.AppContext;
-import jtcemu.base.FileInfo;
-import jtcemu.base.FileSaver;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.PasteObserver;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.settings.SettingsNode;
-import jtcemu.platform.fx.tools.TextEditNode;
-import z8.Z8;
-import z8.Z8Listener;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.FileInfo;
+import org.jens_mueller.jtcemu.base.FileSaver;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.PasteObserver;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.settings.SettingsNode;
+import org.jens_mueller.jtcemu.platform.fx.tools.TextEditNode;
+import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
+import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
+import org.jens_mueller.z8.Z8;
+import org.jens_mueller.z8.Z8Listener;
 
 
 public class JTCNode
 		extends BorderPane
 		implements
-			AppTab,
-			DropFileHandler,
+        AppTab,
+        DropFileHandler,
 			PasteObserver,
-			Z8Listener
+        Z8Listener
 {
   private static final String ACTION_GO_ON      = "Fortsetzen";
   private static final String ACTION_LOAD       = "Laden...";
@@ -82,7 +84,7 @@ public class JTCNode
   private TimerTask  statusTimerTask;
 
 
-  public JTCNode( final jtcemu.platform.fx.Main main )
+  public JTCNode( final org.jens_mueller.jtcemu.platform.fx.Main main )
   {
     this.main   = main;
     this.jtcSys = null;

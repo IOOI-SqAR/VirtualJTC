@@ -7,13 +7,13 @@
  * fuer das 2K-Betriebssystem sowie fuer ES1988
  */
 
-package jtcemu.platform.se.keyboard;
+package org.jens_mueller.jtcemu.platform.se.keyboard;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCSys;
 
 
 public class OS2kKeyboardFld extends AbstractKeyboardFld

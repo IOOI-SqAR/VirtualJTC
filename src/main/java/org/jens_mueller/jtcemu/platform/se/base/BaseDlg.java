@@ -6,7 +6,7 @@
  * Basisklasse fuer alle Dialoge
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.Component;
 import java.awt.Dialog;
@@ -18,7 +18,7 @@ import java.util.Set;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public class BaseDlg extends JDialog implements WindowListener

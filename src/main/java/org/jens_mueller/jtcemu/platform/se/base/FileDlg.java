@@ -6,7 +6,7 @@
  * Dialog fuer Auswahl einer Datei
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.Dialog;
 import java.awt.FileDialog;
@@ -26,8 +26,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jtcemu.base.AppContext;
-import jtcemu.base.FileInfo;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.FileInfo;
 
 
 public class FileDlg extends BaseDlg implements

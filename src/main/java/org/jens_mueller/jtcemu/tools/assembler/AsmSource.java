@@ -6,7 +6,7 @@
  * Kapselung eines Quelltextes
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.PatternSyntaxException;
-import jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.JTCUtil;
 
 
 public class AsmSource

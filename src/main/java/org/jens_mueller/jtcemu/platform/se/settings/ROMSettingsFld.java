@@ -6,7 +6,7 @@
  * Einstellungen zum emulierten ROM
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -39,14 +39,14 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import jtcemu.base.AppContext;
-import jtcemu.base.ExtROM;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.ExtROM;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
 
 
 public class ROMSettingsFld

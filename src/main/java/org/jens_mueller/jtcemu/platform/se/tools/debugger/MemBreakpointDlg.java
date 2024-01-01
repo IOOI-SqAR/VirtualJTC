@@ -7,7 +7,7 @@
  * auf eine Speicherzelle bzw. einen Speicherbereich
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,8 +18,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
 
 
 public class MemBreakpointDlg

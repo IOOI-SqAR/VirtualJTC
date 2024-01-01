@@ -6,7 +6,7 @@
  * Einstellungen zum emulierten RAM
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,10 +18,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
 
 
 public class RAMSettingsFld extends JPanel implements ActionListener

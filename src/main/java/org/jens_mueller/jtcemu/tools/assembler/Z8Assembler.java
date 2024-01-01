@@ -6,7 +6,7 @@
  * Z8-Assembler
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,9 +20,9 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-import jtcemu.base.JTCUtil;
-import jtcemu.tools.TextOutput;
-import jtcemu.tools.TooManyErrorsException;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.tools.TextOutput;
+import org.jens_mueller.jtcemu.tools.TooManyErrorsException;
 
 
 public class Z8Assembler

@@ -6,7 +6,7 @@
  * Emulation des Kassettenrecorderanschlusses und des Lautsprechers
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -22,11 +22,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.platform.se.base.BaseFrm;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.platform.se.base.BaseFrm;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
 
 
 public class AudioFrm

@@ -6,7 +6,7 @@
  * Allgemeiner Mitteilungsdialog
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -27,7 +27,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.Main;
 
 
 public class MsgDlg extends Stage

@@ -6,7 +6,7 @@
  * Zugriff Informationen im Applikationskontext
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -6,7 +6,7 @@
  * Basisklasse fuer die Bildschirmtastatur
  */
 
-package jtcemu.platform.se.keyboard;
+package org.jens_mueller.jtcemu.platform.se.keyboard;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -20,8 +20,8 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.Arrays;
 import javax.swing.JPanel;
-import jtcemu.base.JTCSys;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public abstract class AbstractKeyboardFld

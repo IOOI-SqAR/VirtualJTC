@@ -6,7 +6,7 @@
  * Schnittstelle fuer den Inhalt eines Tabs auf Applikationsebene
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import javafx.event.Event;
 import javafx.scene.control.MenuBar;

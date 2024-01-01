@@ -6,7 +6,7 @@
  * Dialog fuer Assembler-Optionen
  */
 
-package jtcemu.platform.fx.tools.assembler;
+package org.jens_mueller.jtcemu.platform.fx.tools.assembler;
 
 import java.io.File;
 import javafx.application.Platform;
@@ -26,11 +26,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import jtcemu.base.AppContext;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.DropFileHandler;
-import jtcemu.platform.fx.base.GUIUtil;
-import jtcemu.tools.assembler.AsmOptions;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
 
 
 public class AsmOptionsDlg extends Stage implements DropFileHandler

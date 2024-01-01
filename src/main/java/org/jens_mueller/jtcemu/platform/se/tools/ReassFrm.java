@@ -6,7 +6,7 @@
  * Fenster fuer Reassembler
  */
 
-package jtcemu.platform.se.tools;
+package org.jens_mueller.jtcemu.platform.se.tools;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
@@ -38,19 +38,19 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.JTextComponent;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.tools.assembler.AsmUtil;
-import jtcemu.platform.se.base.AbstractTextFrm;
-import jtcemu.platform.se.base.BaseDlg;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
-import jtcemu.platform.se.base.PrintOptionsDlg;
-import jtcemu.platform.se.Main;
-import z8.Z8Memory;
-import z8.Z8Reassembler;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.tools.assembler.AsmUtil;
+import org.jens_mueller.jtcemu.platform.se.base.AbstractTextFrm;
+import org.jens_mueller.jtcemu.platform.se.base.BaseDlg;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.platform.se.base.PrintOptionsDlg;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.z8.Z8Memory;
+import org.jens_mueller.z8.Z8Reassembler;
 
 
 public class ReassFrm extends AbstractTextFrm implements

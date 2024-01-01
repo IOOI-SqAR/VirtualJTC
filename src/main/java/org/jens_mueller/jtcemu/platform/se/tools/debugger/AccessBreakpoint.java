@@ -9,7 +9,7 @@
  * minestens eins immer true sein.
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 
 public abstract class AccessBreakpoint extends AbstractBreakpoint

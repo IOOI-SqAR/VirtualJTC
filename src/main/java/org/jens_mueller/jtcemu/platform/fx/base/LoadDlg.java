@@ -6,7 +6,7 @@
  * Dialog zur Eingabe der Ladeadressen
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import java.io.File;
 import javafx.application.Platform;
@@ -27,12 +27,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import jtcemu.base.AppContext;
-import jtcemu.base.FileInfo;
-import jtcemu.base.FileLoader;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.fx.Main;
-import z8.Z8Memory;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.FileInfo;
+import org.jens_mueller.jtcemu.base.FileLoader;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.z8.Z8Memory;
 
 
 public class LoadDlg extends Stage

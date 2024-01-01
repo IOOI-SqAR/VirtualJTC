@@ -6,7 +6,7 @@
  * Einstellungen zur Skalierung der Fenster
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,10 +19,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public class UIScaleSettingsFld extends JPanel implements ActionListener

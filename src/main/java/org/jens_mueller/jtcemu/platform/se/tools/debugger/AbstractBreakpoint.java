@@ -6,9 +6,9 @@
  * Basisklasse fuer einen Haltepunkt
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
-import z8.Z8Breakpoint;
+import org.jens_mueller.z8.Z8Breakpoint;
 
 
 public abstract class AbstractBreakpoint

@@ -6,7 +6,7 @@
  * Dialog fuer Speichern einer Datei
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -25,13 +25,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
-import jtcemu.base.AppContext;
-import jtcemu.base.FileInfo;
-import jtcemu.base.FileSaver;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.Main;
-import jtcemu.tools.ToolUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.FileInfo;
+import org.jens_mueller.jtcemu.base.FileSaver;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.tools.ToolUtil;
 
 
 public class SaveDlg extends BaseDlg implements ActionListener

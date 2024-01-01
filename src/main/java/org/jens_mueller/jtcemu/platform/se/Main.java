@@ -6,7 +6,7 @@
  * Programmstart
  */
 
-package jtcemu.platform.se;
+package org.jens_mueller.jtcemu.platform.se;
 
 import java.awt.Component;
 import java.awt.Desktop;
@@ -32,11 +32,11 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.base.TopFrm;
-import jtcemu.platform.se.tools.assembler.CmdLineAssembler;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.base.TopFrm;
+import org.jens_mueller.jtcemu.platform.se.tools.assembler.CmdLineAssembler;
 
 
 public class Main

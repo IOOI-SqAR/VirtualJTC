@@ -6,7 +6,7 @@
  * Fenster fuer die Einstellungen
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.Component;
 import java.awt.Frame;
@@ -25,15 +25,15 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import jtcemu.base.AppContext;
-import jtcemu.base.ExtROM;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.BaseFrm;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
-import jtcemu.platform.se.base.TopFrm;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.ExtROM;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.BaseFrm;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.platform.se.base.TopFrm;
 
 
 public class SettingsFrm extends BaseFrm implements ActionListener

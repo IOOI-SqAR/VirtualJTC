@@ -11,7 +11,7 @@
  * wird das mit dem Attribut "actionsEnabled" simuliert.
  */
 
-package jtcemu.platform.fx.tools;
+package org.jens_mueller.jtcemu.platform.fx.tools;
 
 import java.io.IOException;
 import java.util.Set;
@@ -49,9 +49,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import jtcemu.base.AppContext;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
 
 public class PlainTextPrintDlg extends Stage implements Runnable

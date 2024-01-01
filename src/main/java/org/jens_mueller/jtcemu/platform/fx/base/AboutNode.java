@@ -6,7 +6,7 @@
  * Inhalt des Tabs fuer Bildschirm und Tastatur
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -14,8 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import jtcemu.base.AppContext;
-import jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.fx.Main;
 
 
 public class AboutNode extends ScrollPane

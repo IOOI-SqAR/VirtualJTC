@@ -10,7 +10,12 @@
  * da sie ueber einen Adressbereich des Arbeitsspeichers gelesen wird.
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
+
+import org.jens_mueller.z8.Z8;
+import org.jens_mueller.z8.Z8IO;
+import org.jens_mueller.z8.Z8Listener;
+import org.jens_mueller.z8.Z8Memory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,10 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import z8.Z8;
-import z8.Z8IO;
-import z8.Z8Listener;
-import z8.Z8Memory;
 
 
 public class JTCSys implements Z8IO, Z8Listener, Z8Memory
@@ -132,7 +133,7 @@ public class JTCSys implements Z8IO, Z8Listener, Z8Memory
   private volatile Z8Listener  resetListener;
   private PasteWorker          pasteWorker;
   private Random               random;
-  private volatile Z8          z8;
+  private volatile Z8 z8;
   private OSType               osType;
   private OSType               newOSType;
   private ExtROM[]             extROMs;

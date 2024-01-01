@@ -6,7 +6,7 @@
  * Dialog fuer Assembler-Optionen
  */
 
-package jtcemu.platform.se.tools.assembler;
+package org.jens_mueller.jtcemu.platform.se.tools.assembler;
 
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -29,12 +29,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import jtcemu.base.AppContext;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.BaseDlg;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.tools.assembler.AsmOptions;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.BaseDlg;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
 
 
 public class AsmOptionsDlg

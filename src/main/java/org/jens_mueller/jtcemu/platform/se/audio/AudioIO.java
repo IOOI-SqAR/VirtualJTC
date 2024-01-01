@@ -7,7 +7,7 @@
  * (Anschluss Kassettenrecorder und Lautsprecher)
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
@@ -16,8 +16,8 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
-import jtcemu.base.JTCSys;
-import z8.Z8;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.z8.Z8;
 
 
 public abstract class AudioIO

@@ -6,7 +6,7 @@
  * Interface zur Ueberwachung eines Einfuegeprozesses
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 
 public interface PasteObserver

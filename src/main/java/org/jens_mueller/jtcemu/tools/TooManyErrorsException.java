@@ -6,7 +6,7 @@
  * Exception fuer zu viele Fehler
  */
 
-package jtcemu.tools;
+package org.jens_mueller.jtcemu.tools;
 
 
 public class TooManyErrorsException extends Exception

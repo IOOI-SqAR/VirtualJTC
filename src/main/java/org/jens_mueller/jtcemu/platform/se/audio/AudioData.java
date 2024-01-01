@@ -7,7 +7,7 @@
  * Intern werden die Audiodaten im CSW-Format gespeichert.
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -24,8 +24,8 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
 
 
 public class AudioData

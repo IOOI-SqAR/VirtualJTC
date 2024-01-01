@@ -16,7 +16,7 @@
  * gedrueckte Alt- bzw. Meta-Taste um und gibt sie an die TabPane zurueck.
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import javafx.event.Event;
 import javafx.event.EventDispatchChain;
@@ -25,7 +25,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import jtcemu.platform.fx.base.JTCNode;
+import org.jens_mueller.jtcemu.platform.fx.base.JTCNode;
 
 
 public class JTCKeyEventExtractor implements EventDispatcher

@@ -6,7 +6,7 @@
  * Texteditor
  */
 
-package jtcemu.platform.se.tools;
+package org.jens_mueller.jtcemu.platform.se.tools;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -62,22 +62,22 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Segment;
 import javax.swing.undo.UndoManager;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.tools.BasicParser;
-import jtcemu.tools.BasicUtil;
-import jtcemu.tools.TextOutput;
-import jtcemu.tools.ToolUtil;
-import jtcemu.tools.assembler.AsmOptions;
-import jtcemu.tools.assembler.AsmUtil;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.AbstractTextFrm;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
-import jtcemu.platform.se.base.PrintOptionsDlg;
-import jtcemu.platform.se.tools.assembler.AsmOptionsDlg;
-import z8.Z8Memory;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.tools.BasicParser;
+import org.jens_mueller.jtcemu.tools.BasicUtil;
+import org.jens_mueller.jtcemu.tools.TextOutput;
+import org.jens_mueller.jtcemu.tools.ToolUtil;
+import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
+import org.jens_mueller.jtcemu.tools.assembler.AsmUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.AbstractTextFrm;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.platform.se.base.PrintOptionsDlg;
+import org.jens_mueller.jtcemu.platform.se.tools.assembler.AsmOptionsDlg;
+import org.jens_mueller.z8.Z8Memory;
 
 
 public class TextEditFrm extends AbstractTextFrm

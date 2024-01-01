@@ -6,7 +6,7 @@
  * Node fuer die RAM-Einstellungen
  */
 
-package jtcemu.platform.fx.settings;
+package org.jens_mueller.jtcemu.platform.fx.settings;
 
 import java.util.Properties;
 import javafx.geometry.Insets;
@@ -16,10 +16,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
 
 
 public class RAMSettingsNode extends ScrollPane

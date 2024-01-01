@@ -6,7 +6,7 @@
  * Anordnung der Zeichen auf dem Bildschirm
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 
 public class CharRaster

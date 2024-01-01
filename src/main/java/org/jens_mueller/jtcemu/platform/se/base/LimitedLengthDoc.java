@@ -6,7 +6,7 @@
  * Document mit einer begrenzten Textlaenge
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;

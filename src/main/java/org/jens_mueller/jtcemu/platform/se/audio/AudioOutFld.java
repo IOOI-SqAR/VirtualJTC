@@ -7,7 +7,7 @@
  * des Kassettenrecorderanschlusses und des Lautsprechers
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -27,10 +27,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.platform.se.base.BaseDlg;
-import jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.platform.se.base.BaseDlg;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
 
 
 public class AudioOutFld

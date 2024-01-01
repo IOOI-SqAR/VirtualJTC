@@ -6,7 +6,7 @@
  * Dialog fuer Eingabe von Bytes
  */
 
-package jtcemu.platform.se.tools.hexedit;
+package org.jens_mueller.jtcemu.platform.se.tools.hexedit;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,8 +27,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import jtcemu.platform.se.base.BaseDlg;
-import jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.BaseDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
 
 
 public class ReplyBytesDlg extends BaseDlg implements ActionListener

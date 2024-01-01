@@ -6,13 +6,13 @@
  * Parser fuer einen Ausdruck
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
 import java.util.Map;
-import jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.JTCUtil;
 
 
 public class ExprParser

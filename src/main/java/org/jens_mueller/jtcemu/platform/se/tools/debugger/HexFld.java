@@ -7,7 +7,7 @@
  * Eingabefeld mit Erkennung manueller Aenderungen
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -26,7 +26,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
 
 
 public class HexFld extends PlainDocument

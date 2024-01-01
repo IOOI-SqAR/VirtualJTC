@@ -6,7 +6,7 @@
  * Schnittstelle zur Ausgabe von Text
  */
 
-package jtcemu.tools;
+package org.jens_mueller.jtcemu.tools;
 
 
 public interface TextOutput

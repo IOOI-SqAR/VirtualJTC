@@ -18,6 +18,8 @@ import javax.swing.*;
 import org.sqar.virtualjtc.jtcemu.base.*;
 import org.sqar.virtualjtc.z8.Z8;
 
+import static org.jens_mueller.jtcemu.base.JTCSys.isRegInitZero;
+
 
 public class Main
 {
@@ -100,7 +102,7 @@ public class Main
       JTCSys jtcSys = new JTCSys();
 
       // Z8-Emulation mit externem 8MHz Takt aufsetzen
-      Z8 z8 = new Z8( 8000000, jtcSys, jtcSys );
+      Z8 z8 = new Z8( 8000000, isRegInitZero() , jtcSys, jtcSys);
       jtcSys.setZ8( z8 );
       jtcSys.settingsChanged();
 

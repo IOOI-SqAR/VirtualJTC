@@ -6,7 +6,7 @@
  * Dialog fuer Suchen & Ersetzen
  */
 
-package jtcemu.platform.fx.tools;
+package org.jens_mueller.jtcemu.platform.fx.tools;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -24,8 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
 
 public class FindAndReplaceDlg extends Stage

@@ -6,7 +6,7 @@
  * Daten einer Assemblermarke
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 
 public class AsmLabel implements Comparable<AsmLabel>

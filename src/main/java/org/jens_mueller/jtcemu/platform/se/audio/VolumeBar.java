@@ -6,7 +6,7 @@
  * Komponente zur Anzeige der Lautstaerke
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

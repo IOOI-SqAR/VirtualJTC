@@ -6,7 +6,7 @@
  * Thread zum Einfuegen von Text
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 
 public class PasteWorker extends Thread

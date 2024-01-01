@@ -7,7 +7,7 @@
  * uebertragenen Datei
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import java.io.File;
 

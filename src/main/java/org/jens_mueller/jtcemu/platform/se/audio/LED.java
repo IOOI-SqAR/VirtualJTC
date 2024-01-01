@@ -6,7 +6,7 @@
  * Komponente zur Anzeige einer LED
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

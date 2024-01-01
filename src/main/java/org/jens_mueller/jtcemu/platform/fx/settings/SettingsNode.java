@@ -6,7 +6,7 @@
  * Node fuer die Einstellungen
  */
 
-package jtcemu.platform.fx.settings;
+package org.jens_mueller.jtcemu.platform.fx.settings;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,13 +26,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
-import jtcemu.base.AppContext;
-import jtcemu.base.ExtROM;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.ScreenNode;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.ExtROM;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.ScreenNode;
 
 
 public class SettingsNode extends BorderPane

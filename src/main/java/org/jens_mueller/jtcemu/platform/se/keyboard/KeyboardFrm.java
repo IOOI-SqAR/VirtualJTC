@@ -6,7 +6,7 @@
  * Fenster fuer Bildschirmtastatur
  */
 
-package jtcemu.platform.se.keyboard;
+package org.jens_mueller.jtcemu.platform.se.keyboard;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -20,12 +20,12 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.BaseFrm;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.BaseFrm;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
 
 
 public class KeyboardFrm extends BaseFrm implements ActionListener

@@ -7,7 +7,7 @@
  * des Kassettenrecorderanschlusses
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -41,13 +41,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.TopFrm;
-import z8.Z8;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.TopFrm;
+import org.jens_mueller.z8.Z8;
 
 
 public class AudioInFld

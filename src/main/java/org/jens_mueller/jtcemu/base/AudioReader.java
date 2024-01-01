@@ -7,7 +7,7 @@
  * des Kassettenrecorders
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 
 public interface AudioReader

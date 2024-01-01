@@ -6,7 +6,7 @@
  * Exception fuer eine fehlerhafte Benutzereingabe
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 
 public class UserInputException extends Exception

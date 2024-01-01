@@ -6,7 +6,7 @@
  * Debugger
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -58,14 +58,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import jtcemu.base.AppContext;
-import jtcemu.platform.se.base.BaseFrm;
-import jtcemu.platform.se.base.HelpFrm;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.SortedListModel;
-import z8.Z8;
-import z8.Z8Memory;
-import z8.Z8Reassembler;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.se.base.BaseFrm;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.SortedListModel;
+import org.jens_mueller.z8.Z8;
+import org.jens_mueller.z8.Z8Memory;
+import org.jens_mueller.z8.Z8Reassembler;
 
 
 public class DebugFrm extends BaseFrm

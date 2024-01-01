@@ -6,7 +6,7 @@
  * Hilfsfunktionen fuer Oberflaechenprogrammierung
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,11 +35,11 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.tools.ReassNode;
-import jtcemu.platform.fx.tools.TextEditNode;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.tools.ReassNode;
+import org.jens_mueller.jtcemu.platform.fx.tools.TextEditNode;
 
 
 public class GUIUtil

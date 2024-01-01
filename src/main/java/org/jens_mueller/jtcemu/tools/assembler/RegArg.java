@@ -6,7 +6,7 @@
  * Register-Argument eines Assemblerbefehls
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 import java.text.CharacterIterator;
 import java.util.Arrays;

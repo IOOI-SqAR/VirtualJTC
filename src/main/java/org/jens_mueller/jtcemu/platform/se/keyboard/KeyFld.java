@@ -6,7 +6,7 @@
  * Komponente fuer eine Taste der Bildschirmtastatur
  */
 
-package jtcemu.platform.se.keyboard;
+package org.jens_mueller.jtcemu.platform.se.keyboard;
 
 import java.awt.Container;
 import java.awt.Graphics;

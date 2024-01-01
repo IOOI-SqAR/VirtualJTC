@@ -7,7 +7,7 @@
  * deren Hauptinhalt ein mehrzeiliges Textfeld ist
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,9 +30,9 @@ import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Segment;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public abstract class AbstractTextFrm extends BaseFrm

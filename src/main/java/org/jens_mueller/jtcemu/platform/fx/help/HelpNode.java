@@ -6,7 +6,7 @@
  * Inhalt des Hilfe-Tabs
  */
 
-package jtcemu.platform.fx.help;
+package org.jens_mueller.jtcemu.platform.fx.help;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,11 +30,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.AppTab;
-import jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
 
 public class HelpNode extends BorderPane implements AppTab

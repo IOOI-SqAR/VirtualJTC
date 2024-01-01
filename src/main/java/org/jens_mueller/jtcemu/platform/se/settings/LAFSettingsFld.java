@@ -6,7 +6,7 @@
  * Einstellungen fuer das Erscheinungsbild
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -24,9 +24,9 @@ import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import jtcemu.base.AppContext;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.BaseFrm;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.BaseFrm;
 
 
 public class LAFSettingsFld extends JPanel implements ActionListener

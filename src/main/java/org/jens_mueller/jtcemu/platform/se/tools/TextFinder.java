@@ -6,15 +6,15 @@
  * Suchen und Ersetzen von Text in einer JTextArea
  */
 
-package jtcemu.platform.se.tools;
+package org.jens_mueller.jtcemu.platform.se.tools;
 
 import java.awt.Component;
 import java.awt.Window;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
 
 
 public class TextFinder

@@ -7,12 +7,12 @@
  * des Anschlusses des Magnettonbandgeraetes (Eingang)
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
-import jtcemu.base.AudioReader;
-import z8.Z8;
+import org.jens_mueller.jtcemu.base.AudioReader;
+import org.jens_mueller.z8.Z8;
 
 
 public abstract class AudioIn extends AudioIO implements AudioReader

@@ -6,7 +6,9 @@
  * Laden einer Datei in den Arbeitsspeicher
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
+
+import org.jens_mueller.z8.Z8Memory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
-import z8.Z8Memory;
 
 
 public class FileLoader

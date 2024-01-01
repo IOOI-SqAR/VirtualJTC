@@ -6,7 +6,7 @@
  * CellRenderer fuer einen Eintrag in einer Breakpoint-Liste
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
-import jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
 
 
 public class BreakpointCellRenderer extends DefaultListCellRenderer

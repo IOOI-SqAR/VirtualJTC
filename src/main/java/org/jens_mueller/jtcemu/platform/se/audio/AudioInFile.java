@@ -8,15 +8,15 @@
  * indem die Audio-Daten von einer Datei gelesen werden.
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.SourceDataLine;
-import jtcemu.base.JTCUtil;
-import z8.Z8;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.z8.Z8;
 
 
 public class AudioInFile extends AudioIn

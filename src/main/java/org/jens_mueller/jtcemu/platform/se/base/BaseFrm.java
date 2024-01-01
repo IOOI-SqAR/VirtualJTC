@@ -6,14 +6,14 @@
  * Basisklasse fuer alle Frames
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
-import jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.Main;
 
 
 public abstract class BaseFrm extends JFrame implements WindowListener

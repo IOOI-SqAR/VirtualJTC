@@ -6,7 +6,7 @@
  * Kommandozeilenschnittstelle des Assemblers
  */
 
-package jtcemu.platform.se.tools.assembler;
+package org.jens_mueller.jtcemu.platform.se.tools.assembler;
 
 import java.io.File;
 import java.io.FileReader;
@@ -15,14 +15,14 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import jtcemu.base.FileSaver;
-import jtcemu.platform.se.Main;
-import jtcemu.tools.TextOutput;
-import jtcemu.tools.assembler.AsmException;
-import jtcemu.tools.assembler.AsmOptions;
-import jtcemu.tools.assembler.AsmUtil;
-import jtcemu.tools.assembler.ExprParser;
-import jtcemu.tools.assembler.Z8Assembler;
+import org.jens_mueller.jtcemu.base.FileSaver;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.tools.TextOutput;
+import org.jens_mueller.jtcemu.tools.assembler.AsmException;
+import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
+import org.jens_mueller.jtcemu.tools.assembler.AsmUtil;
+import org.jens_mueller.jtcemu.tools.assembler.ExprParser;
+import org.jens_mueller.jtcemu.tools.assembler.Z8Assembler;
 
 
 public class CmdLineAssembler

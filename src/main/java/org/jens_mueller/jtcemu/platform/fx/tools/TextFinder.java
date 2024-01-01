@@ -6,15 +6,15 @@
  * Suchen und Ersetzen von Text in einer JTextArea
  */
 
-package jtcemu.platform.fx.tools;
+package org.jens_mueller.jtcemu.platform.fx.tools;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextArea;
 import javafx.stage.Window;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.fx.base.GUIUtil;
-import jtcemu.platform.fx.base.MsgDlg;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.MsgDlg;
 
 
 public class TextFinder

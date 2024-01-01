@@ -6,7 +6,7 @@
  * BASIC-Parser
  */
 
-package jtcemu.tools;
+package org.jens_mueller.jtcemu.tools;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import jtcemu.base.JTCSys;
-import jtcemu.tools.assembler.AsmOptions;
-import jtcemu.tools.assembler.Z8Assembler;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
+import org.jens_mueller.jtcemu.tools.assembler.Z8Assembler;
 
 
 public class BasicParser

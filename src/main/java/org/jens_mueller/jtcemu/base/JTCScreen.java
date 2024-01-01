@@ -6,7 +6,7 @@
  * Schnittstelle zur Ausgabe von Meldungen des Parsers
  */
 
-package jtcemu.base;
+package org.jens_mueller.jtcemu.base;
 
 
 public interface JTCScreen

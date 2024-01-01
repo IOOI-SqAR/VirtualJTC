@@ -6,7 +6,7 @@
  * Programmstart fuer JavaFX
  */
 
-package jtcemu.platform.fx;
+package org.jens_mueller.jtcemu.platform.fx;
 
 import java.net.URL;
 import java.io.File;
@@ -32,20 +32,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import jtcemu.base.AppContext;
-import jtcemu.base.ErrorViewer;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.fx.base.AppTab;
-import jtcemu.platform.fx.base.GUIUtil;
-import jtcemu.platform.fx.base.JTCKeyEventExtractor;
-import jtcemu.platform.fx.base.JTCNode;
-import jtcemu.platform.fx.base.MsgDlg;
-import jtcemu.platform.fx.base.ScreenNode;
-import jtcemu.platform.fx.settings.SettingsNode;
-import jtcemu.platform.fx.tools.ReassNode;
-import z8.Z8;
-import z8.Z8Listener;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.ErrorViewer;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.*;
+import org.jens_mueller.jtcemu.platform.fx.settings.SettingsNode;
+import org.jens_mueller.jtcemu.platform.fx.tools.ReassNode;
+import org.jens_mueller.z8.Z8;
+import org.jens_mueller.z8.Z8Listener;
 
 
 public class Main extends Application implements ErrorViewer, Z8Listener
@@ -74,8 +69,8 @@ public class Main extends Application implements ErrorViewer, Z8Listener
   private MenuBar         defaultMenuBar = null;
   private TabPane         tabPane        = null;
   private Map<String,Tab> tabMap         = null;
-  private JTCNode         jtcNode        = null;
-  private JTCSys          jtcSys         = null;
+  private JTCNode jtcNode        = null;
+  private JTCSys jtcSys         = null;
   private Thread          emuThread      = null;
 
 
@@ -313,12 +308,12 @@ public class Main extends Application implements ErrorViewer, Z8Listener
 	/* --- Z8Listener --- */
 
   @Override
-  public void z8Update( Z8 z8, Reason reason )
+  public void z8Update(Z8 z8, Reason reason )
   {
     switch( reason ) {
       case POWER_ON:
       case RESET:
-	Platform.runLater( ()->ReassNode.reset() );
+	Platform.runLater( ()-> ReassNode.reset() );
 	break;
     }
   }

@@ -6,7 +6,7 @@
  * Eintrag im Assembler-Stack fuer bedingte Assemblierung
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 
 public class AsmStackEntry

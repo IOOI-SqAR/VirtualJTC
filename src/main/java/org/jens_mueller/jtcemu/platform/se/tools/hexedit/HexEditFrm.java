@@ -6,7 +6,7 @@
  * Hex-Editor
  */
 
-package jtcemu.platform.se.tools.hexedit;
+package org.jens_mueller.jtcemu.platform.se.tools.hexedit;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -37,13 +37,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.GUIUtil;
-import jtcemu.platform.se.base.HelpFrm;
-import jtcemu.platform.se.base.PrintOptionsDlg;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.se.base.HelpFrm;
+import org.jens_mueller.jtcemu.platform.se.base.PrintOptionsDlg;
 
 
 public class HexEditFrm

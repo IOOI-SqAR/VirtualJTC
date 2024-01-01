@@ -6,7 +6,7 @@
  * Komponente fuer eine Hex-Character-Anzeige
  */
 
-package jtcemu.platform.se.tools.hexedit;
+package org.jens_mueller.jtcemu.platform.se.tools.hexedit;
 
 import java.awt.Dimension;
 import java.awt.Font;

@@ -6,7 +6,7 @@
  * Inhalt des Texteditor-Tabs
  */
 
-package jtcemu.platform.fx.tools;
+package org.jens_mueller.jtcemu.platform.fx.tools;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,22 +46,22 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.AppTab;
-import jtcemu.platform.fx.base.DropFileHandler;
-import jtcemu.platform.fx.base.GUIUtil;
-import jtcemu.platform.fx.base.MsgDlg;
-import jtcemu.platform.fx.base.ReplyDlg;
-import jtcemu.platform.fx.tools.assembler.AsmOptionsDlg;
-import jtcemu.tools.BasicParser;
-import jtcemu.tools.BasicUtil;
-import jtcemu.tools.TextOutput;
-import jtcemu.tools.ToolUtil;
-import jtcemu.tools.assembler.AsmOptions;
-import jtcemu.tools.assembler.AsmUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
+import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.MsgDlg;
+import org.jens_mueller.jtcemu.platform.fx.base.ReplyDlg;
+import org.jens_mueller.jtcemu.platform.fx.tools.assembler.AsmOptionsDlg;
+import org.jens_mueller.jtcemu.tools.BasicParser;
+import org.jens_mueller.jtcemu.tools.BasicUtil;
+import org.jens_mueller.jtcemu.tools.TextOutput;
+import org.jens_mueller.jtcemu.tools.ToolUtil;
+import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
+import org.jens_mueller.jtcemu.tools.assembler.AsmUtil;
 
 
 public class TextEditNode

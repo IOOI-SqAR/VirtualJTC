@@ -6,7 +6,7 @@
  * Node fuer eingebundene ROM-Dateien
  */
 
-package jtcemu.platform.fx.settings;
+package org.jens_mueller.jtcemu.platform.fx.settings;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,15 +29,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import jtcemu.base.AppContext;
-import jtcemu.base.ExtROM;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.DropFileHandler;
-import jtcemu.platform.fx.base.GUIUtil;
-import jtcemu.platform.fx.base.ReplyDlg;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.ExtROM;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.ReplyDlg;
 
 
 public class ROMSettingsNode extends ScrollPane implements DropFileHandler

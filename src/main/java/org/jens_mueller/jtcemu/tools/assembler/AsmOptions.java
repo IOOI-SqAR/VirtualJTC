@@ -6,13 +6,13 @@
  * Optionen fuer den Assembler
  */
 
-package jtcemu.tools.assembler;
+package org.jens_mueller.jtcemu.tools.assembler;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.AppContext;
 
 
 public class AsmOptions

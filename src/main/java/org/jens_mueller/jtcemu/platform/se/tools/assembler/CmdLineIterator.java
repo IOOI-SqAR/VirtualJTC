@@ -6,7 +6,7 @@
  * Iterator fuer Kommandozeilenargumente
  */
 
-package jtcemu.platform.se.tools.assembler;
+package org.jens_mueller.jtcemu.platform.se.tools.assembler;
 
 
 public class CmdLineIterator

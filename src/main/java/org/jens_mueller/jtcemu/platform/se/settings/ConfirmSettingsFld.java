@@ -6,7 +6,7 @@
  * Einstellungen fuer Bestaetigungen
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,8 +17,8 @@ import java.util.Properties;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
 
 
 public class ConfirmSettingsFld extends JPanel implements ActionListener

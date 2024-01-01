@@ -6,9 +6,9 @@
  * Schnittstelle zur Ausgabe von Meldungen des Parsers
  */
 
-package jtcemu.tools;
+package org.jens_mueller.jtcemu.tools;
 
-import z8.Z8Memory;
+import org.jens_mueller.z8.Z8Memory;
 
 
 public class BasicUtil

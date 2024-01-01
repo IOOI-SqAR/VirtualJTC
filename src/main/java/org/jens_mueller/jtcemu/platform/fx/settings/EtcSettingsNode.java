@@ -6,7 +6,7 @@
  * Node fuer sonstige Einstellungen
  */
 
-package jtcemu.platform.fx.settings;
+package org.jens_mueller.jtcemu.platform.fx.settings;
 
 import java.io.File;
 import java.util.Properties;
@@ -18,10 +18,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import jtcemu.base.AppContext;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.MsgDlg;
-import jtcemu.platform.fx.base.ScreenNode;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.MsgDlg;
+import org.jens_mueller.jtcemu.platform.fx.base.ScreenNode;
 
 
 public class EtcSettingsNode extends ScrollPane

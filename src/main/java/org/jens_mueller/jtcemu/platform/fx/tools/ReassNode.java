@@ -6,7 +6,7 @@
  * Inhalt des Reassembler-Tabs
  */
 
-package jtcemu.platform.fx.tools;
+package org.jens_mueller.jtcemu.platform.fx.tools;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,16 +36,16 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.UserInputException;
-import jtcemu.tools.assembler.AsmUtil;
-import jtcemu.platform.fx.Main;
-import jtcemu.platform.fx.base.AppTab;
-import jtcemu.platform.fx.base.GUIUtil;
-import jtcemu.platform.fx.base.ReplyDlg;
-import z8.Z8Memory;
-import z8.Z8Reassembler;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.UserInputException;
+import org.jens_mueller.jtcemu.tools.assembler.AsmUtil;
+import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
+import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.ReplyDlg;
+import org.jens_mueller.z8.Z8Memory;
+import org.jens_mueller.z8.Z8Reassembler;
 
 
 public class ReassNode extends VBox implements AppTab

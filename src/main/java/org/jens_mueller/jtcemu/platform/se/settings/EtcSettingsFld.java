@@ -6,7 +6,7 @@
  * Sonstige Einstellungen
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,10 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import jtcemu.base.AppContext;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.base.FileDlg;
-import jtcemu.platform.se.base.TopFrm;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.base.FileDlg;
+import org.jens_mueller.jtcemu.platform.se.base.TopFrm;
 
 
 public class EtcSettingsFld

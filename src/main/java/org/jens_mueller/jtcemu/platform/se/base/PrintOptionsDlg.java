@@ -6,7 +6,7 @@
  * Dialog zur Eingabe von Druckoptionen
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -19,7 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.AppContext;
 
 
 public class PrintOptionsDlg extends BaseDlg implements ActionListener

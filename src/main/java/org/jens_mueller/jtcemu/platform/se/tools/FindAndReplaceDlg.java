@@ -6,7 +6,7 @@
  * Dialog zur Eingabe eines Suchtextes
  */
 
-package jtcemu.platform.se.tools;
+package org.jens_mueller.jtcemu.platform.se.tools;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,7 +21,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import jtcemu.platform.se.base.BaseDlg;
+import org.jens_mueller.jtcemu.platform.se.base.BaseDlg;
 
 
 public class FindAndReplaceDlg extends BaseDlg implements ActionListener

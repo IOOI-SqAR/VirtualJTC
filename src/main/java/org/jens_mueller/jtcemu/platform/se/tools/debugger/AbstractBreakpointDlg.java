@@ -7,7 +7,7 @@
  * eines Haltepunktes
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import jtcemu.platform.se.base.BaseDlg;
+import org.jens_mueller.jtcemu.platform.se.base.BaseDlg;
 
 
 public abstract class AbstractBreakpointDlg

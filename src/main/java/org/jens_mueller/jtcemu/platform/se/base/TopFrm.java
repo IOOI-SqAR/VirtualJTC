@@ -6,7 +6,7 @@
  * Hauptfenster
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -58,24 +58,24 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jtcemu.base.AppContext;
-import jtcemu.base.ErrorViewer;
-import jtcemu.base.FileInfo;
-import jtcemu.base.JTCSys;
-import jtcemu.base.JTCUtil;
-import jtcemu.base.PasteObserver;
-import jtcemu.platform.se.Main;
-import jtcemu.platform.se.audio.AudioFrm;
-import jtcemu.platform.se.audio.AudioIO;
-import jtcemu.platform.se.keyboard.KeyboardFrm;
-import jtcemu.platform.se.settings.SettingsFrm;
-import jtcemu.platform.se.tools.ReassFrm;
-import jtcemu.platform.se.tools.TextEditFrm;
-import jtcemu.platform.se.tools.debugger.DebugFrm;
-import jtcemu.platform.se.tools.hexedit.HexEditFrm;
-import jtcemu.platform.se.tools.hexedit.MemEditFrm;
-import z8.Z8;
-import z8.Z8Listener;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.ErrorViewer;
+import org.jens_mueller.jtcemu.base.FileInfo;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.base.PasteObserver;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.jtcemu.platform.se.audio.AudioFrm;
+import org.jens_mueller.jtcemu.platform.se.audio.AudioIO;
+import org.jens_mueller.jtcemu.platform.se.keyboard.KeyboardFrm;
+import org.jens_mueller.jtcemu.platform.se.settings.SettingsFrm;
+import org.jens_mueller.jtcemu.platform.se.tools.ReassFrm;
+import org.jens_mueller.jtcemu.platform.se.tools.TextEditFrm;
+import org.jens_mueller.jtcemu.platform.se.tools.debugger.DebugFrm;
+import org.jens_mueller.jtcemu.platform.se.tools.hexedit.HexEditFrm;
+import org.jens_mueller.jtcemu.platform.se.tools.hexedit.MemEditFrm;
+import org.jens_mueller.z8.Z8;
+import org.jens_mueller.z8.Z8Listener;
 
 
 public class TopFrm extends BaseFrm

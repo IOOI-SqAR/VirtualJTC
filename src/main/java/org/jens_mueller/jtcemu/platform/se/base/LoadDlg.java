@@ -6,7 +6,7 @@
  * Dialog fuer Laden einer Datei
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -24,12 +24,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import jtcemu.base.FileInfo;
-import jtcemu.base.AppContext;
-import jtcemu.base.FileLoader;
-import jtcemu.base.JTCUtil;
-import jtcemu.platform.se.Main;
-import z8.Z8Memory;
+import org.jens_mueller.jtcemu.base.FileInfo;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.FileLoader;
+import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.se.Main;
+import org.jens_mueller.z8.Z8Memory;
 
 
 public class LoadDlg extends BaseDlg implements ActionListener

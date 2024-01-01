@@ -6,11 +6,11 @@
  * Haltepunkt auf den Zugriff auf ein Register
  */
 
-package jtcemu.platform.se.tools.debugger;
+package org.jens_mueller.jtcemu.platform.se.tools.debugger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import z8.Z8;
-import z8.Z8Reassembler;
+import org.jens_mueller.z8.Z8;
+import org.jens_mueller.z8.Z8Reassembler;
 
 
 public class RegBreakpoint extends AccessBreakpoint

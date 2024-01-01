@@ -7,7 +7,7 @@
  * und des Lautsprechers
  */
 
-package jtcemu.platform.se.audio;
+package org.jens_mueller.jtcemu.platform.se.audio;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -26,8 +26,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
 
 
 public abstract class AbstractAudioIOFld extends JPanel

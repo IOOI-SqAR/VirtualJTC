@@ -6,7 +6,7 @@
  * Node zur Darstellung des Bildschirms
  */
 
-package jtcemu.platform.fx.base;
+package org.jens_mueller.jtcemu.platform.fx.base;
 
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
@@ -15,11 +15,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import jtcemu.base.AppContext;
-import jtcemu.base.CharRaster;
-import jtcemu.base.JTCScreen;
-import jtcemu.base.JTCSys;
-import jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.CharRaster;
+import org.jens_mueller.jtcemu.base.JTCScreen;
+import org.jens_mueller.jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.platform.fx.Main;
 
 
 public class ScreenNode extends Canvas implements JTCScreen

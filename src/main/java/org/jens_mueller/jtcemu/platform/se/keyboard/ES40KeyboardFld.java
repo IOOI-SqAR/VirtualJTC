@@ -6,13 +6,13 @@
  * Komponente fuer die Bildschirmtastatur fuer ES4.0
  */
 
-package jtcemu.platform.se.keyboard;
+package org.jens_mueller.jtcemu.platform.se.keyboard;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCSys;
 
 
 public class ES40KeyboardFld extends AbstractKeyboardFld

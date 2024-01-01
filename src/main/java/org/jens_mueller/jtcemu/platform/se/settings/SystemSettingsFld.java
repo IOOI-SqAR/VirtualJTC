@@ -6,7 +6,7 @@
  * Einstellungen zum emulierten System
  */
 
-package jtcemu.platform.se.settings;
+package org.jens_mueller.jtcemu.platform.se.settings;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,8 +19,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import jtcemu.base.AppContext;
-import jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.AppContext;
+import org.jens_mueller.jtcemu.base.JTCSys;
 
 
 public class SystemSettingsFld extends JPanel implements ActionListener

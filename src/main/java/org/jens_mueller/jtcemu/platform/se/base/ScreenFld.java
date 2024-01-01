@@ -6,7 +6,7 @@
  * Komponente fuer die Darstellung des Bildschirminhaltes
  */
 
-package jtcemu.platform.se.base;
+package org.jens_mueller.jtcemu.platform.se.base;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -20,9 +20,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import javax.swing.JComponent;
-import jtcemu.base.CharRaster;
-import jtcemu.base.JTCScreen;
-import jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.CharRaster;
+import org.jens_mueller.jtcemu.base.JTCScreen;
+import org.jens_mueller.jtcemu.base.JTCSys;
 
 
 public class ScreenFld

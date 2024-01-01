@@ -6,9 +6,9 @@
  * plattformunabhaengige Hilfsfunktionen fuer die Werkzeuge
  */
 
-package jtcemu.tools;
+package org.jens_mueller.jtcemu.tools;
 
-import jtcemu.base.JTCSys;
+import org.jens_mueller.jtcemu.base.JTCSys;
 
 
 public class ToolUtil
