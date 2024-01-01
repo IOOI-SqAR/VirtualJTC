@@ -6,9 +6,13 @@
 
 package org.sqar.virtualjtc.z8;
 
+import org.jens_mueller.z8.Z8Listener;
+
 import java.util.*;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Random;
 
 
 public class Z8 implements Runnable
@@ -140,15 +144,21 @@ public class Z8 implements Runnable
   private static final int  SIO        = 0xF0;
 
   private volatile Z8IO             z8io                 = null;
+  private volatile Z8Listener       preInstExecListener  = null;
+  private volatile Z8Listener       resetListener        = null;
+  private volatile Z8Listener       statusListener       = null;
   private volatile PCListenerItem[] pcListenerItems      = null;
   private volatile int              pc                   = 0;
-  private int                       debugSP              = 0;
-  private int                       cyclesPerSecond      = 0;
+  private volatile int              debugSP              = 0;
+  private volatile int              cyclesPerSecond      = 0;
   private int                       overlapCycles        = 0;
   private int                       fetchCycles          = 0;
   private int                       pipelineCycles       = 0;
   private volatile long             unlimitedSpeedCycles = -1;
+  private volatile long           cyclesStartMillis    = -1;
+  private volatile long           speedCycles          = 0;
   private volatile long             totalCycles          = 0;
+  private int                     instCycles           = 0;
   private int                       sioPreDiv            = 0;
   private int                       sioIn                = 0;
   private int                       sioIn1Bits           = 0;
@@ -181,24 +191,31 @@ public class Z8 implements Runnable
   private boolean                   flagS                = false;
   private boolean                   flagV                = false;
   private boolean                   flagZ                = false;
+  private int[]                     interruptPriority    = null;
+  private volatile boolean          eiExecuted           = false;
+  private volatile boolean          regInitZero          = false;
   private boolean                   timer1ExtClock       = false;
+  private volatile boolean          pause                = false;
+  private volatile boolean          powerOn              = false;
   private volatile boolean          initFired            = false;
   private volatile boolean          resetFired           = false;
   private volatile boolean          quitFired            = false;
   private final Z8Timer             timer0               = new Z8Timer();
   private final Z8Timer             timer1               = new Z8Timer();
   private Z8Memory                  memory               = null;
+  private Random                    random               = null;
   private volatile Z8Debugger       debugger             = null;
   private volatile DebugAction      debugAction          = null;
   private volatile RunMode          runMode              = RunMode.RUNNING;
   private final Object              waitMonitor          = new Object();
 
 
-  public Z8( int cyclesPerSecond, Z8Memory memory, Z8IO z8io )
+  public Z8(int cyclesPerSecond, boolean regInitZero, Z8Memory memory, Z8IO z8io )
   {
     this.cyclesPerSecond = cyclesPerSecond / 2;                // interner Teiler
     this.memory          = memory;
     this.z8io            = z8io;
+    this.random          = new Random( System.currentTimeMillis() );
     Arrays.fill( this.regOut, 0xFF );
     Arrays.fill( this.portIn, -1 );
     Arrays.fill( this.portOut, 0xFF );
@@ -2256,7 +2273,7 @@ public class Z8 implements Runnable
 
   private int updFlagsSVZ( int v )
   {
-    this.flagZ = (v == 0);
+    this.flagZ = ((v & 0xFF) == 0);
     this.flagS = ((v & 0x80) != 0);
     this.flagV = false;
     return v;
@@ -2371,4 +2388,3 @@ public class Z8 implements Runnable
     return (vNew == 0) && (vNew != vOld);
   }
 }
-
