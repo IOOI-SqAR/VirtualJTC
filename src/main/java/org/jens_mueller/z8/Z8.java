@@ -12,6 +12,8 @@ import java.util.Random;
 
 public class Z8 implements Runnable
 {
+  public enum RunMode     { RUNNING, INST_HALT, INST_STOP, DEBUG_STOP }
+
   public enum DebugAction { RUN, RUN_TO_RET, STEP_INTO, STEP_OVER, STOP };
 
   private enum InstType { ADD, ADC, SUB, SBC, OR, AND, TCM, TM, CP, XOR };
@@ -141,11 +143,11 @@ public class Z8 implements Runnable
   private int                     regP2M               = 0;
   private int                     regTMR               = 0;
   private int                     maxGPRNum            = 0xEF;
-  private int[]                   registers            = new int[ 0xF0 ];
-  private int[]                   regOut               = new int[ 4 ];
-  private int[]                   portIn               = new int[ 4 ];
-  private int[]                   portOut              = new int[ 4 ];
-  private int[]                   portLastOut          = new int[ 4 ];
+  private final int[]             registers            = new int[ 0xF0 ];
+  private final int[]             regOut               = new int[ 4 ];
+  private final int[]             portIn               = new int[ 4 ];
+  private final int[]             portOut              = new int[ 4 ];
+  private final int[]             portLastOut          = new int[ 4 ];
   private int                     port3LastIn          = 0xFF;
   private volatile Z8Breakpoint[] breakpoints          = null;
   private boolean                 flagC                = false;
@@ -162,12 +164,14 @@ public class Z8 implements Runnable
   private volatile boolean        powerOn              = false;
   private volatile boolean        resetFired           = false;
   private volatile boolean        quitFired            = false;
-  private Z8Timer                 timer0               = new Z8Timer();
-  private Z8Timer                 timer1               = new Z8Timer();
+  private final Z8Timer           timer0               = new Z8Timer();
+  private final Z8Timer           timer1               = new Z8Timer();
   private Z8Memory                memory               = null;
   private Random                  random               = null;
+  private volatile Z8Debugger     debugger             = null;
   private volatile DebugAction    debugAction          = null;
-  private Object                  waitMonitor          = new Object();
+  private volatile RunMode        runMode              = RunMode.RUNNING;
+  private final Object            waitMonitor          = new Object();
 
 
   public Z8( boolean regInitZero, Z8Memory memory, Z8IO z8io )
@@ -2338,9 +2342,7 @@ public class Z8 implements Runnable
 	}
       }
     } else {
-      for( int i = 0; i < this.portOut.length; i++ ) {
-	this.portLastOut[ i ] = this.portOut[ i ];
-      }
+        System.arraycopy(this.portOut, 0, this.portLastOut, 0, this.portOut.length);
     }
   }
 
