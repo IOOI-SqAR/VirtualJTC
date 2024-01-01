@@ -17,13 +17,13 @@ import org.sqar.virtualjtc.jtcemu.base.JTCSys;
 
 public class AudioOutLine extends AudioOut
 {
-  private static int[] sampleRatesSound = { 22050, 16000, 8000 };
-  private static int[] sampleRatesData  = { 44100, 32000, 22050 };
+  private static final int[] sampleRatesSound = { 22050, 16000, 8000 };
+  private static final int[] sampleRatesData  = { 44100, 32000, 22050 };
 
-  private boolean        forDataTransfer;
-  private SourceDataLine dataLine;
-  private byte[]         audioDataBuf;
-  private int            audioDataPos;
+  private final boolean      forDataTransfer;
+  private SourceDataLine     dataLine;
+  private byte[]             audioDataBuf;
+  private int                audioDataPos;
 
 
   public AudioOutLine(Z8 z8, JTCSys jtcSys, boolean forDataTransfer )

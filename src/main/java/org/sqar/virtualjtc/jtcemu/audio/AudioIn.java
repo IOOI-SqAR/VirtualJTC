@@ -266,7 +266,7 @@ public abstract class AudioIn extends AudioIO
                * Anzahl der verstrichenen Taktzyklen auf den Wert
                * des letzten gelesenen Samples korrigieren
                */
-              this.lastCycles += (nSamples * this.cyclesPerFrame);
+              this.lastCycles += ((long) nSamples * this.cyclesPerFrame);
             }
           }
         }

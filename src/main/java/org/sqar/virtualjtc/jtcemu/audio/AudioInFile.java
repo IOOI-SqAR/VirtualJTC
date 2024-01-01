@@ -24,9 +24,9 @@ public class AudioInFile extends AudioIn
   private static final Locale locale = Locale.getDefault();
   private static final ResourceBundle audioInFileResourceBundle = ResourceBundle.getBundle("AudioInFile", locale);
 
-  private AudioFrm         audioFrm;
-  private File             file;
-  private boolean          monitorPlay;
+  private final AudioFrm   audioFrm;
+  private final File       file;
+  private final boolean    monitorPlay;
   private AudioInputStream in;
   private byte[]           frameBuf;
   private long             frameCount;
@@ -113,7 +113,8 @@ public class AudioInFile extends AudioIn
         this.errorText = audioInFileResourceBundle.getString("error.startAudio.unknownError.errorText") + ex.getMessage();
       }
       if( (this.in != null) || (fmt != null) ) {
-        this.frameBuf       = new byte[ fmt.getFrameSize() ];
+          assert fmt != null;
+          this.frameBuf       = new byte[ fmt.getFrameSize() ];
         this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
                                                 / fmt.getFrameRate() );
         this.thresholdValue = thresholdValue;
@@ -142,7 +143,7 @@ public class AudioInFile extends AudioIn
       try {
         in.close();
       }
-      catch( Exception ex ) {}
+      catch( Exception ignored) {}
     }
   }
 }

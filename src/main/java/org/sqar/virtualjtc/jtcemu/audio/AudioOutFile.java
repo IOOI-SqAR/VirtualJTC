@@ -26,12 +26,12 @@ public class AudioOutFile extends AudioOut
   private static final Locale locale = Locale.getDefault();
   private static final ResourceBundle audioOutFileResourceBundle = ResourceBundle.getBundle("AudioOutFile", locale);
 
-  private AudioFrm             audioFrm;
-  private File                 file;
-  private AudioFileFormat.Type fileType;
-  private boolean              monitorPlay;
-  private AudioFormat          audioFmt;
-  private AudioDataQueue       queue;
+  private final AudioFrm             audioFrm;
+  private final File                 file;
+  private final AudioFileFormat.Type fileType;
+  private final boolean              monitorPlay;
+  private AudioFormat                audioFmt;
+  private AudioDataQueue             queue;
 
 
   public AudioOutFile(
@@ -109,8 +109,9 @@ public class AudioOutFile extends AudioOut
   {
     closeMonitorLine();
 
-    AudioDataQueue queue = this.queue;
-    this.enabled         = false;
+    AudioDataQueue queue;
+      queue = this.queue;
+      this.enabled         = false;
     this.errorText       = queue.getErrorText();
     if( (this.errorText == null) && (queue.getTotalSampleCount() > 0) ) {
       try {

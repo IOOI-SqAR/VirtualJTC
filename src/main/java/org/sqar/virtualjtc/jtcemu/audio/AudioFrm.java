@@ -33,41 +33,41 @@ public class AudioFrm extends BaseFrm implements ActionListener
 
   private static AudioFrm instance = null;
 
-  private Z8                                 z8;
-  private JTCSys                             jtcSys;
-  private Thread                             emuThread;
+  private final Z8                           z8;
+  private final JTCSys                       jtcSys;
+  private final Thread                       emuThread;
   private javax.swing.filechooser.FileFilter readFileFilter;
   private javax.swing.filechooser.FileFilter writeFileFilter;
   private File                               curFile;
   private File                               lastFile;
   private AudioFormat                        audioFmt;
   private AudioIO                            audioIO;
-  private JRadioButton                       btnSoundOut;
-  private JRadioButton                       btnDataOut;
-  private JRadioButton                       btnDataIn;
-  private JRadioButton                       btnFileOut;
-  private JRadioButton                       btnFileIn;
-  private JRadioButton                       btnFileLastIn;
-  private JLabel                             labelSampleRate;
-  private JComboBox                          comboSampleRate;
-  private JLabel                             labelSpeed;
-  private JSpinner                           spinnerSpeed;
-  private JLabel                             labelThreshold;
-  private JSlider                            sliderThreshold;
-  private JLabel                             labelChannel;
-  private JRadioButton                       btnChannel0;
-  private JRadioButton                       btnChannel1;
-  private JCheckBox                          btnMonitorPlay;
-  private JLabel                             labelFileName;
-  private JTextField                         fldFileName;
-  private JLabel                             labelFormat;
-  private JTextField                         fldFormat;
-  private JLabel                             labelProgress;
-  private JProgressBar                       progressBar;
-  private JButton                            btnEnable;
-  private JButton                            btnDisable;
-  private JButton                            btnHelp;
-  private JButton                            btnClose;
+  private final JRadioButton                 btnSoundOut;
+  private final JRadioButton                 btnDataOut;
+  private final JRadioButton                 btnDataIn;
+  private final JRadioButton                 btnFileOut;
+  private final JRadioButton                 btnFileIn;
+  private final JRadioButton                 btnFileLastIn;
+  private final JLabel                       labelSampleRate;
+  private final JComboBox<String>            comboSampleRate;
+  private final JLabel                       labelSpeed;
+  private final JSpinner                     spinnerSpeed;
+  private final JLabel                       labelThreshold;
+  private final JSlider                      sliderThreshold;
+  private final JLabel                       labelChannel;
+  private final JRadioButton                 btnChannel0;
+  private final JRadioButton                 btnChannel1;
+  private final JCheckBox                    btnMonitorPlay;
+  private final JLabel                       labelFileName;
+  private final JTextField                   fldFileName;
+  private final JLabel                       labelFormat;
+  private final JTextField                   fldFormat;
+  private final JLabel                       labelProgress;
+  private final JProgressBar                 progressBar;
+  private final JButton                      btnEnable;
+  private final JButton                      btnDisable;
+  private final JButton                      btnHelp;
+  private final JButton                      btnClose;
 
 
   public void doQuit()
@@ -300,12 +300,12 @@ public class AudioFrm extends BaseFrm implements ActionListener
     this.labelSampleRate = new JLabel( audioFrmResourceBundle.getString("label.sampleRate") );
     panelOpt.add( this.labelSampleRate, gbcOpt );
 
-    this.comboSampleRate = new JComboBox();
+    this.comboSampleRate = new JComboBox<String>();
     this.comboSampleRate.setEditable( false );
     this.comboSampleRate.addItem( "Standard" );
-    for( int i = 0; i < this.sampleRates.length; i++ ) {
-      this.comboSampleRate.addItem( String.valueOf( this.sampleRates[ i ] ) );
-    }
+      for (int sampleRate : sampleRates) {
+          this.comboSampleRate.addItem(String.valueOf(sampleRate));
+      }
     gbcOpt.gridwidth = GridBagConstraints.REMAINDER;
     gbcOpt.gridx++;
     panelOpt.add( this.comboSampleRate, gbcOpt );
@@ -321,7 +321,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
                         "org.sqar.virtualjtc.jtcemu.audio.speed_adjustment.percent" );
     this.spinnerSpeed = new JSpinner(
                                 new SpinnerNumberModel(
-                                        pValue != null ? pValue.intValue() : 0,
+                                        pValue != null ? pValue : 0,
                                         -20,
                                         20,
                                         1 ) );
@@ -340,7 +340,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
                                 JSlider.HORIZONTAL,
                                 0,
                                 100,
-                                pValue != null ? pValue.intValue() : 50 );
+                                pValue != null ? pValue : 50 );
     this.sliderThreshold.setMajorTickSpacing( 50 );
     this.sliderThreshold.setMinorTickSpacing( 10 );
     this.sliderThreshold.setPaintLabels( true );
@@ -481,20 +481,20 @@ public class AudioFrm extends BaseFrm implements ActionListener
     if( fmts != null ) {
       if( fmts.length > 0 ) {
         Collection<String> suffixes = new ArrayList<String>( fmts.length );
-        for( int i = 0; i < fmts.length; i++ ) {
-          String suffix = fmts[ i ].getExtension();
-          if( suffix != null ) {
-            if( suffix.length() > 0 )
-              suffixes.add( suffix );
+          for (AudioFileFormat.Type fmt : fmts) {
+              String suffix = fmt.getExtension();
+              if (suffix != null) {
+                  if (!suffix.isEmpty())
+                      suffixes.add(suffix);
+              }
           }
-        }
         if( !suffixes.isEmpty() ) {
           try {
             rv = new FileNameExtensionFilter(
                         text,
-                        suffixes.toArray( new String[ suffixes.size() ] ) );
+                        suffixes.toArray(new String[0]) );
           }
-          catch( ArrayStoreException ex ) {}
+          catch( ArrayStoreException ignored) {}
         }
       }
     }
@@ -705,8 +705,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     }
 
     String fileName = file.getName();
-    if( fileName != null ) {
-      fileName = fileName.toUpperCase( Locale.ENGLISH );
+      fileName = fileName.toUpperCase(Locale.ENGLISH);
       for( AudioFileFormat.Type fileType : types ) {
         String ext = fileType.getExtension();
         if( ext != null ) {
@@ -718,9 +717,8 @@ public class AudioFrm extends BaseFrm implements ActionListener
             return fileType;
         }
       }
-    }
 
-    StringBuilder buf = new StringBuilder( 64 );
+      StringBuilder buf = new StringBuilder( 64 );
     buf.append( audioFrmResourceBundle.getString("error.getAudioFileType.fileFormatNotSupported.message") );
     if( !types.isEmpty() ) {
       buf.append( audioFrmResourceBundle.getString("error.getAudioFileType.fileFormatNotSupported.possibleExtensions") );
@@ -772,8 +770,8 @@ public class AudioFrm extends BaseFrm implements ActionListener
   private int getSampleRate()
   {
     int i = this.comboSampleRate.getSelectedIndex() - 1;  // 0: automatisch
-    return ((i >= 0) && (i < this.sampleRates.length)) ?
-                                        this.sampleRates[ i ] : 0;
+    return ((i >= 0) && (i < sampleRates.length)) ?
+                                        sampleRates[ i ] : 0;
   }
 
 
@@ -835,7 +833,7 @@ public class AudioFrm extends BaseFrm implements ActionListener
     try {
       this.emuThread.setPriority( priority );
     }
-    catch( Exception ex ) {}
+    catch( Exception ignored) {}
   }
 
 

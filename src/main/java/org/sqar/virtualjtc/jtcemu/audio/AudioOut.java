@@ -105,7 +105,7 @@ public abstract class AudioOut extends AudioIO
                  * Anzahl der verstrichenen Taktzyklen auf den Wert
                  * des letzten ausgegebenen Samples korrigieren
                  */
-                this.lastCycles += (nSamples * this.cyclesPerFrame);
+                this.lastCycles += ((long) nSamples * this.cyclesPerFrame);
                 this.lastPhaseSamples = nSamples;
               }
             }

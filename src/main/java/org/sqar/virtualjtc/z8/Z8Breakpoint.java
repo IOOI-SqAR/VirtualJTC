@@ -11,9 +11,9 @@ package org.sqar.virtualjtc.z8;
 
 public class Z8Breakpoint implements Comparable<Z8Breakpoint>
 {
-  private int     addr;
-  private boolean enabled;
-  private String  text;
+  private final int addr;
+  private boolean   enabled;
+  private String    text;
 
 
   public Z8Breakpoint( int addr )

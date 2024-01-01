@@ -31,7 +31,7 @@ public class DataLineCloser extends Thread
         try {
           thread.join( 1000 );
         }
-        catch( InterruptedException ex ) {}
+        catch( InterruptedException ignored) {}
       }
     }
   }
@@ -46,17 +46,17 @@ public class DataLineCloser extends Thread
       try {
         this.dataLine.flush();
       }
-      catch( Exception ex ) {}
+      catch( Exception ignored) {}
 
       try {
         this.dataLine.stop();
       }
-      catch( Exception ex ) {}
+      catch( Exception ignored) {}
 
       try {
         this.dataLine.close();
       }
-      catch( Exception ex ) {}
+      catch( Exception ignored) {}
 
       this.dataLine = null;
     }

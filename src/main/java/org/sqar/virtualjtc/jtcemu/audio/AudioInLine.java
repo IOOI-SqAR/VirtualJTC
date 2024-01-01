@@ -16,7 +16,7 @@ import org.sqar.virtualjtc.z8.Z8;
 
 public class AudioInLine extends AudioIn
 {
-  private static int[] sampleRates = { 44100, 32000, 22050 };
+  private static final int[] sampleRates = { 44100, 32000, 22050 };
 
   private TargetDataLine dataLine;
   private byte[]         frameBuf;

@@ -18,11 +18,11 @@ public class Z8Reassembler
                 "P01M", "IPR", "IRQ", "IMR", "FLAGS", "RP", "SPH", "SPL" };
 
 
-  private Z8Memory      memory;
-  private StringBuilder buf;
-  private int           addr;
-  private String        lastInstName;
-  private String[]      lastInstArgs;
+  private final Z8Memory memory;
+  private StringBuilder  buf;
+  private int            addr;
+  private String         lastInstName;
+  private String[]       lastInstArgs;
 
 
   public Z8Reassembler( Z8Memory memory )
@@ -203,24 +203,23 @@ public class Z8Reassembler
     begPos = this.buf.length();
     this.buf.append( this.lastInstName );
     if( this.lastInstArgs != null ) {
-      for( int i = 0; i < this.lastInstArgs.length; i++ ) {
-        String arg = this.lastInstArgs[ i ];
-        if( arg != null ) {
-          if( begPos >= 0 ) {
-            n = begPos + 8 - this.buf.length();
-            if( n < 1 ) {
-              n = 1;
+        for (String arg : this.lastInstArgs) {
+            if (arg != null) {
+                if (begPos >= 0) {
+                    n = begPos + 8 - this.buf.length();
+                    if (n < 1) {
+                        n = 1;
+                    }
+                    for (int k = 0; k < n; k++) {
+                        this.buf.append((char) '\u0020');
+                    }
+                    begPos = -1;
+                } else {
+                    this.buf.append(", ");
+                }
+                this.buf.append(arg);
             }
-            for( int k = 0; k < n; k++ ) {
-              this.buf.append( (char) '\u0020' );
-            }
-            begPos = -1;
-          } else {
-            this.buf.append( ", " );
-          }
-          this.buf.append( arg );
         }
-      }
     }
   }
 
