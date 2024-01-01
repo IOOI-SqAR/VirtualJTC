@@ -27,7 +27,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 
 
 public class MsgDlg extends Stage
@@ -118,7 +118,7 @@ public class MsgDlg extends Stage
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( false );
     setTitle( title );
-    Main.addIconsTo( this );
+    JTCEMUApplication.addIconsTo( this );
 
 
     // Info

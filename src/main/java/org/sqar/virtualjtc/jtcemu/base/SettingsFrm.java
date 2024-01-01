@@ -651,10 +651,10 @@ public class SettingsFrm extends BaseFrm
     try {
       int margin = Main.getIntProperty( "org.sqar.virtualjtc.jtcemu.screen.margin", 20 );
       if( (margin >= 0) && (margin <= MAX_MARGIN) ) {
-        sm.setValue( new Integer( margin ) );
+        sm.setValue(margin);
       }
     }
-    catch( IllegalArgumentException ex ) {}
+    catch( IllegalArgumentException ignored) {}
 
     this.spinnerMargin = new JSpinner( sm );
     this.spinnerMargin.addChangeListener( this );

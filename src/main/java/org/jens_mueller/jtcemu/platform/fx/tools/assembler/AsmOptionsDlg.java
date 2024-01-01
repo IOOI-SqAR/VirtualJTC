@@ -27,7 +27,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.jens_mueller.jtcemu.base.AppContext;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 import org.jens_mueller.jtcemu.tools.assembler.AsmOptions;
@@ -37,7 +37,7 @@ public class AsmOptionsDlg extends Stage implements DropFileHandler
 {
   private static final String FILE_GROUP = "asm";
 
-  private Main       main;
+  private JTCEMUApplication JTCEMUApplication;
   private AsmOptions oldOptions;
   private AsmOptions approvedOptions;
   private File       codeFile;
@@ -51,9 +51,9 @@ public class AsmOptionsDlg extends Stage implements DropFileHandler
   private TextField  fldCodeFile;
 
 
-  public static AsmOptions open( Main main, AsmOptions options )
+  public static AsmOptions open(JTCEMUApplication JTCEMUApplication, AsmOptions options )
   {
-    AsmOptionsDlg dlg = new AsmOptionsDlg( main, options );
+    AsmOptionsDlg dlg = new AsmOptionsDlg(JTCEMUApplication, options );
     dlg.showAndWait();
     return dlg.approvedOptions;
   }
@@ -73,16 +73,16 @@ public class AsmOptionsDlg extends Stage implements DropFileHandler
 	/* --- Konstruktor --- */
 
   private AsmOptionsDlg(
-		Main       main,
+		JTCEMUApplication JTCEMUApplication,
 		AsmOptions options )
   {
-    initOwner( main.getStage() );
+    initOwner( JTCEMUApplication.getStage() );
     initModality( Modality.WINDOW_MODAL );
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( true );
     setTitle( "Assembler-Optionen" );
-    Main.addIconsTo( this );
-    this.main            = main;
+    JTCEMUApplication.addIconsTo( this );
+    this.JTCEMUApplication = JTCEMUApplication;
     this.oldOptions      = options;
     this.approvedOptions = null;
 
@@ -230,7 +230,7 @@ public class AsmOptionsDlg extends Stage implements DropFileHandler
   {
     boolean codeToFile = this.btnCodeToFile.isSelected();
     if( codeToFile && (this.codeFile == null) ) {
-      this.main.showError(
+      this.JTCEMUApplication.showError(
 		"Erzeugter Programmcode in Datei speichern:\n"
 			+ "Es wurde keine Datei angegeben." );
     } else {
@@ -267,7 +267,7 @@ public class AsmOptionsDlg extends Stage implements DropFileHandler
 	fileChooser.setInitialDirectory( dirFile );
       }
     }
-    File file = fileChooser.showSaveDialog( this.main.getStage() );
+    File file = fileChooser.showSaveDialog( this.JTCEMUApplication.getStage() );
     if( file != null ) {
       codeFileSelected( file );
       AppContext.setLastFile( FILE_GROUP, file );

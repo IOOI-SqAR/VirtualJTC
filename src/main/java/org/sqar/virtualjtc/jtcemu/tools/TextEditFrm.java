@@ -158,7 +158,7 @@ public class TextEditFrm extends AbstractTextFrm
         doOpen();
       }
       else if( src == this.mnuLoadBasicMemE000 ) {
-        doLoadBasicMem( new Integer( 0xE000 ) );
+        doLoadBasicMem(0xE000);
       }
       else if( src == this.mnuLoadBasicMemWith ) {
         doLoadBasicMem( null );
@@ -467,7 +467,7 @@ public class TextEditFrm extends AbstractTextFrm
     Integer pValue = Main.getIntegerProperty(
                         getClass().getName() + ".split.location" );
     if( pValue != null ) {
-      this.splitPane.setDividerLocation( pValue.intValue() );
+      this.splitPane.setDividerLocation(pValue);
     } else {
       this.splitPane.setDividerLocation( 0.8 );
     }
@@ -1051,15 +1051,13 @@ public class TextEditFrm extends AbstractTextFrm
   {
     Integer lineNum = null;
     try {
-      lineNum = new Integer( this.textArea.getLineOfOffset(
-                                this.textArea.getCaretPosition() ) + 1 );
+      lineNum = this.textArea.getLineOfOffset(
+              this.textArea.getCaretPosition()) + 1;
     }
-    catch( BadLocationException ex ) {
-      lineNum = null;
-    }
-    lineNum = GUIUtil.askDecimal( this, textEditFrmResourceBundle.getString("doGoto.askDecimal.line"), lineNum, new Integer( 1 ) );
+    catch( BadLocationException ignored) {}
+    lineNum = GUIUtil.askDecimal( this, textEditFrmResourceBundle.getString("doGoto.askDecimal.line"), lineNum, 1);
     if( lineNum != null )
-      gotoLine( lineNum.intValue() );
+      gotoLine(lineNum);
   }
 
 
@@ -1087,24 +1085,22 @@ public class TextEditFrm extends AbstractTextFrm
                         textEditFrmResourceBundle.getString("doPrgBasic.askHex4.basicAddr"),
                         addr != null ?
                                 addr
-                                : new Integer( this.basicAddrFetch ) );
+                                : Integer.valueOf(this.basicAddrFetch));
           }
           if( addr != null ) {
             byte[] dataBytes = codeBuf.toByteArray();
-            if( dataBytes != null ) {
-              if( dataBytes.length > 0 ) {
-                int a = addr.intValue();
-                for( int i = 0; i < dataBytes.length; i++ ) {
-                  this.jtcSys.setMemByte( a++, false, dataBytes[ i ] );
-                }
-                this.logArea.append(
-                        String.format(
-                            textEditFrmResourceBundle.getString("doPrgBasic.logArea.formatString"),
-                                addr,
-                                a - 1 ) );
+              if (dataBytes.length > 0) {
+                  int a = addr;
+                  for (byte dataByte : dataBytes) {
+                      this.jtcSys.setMemByte(a++, false, dataByte);
+                  }
+                  this.logArea.append(
+                          String.format(
+                                  textEditFrmResourceBundle.getString("doPrgBasic.logArea.formatString"),
+                                  addr,
+                                  a - 1));
               }
-            }
-            this.basicAddrTransfer = addr;
+              this.basicAddrTransfer = addr;
           }
         }
       }
@@ -1170,7 +1166,7 @@ public class TextEditFrm extends AbstractTextFrm
       try {
         stream.close();
       }
-      catch( IOException ex ) {}
+      catch( IOException ignored) {}
     }
   }
 
@@ -1222,7 +1218,7 @@ public class TextEditFrm extends AbstractTextFrm
         this.textArea.setCaretPosition( matcher.start() );
         this.textArea.moveCaretPosition( matcher.end() );
       }
-      catch( IllegalArgumentException ex ) {}
+      catch( IllegalArgumentException ignored) {}
       found = true;
     }
     return found;
@@ -1280,12 +1276,12 @@ public class TextEditFrm extends AbstractTextFrm
     };
     if( text != null ) {
       int pos = -1;
-      for( int i = 0; i < lineBegTexts.length; i++ ) {
-        if( text.startsWith( lineBegTexts[ i ] ) ) {
-          pos = lineBegTexts[ i ].length();
-          break;
+        for (String lineBegText : lineBegTexts) {
+            if (text.startsWith(lineBegText)) {
+                pos = lineBegText.length();
+                break;
+            }
         }
-      }
       if( pos > 0 ) {
         int len = text.length();
         if( pos < len ) {
@@ -1364,7 +1360,7 @@ public class TextEditFrm extends AbstractTextFrm
       }
       text = String.format( "Z:%d S:%d", row + 1, col + 1 );
     }
-    catch( BadLocationException ex ) {}
+    catch( BadLocationException ignored) {}
     this.labelStatus.setText( text );
   }
 

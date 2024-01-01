@@ -19,7 +19,7 @@ import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.CharRaster;
 import org.jens_mueller.jtcemu.base.JTCScreen;
 import org.jens_mueller.jtcemu.base.JTCSys;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 
 
 public class ScreenNode extends Canvas implements JTCScreen
@@ -31,7 +31,7 @@ public class ScreenNode extends Canvas implements JTCScreen
   public static final int DEFAULT_SCREEN_MARGIN     = 20;
   public static final int DEFAULT_SCREEN_REFRESH_MS = 50;
 
-  private Main                main;
+  private JTCEMUApplication JTCEMUApplication;
   private JTCNode             jtcNode;
   private JTCSys              jtcSys;
   private Color[]             colors;
@@ -54,9 +54,9 @@ public class ScreenNode extends Canvas implements JTCScreen
   private volatile boolean    dirty;
 
 
-  public ScreenNode( Main main, JTCNode jtcNode )
+  public ScreenNode(JTCEMUApplication JTCEMUApplication, JTCNode jtcNode )
   {
-    this.main                   = main;
+    this.JTCEMUApplication = JTCEMUApplication;
     this.jtcNode                = jtcNode;
     this.jtcSys                 = null;
     this.colors                 = null;
@@ -147,7 +147,7 @@ public class ScreenNode extends Canvas implements JTCScreen
   {
     if( this.refreshTask != null ) {
       this.refreshTask.cancel();
-      Main.getTimer().purge();
+      JTCEMUApplication.getTimer().purge();
       installRefreshTask();
     }
   }
@@ -291,7 +291,7 @@ public class ScreenNode extends Canvas implements JTCScreen
 					  }
 					};
     updRefreshMillis();
-    Main.getTimer().scheduleAtFixedRate(
+    JTCEMUApplication.getTimer().scheduleAtFixedRate(
 				this.refreshTask,
 				this.refreshMillis,
 				this.refreshMillis );

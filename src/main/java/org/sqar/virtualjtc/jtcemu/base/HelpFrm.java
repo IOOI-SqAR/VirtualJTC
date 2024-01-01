@@ -454,7 +454,7 @@ public class HelpFrm extends BaseFrm
                 if( pt != null ) {
                   double d = (double) pt.y / (double) h;
                   if( (d > 0.0) && (d <= 1.0) )
-                    topEntry.viewPos = new Double( d );
+                    topEntry.viewPos = d;
                 }
               }
             }

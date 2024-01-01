@@ -34,7 +34,7 @@ import org.jens_mueller.jtcemu.base.ExtROM;
 import org.jens_mueller.jtcemu.base.JTCSys;
 import org.jens_mueller.jtcemu.base.JTCUtil;
 import org.jens_mueller.jtcemu.base.UserInputException;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 import org.jens_mueller.jtcemu.platform.fx.base.ReplyDlg;
@@ -46,7 +46,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
   private static final String FILE_GROUP_ROMBANK = "rombank";
 
   private SettingsNode           settingsNode;
-  private Main                   main;
+  private JTCEMUApplication JTCEMUApplication;
   private java.util.List<ExtROM> extROMs;
   private ExtROM                 romBank;
   private ListView<ExtROM>       listView;
@@ -60,10 +60,10 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
   private TextField              fldRomBankFile;
 
 
-  public ROMSettingsNode( final SettingsNode settingsNode, Main main )
+  public ROMSettingsNode( final SettingsNode settingsNode, JTCEMUApplication JTCEMUApplication)
   {
     this.settingsNode = settingsNode;
-    this.main         = main;
+    this.JTCEMUApplication = JTCEMUApplication;
     this.extROMs      = new ArrayList<ExtROM>();
     this.romBank      = null;
 
@@ -147,7 +147,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
 					(ov,o,v)->updRomRemoveBtnState() );
     updSettings();
 
-    JTCSys jtcSys = this.main.getJTCSys();
+    JTCSys jtcSys = this.JTCEMUApplication.getJTCSys();
     if( jtcSys != null ) {
       this.romBank = jtcSys.getROMBank();
     }
@@ -247,7 +247,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
 
   public void updSettings()
   {
-    JTCSys jtcSys = this.main.getJTCSys();
+    JTCSys jtcSys = this.JTCEMUApplication.getJTCSys();
     if( jtcSys != null ) {
       this.extROMs.clear();
       ExtROM[] roms = jtcSys.getExtROMs();
@@ -290,7 +290,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
     try {
       ExtROM  rom  = new ExtROM( file, JTCSys.MAX_ROM_SIZE );
       Integer addr = ReplyDlg.showReplyHex4Dlg(
-				this.main.getStage(),
+				this.JTCEMUApplication.getStage(),
 				"Anfangsadresse:",
 				JTCUtil.getBegAddrFromFilename( file ) );
       if( addr != null ) {
@@ -303,7 +303,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
       }
     }
     catch( Exception ex ) {
-      this.main.showError( ex );
+      this.JTCEMUApplication.showError( ex );
     }
     return done;
   }
@@ -378,7 +378,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
       done = true;
     }
     catch( Exception ex ) {
-      this.main.showError( ex );
+      this.JTCEMUApplication.showError( ex );
     }
     return done;
   }
@@ -398,7 +398,7 @@ public class ROMSettingsNode extends ScrollPane implements DropFileHandler
     if( dirFile != null ) {
       fileChooser.setInitialDirectory( dirFile );
     }
-    return fileChooser.showOpenDialog( this.main.getStage() );
+    return fileChooser.showOpenDialog( this.JTCEMUApplication.getStage() );
   }
 
 

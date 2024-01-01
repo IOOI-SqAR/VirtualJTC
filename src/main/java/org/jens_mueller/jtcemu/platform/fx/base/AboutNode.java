@@ -15,7 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import org.jens_mueller.jtcemu.base.AppContext;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 
 
 public class AboutNode extends ScrollPane
@@ -23,12 +23,12 @@ public class AboutNode extends ScrollPane
   private static AboutNode instance = null;
 
 
-  public static void showTab( Main main )
+  public static void showTab( JTCEMUApplication JTCEMUApplication)
   {
     if( instance == null ) {
       instance = new AboutNode();
     }
-    main.showTab( "\u00DCber", instance, true );
+    JTCEMUApplication.showTab( "\u00DCber", instance, true );
   }
 
 

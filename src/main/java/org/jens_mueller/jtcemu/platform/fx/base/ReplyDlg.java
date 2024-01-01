@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.jens_mueller.jtcemu.base.JTCUtil;
 import org.jens_mueller.jtcemu.base.UserInputException;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 
 
 public class ReplyDlg extends Stage
@@ -126,7 +126,7 @@ public class ReplyDlg extends Stage
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( false );
     setTitle( "Eingabe" );
-    Main.addIconsTo( this );
+    JTCEMUApplication.addIconsTo( this );
     this.approved = false;
 
     Label label = new Label( msg != null ? msg : "Eingabe:" );

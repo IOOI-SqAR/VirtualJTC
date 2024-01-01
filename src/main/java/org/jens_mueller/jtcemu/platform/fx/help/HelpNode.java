@@ -32,7 +32,7 @@ import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.JTCUtil;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
@@ -46,7 +46,7 @@ public class HelpNode extends BorderPane implements AppTab
 
   private static HelpNode instance = null;
 
-  private Main     main;
+  private JTCEMUApplication JTCEMUApplication;
   private String   baseUrl;
   private String   homeUrl;
   private MenuBar  mnuBar;
@@ -58,12 +58,12 @@ public class HelpNode extends BorderPane implements AppTab
   private WebView  webView;
 
 
-  public static void showTab( Main main ) throws IOException
+  public static void showTab( JTCEMUApplication JTCEMUApplication) throws IOException
   {
     if( instance == null ) {
-      instance = new HelpNode( main );
+      instance = new HelpNode(JTCEMUApplication);
     }
-    main.showTab( "Hilfe", instance, true );
+    JTCEMUApplication.showTab( "Hilfe", instance, true );
   }
 
 
@@ -113,9 +113,9 @@ public class HelpNode extends BorderPane implements AppTab
 
 	/* --- Konstruktor --- */
 
-  private HelpNode( Main main ) throws IOException
+  private HelpNode( JTCEMUApplication JTCEMUApplication) throws IOException
   {
-    this.main    = main;
+    this.JTCEMUApplication = JTCEMUApplication;
     this.baseUrl = null;
     this.homeUrl = null;
 
@@ -151,7 +151,7 @@ public class HelpNode extends BorderPane implements AppTab
 
     this.mnuBar = new MenuBar();
     this.mnuBar.getMenus().addAll( mnuFile, mnuNav );
-    GUIUtil.completeMenuBar( main, this.mnuBar, true );
+    GUIUtil.completeMenuBar(JTCEMUApplication, this.mnuBar, true );
 
 
     // Werkzeugleiste
@@ -255,7 +255,7 @@ public class HelpNode extends BorderPane implements AppTab
    */
   private void doBack()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       WebHistory history = this.webView.getEngine().getHistory();
       if( history != null ) {
 	try {
@@ -272,7 +272,7 @@ public class HelpNode extends BorderPane implements AppTab
 
   private void doCopyPage( boolean removeLinks )
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       String urlText = this.webView.getEngine().getLocation();
       if( urlText != null ) {
 	if( !urlText.isEmpty() ) {
@@ -287,7 +287,7 @@ public class HelpNode extends BorderPane implements AppTab
 	    }
 	  }
 	  catch( IOException ex ) {
-	    this.main.showError( "Die Seite konnte nicht nicht"
+	    this.JTCEMUApplication.showError( "Die Seite konnte nicht nicht"
 				+ " die Zwischenablage kopiert werden." );
 	  }
 	}
@@ -298,7 +298,7 @@ public class HelpNode extends BorderPane implements AppTab
 
   private void doHome()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       boolean done = false;
       try {
 	WebHistory history = this.webView.getEngine().getHistory();

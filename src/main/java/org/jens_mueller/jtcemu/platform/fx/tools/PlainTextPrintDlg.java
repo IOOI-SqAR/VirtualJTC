@@ -50,7 +50,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.jens_mueller.jtcemu.base.AppContext;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
 
@@ -90,7 +90,7 @@ public class PlainTextPrintDlg extends Stage implements Runnable
   private static JobSettings lastJobSettings = null;
   private static int         jobNum          = 1;
 
-  private Main                         main;
+  private JTCEMUApplication JTCEMUApplication;
   private String                       content;
   private String                       approvedTitle;
   private boolean                      actionsEnabled;
@@ -105,7 +105,7 @@ public class PlainTextPrintDlg extends Stage implements Runnable
   private TextField                    fldTitle;
 
 
-  public static void showAndWait( Main main, String content, String title )
+  public static void showAndWait(JTCEMUApplication JTCEMUApplication, String content, String title )
   {
     if( content != null ) {
       if( content.isEmpty() ) {
@@ -143,7 +143,7 @@ public class PlainTextPrintDlg extends Stage implements Runnable
       }
       if( printerJob != null ) {
 	PlainTextPrintDlg dlg = new PlainTextPrintDlg(
-						main,
+            JTCEMUApplication,
 						content,
 						title,
 						printerJob );
@@ -154,10 +154,10 @@ public class PlainTextPrintDlg extends Stage implements Runnable
 	  printerJob.cancelJob();
 	}
       } else {
-	main.showError( "Drucken nicht m\u00F6glich" );
+	JTCEMUApplication.showError( "Drucken nicht m\u00F6glich" );
       }
     } else {
-      main.showError( "Es gibt nichts zu drucken." );
+      JTCEMUApplication.showError( "Es gibt nichts zu drucken." );
     }
   }
 
@@ -336,7 +336,7 @@ public class PlainTextPrintDlg extends Stage implements Runnable
       prinerJobDone = true;
     }
     catch( Exception ex ) {
-      Platform.runLater( ()->this.main.showError( ex ) );
+      Platform.runLater( ()->this.JTCEMUApplication.showError( ex ) );
     }
     finally {
       if( !prinerJobDone ) {
@@ -349,18 +349,18 @@ public class PlainTextPrintDlg extends Stage implements Runnable
 	/* --- Konstruktor --- */
 
   private PlainTextPrintDlg(
-			Main       main,
+			JTCEMUApplication JTCEMUApplication,
 			String     content,
 			String     title,
 			PrinterJob printerJob )
   {
-    initOwner( main.getStage() );
+    initOwner( JTCEMUApplication.getStage() );
     initModality( Modality.WINDOW_MODAL );
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( true );
     setTitle( "Drucken" );
-    Main.addIconsTo( this );
-    this.main           = main;
+    JTCEMUApplication.addIconsTo( this );
+    this.JTCEMUApplication = JTCEMUApplication;
     this.content        = content;
     this.printerJob     = printerJob;
     this.printFont      = null;
@@ -572,7 +572,7 @@ public class PlainTextPrintDlg extends Stage implements Runnable
     if( this.actionsEnabled ) {
       try {
 	this.actionsEnabled = false;
-	if( this.printerJob.showPageSetupDialog( this.main.getStage() ) ) {
+	if( this.printerJob.showPageSetupDialog( this.JTCEMUApplication.getStage() ) ) {
 	  updPaperInfo();
 	}
       }
@@ -588,7 +588,7 @@ public class PlainTextPrintDlg extends Stage implements Runnable
     if( this.actionsEnabled ) {
       try {
 	this.actionsEnabled = false;
-	if( this.printerJob.showPrintDialog( this.main.getStage() ) ) {
+	if( this.printerJob.showPrintDialog( this.JTCEMUApplication.getStage() ) ) {
 	  selectPrinter( this.printerJob.getPrinter() );
 	  updPaperInfo();
 	}

@@ -31,19 +31,15 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.FileInfo;
-import org.jens_mueller.jtcemu.base.FileSaver;
 import org.jens_mueller.jtcemu.base.JTCSys;
 import org.jens_mueller.jtcemu.base.JTCUtil;
 import org.jens_mueller.jtcemu.base.PasteObserver;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.settings.SettingsNode;
 import org.jens_mueller.jtcemu.platform.fx.tools.TextEditNode;
-import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
-import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
 import org.jens_mueller.z8.Z8;
 import org.jens_mueller.z8.Z8Listener;
 
@@ -70,7 +66,7 @@ public class JTCNode
   private static final long STATUS_REFRESH_MILLIS  = 750;
   private static final long STATUS_SHOW_MSG_MILLIS = 5000;
 
-  private Main       main;
+  private JTCEMUApplication JTCEMUApplication;
   private JTCSys     jtcSys;
   private Z8         z8;
   private MenuBar    mnuBar;
@@ -84,9 +80,9 @@ public class JTCNode
   private TimerTask  statusTimerTask;
 
 
-  public JTCNode( final org.jens_mueller.jtcemu.platform.fx.Main main )
+  public JTCNode( final JTCEMUApplication JTCEMUApplication)
   {
-    this.main   = main;
+    this.JTCEMUApplication = JTCEMUApplication;
     this.jtcSys = null;
     this.z8     = null;
     setCenterShape( true );
@@ -157,7 +153,7 @@ public class JTCNode
 						ACTION_SETTINGS,
 						"E",
 						false );
-    mnuSettings.setOnAction( e->SettingsNode.showTab( main ) );
+    mnuSettings.setOnAction( e->SettingsNode.showTab(JTCEMUApplication) );
 
     this.mnuSpeed = GUIUtil.createNonControlShortcutMenuItem(
 						ACTION_MAX_SPEED,
@@ -198,7 +194,7 @@ public class JTCNode
     // Menueleisete
     this.mnuBar = new MenuBar();
     this.mnuBar.getMenus().addAll( mnuFile, mnuEdit, mnuExtra );
-    GUIUtil.completeMenuBar( main, this.mnuBar, false );
+    GUIUtil.completeMenuBar(JTCEMUApplication, this.mnuBar, false );
 
 
     // Werkzeugleiste
@@ -213,11 +209,11 @@ public class JTCNode
     Button btnTextEdit = GUIUtil.createToolBarButton(
 					"/images/file/edit.png",
 					"Texteditor...",
-					e->TextEditNode.showTab( main ) );
+					e->TextEditNode.showTab(JTCEMUApplication) );
     Button btnSettings = GUIUtil.createToolBarButton(
 					"/images/edit/settings.png",
 					ACTION_SETTINGS,
-					e->SettingsNode.showTab( main ) );
+					e->SettingsNode.showTab(JTCEMUApplication) );
     Button btnReset = GUIUtil.createToolBarButton(
 					"/images/file/reset.png",
 					ACTION_RESET,
@@ -234,7 +230,7 @@ public class JTCNode
 
 
     // Bildschirm
-    this.screenNode = new ScreenNode( main, this );
+    this.screenNode = new ScreenNode(JTCEMUApplication, this );
     setCenter( this.screenNode );
 
 
@@ -496,7 +492,7 @@ public class JTCNode
    */
   private void doCopy()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       String text = this.screenNode.getSelectedText();
       if( text != null ) {
 	ClipboardContent content = new ClipboardContent();
@@ -509,7 +505,7 @@ public class JTCNode
 
   private void doCopyScreenImage()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       Image image = snapshot( null, null );
       if( image != null ) {
 	ClipboardContent content = new ClipboardContent();
@@ -522,7 +518,7 @@ public class JTCNode
 
   private void doCopyScreenText()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
       String text = this.jtcSys.getScreenText();
       if( text != null ) {
 	Clipboard        clipboard = Clipboard.getSystemClipboard();
@@ -536,7 +532,7 @@ public class JTCNode
 
   private void doLoad( boolean withOptions )
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       FileChooser fileChooser = GUIUtil.createMemFileChooser(
 			withOptions ?
 				"Datei laden mit Optionen"
@@ -546,7 +542,7 @@ public class JTCNode
       if( dirFile != null ) {
 	fileChooser.setInitialDirectory( dirFile );
       }
-      File file = fileChooser.showOpenDialog( this.main.getStage() );
+      File file = fileChooser.showOpenDialog( this.JTCEMUApplication.getStage() );
       if( file != null ) {
 	loadFile( file, withOptions );
       }
@@ -556,7 +552,7 @@ public class JTCNode
 
   private void doPaste()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
       boolean done = false;
       String  text = Clipboard.getSystemClipboard().getString();
       if( text != null ) {
@@ -567,7 +563,7 @@ public class JTCNode
 	}
       }
       if( !done ) {
-	this.main.showError( "Kein Text in der Zwischenablage enthalten" );
+	this.JTCEMUApplication.showError( "Kein Text in der Zwischenablage enthalten" );
       }
     }
   }
@@ -575,7 +571,7 @@ public class JTCNode
 
   private void doPasteCancel()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
       this.jtcSys.cancelPastingText();
       setPasting( false );
     }
@@ -584,21 +580,21 @@ public class JTCNode
 
   private void doPause()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.z8 != null) )
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.z8 != null) )
       this.z8.setPause( !this.z8.isPause() );
   }
 
 
   public void doPowerOn()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       boolean state = true;
       if( AppContext.getBooleanProperty(
 				JTCUtil.PROP_CONFIRM_POWER_ON,
 				true ) )
       {
 	if( !MsgDlg.showYesNoDlg(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		"M\u00F6chten Sie das Aus- und wieder Einschalten emulieren\n"
 			+ "und den Emulator initialisieren?\n"
 			+ "Dabei wird der Arbeitsspeicher gel\u00F6scht.",
@@ -616,7 +612,7 @@ public class JTCNode
 
   private void doReset()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) ) {
       boolean state = true;
       if( AppContext.getBooleanProperty(
 				JTCUtil.PROP_CONFIRM_RESET,
@@ -631,7 +627,7 @@ public class JTCNode
 			+ "sollten Sie kein RESET ausl\u00F6sen!";
 	}
 	if( !MsgDlg.showYesNoDlg(
-			this.main.getStage(),
+			this.JTCEMUApplication.getStage(),
 			msg,
 			"Best\u00E4tigung" ) )
 	{
@@ -647,14 +643,14 @@ public class JTCNode
 
   private void doSave()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) )
-      SaveDlg.showSaveDlg( this.main.getStage(), this, this.jtcSys );
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.jtcSys != null) )
+      SaveDlg.showSaveDlg( this.JTCEMUApplication.getStage(), this, this.jtcSys );
   }
 
 
   private void doSpeed()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.z8 != null) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.z8 != null) ) {
       if( this.z8.getCyclesPerSecond() > 0 ) {
 	this.mnuSpeed.setText( ACTION_NORM_SPEED );
 	this.z8.setCyclesPerSecond( 0 );
@@ -707,7 +703,7 @@ public class JTCNode
 					    fireUpdStatusText();
 					  }
 					};
-    Main.getTimer().scheduleAtFixedRate(
+    JTCEMUApplication.getTimer().scheduleAtFixedRate(
 				this.statusTimerTask,
 				millis,
 				millis );
@@ -724,9 +720,9 @@ public class JTCNode
       }
       if( !withOptions && (fileInfo != null) && (begAddr >= 0) ) {
 	LoadDlg.loadFile(
-			this.main.getStage(),
+			this.JTCEMUApplication.getStage(),
 			this,
-			this.main.getJTCSys(),
+			this.JTCEMUApplication.getJTCSys(),
 			file,
 			fileInfo.getFormat(),
 			begAddr,
@@ -734,9 +730,9 @@ public class JTCNode
 			fileInfo.getStartAddr() );
       } else {
 	LoadDlg.showLoadDlg(
-			this.main.getStage(),
+			this.JTCEMUApplication.getStage(),
 			this,
-			this.main.getJTCSys(),
+			this.JTCEMUApplication.getJTCSys(),
 			file,
 			fileInfo );
       }
@@ -768,7 +764,7 @@ public class JTCNode
   {
     if( this.statusTimerTask != null ) {
       this.statusTimerTask.cancel();
-      Main.getTimer().purge();
+      JTCEMUApplication.getTimer().purge();
     }
     installStatusTimerTask( millis );
   }

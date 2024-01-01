@@ -31,7 +31,7 @@ import org.jens_mueller.jtcemu.base.ExtROM;
 import org.jens_mueller.jtcemu.base.JTCSys;
 import org.jens_mueller.jtcemu.base.JTCUtil;
 import org.jens_mueller.jtcemu.base.UserInputException;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.ScreenNode;
 
 
@@ -39,7 +39,7 @@ public class SettingsNode extends BorderPane
 {
   private static SettingsNode instance = null;
 
-  private Main                main;
+  private JTCEMUApplication JTCEMUApplication;
   private JTCSys              jtcSys;
   private TabPane             tabPane;
   private Tab                 systemTab;
@@ -63,14 +63,14 @@ public class SettingsNode extends BorderPane
   }
 
 
-  public static void showTab( Main main )
+  public static void showTab( JTCEMUApplication JTCEMUApplication)
   {
     boolean created = false;
     if( instance == null ) {
-      instance = new SettingsNode( main );
+      instance = new SettingsNode(JTCEMUApplication);
       created  = true;
     }
-    main.showTab( "Einstellungen", instance, true );
+    JTCEMUApplication.showTab( "Einstellungen", instance, true );
     if( created ) {
       instance.updSettings();
     }
@@ -110,10 +110,10 @@ public class SettingsNode extends BorderPane
 
 	/* --- Konstruktor --- */
 
-  private SettingsNode( Main main )
+  private SettingsNode( JTCEMUApplication JTCEMUApplication)
   {
-    this.main   = main;
-    this.jtcSys = main.getJTCSys();
+    this.JTCEMUApplication = JTCEMUApplication;
+    this.jtcSys = JTCEMUApplication.getJTCSys();
 
     this.tabPane = new TabPane();
     this.tabPane.setSide( Side.TOP );
@@ -132,7 +132,7 @@ public class SettingsNode extends BorderPane
     this.ramTab.setContent( this.ramNode );
     this.tabPane.getTabs().add( this.ramTab );
 
-    this.romNode = new ROMSettingsNode( this, this.main );
+    this.romNode = new ROMSettingsNode( this, this.JTCEMUApplication);
     this.romTab  = new Tab( "ROM" );
     this.romTab.setClosable( false );
     this.romTab.setContent( this.romNode );
@@ -144,7 +144,7 @@ public class SettingsNode extends BorderPane
     this.confirmTab.setContent( this.confirmNode );
     this.tabPane.getTabs().add( this.confirmTab );
 
-    this.etcNode = new EtcSettingsNode( this, this.main );
+    this.etcNode = new EtcSettingsNode( this, this.JTCEMUApplication);
     this.etcTab  = new Tab( "Sonstiges" );
     this.etcTab.setClosable( false );
     this.etcTab.setContent( this.etcNode );
@@ -216,7 +216,7 @@ public class SettingsNode extends BorderPane
 
       // Schaltflaechen aktualisieren
       this.btnApply.setDisable( true );
-      this.btnSave.setDisable( Main.getPropertiesFile() == null );
+      this.btnSave.setDisable( JTCEMUApplication.getPropertiesFile() == null );
 
       // JTCSys aktualisieren
       this.jtcSys.settingsChanged(
@@ -224,36 +224,36 @@ public class SettingsNode extends BorderPane
 			this.romNode.getROMBank( osType ) );
 
       // zum Schluss sonstige Interessierte informieren
-      Platform.runLater( ()->this.main.settingsChanged() );
+      Platform.runLater( ()->this.JTCEMUApplication.settingsChanged() );
     }
     catch( UserInputException ex ) {
       if( tab != null ) {
 	this.tabPane.getSelectionModel().select( tab );
       }
-      this.main.showError( ex );
+      this.JTCEMUApplication.showError( ex );
     }
   }
 
 
   private void doSave()
   {
-    File file = Main.getPropertiesFile();
+    File file = JTCEMUApplication.getPropertiesFile();
     if( file != null ) {
       Properties props = AppContext.getProperties();
 
       // Fensterpostion und Skalierung merken
-      Window window = main.getStage();
+      Window window = JTCEMUApplication.getStage();
       if( window != null ) {
 	props.setProperty(
-		AppContext.getPropPrefix() + Main.PROP_WINDOW_X,
+		AppContext.getPropPrefix() + JTCEMUApplication.PROP_WINDOW_X,
 		Double.toString( window.getX() ) );
 	props.setProperty(
-		AppContext.getPropPrefix() + Main.PROP_WINDOW_Y,
+		AppContext.getPropPrefix() + JTCEMUApplication.PROP_WINDOW_Y,
 		Double.toString( window.getY() ) );
 
 	JTCSys.OSType osType = this.jtcSys.getOSType();
 	int           scale  = ScreenNode.getDefaultScreenScale( osType );
-	ScreenNode    screen = this.main.getScreen();
+	ScreenNode    screen = this.JTCEMUApplication.getScreen();
 	if( screen != null ) {
 	  scale = screen.getScreenScale();
 	}
@@ -279,7 +279,7 @@ public class SettingsNode extends BorderPane
 	}
       }
       catch( IOException ex ) {
-	this.main.showError( ex );
+	this.JTCEMUApplication.showError( ex );
       }
       this.etcNode.updPropsFileDeleteButtonEnabled();
     }

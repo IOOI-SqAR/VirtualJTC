@@ -28,7 +28,6 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -43,7 +42,7 @@ import org.jens_mueller.z8.Z8;
 import org.jens_mueller.z8.Z8Listener;
 
 
-public class Main extends Application implements ErrorViewer, Z8Listener
+public class JTCEMUApplication extends Application implements ErrorViewer, Z8Listener
 {
   public static final String PROP_WINDOW_X = "window.x";
   public static final String PROP_WINDOW_Y = "window.y";
@@ -83,7 +82,7 @@ public class Main extends Application implements ErrorViewer, Z8Listener
   public static void addIconsTo( Stage stage )
   {
     for( String icon : windowIcons ) {
-      URL url = Main.class.getResource( icon );
+      URL url = JTCEMUApplication.class.getResource( icon );
       if( url != null ) {
 	Image image = new Image( url.toString() );
 	if( !image.isError() ) {
@@ -193,7 +192,7 @@ public class Main extends Application implements ErrorViewer, Z8Listener
 
   public static java.util.Timer getTimer()
   {
-    synchronized( Main.class ) {
+    synchronized( JTCEMUApplication.class ) {
       if( timer == null ) {
 	timer = new java.util.Timer( "Timer", false );
       }

@@ -209,7 +209,7 @@ public class KeyboardFrm extends BaseFrm
   @Override
   public void keyPressed( KeyEvent e )
   {
-    KeyFld keyFld = this.code2Key.get( new Integer( e.getKeyCode() ) );
+    KeyFld keyFld = this.code2Key.get(e.getKeyCode());
     if( keyFld != null ) {
       keyFld.setSelected( true );
       this.ignoreKeyChar = true;
@@ -228,7 +228,7 @@ public class KeyboardFrm extends BaseFrm
   public void keyTyped( KeyEvent e )
   {
     if( !this.ignoreKeyChar ) {
-      KeyFld keyFld = this.char2Key.get( new Character( e.getKeyChar() ) );
+      KeyFld keyFld = this.char2Key.get(e.getKeyChar());
       if( keyFld != null ) {
         keyFld.setSelected( true );
       }
@@ -341,8 +341,7 @@ public class KeyboardFrm extends BaseFrm
 
   private void addKeys( KeyFld[] fields )
   {
-    for( int i = 0; i < fields.length; i++ )
-      this.panelKey.add( fields[ i ] );
+      for (KeyFld field : fields) this.panelKey.add(field);
   }
 
 
@@ -381,15 +380,15 @@ public class KeyboardFrm extends BaseFrm
                                 null,
                                 shiftText,
                                 shiftCmdText );
-    this.char2Key.put( new Character( baseChar ), keyFld );
+    this.char2Key.put(baseChar, keyFld );
     if( (baseChar >= 'A') && (baseChar <= 'Z') ) {
       this.char2Key.put(
-                new Character( Character.toLowerCase( baseChar ) ),
+              Character.toLowerCase(baseChar),
                 keyFld );
     }
     if( shiftText != null ) {
-      if( shiftText.length() > 0 )
-        this.char2Key.put( new Character( shiftText.charAt( 0 ) ), keyFld );
+      if(!shiftText.isEmpty())
+        this.char2Key.put(shiftText.charAt(0), keyFld );
     }
     return keyFld;
   }
@@ -412,8 +411,7 @@ public class KeyboardFrm extends BaseFrm
                         shiftText,
                         shiftCmdText );
     if( keyCodes != null ) {
-      for( int i = 0; i < keyCodes.length; i++ )
-        this.code2Key.put( new Integer( keyCodes[ i ] ), keyFld );
+        for (int keyCode : keyCodes) this.code2Key.put(keyCode, keyFld);
     }
     return keyFld;
   }
@@ -450,8 +448,7 @@ public class KeyboardFrm extends BaseFrm
 
   private void setKeysUnselected( KeyFld[] keys )
   {
-    for( int i = 0; i < keys.length; i++ )
-      keys[ i ].setSelected( false );
+      for (KeyFld key : keys) key.setSelected(false);
   }
 
 
@@ -466,15 +463,15 @@ public class KeyboardFrm extends BaseFrm
                 GUIUtil.readImage( this, "/images/key/right.png" ),
                 keyboardFrmResourceBundle.getString("updKeys.right"),
                 null );
-      this.char2Key.put( new Character( '=' ), this.keys1[ 11 ] );
-      this.code2Key.put( new Integer( KeyEvent.VK_LEFT ), this.keys2[ 0 ] );
-      this.code2Key.put( new Integer( KeyEvent.VK_RIGHT ), this.keys2[ 0 ] );
+      this.char2Key.put('=', this.keys1[ 11 ] );
+      this.code2Key.put(KeyEvent.VK_LEFT, this.keys2[ 0 ] );
+      this.code2Key.put(KeyEvent.VK_RIGHT, this.keys2[ 0 ] );
     } else {
       this.keys1[ 11 ].setValues( null, "-", "LIST", null, null, null );
       this.keys2[ 0 ].setValues( null, "=", null, null, null, null );
-      this.char2Key.put( new Character( '=' ), this.keys2[ 0 ] );
-      this.code2Key.remove( new Integer( KeyEvent.VK_LEFT ) );
-      this.code2Key.remove( new Integer( KeyEvent.VK_RIGHT ) );
+      this.char2Key.put('=', this.keys2[ 0 ] );
+      this.code2Key.remove(KeyEvent.VK_LEFT);
+      this.code2Key.remove(KeyEvent.VK_RIGHT);
     }
   }
 }

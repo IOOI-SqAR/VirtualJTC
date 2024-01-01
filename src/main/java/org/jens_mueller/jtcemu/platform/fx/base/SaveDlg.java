@@ -37,7 +37,7 @@ import org.jens_mueller.jtcemu.base.FileInfo;
 import org.jens_mueller.jtcemu.base.FileSaver;
 import org.jens_mueller.jtcemu.base.JTCSys;
 import org.jens_mueller.jtcemu.base.JTCUtil;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.tools.ToolUtil;
 
 
@@ -84,7 +84,7 @@ public class SaveDlg extends Stage
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( false );
     setTitle( "Datei speichern" );
-    Main.addIconsTo( this );
+    JTCEMUApplication.addIconsTo( this );
     this.jtcNode = jtcNode;
     this.jtcSys  = jtcSys;
 

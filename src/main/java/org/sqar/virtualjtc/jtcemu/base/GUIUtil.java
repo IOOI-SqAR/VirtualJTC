@@ -158,7 +158,7 @@ public class GUIUtil
           text = text.substring( 1 );
         }
         try {
-          rv = new Integer( parseHex4( text, msg ) );
+          rv = parseHex4(text, msg);
         }
         catch( ParseException ex ) {
           Main.showError( owner, ex );

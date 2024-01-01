@@ -40,7 +40,7 @@ import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.JTCUtil;
 import org.jens_mueller.jtcemu.base.UserInputException;
 import org.jens_mueller.jtcemu.tools.assembler.AsmUtil;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 import org.jens_mueller.jtcemu.platform.fx.base.ReplyDlg;
@@ -57,7 +57,7 @@ public class ReassNode extends VBox implements AppTab
 
   private static ReassNode instance = null;
 
-  private Main          main;
+  private JTCEMUApplication JTCEMUApplication;
   private File          file;
   private File          sourceFile;
   private String        labelPrefix;
@@ -88,12 +88,12 @@ public class ReassNode extends VBox implements AppTab
   }
 
 
-  public static void showTab( Main main )
+  public static void showTab( JTCEMUApplication JTCEMUApplication)
   {
     if( instance == null ) {
-      instance = new ReassNode( main );
+      instance = new ReassNode(JTCEMUApplication);
     }
-    main.showTab( "Reassembler", instance, true );
+    JTCEMUApplication.showTab( "Reassembler", instance, true );
   }
 
 
@@ -160,9 +160,9 @@ public class ReassNode extends VBox implements AppTab
 
 	/* --- Konstruktor --- */
 
-  private ReassNode( Main main )
+  private ReassNode( JTCEMUApplication JTCEMUApplication)
   {
-    this.main                 = main;
+    this.JTCEMUApplication = JTCEMUApplication;
     this.labelPrefix          = "M_";
     this.textFinder           = new TextFinder();
     this.file                 = null;
@@ -250,7 +250,7 @@ public class ReassNode extends VBox implements AppTab
     // Menueleiste
     this.mnuBar = new MenuBar();
     this.mnuBar.getMenus().addAll( mnuFile, mnuEdit );
-    GUIUtil.completeMenuBar( main, this.mnuBar, true );
+    GUIUtil.completeMenuBar(JTCEMUApplication, this.mnuBar, true );
 
 
     // Fensterinhalt
@@ -324,7 +324,7 @@ public class ReassNode extends VBox implements AppTab
    */
   private void doCopy()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       TextInputControl tic = getFocusedTextInputControl();
       if( tic != null ) {
 	tic.copy();
@@ -335,8 +335,8 @@ public class ReassNode extends VBox implements AppTab
 
   private void doFind()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
-      this.textFinder.openFindDlg( this.main.getStage(), this.fldResult );
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
+      this.textFinder.openFindDlg( this.JTCEMUApplication.getStage(), this.fldResult );
       if( textFinder.hasSearchText() ) {
 	this.mnuFindPrev.setDisable( false );
 	this.mnuFindNext.setDisable( false );
@@ -347,23 +347,23 @@ public class ReassNode extends VBox implements AppTab
 
   private void doFindNext()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) )
-      this.textFinder.findNext( this.main.getStage(), this.fldResult );
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) )
+      this.textFinder.findNext( this.JTCEMUApplication.getStage(), this.fldResult );
   }
 
 
   private void doFindPrev()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) )
-      this.textFinder.findPrev( this.main.getStage(), this.fldResult );
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) )
+      this.textFinder.findPrev( this.JTCEMUApplication.getStage(), this.fldResult );
   }
 
 
   private void doPrint()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       PlainTextPrintDlg.showAndWait(
-			this.main,
+			this.JTCEMUApplication,
 			this.fldResult.getText(),
 			"Reassembler Listing" );
     }
@@ -372,8 +372,8 @@ public class ReassNode extends VBox implements AppTab
 
   private void doReassemble()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && (this.z8Reass == null) ) {
-      Z8Memory memory = this.main.getJTCSys();
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && (this.z8Reass == null) ) {
+      Z8Memory memory = this.JTCEMUApplication.getJTCSys();
       if( memory != null ) {
 	this.z8Reass = new Z8Reassembler( memory );
       }
@@ -395,7 +395,7 @@ public class ReassNode extends VBox implements AppTab
 	updView();
       }
       catch( UserInputException ex ) {
-	this.main.showError( ex );
+	this.JTCEMUApplication.showError( ex );
       }
     }
   }
@@ -403,7 +403,7 @@ public class ReassNode extends VBox implements AppTab
 
   private void doSaveAs()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       File file = saveTextFileAs(
 			this.fldResult.getText(),
 			"Reassembler-Listing speichern",
@@ -420,7 +420,7 @@ public class ReassNode extends VBox implements AppTab
 
   private void doSelectAll()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       TextInputControl tic = getFocusedTextInputControl();
       if( tic != null ) {
 	tic.selectAll();
@@ -430,13 +430,13 @@ public class ReassNode extends VBox implements AppTab
 
   private void doSourceCopy()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       String sourceText = createSourceText();
       if( sourceText != null ) {
 	Map<DataFormat,Object> content = new HashMap<>();
 	content.put( DataFormat.PLAIN_TEXT, sourceText );
 	if( !Clipboard.getSystemClipboard().setContent( content ) ) {
-	  this.main.showError(
+	  this.JTCEMUApplication.showError(
 		"Der erzeugte Assembler-Quelltext konnte nicht\n"
 			+ "in die Zwischenablage kopiert werden." );
 	}
@@ -447,7 +447,7 @@ public class ReassNode extends VBox implements AppTab
 
   private void doSourceSaveAs()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       String sourceText = createSourceText();
       if( sourceText != null ) {
 	File file = saveTextFileAs(
@@ -474,7 +474,7 @@ public class ReassNode extends VBox implements AppTab
         && (this.begAddr >= 0) && (this.begAddr < this.endAddr) )
     {
       String labelPrefix = ReplyDlg.showReplyTextDlg(
-					this.main.getStage(),
+					this.JTCEMUApplication.getStage(),
 					"Prefix f\u00FCr Marken:",
 					this.labelPrefix );
       if( labelPrefix != null ) {
@@ -493,7 +493,7 @@ public class ReassNode extends VBox implements AppTab
 							this.endAddr,
 							labelPrefix );
 	} else {
-	  this.main.showError(
+	  this.JTCEMUApplication.showError(
 		"Der Pr\u00E4fix entspricht nicht den Namenskonventionen"
 			+ " f\u00FCr Assembler-Marken." );
 	}
@@ -538,7 +538,7 @@ public class ReassNode extends VBox implements AppTab
 							oldFile,
 							fileGroup );
     fileChooser.getExtensionFilters().addAll( fileFilters );
-    file = fileChooser.showSaveDialog( this.main.getStage() );
+    file = fileChooser.showSaveDialog( this.JTCEMUApplication.getStage() );
     if( file != null ) {
       try {
 	BufferedWriter out = null;
@@ -562,7 +562,7 @@ public class ReassNode extends VBox implements AppTab
 	}
       }
       catch( IOException ex ) {
-	this.main.showError( ex );
+	this.JTCEMUApplication.showError( ex );
 	file = null;
       }
     }

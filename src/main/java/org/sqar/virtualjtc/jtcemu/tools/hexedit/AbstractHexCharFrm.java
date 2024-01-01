@@ -889,7 +889,7 @@ public abstract class AbstractHexCharFrm
           value = (value << 8) | ((int) (getDataByte( pos + i )) & 0xFF);
         }
       }
-      rv = new Long( value );
+      rv = value;
     }
     return rv;
   }

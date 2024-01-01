@@ -22,7 +22,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -43,13 +42,12 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.JTCSys;
 import org.jens_mueller.jtcemu.base.JTCUtil;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
 import org.jens_mueller.jtcemu.platform.fx.base.DropFileHandler;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
@@ -88,7 +86,7 @@ public class TextEditNode
 
   private static TextEditNode instance = null;
 
-  private Main              main;
+  private JTCEMUApplication JTCEMUApplication;
   private Tab               tab;
   private File              prjFile;
   private File              textFile;
@@ -122,20 +120,20 @@ public class TextEditNode
   private TimerTask         statusTimerTask;
 
 
-  public static void showTab( Main main )
+  public static void showTab( JTCEMUApplication JTCEMUApplication)
   {
     if( instance == null ) {
-      instance = new TextEditNode( main );
+      instance = new TextEditNode(JTCEMUApplication);
     }
-    main.showTab( "Texteditor", instance, true );
+    JTCEMUApplication.showTab( "Texteditor", instance, true );
   }
 
 
 	/* --- Konstruktor --- */
 
-  private TextEditNode( Main main )
+  private TextEditNode( JTCEMUApplication JTCEMUApplication)
   {
-    this.main                 = main;
+    this.JTCEMUApplication = JTCEMUApplication;
     this.textFinder           = new TextFinder();
     this.tab                  = null;
     this.prjFile              = null;
@@ -326,7 +324,7 @@ public class TextEditNode
     // Menueleiste
     this.mnuBar = new MenuBar();
     this.mnuBar.getMenus().addAll( mnuFile, mnuEdit, mnuPrg );
-    GUIUtil.completeMenuBar( main, this.mnuBar, true );
+    GUIUtil.completeMenuBar(JTCEMUApplication, this.mnuBar, true );
 
 
     // Werkzeugleiste
@@ -582,7 +580,7 @@ public class TextEditNode
    */
   private void doCopy()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       if( this.fldEdit.isFocused() ) {
 	this.fldEdit.copy();
       } else if( this.fldLog.isFocused() ) {
@@ -594,7 +592,7 @@ public class TextEditNode
 
   private void doCut()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       if( this.fldEdit.isFocused() ) {
 	this.fldEdit.cut();
       }
@@ -604,12 +602,12 @@ public class TextEditNode
 
   private void doFindAndReplace()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       if( this.fldLog.isFocused() ) {
-	this.textFinder.openFindDlg( this.main.getStage(), this.fldLog );
+	this.textFinder.openFindDlg( this.JTCEMUApplication.getStage(), this.fldLog );
       } else {
 	this.textFinder.openFindAndReplaceDlg(
-					this.main.getStage(),
+					this.JTCEMUApplication.getStage(),
 					this.fldEdit );
       }
       if( textFinder.hasSearchText() ) {
@@ -622,9 +620,9 @@ public class TextEditNode
 
   private void doFindNext()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       this.textFinder.findNext(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		this.fldLog.isFocused() ? this.fldLog : this.fldEdit );
     }
   }
@@ -632,9 +630,9 @@ public class TextEditNode
 
   private void doFindPrev()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       this.textFinder.findPrev(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		this.fldLog.isFocused() ? this.fldLog : this.fldEdit );
     }
   }
@@ -642,7 +640,7 @@ public class TextEditNode
 
   private void doGoto()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       int    curLineNum = 1;
       String text       = this.fldEdit.getText();
       if( text != null ) {
@@ -654,7 +652,7 @@ public class TextEditNode
 	}
       }
       Integer lineNum = ReplyDlg.showReplyDecDlg(
-				this.main.getStage(),
+				this.JTCEMUApplication.getStage(),
 				"Zeile:",
 				1,
 				curLineNum );
@@ -667,16 +665,16 @@ public class TextEditNode
 
   private void doLoadBasicMem( Integer addr )
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
       if( addr == null ) {
 	addr = ReplyDlg.showReplyHex4Dlg(
-			this.main.getStage(),
+			this.JTCEMUApplication.getStage(),
 			LABEL_BEG_ADDR_OF_BASIC_PRG,
 			this.basicAddrFetch );
       }
       if( addr != null ) {
 	String text = BasicUtil.getBasicProgramTextFromMemory(
-						this.main.getJTCSys(),
+						this.JTCEMUApplication.getJTCSys(),
 						addr.intValue() );
 	if( text != null ) {
 	  clear();
@@ -685,7 +683,7 @@ public class TextEditNode
 	  showStatusText( "BASIC-Programm aus Arbeitsspeicher geladen" );
 	  fireDataUnchanged();
 	} else {
-	  this.main.showError(
+	  this.JTCEMUApplication.showError(
 		"An der angegebenen Adresse im Arbeitsspeicher\n"
 			+ "befindet sich kein BASIC-Programm." );
 	}
@@ -696,7 +694,7 @@ public class TextEditNode
 
   private void doNew()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
       clear();
       fireDataUnchanged();
     }
@@ -705,28 +703,28 @@ public class TextEditNode
 
   private void doOpen()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
       FileChooser fileChooser = prepareTextFileChooser(
 						"Datei \u00F6ffnen",
 						null );
-      loadFile( fileChooser.showOpenDialog( this.main.getStage() ) );
+      loadFile( fileChooser.showOpenDialog( this.JTCEMUApplication.getStage() ) );
     }
   }
 
 
   private void doPaste()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && this.fldEdit.isFocused() )
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && this.fldEdit.isFocused() )
       this.fldEdit.paste();
   }
 
 
   private void doPrgAssemble( boolean askOpt )
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       AsmOptions options = this.asmOptions;
       if( askOpt || (options == null) ) {
-	options = AsmOptionsDlg.open( this.main, options );
+	options = AsmOptionsDlg.open( this.JTCEMUApplication, options );
       }
       if( options != null ) {
 	this.asmOptions = options;
@@ -735,7 +733,7 @@ public class TextEditNode
 			this.fldEdit.getText(),
 			null,
 			options,
-			this.main.getJTCSys(),
+			this.JTCEMUApplication.getJTCSys(),
 			createTextOutput( this.fldLog ) );
       }
     }
@@ -744,20 +742,20 @@ public class TextEditNode
 
   private void doPrgAsmPrjOpen()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) && confirmDataSaved() ) {
       FileChooser fileChooser = preparePrjFileChooser(
 					"Assembler-Pojekt \u00F6ffnen" );
       File dirFile = AppContext.getLastDirFile( FILE_GROUP_PROJECT );
       if( dirFile != null ) {
 	fileChooser.setInitialDirectory( dirFile );
       }
-      File file = fileChooser.showOpenDialog( this.main.getStage() );
+      File file = fileChooser.showOpenDialog( this.JTCEMUApplication.getStage() );
       if( file != null ) {
 	try {
 	  loadProjectFile( file );
 	}
 	catch( IOException ex ) {
-	  this.main.showError( ex );
+	  this.JTCEMUApplication.showError( ex );
 	}
       }
     }
@@ -767,7 +765,7 @@ public class TextEditNode
   private boolean doPrgAsmPrjSave( boolean forceFileDlg )
   {
     boolean rv = false;
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       try {
 	AsmUtil.ensureSourceFileExists( this.textFile );
 
@@ -788,7 +786,7 @@ public class TextEditNode
 	      fileChooser.setInitialFileName( fileName );
 	    }
 	  }
-	  prjFile = fileChooser.showSaveDialog( this.main.getStage() );
+	  prjFile = fileChooser.showSaveDialog( this.JTCEMUApplication.getStage() );
 	}
 	if( prjFile != null ) {
 	  if( saveEditTextToFile( this.textFile ) ) {
@@ -802,7 +800,7 @@ public class TextEditNode
 	}
       }
       catch( IOException ex ) {
-	this.main.showError( ex );
+	this.JTCEMUApplication.showError( ex );
       }
     }
     return rv;
@@ -811,15 +809,15 @@ public class TextEditNode
 
   private void doPrgBasic( boolean intoEmu, boolean askOpt )
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
-      JTCSys jtcSys = this.main.getJTCSys();
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
+      JTCSys jtcSys = this.JTCEMUApplication.getJTCSys();
       if( jtcSys != null ) {
 	Integer addr = null;
 	if( intoEmu ) {
 	  addr = this.basicAddrTransfer;
 	  if( askOpt || (addr == null) ) {
 	    addr = ReplyDlg.showReplyHex4Dlg(
-			this.main.getStage(),
+			this.JTCEMUApplication.getStage(),
 			LABEL_BEG_ADDR_OF_BASIC_PRG,
 			addr != null ? addr : JTCSys.DEFAULT_BASIC_ADDR );
 	  }
@@ -829,7 +827,7 @@ public class TextEditNode
 	if( addr != null ) {
 	  this.fldLog.setText( "" );
 	  byte[] codeBytes = BasicParser.parse(
-				this.main.getJTCSys(),
+				this.JTCEMUApplication.getJTCSys(),
 				addr.intValue(),
 				this.fldEdit.getText(),
 				createTextOutput( this.fldLog ) );
@@ -856,7 +854,7 @@ public class TextEditNode
 
   private void doReplace()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       String replaceText = this.textFinder.getReplaceText();
       if( replaceText != null ) {
 	IndexRange range = this.fldEdit.getSelection();
@@ -874,9 +872,9 @@ public class TextEditNode
 
   private void doPrint()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       PlainTextPrintDlg.showAndWait(
-		this.main,
+		this.JTCEMUApplication,
 		this.fldEdit.getText(),
 		this.textFile != null ? this.textFile.getName() : null );
     }
@@ -885,7 +883,7 @@ public class TextEditNode
 
   private void doSave( boolean saveAs )
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       File file = null;
       if( (file == null) || saveAs ) {
 	FileChooser fileChooser = prepareTextFileChooser(
@@ -907,7 +905,7 @@ public class TextEditNode
 	    fileChooser.setInitialFileName( fileName );
 	  }
 	}
-	file = fileChooser.showSaveDialog( this.main.getStage() );
+	file = fileChooser.showSaveDialog( this.JTCEMUApplication.getStage() );
       }
       if( file != null ) {
 	saveEditTextToFile( file );
@@ -919,7 +917,7 @@ public class TextEditNode
 
   private void doSelectAll()
   {
-    if( this.main.isCurMenuBar( this.mnuBar ) ) {
+    if( this.JTCEMUApplication.isCurMenuBar( this.mnuBar ) ) {
       if( this.fldEdit.isFocused() ) {
 	this.fldEdit.selectAll();
       } else if( this.fldLog.isFocused() ) {
@@ -954,10 +952,10 @@ public class TextEditNode
     boolean rv = true;
     if( this.dataChanged ) {
       if( this.tab != null ) {
-	this.main.selectTab( this.tab );
+	this.JTCEMUApplication.selectTab( this.tab );
       }
       rv = MsgDlg.showYesNoWarningDlg(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		"Der Text wurde ge\u00E4ndert, aber nicht gespeichert.\n"
 			+ "Soll die Aktion trotzdem ausgef\u00FChrt"
 			+ " werden?" );
@@ -1041,7 +1039,7 @@ public class TextEditNode
 
   private void fireUpdTitle()
   {
-    Platform.runLater( ()->this.main.updWindowTitle() );
+    Platform.runLater( ()->this.JTCEMUApplication.updWindowTitle() );
   }
 
 
@@ -1165,7 +1163,7 @@ public class TextEditNode
 					    fireUpdStatusText();
 					  }
 					};
-    Main.getTimer().scheduleAtFixedRate(
+    JTCEMUApplication.getTimer().scheduleAtFixedRate(
 				this.statusTimerTask,
 				millis,
 				millis );
@@ -1195,7 +1193,7 @@ public class TextEditNode
 	}
       }
       catch( IOException ex ) {
-	this.main.showError( ex );
+	this.JTCEMUApplication.showError( ex );
       }
     }
     return done;
@@ -1310,7 +1308,7 @@ public class TextEditNode
   {
     if( this.statusTimerTask != null ) {
       this.statusTimerTask.cancel();
-      Main.getTimer().purge();
+      JTCEMUApplication.getTimer().purge();
     }
     installStatusTimerTask( millis );
   }
@@ -1350,7 +1348,7 @@ public class TextEditNode
       }
     }
     catch( IOException ex ) {
-      this.main.showError( ex );
+      this.JTCEMUApplication.showError( ex );
     }
     return rv;
   }

@@ -37,7 +37,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.JTCUtil;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.tools.ReassNode;
 import org.jens_mueller.jtcemu.platform.fx.tools.TextEditNode;
 
@@ -67,7 +67,7 @@ public class GUIUtil
   {
     boolean     done = false;
     Button      btn  = new Button();
-    InputStream in   = Main.class.getResourceAsStream( resource );
+    InputStream in   = JTCEMUApplication.class.getResourceAsStream( resource );
     if( in != null ) {
       Image image = new Image( in );
       if( !image.isError() ) {
@@ -144,7 +144,7 @@ public class GUIUtil
 
 
   public static MenuBar completeMenuBar(
-				final Main main,
+				final JTCEMUApplication JTCEMUApplication,
 				MenuBar    mnuBar,
 				boolean    withCloseItem )
   {
@@ -153,13 +153,13 @@ public class GUIUtil
 						"Texteditor",
 						"T",
 						false );
-    mnuTextEditor.setOnAction( e->TextEditNode.showTab( main ) );
+    mnuTextEditor.setOnAction( e->TextEditNode.showTab(JTCEMUApplication) );
 
     MenuItem mnuReassembler = createNonControlShortcutMenuItem(
 						"Reassembler",
 						"R",
 						true );
-    mnuReassembler.setOnAction( e->ReassNode.showTab( main ) );
+    mnuReassembler.setOnAction( e->ReassNode.showTab(JTCEMUApplication) );
 
 
     Menu mnuTools = new Menu( "Werkzeuge" );
@@ -171,11 +171,11 @@ public class GUIUtil
 
     MenuItem mnuHelpHome = new MenuItem(
 				AppContext.getAppName() + "-Hilfe..." );
-    mnuHelpHome.setOnAction( e->doHelp( main ) );
+    mnuHelpHome.setOnAction( e->doHelp(JTCEMUApplication) );
 
     MenuItem mnuAbout = new MenuItem(
 		"\u00DCber " + AppContext.getAppName() + "..." );
-    mnuAbout.setOnAction( e->AboutNode.showTab( main ) );
+    mnuAbout.setOnAction( e->AboutNode.showTab(JTCEMUApplication) );
 
     mnuHelp.getItems().addAll(
 			mnuHelpHome,
@@ -198,14 +198,14 @@ public class GUIUtil
 	fileItems.add( new SeparatorMenuItem() );
       }
       MenuItem mnuClose = new MenuItem( "Schlie\u00DFen" );
-      mnuClose.setOnAction( e->main.doCloseTab( e ) );
+      mnuClose.setOnAction( e-> JTCEMUApplication.doCloseTab( e ) );
       fileItems.add( mnuClose );
     }
     if( !fileItems.isEmpty() ) {
       fileItems.add( new SeparatorMenuItem() );
     }
     MenuItem mnuQuit = new MenuItem( "Beenden" );
-    mnuQuit.setOnAction( e->main.doQuit() );
+    mnuQuit.setOnAction( e-> JTCEMUApplication.doQuit() );
     fileItems.add( mnuQuit );
     menus.addAll( mnuTools, mnuHelp );
 
@@ -335,7 +335,7 @@ public class GUIUtil
 
 	/* --- private Methoden --- */
 
-  private static void doHelp( final Main main )
+  private static void doHelp( final JTCEMUApplication JTCEMUApplication)
   {
     /*
      * Das Hilfesystem wird dynamisch geladen,
@@ -346,8 +346,8 @@ public class GUIUtil
      */
     try {
       Class.forName( "jtcemu.platform.fx.help.HelpNode" )
-		.getMethod( "showTab", Main.class )
-		.invoke( null, main );
+		.getMethod( "showTab", JTCEMUApplication.class )
+		.invoke( null, JTCEMUApplication);
     }
     catch( Exception | LinkageError e ) {
       Throwable t = e;
@@ -361,7 +361,7 @@ public class GUIUtil
 	  s = t.getMessage();
 	}
       }
-      main.showError( s );
+      JTCEMUApplication.showError( s );
     }
   }
 }

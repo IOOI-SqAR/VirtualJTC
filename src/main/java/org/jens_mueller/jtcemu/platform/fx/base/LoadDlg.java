@@ -31,7 +31,7 @@ import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.FileInfo;
 import org.jens_mueller.jtcemu.base.FileLoader;
 import org.jens_mueller.jtcemu.base.JTCUtil;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.z8.Z8Memory;
 
 
@@ -116,7 +116,7 @@ public class LoadDlg extends Stage
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( true );
     setTitle( "Datei laden" );
-    Main.addIconsTo( this );
+    JTCEMUApplication.addIconsTo( this );
     this.jtcNode = jtcNode;
     this.memory  = memory;
     this.file    = file;

@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
 
@@ -113,7 +113,7 @@ public class FindAndReplaceDlg extends Stage
     setOnShown( e->GUIUtil.centerStageOnOwner( this ) );
     setResizable( true );
     setTitle( TEXT_FIND );
-    Main.addIconsTo( this );
+    JTCEMUApplication.addIconsTo( this );
     this.action        = Action.CANCEL;
     this.searchText    = null;
     this.replaceText   = null;

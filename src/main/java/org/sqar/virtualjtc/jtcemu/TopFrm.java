@@ -15,6 +15,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.*;
 import javax.imageio.ImageIO;
@@ -56,9 +57,9 @@ public class TopFrm extends BaseFrm
     this.screenOutputEnabled = false;
     this.scale2MenuItems     = new Hashtable<Integer,JRadioButtonMenuItem>();
     this.mode2Scale          = new Hashtable<ScreenFld.Mode,Integer>();
-    this.mode2Scale.put( ScreenFld.Mode.M64X64, new Integer( 3 ) );
-    this.mode2Scale.put( ScreenFld.Mode.M128X128, new Integer( 2 ) );
-    this.mode2Scale.put( ScreenFld.Mode.M320X192, new Integer( 1 ) );
+    this.mode2Scale.put( ScreenFld.Mode.M64X64, 3);
+    this.mode2Scale.put( ScreenFld.Mode.M128X128, 2);
+    this.mode2Scale.put( ScreenFld.Mode.M320X192, 1);
 
 
     // Menu
@@ -87,18 +88,17 @@ public class TopFrm extends BaseFrm
 
     int         screenScale = Main.getIntProperty( "org.sqar.virtualjtc.jtcemu.screen.scale", 3 );
     ButtonGroup grpScale    = new ButtonGroup();
-    for( int i = 0; i < screenScales.length; i++ ) {
-      int                  v    = screenScales[ i ];
-      String               text = Integer.toString( v );
-      JRadioButtonMenuItem item = new JRadioButtonMenuItem(
-                                                        text + "00 %",
-                                                        v == screenScale );
-      item.setActionCommand( "screen.scale." + text );
-      item.addActionListener( this );
-      grpScale.add( item );
-      mnuScreenScale.add( item );
-      this.scale2MenuItems.put( new Integer( v ), item );
-    }
+      for (int v : screenScales) {
+          String text = Integer.toString(v);
+          JRadioButtonMenuItem item = new JRadioButtonMenuItem(
+                  text + "00 %",
+                  v == screenScale);
+          item.setActionCommand("screen.scale." + text);
+          item.addActionListener(this);
+          grpScale.add(item);
+          mnuScreenScale.add(item);
+          this.scale2MenuItems.put(v, item);
+      }
 
     JMenu mnuScreenImg = new JMenu( topFrmResourceBundle.getString("menu.screenImg") );
     mnuExtra.add( mnuScreenImg );
@@ -188,7 +188,7 @@ public class TopFrm extends BaseFrm
 
     this.mode2Scale.put(
                 this.screenFld.getMode(),
-                new Integer( screenScale ) );
+            screenScale);
 
 
     // Bildschirmausgabe zyklisch aktualisieren
@@ -364,10 +364,10 @@ public class TopFrm extends BaseFrm
                   this.screenFld.setScreenScale( scale );
                   this.mode2Scale.put(
                                 this.screenFld.getMode(),
-                                new Integer( scale ) );
+                          scale);
                   pack();
                 }
-                catch( NumberFormatException ex ) {}
+                catch( NumberFormatException ignored) {}
               }
             }
           }
@@ -414,29 +414,24 @@ public class TopFrm extends BaseFrm
       if( t != null ) {
         try {
           Object o = t.getTransferData( DataFlavor.javaFileListFlavor );
-          if( o != null ) {
-            if( o instanceof Collection ) {
-              Iterator iter = ((Collection) o).iterator();
-              if( iter != null ) {
-                if( iter.hasNext() ) {
-                  o = iter.next();
-                  if( o != null ) {
-                    File file = null;
-                    if( o instanceof File ) {
-                      file = (File) o;
+            if (o instanceof Collection) {
+                Iterator<Object> iter = ((Collection<Object>) o).iterator();
+                if (iter.hasNext()) {
+                    o = iter.next();
+                    if (o != null) {
+                        File file = null;
+                        if (o instanceof File) {
+                            file = (File) o;
+                        } else if (o instanceof String) {
+                            file = new File(o.toString());
+                        }
+                        if (file != null)
+                            loadFile(file);
                     }
-                    else if( o instanceof String ) {
-                      file = new File( o.toString() );
-                    }
-                    if( file != null )
-                      loadFile( file );
-                  }
                 }
-              }
             }
-          }
         }
-        catch( Exception ex ) {}
+        catch( Exception ignored) {}
       }
       e.dropComplete( true );
     } else {
@@ -485,7 +480,7 @@ public class TopFrm extends BaseFrm
       pack();
     }
     JRadioButtonMenuItem item = this.scale2MenuItems.get(
-                        new Integer( this.screenFld.getScreenScale() ) );
+            this.screenFld.getScreenScale());
     if( item != null ) {
       item.setSelected( true );
     }
@@ -567,7 +562,7 @@ public class TopFrm extends BaseFrm
       try {
         this.emuThread.join( 500 );
       }
-      catch( InterruptedException ex ) {}
+      catch( InterruptedException ignored) {}
       doClose();
       System.exit( 0 );
     }
@@ -589,7 +584,7 @@ public class TopFrm extends BaseFrm
         }
       }
     }
-    catch( IllegalStateException ex ) {}
+    catch( IllegalStateException ignored) {}
   }
 
 
@@ -615,42 +610,29 @@ public class TopFrm extends BaseFrm
                                         fmtNames ) );
         if( file != null ) {
           String s = file.getName();
-          if( s != null ) {
             s = s.toUpperCase();
             String fmt = null;
-            for( int i = 0; i < fmtNames.length; i++ ) {
-              if( s.endsWith( "." + fmtNames[ i ].toUpperCase() ) ) {
-                fmt = fmtNames[ i ];
-                break;
-              }
+            for (String fmtName : fmtNames) {
+                if (s.endsWith("." + fmtName.toUpperCase())) {
+                    fmt = fmtName;
+                    break;
+                }
             }
             if( fmt != null ) {
-              OutputStream out = null;
-              try {
-                out = new FileOutputStream( file );
-                if( !ImageIO.write( image, fmt, file ) ) {
-                  fmt = null;
-                }
-                out.close();
-                Main.setLastFile( file );
-              }
-              catch( IOException ex ) {
-                file.delete();
-                throw ex;
-              }
-              finally {
-                if( out != null ) {
-                  try {
+                try (OutputStream out = Files.newOutputStream(file.toPath())) {
+                    if (!ImageIO.write(image, fmt, file)) {
+                        fmt = null;
+                    }
                     out.close();
-                  }
-                  catch( IOException ex ) {}
+                    Main.setLastFile(file);
+                } catch (IOException ex) {
+                    file.delete();
+                    throw ex;
                 }
-              }
             }
             if( fmt == null ) {
               throw new IOException( topFrmResourceBundle.getString("dialog.screen.image.save_as.fileTypeNotSupported") );
             }
-          }
         }
       }
     }
@@ -673,7 +655,7 @@ public class TopFrm extends BaseFrm
         }
       }
     }
-    catch( IllegalStateException ex ) {}
+    catch( IllegalStateException ignored) {}
   }
 
 
@@ -717,19 +699,9 @@ public class TopFrm extends BaseFrm
     }
     byte[] fileBytes = new byte[ bufSize ];
     fileLen          = 0;
-    InputStream in   = null;
-    try {
-      in      = new FileInputStream( file );
-      fileLen = in.read( fileBytes );
-    }
-    finally {
-      if( in != null ) {
-        try {
-          in.close();
-        }
-        catch( IOException ex ) {}
+      try (InputStream in = Files.newInputStream(file.toPath())) {
+          fileLen = in.read(fileBytes);
       }
-    }
     if( fileLen > 0 ) {
       (new LoadDlg(
                 this,
@@ -756,29 +728,29 @@ public class TopFrm extends BaseFrm
     if(  Main.getBooleanProperty( "org.sqar.virtualjtc.rom.reload_on_reset", false ) ) {
       ExtROM[] roms = this.jtcSys.getExtROMs();
       if( roms != null ) {
-        for( int i = 0; i < roms.length; i++ ) {
-          try {
-            roms[ i ].reload();
+          for (ExtROM rom : roms) {
+              try {
+                  rom.reload();
+              } catch (IOException ex) {
+                  errAddr = String.format("%%%04X", rom.getBegAddress());
+                  errCnt++;
+                  if (errBuf == null) {
+                      errBuf = new StringBuilder(256);
+                      ;
+                      errBuf.append(topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.IOException.message"));
+                  }
+                  if (addrCol > 0) {
+                      errBuf.append("  ");
+                  } else {
+                      errBuf.append((char) '\n');
+                  }
+                  errBuf.append(errAddr);
+                  addrCol++;
+                  if (addrCol >= 8) {
+                      addrCol = 0;
+                  }
+              }
           }
-          catch( IOException ex ) {
-            errAddr = String.format( "%%%04X", roms[ i ].getBegAddress() );
-            errCnt++;
-            if( errBuf == null ) {
-              errBuf = new StringBuilder( 256 );;
-              errBuf.append( topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.IOException.message") );
-            }
-            if( addrCol > 0 ) {
-              errBuf.append( "  " );
-            } else {
-              errBuf.append( (char) '\n' );
-            }
-            errBuf.append( errAddr );
-            addrCol++;
-            if( addrCol >= 8 ) {
-              addrCol = 0;
-            }
-          }
-        }
       }
     }
     KeyboardFrm.reset();
@@ -789,7 +761,7 @@ public class TopFrm extends BaseFrm
                 this,
                 MessageFormat.format( topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.messageformat"), errAddr ) );
     }
-    else if( (errCnt > 1) && (errBuf != null) ) {
+    else if(errCnt > 1) {
       errBuf.append( topFrmResourceBundle.getString("dialog.resetEmu.failedToLoadROM.multipleErrors.message") );
       Main.showError( this, errBuf.toString() );
     }

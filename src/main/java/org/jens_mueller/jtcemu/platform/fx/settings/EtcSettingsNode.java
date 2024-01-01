@@ -19,7 +19,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import org.jens_mueller.jtcemu.base.AppContext;
-import org.jens_mueller.jtcemu.platform.fx.Main;
+import org.jens_mueller.jtcemu.platform.fx.JTCEMUApplication;
 import org.jens_mueller.jtcemu.platform.fx.base.MsgDlg;
 import org.jens_mueller.jtcemu.platform.fx.base.ScreenNode;
 
@@ -27,17 +27,17 @@ import org.jens_mueller.jtcemu.platform.fx.base.ScreenNode;
 public class EtcSettingsNode extends ScrollPane
 {
   private SettingsNode      settingsNode;
-  private Main              main;
+  private JTCEMUApplication JTCEMUApplication;
   private ComboBox<Integer> comboMargin;
   private ComboBox<Integer> comboRefreshMillis;
   private Button            btnPathsDelete;
   private Button            btnPropsDelete;
 
 
-  public EtcSettingsNode( final SettingsNode settingsNode, Main main )
+  public EtcSettingsNode( final SettingsNode settingsNode, JTCEMUApplication JTCEMUApplication)
   {
     this.settingsNode = settingsNode;
-    this.main         = main;
+    this.JTCEMUApplication = JTCEMUApplication;
 
     int      gridRow  = 0;
     GridPane gridPane = new GridPane();
@@ -76,7 +76,7 @@ public class EtcSettingsNode extends ScrollPane
 
 
     // Datei zur Speicherung der zuletzt verwendeten Pfade
-    File pathsFile = Main.getPathsFile();
+    File pathsFile = JTCEMUApplication.getPathsFile();
     if( pathsFile != null ) {
       Label labelPathsFile = new Label(
 		"Zuletzt verwendete Dateipfade werden gespeichert"
@@ -107,7 +107,7 @@ public class EtcSettingsNode extends ScrollPane
 
 
     // Datei zur Speicherung der Einstellungen
-    File propsFile = Main.getPropertiesFile();
+    File propsFile = JTCEMUApplication.getPropertiesFile();
     if( propsFile != null ) {
       Label labelPropsFile = new Label(
 		"Einstellungen werden gespeichert in der Datei:" );
@@ -165,7 +165,7 @@ public class EtcSettingsNode extends ScrollPane
   {
     if( this.btnPropsDelete != null ) {
       boolean disable   = true;
-      File    propsFile = Main.getPropertiesFile();
+      File    propsFile = JTCEMUApplication.getPropertiesFile();
       if( propsFile != null ) {
 	if( propsFile.exists() ) {
 	  disable = false;
@@ -178,7 +178,7 @@ public class EtcSettingsNode extends ScrollPane
 
   public void updSettings()
   {
-    ScreenNode screen = this.main.getScreen();
+    ScreenNode screen = this.JTCEMUApplication.getScreen();
     if( screen != null ) {
       this.comboRefreshMillis.setValue( (int) screen.getRefreshMillis() );
     }
@@ -197,10 +197,10 @@ public class EtcSettingsNode extends ScrollPane
 
   private void doPathsDelete()
   {
-    File pathsFile = Main.getPathsFile();
+    File pathsFile = JTCEMUApplication.getPathsFile();
     if( pathsFile != null ) {
       if( MsgDlg.showYesNoDlg(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		"M\u00F6chten Sie die zuletzt verwendeten Dateipfade"
 			+ " l\u00F6schen?\n"
 			+ "Die Datei wird beim n\u00E4chsten"
@@ -212,7 +212,7 @@ public class EtcSettingsNode extends ScrollPane
 	updDeleteLastPathsBtnEnabled();
 	if( !deleted && pathsFile.exists() ) {
 	  MsgDlg.showErrorMsg(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		"Die Datei mit den zuletzt verwendeten Dateipfaden\n"
 			+ "konnte nicht gel\u00F6scht werden." );
 	}
@@ -223,10 +223,10 @@ public class EtcSettingsNode extends ScrollPane
 
   private void doPropsDelete()
   {
-    File propFile = Main.getPropertiesFile();
+    File propFile = JTCEMUApplication.getPropertiesFile();
     if( propFile != null ) {
       if( MsgDlg.showYesNoDlg(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		"M\u00F6chten Sie die gespeicherten Einstellungen"
 			+ " l\u00F6schen?\n"
 			+ AppContext.getAppName() + " startet dann beim"
@@ -238,7 +238,7 @@ public class EtcSettingsNode extends ScrollPane
 	this.settingsNode.updSaveButtonEnabled();
 	if( !deleted && propFile.exists() ) {
 	  MsgDlg.showErrorMsg(
-		this.main.getStage(),
+		this.JTCEMUApplication.getStage(),
 		"Die Datei mit den gespeicherten Einstellungen\n"
 			+ "konnte nicht gel\u00F6scht werden." );
 	}
@@ -251,7 +251,7 @@ public class EtcSettingsNode extends ScrollPane
   {
     if( this.btnPathsDelete != null ) {
       boolean state     = false;
-      File    pathsFile = Main.getPathsFile();
+      File    pathsFile = JTCEMUApplication.getPathsFile();
       if( pathsFile != null ) {
 	state = pathsFile.exists();
       }
