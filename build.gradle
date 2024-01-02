@@ -19,7 +19,12 @@ java {
     targetCompatibility = '21'
 }
 
-build.dependsOn (':JTCEMUCommon:build', ':JTCEMU:build', ':JTCemuFX:build',':VirtualJTCCommon:build')
+dependencies {
+    compileOnly project(':JTCEMUCommon')
+    compileOnly project(':JTCEMU')
+    compileOnly project(':JTCemuFX')
+    compileOnly project(':VirtualJTCCommon')
+}
 
 repositories {
     mavenCentral()
