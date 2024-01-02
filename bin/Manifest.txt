@@ -1,2 +1,0 @@
-Main-Class: org.sqar.virtualjtc.jtcemu.Main
-

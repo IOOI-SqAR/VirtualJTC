@@ -1,10 +1,11 @@
 buildscript {
-    ext.javafx_version = '21'
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
 }
 
 plugins {
     id 'java'
-    id 'application'
 }
 
 group 'org.sqar.virtualjtc'
