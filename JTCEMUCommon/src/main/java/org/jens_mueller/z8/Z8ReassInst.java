@@ -9,10 +9,10 @@ package org.jens_mueller.z8;
 
 public class Z8ReassInst
 {
-  private int      addr;
+  private final int      addr;
   private int      destAddr;
   private int      codeLen;
-  private byte[]   codeBytes;
+  private final byte[]   codeBytes;
   private String   mnemonic;
   private String[] args;
   private boolean  unknown;
@@ -60,30 +60,25 @@ public class Z8ReassInst
     if( n < 1 ) {
       n = 1;
     }
-    for( int i = 0; i < n; i++ ) {
-      buf.append( '\u0020' );
-    }
+      buf.append("\u0020".repeat(n));
     begPos = buf.length();
     buf.append( this.mnemonic );
     if( this.args != null ) {
-      for( int i = 0; i < this.args.length; i++ ) {
-	String arg = this.args[ i ];
-	if( arg != null ) {
-	  if( begPos >= 0 ) {
-	    n = begPos + 8 - buf.length();
-	    if( n < 1 ) {
-	      n = 1;
-	    }
-	    for( int k = 0; k < n; k++ ) {
-	      buf.append( '\u0020' );
-	    }
-	    begPos = -1;
-	  } else {
-	    buf.append( ", " );
-	  }
-	  buf.append( arg );
-	}
-      }
+        for (String arg : this.args) {
+            if (arg != null) {
+                if (begPos >= 0) {
+                    n = begPos + 8 - buf.length();
+                    if (n < 1) {
+                        n = 1;
+                    }
+                    buf.append("\u0020".repeat(n));
+                    begPos = -1;
+                } else {
+                    buf.append(", ");
+                }
+                buf.append(arg);
+            }
+        }
     }
     if( this.unknown ) {
       buf.append( "\t\t;???" );

@@ -198,7 +198,7 @@ public class Z8 implements Runnable
 	  this.pause = false;
 	  this.waitMonitor.notifyAll();
 	}
-	catch( IllegalMonitorStateException ex ) {}
+	catch( IllegalMonitorStateException ignored) {}
       }
     }
   }
@@ -215,7 +215,7 @@ public class Z8 implements Runnable
 	  this.pause = false;
 	  this.waitMonitor.notifyAll();
 	}
-	catch( IllegalMonitorStateException ex ) {}
+	catch( IllegalMonitorStateException ignored) {}
       }
     }
   }
@@ -238,7 +238,7 @@ public class Z8 implements Runnable
     }
     millis = System.currentTimeMillis() - millis;
     if( millis > 0 ) {
-      mhz = Double.valueOf( (double) cycles / ((double) (millis * 1000)) );
+      mhz = (double) cycles / ((double) (millis * 1000));
     }
     return mhz;
   }
@@ -319,59 +319,36 @@ public class Z8 implements Runnable
       }
       rv = this.registers[ r ];
     } else {
-      switch( r ) {
-	case SIO:
-	  rv = this.sioIn;
-	  break;
-	case TMR:
-	  rv = this.regTMR;
-	  break;
-	case T1:
-	  rv = this.timer1.getCounter();
-	  break;
-	case PRE1:		// Write Only Register
-	  rv = 0xFF;
-	  break;
-	case T0:
-	  rv = this.timer0.getCounter();
-	  break;
-	case PRE0:		// Write Only Register
-	case P2M:		// Write Only Register
-	case P3M:		// Write Only Register
-	case P01M:		// Write Only Register
-	case IPR:		// Write Only Register
-	  rv = 0xFF;
-	  break;
-	case IRQ:
-	  rv = this.regIRQ;
-	  break;
-	case IMR:
-	  rv = this.regIMR;
-	  break;
-	case FLAGS:
-	  rv = getRegFLAGS();
-	  break;
-	case RP:
-	  rv = this.regRP;
-	  break;
-	case SPH:
-	  rv = this.regSPH;
-	  break;
-	case SPL:
-	  rv = this.regSPL;
-	  break;
-	default:
-	  /*
-	   * Lesen eines nicht vorhandenen Registers:
-	   *   Nicht immer, aber haeufig wird die Registeradresse
-	   *   (Registernummer) zurueckgeliefert.
-	   *   Es ist aber nicht klar, in welchen Faellen
-	   *   die Registernummer oder ein anderer Wert gelesen wird.
-	   *   Aus diesem Grund wird hier der Einfachheit halber
-	   *   immer die Registernummer zurueckgeliefert.
-	   */
-	  rv = r;
-      }
+        rv = switch (r) {
+            case SIO -> this.sioIn;
+            case TMR -> this.regTMR;
+            case T1 -> this.timer1.getCounter();
+            case PRE1 ->        // Write Only Register
+                    0xFF;
+            case T0 -> this.timer0.getCounter();        // Write Only Register
+            // Write Only Register
+            // Write Only Register
+            // Write Only Register
+            case PRE0, P2M, P3M, P01M, IPR ->        // Write Only Register
+                    0xFF;
+            case IRQ -> this.regIRQ;
+            case IMR -> this.regIMR;
+            case FLAGS -> getRegFLAGS();
+            case RP -> this.regRP;
+            case SPH -> this.regSPH;
+            case SPL -> this.regSPL;
+            default ->
+                /*
+                 * Lesen eines nicht vorhandenen Registers:
+                 *   Nicht immer, aber haeufig wird die Registeradresse
+                 *   (Registernummer) zurueckgeliefert.
+                 *   Es ist aber nicht klar, in welchen Faellen
+                 *   die Registernummer oder ein anderer Wert gelesen wird.
+                 *   Aus diesem Grund wird hier der Einfachheit halber
+                 *   immer die Registernummer zurueckgeliefert.
+                 */
+                    r;
+        };
     }
     return rv;
   }
@@ -515,7 +492,7 @@ public class Z8 implements Runnable
 	  try {
 	    this.waitMonitor.notifyAll();
 	  }
-	  catch( IllegalMonitorStateException ex ) {}
+	  catch( IllegalMonitorStateException ignored) {}
 	}
       }
     } else {
@@ -785,71 +762,25 @@ public class Z8 implements Runnable
     if( (r >= 0) && (r < this.registers.length) && (r <= this.maxGPRNum) ) {
       rv = this.registers[ r ];
     } else {
-      switch( r ) {
-	case SPL:
-	  rv = this.regSPL;
-	  break;
-
-	case SPH:
-	  rv = this.regSPH;
-	  break;
-
-	case RP:
-	  rv = this.regRP;
-	  break;
-
-	case FLAGS:
-	  rv = getRegFLAGS();
-	  break;
-
-	case IMR:
-	  rv = this.regIMR;
-	  break;
-
-	case IRQ:
-	  rv = this.regIRQ;
-	  break;
-
-	case IPR:
-	  rv = this.regIPR;
-	  break;
-
-	case P01M:
-	  rv = this.regP01M;
-	  break;
-
-	case P3M:
-	  rv = this.regP3M;
-	  break;
-
-	case P2M:
-	  rv = this.regP2M;
-	  break;
-
-	case PRE0:
-	  rv = this.timer0.getPreCounter();
-	  break;
-
-	case T0:
-	  rv = this.timer0.getCounter();
-	  break;
-
-	case PRE1:
-	  rv = this.timer1.getPreCounter();
-	  break;
-
-	case T1:
-	  rv = this.timer1.getCounter();
-	  break;
-
-	case TMR:
-	  rv = this.regTMR;
-	  break;
-
-	case SIO:
-	  rv = this.sioIn;
-	  break;
-      }
+        rv = switch (r) {
+            case SPL -> this.regSPL;
+            case SPH -> this.regSPH;
+            case RP -> this.regRP;
+            case FLAGS -> getRegFLAGS();
+            case IMR -> this.regIMR;
+            case IRQ -> this.regIRQ;
+            case IPR -> this.regIPR;
+            case P01M -> this.regP01M;
+            case P3M -> this.regP3M;
+            case P2M -> this.regP2M;
+            case PRE0 -> this.timer0.getPreCounter();
+            case T0 -> this.timer0.getCounter();
+            case PRE1 -> this.timer1.getPreCounter();
+            case T1 -> this.timer1.getCounter();
+            case TMR -> this.regTMR;
+            case SIO -> this.sioIn;
+            default -> rv;
+        };
     }
     return rv;
   }
@@ -892,7 +823,7 @@ public class Z8 implements Runnable
 	    try {
 	      Thread.sleep( Math.min( millisToWait, 50 ) );
 	    }
-	    catch( InterruptedException ex ) {}
+	    catch( InterruptedException ignored) {}
 	  }
 	  cyclesSinceAdjust = 0;
 	}
@@ -907,9 +838,7 @@ public class Z8 implements Runnable
       Arrays.fill( this.portIn, -1 );
 
       // Zwischenspeicher fuer Ausgangsports aktualisieren
-      for( int i = 0; i < this.portOut.length; i++ ) {
-	this.portOut[ i ] = this.portLastOut[ i ];
-      }
+        System.arraycopy(this.portLastOut, 0, this.portOut, 0, this.portOut.length);
 
       // P30: 1->0 pruefen
       if( ((this.regP3M & 0x40) == 0) && wentP3BitFrom1To0( 0x01 ) ) {
@@ -1023,9 +952,8 @@ public class Z8 implements Runnable
 	    try {
 	      this.waitMonitor.wait();
 	    }
-	    catch( IllegalMonitorStateException ex ) {}
-	    catch( InterruptedException ex ) {}
-	    this.pause = false;
+	    catch(IllegalMonitorStateException | InterruptedException ignored) {}
+          this.pause = false;
 	    resetSpeed();
 	    statusChanged();
 	  }
@@ -1061,23 +989,22 @@ public class Z8 implements Runnable
       {
 	int[] iPriority = this.interruptPriority;
 	if( iPriority != null ) {
-	  for( int i = 0; i < iPriority.length; i++ ) {
-	    int irq = iPriority[ i ];
-	    if( (irq >= 0) && (irq < interruptMasks.length) ) {
-	      int m = interruptMasks[ irq ];
-	      if( (this.regIRQ & this.regIMR & m) != 0 ) {
-		pushw( this.pc );
-		push( getRegValue( FLAGS ) );
-		int v   = irq * 2;
-		this.pc = (this.memory.getMemByte( v, false ) << 8)
-				| this.memory.getMemByte( v + 1, false );
-		this.regIRQ &= ~m;
-		this.regIMR &= 0x7F;
-		this.instCycles = 6;
-		break;
-	      }
-	    }
-	  }
+        for (int irq : iPriority) {
+            if ((irq >= 0) && (irq < interruptMasks.length)) {
+                int m = interruptMasks[irq];
+                if ((this.regIRQ & this.regIMR & m) != 0) {
+                    pushw(this.pc);
+                    push(getRegValue(FLAGS));
+                    int v = irq * 2;
+                    this.pc = (this.memory.getMemByte(v, false) << 8)
+                            | this.memory.getMemByte(v + 1, false);
+                    this.regIRQ &= ~m;
+                    this.regIMR &= 0x7F;
+                    this.instCycles = 6;
+                    break;
+                }
+            }
+        }
 	}
       }
 
@@ -1281,49 +1208,20 @@ public class Z8 implements Runnable
 	break;
 
       default:
-	InstType instType = null;
-	switch( nibbleH >> 4 ) {
-	  case 0:
-	    instType = InstType.ADD;
-	    break;
-
-	  case 1:
-	    instType = InstType.ADC;
-	    break;
-
-	  case 2:
-	    instType = InstType.SUB;
-	    break;
-
-	  case 3:
-	    instType = InstType.SBC;
-	    break;
-
-	  case 4:
-	    instType = InstType.OR;
-	    break;
-
-	  case 5:
-	    instType = InstType.AND;
-	    break;
-
-	  case 6:
-	    instType = InstType.TCM;
-	    break;
-
-	  case 7:
-	    instType = InstType.TM;
-	    break;
-
-	  case 0x0A:
-	    instType = InstType.CP;
-	    break;
-
-	  case 0x0B:
-	    instType = InstType.XOR;
-	    break;
-	}
-	if( (instType != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
+	InstType instType = switch (nibbleH >> 4) {
+        case 0 -> InstType.ADD;
+        case 1 -> InstType.ADC;
+        case 2 -> InstType.SUB;
+        case 3 -> InstType.SBC;
+        case 4 -> InstType.OR;
+        case 5 -> InstType.AND;
+        case 6 -> InstType.TCM;
+        case 7 -> InstType.TM;
+        case 0x0A -> InstType.CP;
+        case 0x0B -> InstType.XOR;
+        default -> null;
+    };
+          if( (instType != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
 	  execInst( nibbleL, instType );
 	} else {
 	  execRemainingInst( opc );
@@ -1761,69 +1659,40 @@ public class Z8 implements Runnable
 
   private boolean checkCond( int value )
   {
-    boolean rv = false;
-    switch( value & 0xF0 ) {
-      case 0x10:					// LT
-	rv = (this.flagS ^ this.flagV);
-	break;
-
-      case 0x20:					// LE
-	rv = (this.flagZ || (this.flagS ^ this.flagV));
-	break;
-
-      case 0x30:					// ULE
-	rv = (this.flagC || this.flagZ);
-	break;
-
-      case 0x40:					// OV
-	rv = this.flagV;
-	break;
-
-      case 0x50:					// MI
-	rv = this.flagS;
-	break;
-
-      case 0x60:					// Z, EQ
-	rv = this.flagZ;
-	break;
-
-      case 0x70:					// C, ULT
-	rv = this.flagC;
-	break;
-
-      case 0x80:					// ohne Bedingung
-	rv = true;
-	break;
-
-      case 0x90:					// GE
-	rv = !(this.flagS ^ this.flagV);
-	break;
-
-      case 0xA0:					// GT
-	rv = !(this.flagZ || (this.flagS ^ this.flagV));
-	break;
-
-      case 0xB0:					// UGT
-	rv = (!this.flagC && !this.flagZ);
-	break;
-
-      case 0xC0:					// NOV
-	rv = !this.flagV;
-	break;
-
-      case 0xD0:					// PL
-	rv = !this.flagS;
-	break;
-
-      case 0xE0:					// NZ, NE
-	rv = !this.flagZ;
-	break;
-
-      case 0xF0:					// NC, UGE
-	rv = !this.flagC;
-	break;
-    }
-    return rv;
+    boolean rv = switch (value & 0xF0) {
+        case 0x10 ->                    // LT
+                (this.flagS ^ this.flagV);
+        case 0x20 ->                    // LE
+                (this.flagZ || (this.flagS ^ this.flagV));
+        case 0x30 ->                    // ULE
+                (this.flagC || this.flagZ);
+        case 0x40 ->                    // OV
+                this.flagV;
+        case 0x50 ->                    // MI
+                this.flagS;
+        case 0x60 ->                    // Z, EQ
+                this.flagZ;
+        case 0x70 ->                    // C, ULT
+                this.flagC;
+        case 0x80 ->                    // ohne Bedingung
+                true;
+        case 0x90 ->                    // GE
+                !(this.flagS ^ this.flagV);
+        case 0xA0 ->                    // GT
+                !(this.flagZ || (this.flagS ^ this.flagV));
+        case 0xB0 ->                    // UGT
+                (!this.flagC && !this.flagZ);
+        case 0xC0 ->                    // NOV
+                !this.flagV;
+        case 0xD0 ->                    // PL
+                !this.flagS;
+        case 0xE0 ->                    // NZ, NE
+                !this.flagZ;
+        case 0xF0 ->                    // NC, UGE
+                !this.flagC;
+        default -> false;
+    };
+      return rv;
   }
 
 

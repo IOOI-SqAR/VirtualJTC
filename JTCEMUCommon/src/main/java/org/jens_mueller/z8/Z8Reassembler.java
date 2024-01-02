@@ -22,7 +22,7 @@ public class Z8Reassembler
 		"SIO", "TMR", "T1", "PRE1", "T0", "PRE0", "P2M", "P3M",
 		"P01M", "IPR", "IRQ", "IMR", "FLAGS", "RP", "SPH", "SPL" };
 
-  private Z8Memory memory;
+  private final Z8Memory memory;
   private int      addr;
   private int      destAddr;
   private String   mnemonic;
@@ -134,7 +134,7 @@ public class Z8Reassembler
       buf.append( inst.getMnemonic() );
 
       boolean warning = false;
-      String  args[]  = inst.getArgs();
+      String[] args = inst.getArgs();
       if( args != null ) {
 	int nArgs = args.length;
 	if( nArgs > 0 ) {
@@ -245,49 +245,20 @@ public class Z8Reassembler
 	  break;
 
 	default:
-	  String mnemonic = null;
-	  switch( nibbleH >> 4 ) {
-	    case 0:
-	      mnemonic = "ADD";
-	      break;
-
-	    case 1:
-	      mnemonic = "ADC";
-	      break;
-
-	    case 2:
-	      mnemonic = "SUB";
-	      break;
-
-	    case 3:
-	      mnemonic = "SBC";
-	      break;
-
-	    case 4:
-	      mnemonic = "OR";
-	      break;
-
-	    case 5:
-	      mnemonic = "AND";
-	      break;
-
-	    case 6:
-	      mnemonic = "TCM";
-	      break;
-
-	    case 7:
-	      mnemonic = "TM";
-	      break;
-
-	    case 0x0A:
-	      mnemonic = "CP";
-	      break;
-
-	    case 0x0B:
-	      mnemonic = "XOR";
-	      break;
-	  }
-	  if( (mnemonic != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
+	  String mnemonic = switch (nibbleH >> 4) {
+          case 0 -> "ADD";
+          case 1 -> "ADC";
+          case 2 -> "SUB";
+          case 3 -> "SBC";
+          case 4 -> "OR";
+          case 5 -> "AND";
+          case 6 -> "TCM";
+          case 7 -> "TM";
+          case 0x0A -> "CP";
+          case 0x0B -> "XOR";
+          default -> null;
+      };
+        if( (mnemonic != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
 	    reassInst( nibbleL, mnemonic );
 	  } else {
 	    reassRemainingInst( opc );
@@ -693,9 +664,8 @@ public class Z8Reassembler
 
   private String getCondName( int value )
   {
-    String rv  = null;
     int    idx = (value >> 4) & 0x0F;
-    return (idx >= 0) && (idx < condNames.length) ? condNames[ idx ] : null;
+    return condNames[ idx ];
   }
 
 
@@ -756,7 +726,7 @@ public class Z8Reassembler
 
   private static String getRegText( int r )
   {
-    String rv = null;
+    String rv;
     if( (r & 0xF0) == 0xE0 ) {
       rv = getWorkingRegName( r );
     } else {

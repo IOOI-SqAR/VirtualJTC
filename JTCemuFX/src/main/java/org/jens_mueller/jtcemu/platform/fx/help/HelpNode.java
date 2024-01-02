@@ -27,6 +27,8 @@ import org.jens_mueller.jtcemu.platform.fx.base.AppTab;
 import org.jens_mueller.jtcemu.platform.fx.base.GUIUtil;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 
@@ -39,16 +41,16 @@ public class HelpNode extends BorderPane implements AppTab
 
   private static HelpNode instance = null;
 
-  private JTCEMUApplication JTCEMUApplication;
+  private final JTCEMUApplication JTCEMUApplication;
   private String   baseUrl;
   private String   homeUrl;
-  private MenuBar  mnuBar;
-  private MenuItem mnuBack;
-  private MenuItem mnuHome;
-  private Button   btnBack;
-  private Button   btnHome;
-  private Slider   sliderZoom;
-  private WebView  webView;
+  private final MenuBar  mnuBar;
+  private final MenuItem mnuBack;
+  private final MenuItem mnuHome;
+  private final Button   btnBack;
+  private final Button   btnHome;
+  private final Slider   sliderZoom;
+  private final WebView  webView;
 
 
   public static void showTab( JTCEMUApplication JTCEMUApplication) throws IOException
@@ -171,7 +173,7 @@ public class HelpNode extends BorderPane implements AppTab
 	v = Math.min( v, this.sliderZoom.getMax() );
 	this.sliderZoom.setValue( v );
       }
-      catch( NumberFormatException ex ) {}
+      catch( NumberFormatException ignored) {}
     }
 
     Button btnDefaultZoom = new Button( "100%" );
@@ -256,7 +258,7 @@ public class HelpNode extends BorderPane implements AppTab
 	    history.go( -1 );
 	  }
 	}
-	catch( IndexOutOfBoundsException ex ) {}
+	catch( IndexOutOfBoundsException ignored) {}
       }
       updNavButtons();
     }
@@ -271,7 +273,7 @@ public class HelpNode extends BorderPane implements AppTab
 	if( !urlText.isEmpty() ) {
 	  try {
 	    String text = JTCUtil.loadHtml(
-					new URL( urlText ),
+					new URI( urlText ).toURL(),
 					removeLinks );
 	    if( text != null ) {
 	      final ClipboardContent content = new ClipboardContent();
@@ -282,8 +284,10 @@ public class HelpNode extends BorderPane implements AppTab
 	  catch( IOException ex ) {
 	    this.JTCEMUApplication.showError( "Die Seite konnte nicht nicht"
 				+ " die Zwischenablage kopiert werden." );
-	  }
-	}
+	  } catch (URISyntaxException e) {
+          throw new RuntimeException(e);
+      }
+    }
       }
     }
   }
@@ -303,7 +307,7 @@ public class HelpNode extends BorderPane implements AppTab
 	  }
 	}
       }
-      catch( IndexOutOfBoundsException ex ) {}
+      catch( IndexOutOfBoundsException ignored) {}
       if( !done ) {
 	this.webView.getEngine().load( this.homeUrl );
       }
@@ -367,7 +371,7 @@ public class HelpNode extends BorderPane implements AppTab
 			 * Ist das nicht moeglich,
 			 * wird die Startseite angezeigt.
 			 */
-			if( s.indexOf( ":" ) < 0 ) {
+			if(!s.contains(":")) {
 			  try {
 			    if( s.startsWith( "/" ) ) {
 			      /*
