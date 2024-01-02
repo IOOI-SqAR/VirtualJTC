@@ -1,4 +1,4 @@
-module jtcemu {
+module VirtualJTCCommon {
     requires java.logging;
     requires java.naming;
     requires java.desktop;

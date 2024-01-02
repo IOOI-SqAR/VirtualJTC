@@ -21,6 +21,7 @@ public class ExtROM implements Comparable<ExtROM>
 
   private int    begAddr;
   private int    endAddr;
+  private int    maxSize;
   private File   file;
   private byte[] fileBytes;
   private String text;
@@ -28,6 +29,9 @@ public class ExtROM implements Comparable<ExtROM>
 
   public ExtROM( File file ) throws IOException
   {
+    this.maxSize   = maxSize;
+    this.file      = file;
+    this.fileBytes = null;
     this.begAddr   = 0;
     this.endAddr   = 0;
     this.file      = file;
@@ -37,13 +41,13 @@ public class ExtROM implements Comparable<ExtROM>
   }
 
 
-  public synchronized int getBegAddress()
+  public synchronized int getBegAddr()
   {
     return this.begAddr;
   }
 
 
-  public synchronized int getEndAddress()
+  public synchronized int getEndAddr()
   {
     return this.endAddr;
   }
@@ -54,8 +58,9 @@ public class ExtROM implements Comparable<ExtROM>
     int rv = 0;
     if( this.fileBytes != null ) {
       int idx = addr - this.begAddr;
-      if( (idx >= 0) && (idx < this.fileBytes.length) )
+      if( (idx >= 0) && (idx < this.fileBytes.length) ) {
         rv = (int) this.fileBytes[ idx ] & 0xFF;
+    }
     }
     return rv;
   }
@@ -66,8 +71,7 @@ public class ExtROM implements Comparable<ExtROM>
     return this.file;
   }
 
-
-  public synchronized void setBegAddress( int addr )
+  public synchronized void setBegAddr( int addr )
   {
     this.begAddr = addr;
     this.endAddr = 0;
@@ -149,7 +153,7 @@ public class ExtROM implements Comparable<ExtROM>
         if( o instanceof ExtROM ) {
           rv          = true;
           ExtROM data = (ExtROM) o;
-          if( this.begAddr != data.getBegAddress() ) {
+	  if( this.begAddr != data.getBegAddr() ) {
             rv = false;
           } else {
             if( (this.fileBytes != null) && (data.fileBytes != null) ) {
@@ -190,4 +194,3 @@ public class ExtROM implements Comparable<ExtROM>
     return this.text;
   }
 }
-

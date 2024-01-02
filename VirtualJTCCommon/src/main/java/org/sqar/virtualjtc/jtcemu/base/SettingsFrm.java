@@ -982,7 +982,7 @@ public class SettingsFrm extends BaseFrm
         }
         addr = GUIUtil.askHex4( this, settingsFrmResourceBundle.getString("dialog.doROMAdd.startAddress"), addr );
         if( addr != null ) {
-          rom.setBegAddress( addr.intValue() );
+          rom.setBegAddr( addr.intValue() );
           this.extROMs.add( rom );
           try {
             Collections.sort( this.extROMs );
@@ -1093,7 +1093,7 @@ public class SettingsFrm extends BaseFrm
     int     a  = -1;
     for( ExtROM rom : this.extROMs ) {
       n++;
-      int begAddr = rom.getBegAddress();
+      int begAddr = rom.getBegAddr();
       if( begAddr <= a ) {
         this.tabbedPane.setSelectedComponent( this.panelROM );
         Main.showError(
@@ -1110,7 +1110,7 @@ public class SettingsFrm extends BaseFrm
       props.setProperty(
                 String.format( "org.sqar.virtualjtc.rom.%d.file", n ),
                 rom.getFile().getPath() );
-      a = rom.getEndAddress();
+      a = rom.getEndAddr();
     }
     props.setProperty( "org.sqar.virtualjtc.rom.count", Integer.toString( n ) );
     props.setProperty(

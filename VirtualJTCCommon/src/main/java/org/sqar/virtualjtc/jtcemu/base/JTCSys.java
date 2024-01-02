@@ -34,6 +34,29 @@ public class JTCSys implements
   private static final Locale locale = Locale.getDefault();
   private static final ResourceBundle jtcSysResourceBundle = ResourceBundle.getBundle("JTCSys", locale);
 
+  public static final int DEFAULT_BASIC_ADDR           = 0xE000;
+  public static final int DEFAULT_Z8_CYCLES_PER_SECOND = 4000000;  // intern
+  public static final int MAX_ROM_SIZE                 = 0x10000;
+  public static final int MAX_ROMBANK_SIZE             = 256 * 0x2000;
+
+  public static final String PROP_Z8_REGS_80_TO_EF = "z8.regs80toEF";
+  public static final String PROP_Z8_REG_INIT_ZERO = "z8.reg.init.zero";
+  public static final String PROP_RAM_INIT_ZERO    = "ram.init.zero";
+  public static final String PROP_RAM_SIZE         = "ram.size";
+  public static final String PROP_ROM_PREFIX       = "rom.";
+  public static final String PROP_ROM_COUNT        = "rom.count";
+  public static final String PROP_ROM_RELOAD       = "rom.reload";
+  public static final String PROP_ROMBANK_ENABLED  = "rombank.enabled";
+  public static final String PROP_ROMBANK_FILE     = "rombank.file";
+  public static final String PROP_OS               = "os";
+  public static final String VALUE_OS_2K           = "2K";
+  public static final String VALUE_OS_ES1988       = "ES1988";
+  public static final String VALUE_OS_ES23         = "ES2.3";
+  public static final String VALUE_OS_ES40         = "ES4.0";
+
+  public static final boolean DEFAULT_RAM_INIT_ZERO    = true;
+  public static final boolean DEFAULT_Z8_REG_INIT_ZERO = true;
+
   public static enum OSType { OS2K, ES1988, ES23, ES40 };
 
   private static final int[][] keyMatrix2kNormal = {
@@ -101,16 +124,24 @@ public class JTCSys implements
   private ScreenFld         screenFld;
   private volatile Z8       z8;
   private volatile OSType   osType;
+  private OSType            newOSType;
+  private ExtROM[]          extROMs;
+  private ExtROM[]          newExtROMs;
+  private ExtROM            romBank;
+  private ExtROM[]          newRomBank;
   private volatile AudioIn  audioIn;
   private volatile AudioOut audioOut;
-  private volatile ExtROM[] extROMs;
   private volatile long     lastScreenCycles;
+  private int               screenWidth;
+  private int               screenHeight;
+  private CharRaster        charRaster;
   private byte[]            u883rom;
   private byte[]            os2k_0800;
   private byte[]            es1988_0800;
   private byte[]            es1988_2000;
   private byte[]            es23_0800;
   private byte[]            es40_0800;
+  private byte[]            es40RomBank_0800;
   private byte[]            rom0800;
   private byte[]            rom2000;
   private byte[]            ram;
@@ -119,6 +150,8 @@ public class JTCSys implements
   private byte[]            ramG;
   private byte[]            ramR;
   private volatile int      curKeyValue;
+  private int               newMaxGPRNum;
+  private int               newRamSize;
   private volatile int      ramSize;
   private int[]             keyMatrixCols;
   private boolean           ignoreKeyChar;
@@ -132,6 +165,7 @@ public class JTCSys implements
   private boolean           videoB;
   private boolean           videoG;
   private boolean           videoR;
+  private volatile boolean  monochrome;
 
 
   public JTCSys() throws IOException
@@ -167,7 +201,13 @@ public class JTCSys implements
     this.videoB              = false;
     this.videoG              = false;
     this.videoR              = false;
-    this.keyMatrixCols       = new int[ 16 ];
+    this.monochrome       = true;
+    this.newOSType        = null;
+    this.newExtROMs       = null;
+    this.newRomBank       = null;
+    this.newMaxGPRNum     = 0;
+    this.newRamSize       = 0;
+    this.keyMatrixCols    = new int[ 0x10 ];
     resetKeyMatrixStatus();
   }
 
@@ -260,6 +300,42 @@ public class JTCSys implements
   }
 
 
+  public ExtROM getROMBank()
+  {
+    return this.romBank;
+  }
+
+
+  public static String getROMPropFile( int idx )
+  {
+    return String.format( "%s%d.file", PROP_ROM_PREFIX, idx );
+  }
+
+
+  public static String getROMPropAddr( int idx )
+  {
+    return String.format( "%s%d.addr", PROP_ROM_PREFIX, idx );
+  }
+
+
+  public synchronized CharRaster getScreenCharRaster()
+  {
+    return this.charRaster;
+  }
+
+
+  public synchronized int getScreenHeight()
+  {
+    return this.screenHeight;
+  }
+
+
+  public synchronized int getScreenWidth()
+  {
+    return this.screenWidth;
+  }
+
+
   public String getScreenText()
   {
     String rv = null;
@@ -271,6 +347,34 @@ public class JTCSys implements
       rv = getScreenText( 0xFD00, 8, 13, 16 );
     }
     return rv;
+  }
+
+
+  public Z8 getZ8()
+  {
+    return this.z8;
+  }
+
+
+  public boolean isMonochrome()
+  {
+    return this.monochrome;
+  }
+
+
+  public static boolean isRamInitZero()
+  {
+    return AppContext.getBooleanProperty(
+				PROP_RAM_INIT_ZERO,
+				DEFAULT_RAM_INIT_ZERO );
+  }
+
+
+  public static boolean isRegInitZero()
+  {
+    return AppContext.getBooleanProperty(
+				PROP_Z8_REG_INIT_ZERO,
+				DEFAULT_Z8_REG_INIT_ZERO );
   }
 
 
@@ -757,7 +861,7 @@ public class JTCSys implements
     if( extROMs != null ) {
       for( int i = 0; !done && (i < extROMs.length); i++ ) {
         ExtROM rom = this.extROMs[ i ];
-        if( (addr >= rom.getBegAddress()) && (addr <= rom.getEndAddress()) ) {
+        if( (addr >= rom.getBegAddr()) && (addr <= rom.getEndAddr()) ) {
           rv = rom.getByte( addr );
           done = true;
         }
@@ -843,7 +947,7 @@ public class JTCSys implements
     if( extROMs != null ) {
       for( int i = 0; !done && (i < extROMs.length); i++ ) {
         ExtROM rom = this.extROMs[ i ];
-        if( (addr >= rom.getBegAddress()) && (addr <= rom.getEndAddress()) )
+        if( (addr >= rom.getBegAddr()) && (addr <= rom.getEndAddr()) )
           done = true;
       }
     }
@@ -907,10 +1011,10 @@ public class JTCSys implements
         }
       } else if( (addr >= 0x6000) && (addr < 0x8000) ) {
         if( (this.osType == OSType.ES40) && (addr < 0x6400) ) {
-          this.videoV = ((addr & 0x10) == 0);
-          this.videoB = ((addr & 0x20) == 0);
-          this.videoG = ((addr & 0x40) == 0);
-          this.videoR = ((addr & 0x80) == 0);
+	  this.videoV = ((addr & 0x0010) == 0);
+	  this.videoB = ((addr & 0x0020) == 0);
+	  this.videoG = ((addr & 0x0040) == 0);
+	  this.videoR = ((addr & 0x0080) == 0);
         }
       }
       else if( addr >= 0x8000 ) {

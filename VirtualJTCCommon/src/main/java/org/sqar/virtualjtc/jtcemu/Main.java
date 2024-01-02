@@ -18,8 +18,7 @@ import javax.swing.*;
 import org.sqar.virtualjtc.jtcemu.base.*;
 import org.sqar.virtualjtc.z8.Z8;
 
-import static org.jens_mueller.jtcemu.base.JTCSys.isRegInitZero;
-
+import static org.sqar.virtualjtc.jtcemu.base.JTCSys.isRegInitZero;
 
 public class Main
 {
@@ -128,7 +127,7 @@ public class Main
               if( (addr >= 0) && (addr <= 0xFFFF) ) {
                 try {
                   ExtROM extROM = new ExtROM( new File( fileName ) );
-                  extROM.setBegAddress( addr );
+                  extROM.setBegAddr( addr );
                   extROMs.add( extROM );
                 }
                 catch( IOException ex ) {

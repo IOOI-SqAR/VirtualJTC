@@ -69,11 +69,6 @@ dependencies {
 tasks.withType<Jar> {
   manifest {
     attributes["Main-Class"] = "org.jens_mueller.jtcemu.platform.fx.Launcher"
-//    attributes["Class-Path"] = configurations
-//            .runtimeClasspath
-//            .get()
-//            .joinToString(separator = " ") {  if (it.isDirectory) { it.toString() } else { zipTree(it).toString() } }
-            // .duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
   }
 }
 

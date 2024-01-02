@@ -1,7 +1,6 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
-
 plugins {
     id("java")
+    id("application")
 }
 
 group = "org.sqar.virtualjtc"
@@ -16,6 +15,11 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+application {
+    mainModule = "JTCEMU"
+    mainClass = "org.jens_mueller.jtcemu.platform.se.Main"
 }
 
 tasks.test {

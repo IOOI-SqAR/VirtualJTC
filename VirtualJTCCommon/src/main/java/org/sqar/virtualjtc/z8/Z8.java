@@ -6,8 +6,6 @@
 
 package org.sqar.virtualjtc.z8;
 
-import org.jens_mueller.z8.Z8Listener;
-
 import java.util.*;
 import java.util.Arrays;
 import java.util.logging.Level;

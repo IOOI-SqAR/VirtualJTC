@@ -732,7 +732,7 @@ public class TopFrm extends BaseFrm
               try {
                   rom.reload();
               } catch (IOException ex) {
-                  errAddr = String.format("%%%04X", rom.getBegAddress());
+                  errAddr = String.format("%%%04X", rom.getBegAddr());
                   errCnt++;
                   if (errBuf == null) {
                       errBuf = new StringBuilder(256);

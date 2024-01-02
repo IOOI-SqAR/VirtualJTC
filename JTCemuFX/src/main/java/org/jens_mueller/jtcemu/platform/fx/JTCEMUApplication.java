@@ -27,6 +27,7 @@ import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.ErrorViewer;
 import org.jens_mueller.jtcemu.base.JTCSys;
 import org.jens_mueller.jtcemu.base.JTCUtil;
+import org.jens_mueller.jtcemu.platform.fx.base.*;
 import org.jens_mueller.jtcemu.platform.fx.settings.SettingsNode;
 import org.jens_mueller.jtcemu.platform.fx.tools.ReassNode;
 import org.jens_mueller.z8.Z8;
@@ -251,7 +252,7 @@ public class JTCEMUApplication extends Application implements ErrorViewer, Z8Lis
 	tab = new Tab( text );
 	tab.setClosable( closable );
 	tab.setContent( content );
-	if( content instanceof AppTab ) {
+	if( content instanceof AppTab) {
 	  ((AppTab) content).setTab( tab );
 	  tab.setOnCloseRequest(
 			e->((AppTab) content).tabCloseRequest( e ) );
