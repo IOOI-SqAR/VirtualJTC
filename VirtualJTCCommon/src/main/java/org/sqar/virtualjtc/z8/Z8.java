@@ -219,7 +219,7 @@ public class Z8 implements Runnable {
 
 
     public synchronized void addPCListener(int addr, Z8PCListener listener) {
-        PCListenerItem[] items = null;
+        PCListenerItem[] items;
         if (this.pcListenerItems != null) {
             items = new PCListenerItem[this.pcListenerItems.length + 1];
             System.arraycopy(this.pcListenerItems, 0, items, 0, this.pcListenerItems.length);
@@ -233,7 +233,7 @@ public class Z8 implements Runnable {
 
     public synchronized void removePCListener(int addr, Z8PCListener listener) {
         if (this.pcListenerItems != null) {
-            java.util.List<PCListenerItem> list = new ArrayList<PCListenerItem>(
+            java.util.List<PCListenerItem> list = new ArrayList<>(
                     this.pcListenerItems.length);
             boolean changed = false;
             for (PCListenerItem item : this.pcListenerItems) {
@@ -376,7 +376,7 @@ public class Z8 implements Runnable {
 
 
     public RunMode getRunMode() {
-        RunMode runMode = null;
+        RunMode runMode;
         synchronized (this.waitMonitor) {
             runMode = this.runMode;
         }
