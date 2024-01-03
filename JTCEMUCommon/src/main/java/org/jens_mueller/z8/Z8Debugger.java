@@ -8,8 +8,7 @@
 
 package org.jens_mueller.z8;
 
-public interface Z8Debugger
-{
-  public void z8DebugStatusChanged( Z8 z8 );
+public interface Z8Debugger {
+    void z8DebugStatusChanged(Z8 z8);
 }
 

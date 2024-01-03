@@ -9,8 +9,8 @@
 package org.jens_mueller.z8;
 
 
-public interface Z8Memory
-{
-  public int     getMemByte( int addr, boolean dataMemory );
-  public boolean setMemByte( int addr, boolean dataMemory, int value );
+public interface Z8Memory {
+    int getMemByte(int addr, boolean dataMemory);
+
+    boolean setMemByte(int addr, boolean dataMemory, int value);
 }

@@ -9,7 +9,6 @@
 package org.jens_mueller.z8;
 
 
-public interface Z8Breakpoint
-{
-  public boolean matches( Z8 z8 );
+public interface Z8Breakpoint {
+    boolean matches(Z8 z8);
 }
