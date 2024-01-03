@@ -371,47 +371,19 @@ public class Z8 implements Runnable
         LOGGER.log(Level.INFO, "Reading value 0x{1} from register 0x{0}, at PC 0x{2}", params);
       }
     } else {
-      switch( r ) {
-        case SPL:
-          rv = this.regSPL;
-          break;
-
-        case SPH:
-          rv = this.regSPH;
-          break;
-
-        case RP:
-          rv = this.regRP;
-          break;
-
-        case FLAGS:
-          rv = getRegFLAGS();
-          break;
-
-        case IMR:
-          rv = this.regIMR;
-          break;
-
-        case IRQ:
-          rv = this.regIRQ;
-          break;
-
-        case T0:
-          rv = this.timer0.getCounter();
-          break;
-
-        case T1:
-          rv = this.timer1.getCounter();
-          break;
-
-        case TMR:
-          rv = this.regTMR;
-          break;
-
-        case SIO:
-          rv = this.sioIn;
-          break;
-      }
+        rv = switch (r) {
+            case SPL -> this.regSPL;
+            case SPH -> this.regSPH;
+            case RP -> this.regRP;
+            case FLAGS -> getRegFLAGS();
+            case IMR -> this.regIMR;
+            case IRQ -> this.regIRQ;
+            case T0 -> this.timer0.getCounter();
+            case T1 -> this.timer1.getCounter();
+            case TMR -> this.regTMR;
+            case SIO -> this.sioIn;
+            default -> rv;
+        };
     }
     return rv;
   }
@@ -722,71 +694,25 @@ public class Z8 implements Runnable
     if( (r >= 0) && (r < this.registers.length) && (r <= this.maxGPRNum) ) {
       rv = this.registers[ r ];
     } else {
-      switch( r ) {
-        case SPL:
-          rv = this.regSPL;
-          break;
-
-        case SPH:
-          rv = this.regSPH;
-          break;
-
-        case RP:
-          rv = this.regRP;
-          break;
-
-        case FLAGS:
-          rv = getRegFLAGS();
-          break;
-
-        case IMR:
-          rv = this.regIMR;
-          break;
-
-        case IRQ:
-          rv = this.regIRQ;
-          break;
-
-        case IPR:
-          rv = this.regIPR;
-          break;
-
-        case P01M:
-          rv = this.regP01M;
-          break;
-
-        case P3M:
-          rv = this.regP3M;
-          break;
-
-        case P2M:
-          rv = this.regP2M;
-          break;
-
-        case PRE0:
-          rv = this.timer0.getPreCounter();
-          break;
-
-        case T0:
-          rv = this.timer0.getCounter();
-          break;
-
-        case PRE1:
-          rv = this.timer1.getPreCounter();
-          break;
-
-        case T1:
-          rv = this.timer1.getCounter();
-          break;
-
-        case TMR:
-          rv = this.regTMR;
-          break;
-
-        case SIO:
-          rv = this.sioIn;
-          break;
-      }
+        rv = switch (r) {
+            case SPL -> this.regSPL;
+            case SPH -> this.regSPH;
+            case RP -> this.regRP;
+            case FLAGS -> getRegFLAGS();
+            case IMR -> this.regIMR;
+            case IRQ -> this.regIRQ;
+            case IPR -> this.regIPR;
+            case P01M -> this.regP01M;
+            case P3M -> this.regP3M;
+            case P2M -> this.regP2M;
+            case PRE0 -> this.timer0.getPreCounter();
+            case T0 -> this.timer0.getCounter();
+            case PRE1 -> this.timer1.getPreCounter();
+            case T1 -> this.timer1.getCounter();
+            case TMR -> this.regTMR;
+            case SIO -> this.sioIn;
+            default -> rv;
+        };
     }
     return rv;
   }
@@ -1258,49 +1184,20 @@ public class Z8 implements Runnable
         break;
 
       default:
-        InstType instType = null;
-        switch( nibbleH >> 4 ) {
-          case 0:
-            instType = InstType.ADD;
-            break;
-
-          case 1:
-            instType = InstType.ADC;
-            break;
-
-          case 2:
-            instType = InstType.SUB;
-            break;
-
-          case 3:
-            instType = InstType.SBC;
-            break;
-
-          case 4:
-            instType = InstType.OR;
-            break;
-
-          case 5:
-            instType = InstType.AND;
-            break;
-
-          case 6:
-            instType = InstType.TCM;
-            break;
-
-          case 7:
-            instType = InstType.TM;
-            break;
-
-          case 0x0A:
-            instType = InstType.CP;
-            break;
-
-          case 0x0B:
-            instType = InstType.XOR;
-            break;
-        }
-        if( (instType != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
+        InstType instType = switch (nibbleH >> 4) {
+            case 0 -> InstType.ADD;
+            case 1 -> InstType.ADC;
+            case 2 -> InstType.SUB;
+            case 3 -> InstType.SBC;
+            case 4 -> InstType.OR;
+            case 5 -> InstType.AND;
+            case 6 -> InstType.TCM;
+            case 7 -> InstType.TM;
+            case 0x0A -> InstType.CP;
+            case 0x0B -> InstType.XOR;
+            default -> null;
+        };
+          if( (instType != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
           execInst( nibbleL, instType );
         } else {
           execRemainingInst( opc );
@@ -1762,69 +1659,40 @@ public class Z8 implements Runnable
 
   private boolean checkCond( int value )
   {
-    boolean rv = false;
-    switch( (value >> 4) & 0x0F ) {
-      case 1:                                                // LT
-        rv = (this.flagS != this.flagV);
-        break;
-
-      case 2:                                                // LE
-        rv = this.flagZ || (this.flagS != this.flagV);
-        break;
-
-      case 3:                                                // ULE
-        rv = this.flagC || this.flagZ;
-        break;
-
-      case 4:                                                // OV
-        rv = this.flagV;
-        break;
-
-      case 5:                                                // MI
-        rv = this.flagS;
-        break;
-
-      case 6:                                                // Z, EQ
-        rv = this.flagZ;
-        break;
-
-      case 7:                                                // C, ULT
-        rv = this.flagC;
-        break;
-
-      case 8:                                                // ohne Bedingung
-        rv = true;
-        break;
-
-      case 9:                                                // GE
-        rv = (this.flagS == this.flagV);
-        break;
-
-      case 0x0A:                                        // GT
-        rv = !this.flagZ && (this.flagS == this.flagV);
-        break;
-
-      case 0x0B:                                        // UGT
-        rv = (!this.flagC && !this.flagZ);
-        break;
-
-      case 0x0C:                                        // NOV
-        rv = !this.flagV;
-        break;
-
-      case 0x0D:                                        // PL
-        rv = !this.flagS;
-        break;
-
-      case 0x0E:                                        // NZ, NE
-        rv = !this.flagZ;
-        break;
-
-      case 0x0F:                                        // NC, UGE
-        rv = !this.flagC;
-        break;
-    }
-    return rv;
+    boolean rv = switch ((value >> 4) & 0x0F) {
+        case 1 ->                                                // LT
+                (this.flagS != this.flagV);
+        case 2 ->                                                // LE
+                this.flagZ || (this.flagS != this.flagV);
+        case 3 ->                                                // ULE
+                this.flagC || this.flagZ;
+        case 4 ->                                                // OV
+                this.flagV;
+        case 5 ->                                                // MI
+                this.flagS;
+        case 6 ->                                                // Z, EQ
+                this.flagZ;
+        case 7 ->                                                // C, ULT
+                this.flagC;
+        case 8 ->                                                // ohne Bedingung
+                true;
+        case 9 ->                                                // GE
+                (this.flagS == this.flagV);
+        case 0x0A ->                                        // GT
+                !this.flagZ && (this.flagS == this.flagV);
+        case 0x0B ->                                        // UGT
+                (!this.flagC && !this.flagZ);
+        case 0x0C ->                                        // NOV
+                !this.flagV;
+        case 0x0D ->                                        // PL
+                !this.flagS;
+        case 0x0E ->                                        // NZ, NE
+                !this.flagZ;
+        case 0x0F ->                                        // NC, UGE
+                !this.flagC;
+        default -> false;
+    };
+      return rv;
   }
 
 

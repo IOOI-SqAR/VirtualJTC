@@ -124,49 +124,20 @@ public class Z8Reassembler
         break;
 
       default:
-        String instName = null;
-        switch( nibbleH >> 4 ) {
-          case 0:
-            instName = "ADD";
-            break;
-
-          case 1:
-            instName = "ADC";
-            break;
-
-          case 2:
-            instName = "SUB";
-            break;
-
-          case 3:
-            instName = "SBC";
-            break;
-
-          case 4:
-            instName = "OR";
-            break;
-
-          case 5:
-            instName = "AND";
-            break;
-
-          case 6:
-            instName = "TCM";
-            break;
-
-          case 7:
-            instName = "TM";
-            break;
-
-          case 0x0A:
-            instName = "CP";
-            break;
-
-          case 0x0B:
-            instName = "XOR";
-            break;
-        }
-        if( (instName != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
+        String instName = switch (nibbleH >> 4) {
+            case 0 -> "ADD";
+            case 1 -> "ADC";
+            case 2 -> "SUB";
+            case 3 -> "SBC";
+            case 4 -> "OR";
+            case 5 -> "AND";
+            case 6 -> "TCM";
+            case 7 -> "TM";
+            case 0x0A -> "CP";
+            case 0x0B -> "XOR";
+            default -> null;
+        };
+          if( (instName != null) && (nibbleL >= 2) && (nibbleL < 8) ) {
           reassInst( nibbleL, instName );
         } else {
           reassRemainingInst( opc );
@@ -197,9 +168,7 @@ public class Z8Reassembler
     if( n < 1 ) {
       n = 1;
     }
-    for( int i = 0; i < n; i++ ) {
-      this.buf.append( (char) '\u0020' );
-    }
+      this.buf.append(String.valueOf((char) '\u0020').repeat(n));
     begPos = this.buf.length();
     this.buf.append( this.lastInstName );
     if( this.lastInstArgs != null ) {
@@ -210,9 +179,7 @@ public class Z8Reassembler
                     if (n < 1) {
                         n = 1;
                     }
-                    for (int k = 0; k < n; k++) {
-                        this.buf.append((char) '\u0020');
-                    }
+                    this.buf.append(String.valueOf((char) '\u0020').repeat(n));
                     begPos = -1;
                 } else {
                     this.buf.append(", ");
@@ -593,9 +560,8 @@ public class Z8Reassembler
 
   private String getCondName( int value )
   {
-    String rv  = null;
     int    idx = (value >> 4) & 0x0F;
-    return (idx >= 0) && (idx < condNames.length) ? condNames[ idx ] : null;
+    return condNames[ idx ];
   }
 
 

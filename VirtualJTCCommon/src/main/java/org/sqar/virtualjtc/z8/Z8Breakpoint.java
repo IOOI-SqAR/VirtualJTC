@@ -46,7 +46,7 @@ public class Z8Breakpoint implements Comparable<Z8Breakpoint>
         /* --- Comparable --- */
 
   @Override
-  public int compareTo( Z8Breakpoint bp )
+  public int compareTo( Z8Breakpoint  bp )
   {
     return bp != null ? (this.addr - bp.addr) : -1;
   }
