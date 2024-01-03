@@ -9,10 +9,9 @@
 package org.sqar.virtualjtc.z8;
 
 
-public interface Z8PCListener
-{
-  public static final int ALL_ADDRESSES = -1;
-  
-  public void z8PCUpdate( Z8 z8, int pc );
+public interface Z8PCListener {
+    int ALL_ADDRESSES = -1;
+
+    void z8PCUpdate(Z8 z8, int pc);
 }
 

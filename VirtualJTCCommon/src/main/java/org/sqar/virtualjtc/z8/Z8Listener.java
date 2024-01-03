@@ -9,14 +9,16 @@
 package org.sqar.virtualjtc.z8;
 
 
-public interface Z8Listener
-{
-  public enum Reason {
-		POWER_ON,
-		RESET,
-		PRE_INST_EXEC,
-		CYCLES_PER_SECOND_CHANGED,
-		STATUS_CHANGED };
+public interface Z8Listener {
+    enum Reason {
+        POWER_ON,
+        RESET,
+        PRE_INST_EXEC,
+        CYCLES_PER_SECOND_CHANGED,
+        STATUS_CHANGED
+    }
 
-  public void z8Update( Z8 z8, Reason reason );
+    ;
+
+    void z8Update(Z8 z8, Reason reason);
 }

@@ -9,10 +9,11 @@
 package org.sqar.virtualjtc.z8;
 
 
-public interface Z8Memory
-{
-  public void    initRAM();
-  public int     getMemByte( int addr, boolean dataMemory );
-  public boolean setMemByte( int addr, boolean dataMemory, int value );
+public interface Z8Memory {
+    void initRAM();
+
+    int getMemByte(int addr, boolean dataMemory);
+
+    boolean setMemByte(int addr, boolean dataMemory, int value);
 }
 

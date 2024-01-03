@@ -9,9 +9,9 @@
 package org.sqar.virtualjtc.z8;
 
 
-public interface Z8IO
-{
-  public int  getPortValue( int port );
-  public void setPortValue( int port, int value );
+public interface Z8IO {
+    int getPortValue(int port);
+
+    void setPortValue(int port, int value);
 }
 
