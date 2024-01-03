@@ -38,7 +38,7 @@ public class GUIUtil
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle( title );
     fileChooser.getExtensionFilters().addAll(
-	new FileChooser.ExtensionFilter( "Alle Dateien", "*" ),
+	new FileChooser.ExtensionFilter( "Alle Dateien", "*.*" ),
 	new FileChooser.ExtensionFilter(
 				"Bin\u00E4rdateien (*.bin)",
 				"*.bin" ),
