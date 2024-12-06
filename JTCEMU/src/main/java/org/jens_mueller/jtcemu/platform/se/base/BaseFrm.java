@@ -16,109 +16,94 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 
-public abstract class BaseFrm extends JFrame implements WindowListener
-{
-  protected BaseFrm()
-  {
-    setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
-    Main.setIconImages( this );
-    addWindowListener( this );
-  }
+public abstract class BaseFrm extends JFrame implements WindowListener {
+    protected BaseFrm() {
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        Main.setIconImages(this);
+        addWindowListener(this);
+    }
 
 
-  protected boolean doClose()
-  {
-    setVisible( false );
-    dispose();
-    return true;
-  }
+    protected boolean doClose() {
+        setVisible(false);
+        dispose();
+        return true;
+    }
 
 
-  public KeyStroke getMenuShortcut( int keyCode )
-  {
-    return KeyStroke.getKeyStroke(
-		keyCode,
-		GUIUtil.getMenuShortcutKeyMask( this ) );
-  }
+    public KeyStroke getMenuShortcut(int keyCode) {
+        return KeyStroke.getKeyStroke(
+                keyCode,
+                GUIUtil.getMenuShortcutKeyMask(this));
+    }
 
 
-  public KeyStroke getMenuShortcutWithShift( int keyCode )
-  {
-    return KeyStroke.getKeyStroke(
-		keyCode,
-		GUIUtil.getMenuShortcutKeyMask( this )
-			| InputEvent.SHIFT_DOWN_MASK );
-  }
+    public KeyStroke getMenuShortcutWithShift(int keyCode) {
+        return KeyStroke.getKeyStroke(
+                keyCode,
+                GUIUtil.getMenuShortcutKeyMask(this)
+                        | InputEvent.SHIFT_DOWN_MASK);
+    }
 
 
-  public abstract String getPropPrefix();
+    public abstract String getPropPrefix();
 
 
-  public void lafChanged()
-  {
-    // leer
-  }
+    public void lafChanged() {
+        // leer
+    }
 
 
-  public void memorizeSettings()
-  {
-    GUIUtil.memorizeWindowSettings( this );
-  }
+    public void memorizeSettings() {
+        GUIUtil.memorizeWindowSettings(this);
+    }
 
 
-  public void settingsChanged()
-  {
-    // leer
-  }
+    public void settingsChanged() {
+        // leer
+    }
 
 
-	/* --- WindowListener --- */
+    /* --- WindowListener --- */
 
-  @Override
-  public void windowActivated( WindowEvent e )
-  {
-    // leer;
-  }
-
-
-  @Override
-  public void windowClosed( WindowEvent e )
-  {
-    // leer;
-  }
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowClosing( WindowEvent e )
-  {
-    doClose();
-  }
+    @Override
+    public void windowClosed(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowDeactivated( WindowEvent e )
-  {
-    // leer;
-  }
+    @Override
+    public void windowClosing(WindowEvent e) {
+        doClose();
+    }
 
 
-  @Override
-  public void windowDeiconified( WindowEvent e )
-  {
-    // leer;
-  }
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowIconified( WindowEvent e )
-  {
-    // leer;
-  }
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowOpened( WindowEvent e )
-  {
-    // leer
-  }
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // leer
+    }
 }

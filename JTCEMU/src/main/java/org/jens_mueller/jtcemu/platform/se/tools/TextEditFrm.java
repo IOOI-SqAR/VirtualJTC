@@ -1,12 +1,12 @@
 /*
  * (c) 2007-2021 Jens Mueller
  *
- * Jugend+Technik-Computer-Emulator
+         * Jugend+Technik-Computer-Emulator
  *
- * Texteditor
+         * Texteditor
  */
 
-package org.jens_mueller.jtcemu.platform.se.tools;
+         package org.jens_mueller.jtcemu.platform.se.tools;
 
 import org.jens_mueller.jtcemu.base.AppContext;
 import org.jens_mueller.jtcemu.base.JTCSys;
@@ -42,17 +42,17 @@ import java.text.CharacterIterator;
 import java.util.Properties;
 
 
-public class TextEditFrm extends AbstractTextFrm
-			implements
-				ActionListener,
-				CaretListener,
-				DocumentListener,
-				DropTargetListener,
-				FlavorListener,
-				FocusListener,
-				MouseListener,
-				UndoableEditListener
-{
+    public class TextEditFrm extends AbstractTextFrm
+            implements
+            ActionListener,
+            CaretListener,
+            DocumentListener,
+            DropTargetListener,
+            FlavorListener,
+            FocusListener,
+            MouseListener,
+            UndoableEditListener
+    {
   private static final String FILE_GROUP_TEXT    = "text";
   private static final String FILE_GROUP_PROJECT = "project";
   private static final String LABEL_BEG_ADDR_OF_BASIC_PRG =

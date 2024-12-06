@@ -1,9 +1,10 @@
 /*
- * (c) 2019 Jens Mueller
+ * (c) 2007-2019 Jens Mueller
+ * (c) 2017 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
- * Dialog zur Eingabe eines Suchtextes
+ * Dialog fuer Suchen & Ersetzen
  */
 
 package org.jens_mueller.jtcemu.platform.se.tools;

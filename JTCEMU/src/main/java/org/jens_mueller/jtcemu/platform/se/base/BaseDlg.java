@@ -18,123 +18,109 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class BaseDlg extends JDialog implements WindowListener
-{
-  private static Set<String> suppressedMessages = new HashSet<>();
+public class BaseDlg extends JDialog implements WindowListener {
+    private static Set<String> suppressedMessages = new HashSet<>();
 
 
-  protected BaseDlg( Window owner )
-  {
-    super( owner, ModalityType.DOCUMENT_MODAL );
-    setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
-    Main.setIconImages( this );
-    addWindowListener( this );
-  }
-
-
-  protected boolean doClose()
-  {
-    setVisible( false );
-    dispose();
-    return true;
-  }
-
-
-  protected void setParentCentered()
-  {
-    setParentCentered( this );
-  }
-
-
-  public static void setParentCentered( Window window )
-  {
-    Component p = window.getParent();
-    if( p != null ) {
-      int x = p.getX() + ((p.getWidth() - window.getWidth()) / 2);
-      int y = p.getY() + ((p.getHeight() - window.getHeight()) / 2);
-      window.setLocation( x > 0 ? x : 0, y > 0 ? y : 0 );
+    protected BaseDlg(Window owner) {
+        super(owner, ModalityType.DOCUMENT_MODAL);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        Main.setIconImages(this);
+        addWindowListener(this);
     }
-  }
 
 
-  public static void showError( Component owner, String msg )
-  {
-    if( msg == null ) {
-      msg = "Unbekannter Fehler";
+    protected boolean doClose() {
+        setVisible(false);
+        dispose();
+        return true;
     }
-    JOptionPane.showMessageDialog(
-			owner,
-			msg,
-			"Fehler",
-			JOptionPane.ERROR_MESSAGE );
-  }
 
 
-  public static void showSuppressableInfoDlg( Component owner, String msg )
-  {
-    if( msg != null ) {
-      if( !suppressedMessages.contains( msg ) ) {
-	JCheckBox cb = new JCheckBox( "Diesen Hinweis nicht mehr anzeigen" );
-	JOptionPane.showMessageDialog(
-			owner,
-			new Object[] { msg, cb },
-			"Hinweis",
-			JOptionPane.INFORMATION_MESSAGE );
-	if( cb.isSelected() ) {
-	  suppressedMessages.add( msg );
-	}
-      }
+    protected void setParentCentered() {
+        setParentCentered(this);
     }
-  }
 
 
-	/* --- WindowListener --- */
-
-  @Override
-  public void windowActivated( WindowEvent e )
-  {
-    // leer;
-  }
-
-
-  @Override
-  public void windowClosed( WindowEvent e )
-  {
-    // leer;
-  }
+    public static void setParentCentered(Window window) {
+        Component p = window.getParent();
+        if (p != null) {
+            int x = p.getX() + ((p.getWidth() - window.getWidth()) / 2);
+            int y = p.getY() + ((p.getHeight() - window.getHeight()) / 2);
+            window.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
+        }
+    }
 
 
-  @Override
-  public void windowClosing( WindowEvent e )
-  {
-    doClose();
-  }
+    public static void showError(Component owner, String msg) {
+        if (msg == null) {
+            msg = "Unbekannter Fehler";
+        }
+        JOptionPane.showMessageDialog(
+                owner,
+                msg,
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE);
+    }
 
 
-  @Override
-  public void windowDeactivated( WindowEvent e )
-  {
-    // leer;
-  }
+    public static void showSuppressableInfoDlg(Component owner, String msg) {
+        if (msg != null) {
+            if (!suppressedMessages.contains(msg)) {
+                JCheckBox cb = new JCheckBox("Diesen Hinweis nicht mehr anzeigen");
+                JOptionPane.showMessageDialog(
+                        owner,
+                        new Object[]{msg, cb},
+                        "Hinweis",
+                        JOptionPane.INFORMATION_MESSAGE);
+                if (cb.isSelected()) {
+                    suppressedMessages.add(msg);
+                }
+            }
+        }
+    }
 
 
-  @Override
-  public void windowDeiconified( WindowEvent e )
-  {
-    // leer;
-  }
+    /* --- WindowListener --- */
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowIconified( WindowEvent e )
-  {
-    // leer;
-  }
+    @Override
+    public void windowClosed(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowOpened( WindowEvent e )
-  {
-    // leer
-  }
+    @Override
+    public void windowClosing(WindowEvent e) {
+        doClose();
+    }
+
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // leer
+    }
 }
