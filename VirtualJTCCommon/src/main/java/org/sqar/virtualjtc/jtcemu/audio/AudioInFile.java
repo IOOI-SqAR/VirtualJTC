@@ -1,6 +1,6 @@
 /*
- * (c) 2007-2010 Jens Mueller
- * (c) 2017 Lars Sonchocky-Helldorf
+ * (c) 2007-2021 Jens Mueller
+ * (c) 2017-2024 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -11,139 +11,277 @@
 
 package org.sqar.virtualjtc.jtcemu.audio;
 
-import java.io.*;
+import org.sqar.virtualjtc.jtcemu.base.JTCUtil;
+import org.sqar.virtualjtc.z8.Z8;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.SourceDataLine;
+import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.sound.sampled.*;
-import org.sqar.virtualjtc.z8.Z8;
+
+public class AudioInFile extends AudioIn {
+    private static final Locale locale = Locale.getDefault();
+    private static final ResourceBundle audioInFileResourceBundle = ResourceBundle.getBundle("AudioInFile", locale);
+
+    private static final String TEXT_NO_MONITOR_LINE =
+            "Audiokanal zum Mith\u00F6ren konnte nicht ge\u00F6ffnet werden.";
+
+    private static final String TEXT_MONITOR_NOT_WORKING =
+            "Audiokanal zum Mith\u00F6ren funktioniert nicht.";
+
+    private File file;
+    private AudioInputStream in;
+    private byte[] frameBuf;
+    private long framePos;
+    private long frameLen;
+    private volatile boolean pause;
+    private boolean monitorPause;
+    private volatile Boolean monitorRequest;
+    private SourceDataLine monitorLine;
+    private byte[] monitorBuf;
+    private int monitorPos;
+    private int monitorOffs;
 
 
-public class AudioInFile extends AudioIn
-{
-  private static final Locale locale = Locale.getDefault();
-  private static final ResourceBundle audioInFileResourceBundle = ResourceBundle.getBundle("AudioInFile", locale);
-
-  private final AudioFrm   audioFrm;
-  private final File       file;
-  private final boolean    monitorPlay;
-  private AudioInputStream in;
-  private byte[]           frameBuf;
-  private long             frameCount;
-  private long             framePos;
-  private int              progressStepSize;
-  private int              progressStepCnt;
-
-
-  public AudioInFile(
-                Z8       z8,
-                AudioFrm audioFrm,
-                File     file,
-                boolean  monitorPlay )
-  {
-    super( z8 );
-    this.audioFrm         = audioFrm;
-    this.file             = file;
-    this.monitorPlay      = monitorPlay;
-    this.in               = null;
-    this.frameBuf         = null;
-    this.frameCount       = 0L;
-    this.framePos         = 0L;
-    this.progressStepSize = 0;
-    this.progressStepCnt  = 0;
-  }
+    public AudioInFile(
+            AudioInFld audioInFld,
+            Z8 z8,
+            float thresholdValue,
+            File file,
+            boolean monitor) {
+        super(audioInFld, z8, thresholdValue);
+        this.file = file;
+        this.in = null;
+        this.frameBuf = null;
+        this.framePos = 0;
+        this.frameLen = -1;
+        this.pause = true;
+        this.monitorPause = false;
+        this.monitorRequest = (monitor ? Boolean.TRUE : null);
+        this.monitorLine = null;
+        this.monitorBuf = null;
+        this.monitorPos = 0;
+        this.monitorOffs = 0;
+    }
 
 
-        /* --- ueberschriebene Methoden --- */
+    public long getFramePos() {
+        return this.framePos;
+    }
 
-  @Override
-  protected byte[] readFrame()
-  {
-    AudioInputStream in  = this.in;
-    byte[]           buf = this.frameBuf;
-    if( (in != null) && (buf != null) ) {
-      try {
-        if( in.read( buf ) == buf.length ) {
-          if( isMonitorPlayActive() ) {
-            writeMonitorLine( buf );
-          }
-          this.framePos++;
-          if( this.progressStepCnt > 0 ) {
-            --this.progressStepCnt;
-          } else {
-            this.progressStepCnt = this.progressStepSize;
-            this.audioFrm.fireProgressUpdate(
-                        (double) this.framePos / (double) this.frameCount );
-          }
-        } else {
-          buf = null;
-          this.audioFrm.fireDisable();
+
+    public long getFrameLength() {
+        return this.frameLen;
+    }
+
+
+    public boolean isPause() {
+        return this.pause;
+    }
+
+
+    public void setMonitorRequest(boolean request) {
+        this.monitorRequest = Boolean.valueOf(request);
+    }
+
+
+    public void setPause(boolean state) {
+        this.pause = state;
+    }
+
+
+    /* --- ueberschriebene Methoden --- */
+
+    @Override
+    protected void checkOpenSource() throws IOException {
+        if ((this.in == null) && !this.stopRequested) {
+            this.in = AudioData.openFile(this.file);
+            AudioFormat fmt = this.in.getFormat();
+            this.frameLen = this.in.getFrameLength();
+            this.frameBuf = new byte[fmt.getFrameSize()];
+            setAudioFormat(fmt);
         }
-      }
-      catch( IOException ex ) {
-        this.errorText = ex.getMessage();
-      }
     }
-    return buf;
-  }
 
 
-  @Override
-  public AudioFormat startAudio(
-                        int   cyclesPerSecond,
-                        int   sampleRate,
-                        float thresholdValue )
-  {
-    AudioFormat fmt = null;
-    if( (this.in == null) && (cyclesPerSecond > 0) ) {
-      try {
-        this.in         = AudioSystem.getAudioInputStream( this.file );
-        fmt             = this.in.getFormat();
-        this.frameCount = this.in.getFrameLength();
-        if( this.frameCount > 0 ) {
-          this.progressStepSize = (int) this.frameCount / 100;
-          this.progressStepCnt  = this.progressStepSize;
-          this.progressEnabled  = true;
+    @Override
+    public synchronized void closeCPUSynchronLine() {
+        if ((this.monitorLine != null)
+                && isCPUSynchronLine(this.monitorLine)) {
+            this.monitorRequest = false;
+            closeDataLine(this.monitorLine);
+            this.monitorLine = null;
+            this.audioFld.fireMonitorStatusChanged(this, false, null);
         }
-      }
-      catch( UnsupportedAudioFileException ex ) {
-        this.errorText = audioInFileResourceBundle.getString("error.startAudio.unsupportedAudioFile.errorText");
-      }
-      catch( Exception ex ) {
-        this.errorText = audioInFileResourceBundle.getString("error.startAudio.unknownError.errorText") + ex.getMessage();
-      }
-      if( (this.in != null) || (fmt != null) ) {
-          assert fmt != null;
-          this.frameBuf       = new byte[ fmt.getFrameSize() ];
-        this.cyclesPerFrame = Math.round( (float) cyclesPerSecond
-                                                / fmt.getFrameRate() );
-        this.thresholdValue = thresholdValue;
-      } else {
-        stopAudio();
-      }
     }
-    setAudioFormat( fmt );
-    if( this.monitorPlay ) {
-      openMonitorLine( fmt );
-    }
-    return fmt;
-  }
 
 
-  @Override
-  public void stopAudio()
-  {
-    closeMonitorLine();
-
-    InputStream in       = this.in;
-    this.in              = null;
-    this.frameBuf        = null;
-    this.progressEnabled = false;
-    if( in != null ) {
-      try {
-        in.close();
-      }
-      catch( Exception ignored) {}
+    @Override
+    protected void closeSource() {
+        if (this.in != null) {
+            JTCUtil.closeSilently(this.in);
+            this.in = null;
+        }
+        closeMonitor(null);
     }
-  }
+
+
+    @Override
+    protected byte[] readFrame() throws IOException, InterruptedException {
+        AudioInputStream in = this.in;
+        byte[] buf = this.frameBuf;
+        if ((in != null) && (buf != null) && !this.pause) {
+            if (in.read(buf) == buf.length) {
+                this.framePos++;
+            } else {
+                requestStop();
+            }
+        }
+        return buf;
+    }
+
+
+    @Override
+    protected int readFrameAndGetSample()
+            throws IOException, InterruptedException {
+        int sampleValue = super.readFrameAndGetSample();
+
+        // Mithoeren
+        Boolean monitorRequest = this.monitorRequest;
+        if (monitorRequest != null) {
+            if (monitorRequest.booleanValue()
+                    && (this.frameRate > 0)
+                    && (this.sampleSizeInBits > 0)
+                    && (this.sampleSizeInBytes > 0)) {
+                if (this.monitorLine == null) {
+                    try {
+                        this.monitorLine = openSourceDataLine(
+                                new AudioFormat(
+                                        (float) this.frameRate,
+                                        this.sampleSizeInBits,
+                                        1,
+                                        this.dataSigned,
+                                        this.bigEndian),
+                                null);
+                        if (this.monitorLine != null) {
+                            this.monitorPause = false;
+                            this.monitorPos = 0;
+                            this.monitorBuf = new byte[Math.min(
+                                    this.monitorLine.getBufferSize() / 4, 512)];
+                            this.audioFld.fireMonitorStatusChanged(this, true, null);
+                        } else {
+                            this.audioFld.fireMonitorStatusChanged(
+                                    this,
+                                    false,
+                                    TEXT_NO_MONITOR_LINE);
+                        }
+                    } catch (IOException ex) {
+                        this.audioFld.fireMonitorStatusChanged(
+                                this,
+                                false,
+                                ex.getMessage());
+                    }
+                }
+            } else {
+                closeMonitor(null);
+            }
+            this.monitorRequest = null;
+        }
+        SourceDataLine line = this.monitorLine;
+        if (line != null) {
+            try {
+                if (this.pause) {
+                    if (!this.monitorPause) {
+                        line.stop();
+                        dataLineStatusChanged();
+                        this.monitorPause = true;
+                    }
+                } else {
+                    if (this.monitorPause) {
+                        line.start();
+                        dataLineStatusChanged();
+                        this.monitorPause = false;
+                    }
+                }
+                if ((sampleValue >= 0)
+                        && (this.sampleSizeInBytes > 0)
+                        && (this.monitorBuf != null)
+                        && !this.monitorPause) {
+                    if ((this.monitorPos + this.sampleSizeInBytes)
+                            > this.monitorBuf.length) {
+                        if (this.monitorPos > 0) {
+                            if (line.available() < this.monitorPos) {
+                                int n = 0;
+                                do {
+                                    Thread.sleep(10);
+                                    n++;
+                                    if (n > 100) {
+                                        closeMonitor(TEXT_MONITOR_NOT_WORKING);
+                                        line = null;
+                                        break;
+                                    }
+                                } while (line.available() < this.monitorPos);
+                            }
+                            if (line != null) {
+                                if (this.stopRequested) {
+                                    line.flush();
+                                } else {
+                                    line.write(this.monitorBuf, 0, this.monitorPos);
+                                    this.monitorPos = 0;
+                                }
+                            }
+                        } else {
+                            closeMonitor(TEXT_MONITOR_NOT_WORKING);
+                        }
+                    }
+                    if ((this.monitorPos + this.sampleSizeInBytes)
+                            > this.monitorBuf.length) {
+                        closeMonitor(TEXT_MONITOR_NOT_WORKING);
+                    } else {
+                        int v = sampleValue;
+                        if (this.bigEndian) {
+                            int pos = this.monitorPos + this.sampleSizeInBytes;
+                            for (int i = 0; i < this.sampleSizeInBytes; i++) {
+                                --pos;
+                                this.monitorBuf[pos] = (byte) v;
+                                v >>= 8;
+                            }
+                            this.monitorPos += this.sampleSizeInBytes;
+                        } else {
+                            for (int i = 0; i < this.sampleSizeInBytes; i++) {
+                                this.monitorBuf[this.monitorPos++] = (byte) v;
+                                v >>= 8;
+                            }
+                        }
+                    }
+                }
+            } catch (InterruptedException ex) {
+                closeMonitor(null);
+                throw ex;
+            }
+        }
+        return sampleValue;
+    }
+
+
+    @Override
+    public void requestStop() {
+        this.monitorRequest = Boolean.FALSE;
+        super.requestStop();
+    }
+
+
+    /* --- private Methoden --- */
+
+    private void closeMonitor(String errorText) {
+        if (this.monitorLine != null) {
+            closeDataLine(this.monitorLine);
+            this.monitorLine = null;
+            this.audioFld.fireMonitorStatusChanged(this, false, errorText);
+        }
+    }
 }

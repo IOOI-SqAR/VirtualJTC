@@ -1,10 +1,15 @@
 /*
- * (c) 2007-2010 Jens Mueller
+ * (c) 2007-2021 Jens Mueller
  *
  * Z8-Reassembler
  */
 
 package org.sqar.virtualjtc.z8;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 public class Z8Reassembler {
@@ -16,20 +21,19 @@ public class Z8Reassembler {
             "SIO", "TMR", "T1", "PRE1", "T0", "PRE0", "P2M", "P3M",
             "P01M", "IPR", "IRQ", "IMR", "FLAGS", "RP", "SPH", "SPL"};
 
-
     private final Z8Memory memory;
-    private StringBuilder buf;
     private int addr;
-    private String lastInstName;
-    private String[] lastInstArgs;
+    private int destAddr;
+    private String mnemonic;
+    private String[] args;
 
 
     public Z8Reassembler(Z8Memory memory) {
         this.memory = memory;
-        this.buf = null;
         this.addr = 0;
-        this.lastInstName = null;
-        this.lastInstArgs = null;
+        this.destAddr = -1;
+        this.mnemonic = null;
+        this.args = null;
     }
 
 
@@ -38,194 +42,288 @@ public class Z8Reassembler {
     }
 
 
-    public void reassemble(StringBuilder dst, int addr) {
-        this.addr = addr;
-        this.buf = dst;
-        reassNextInst(false);
+    public static String getRegName(int r) {
+        String rv = null;
+        int idx = r - 0xF0;
+        if ((idx >= 0) && (idx < regNames.length)) {
+            rv = regNames[idx];
+        } else {
+            rv = getValue(r);
+        }
+        return rv;
+    }
+
+
+    public static int getRegNum(String text) {
+        int rv = -1;
+        if (text != null) {
+            text = text.trim().toUpperCase();
+            int r = 0xF0;
+            for (String regName : regNames) {
+                if (text.equals(regName)) {
+                    rv = r;
+                    break;
+                }
+                r++;
+            }
+        }
+        return rv;
     }
 
 
     public void reassemble(
-            StringBuilder dst,
-            int begAddr,
-            int endAddr) {
+            StringBuilder dstBuf,
+            int addr) {
+        this.addr = addr;
+        reassNextInst().appendTo(dstBuf);
+    }
+
+
+    public String reassemble(int begAddr, int endAddr) {
+        StringBuilder buf = new StringBuilder(0x4000);
         this.addr = begAddr;
-        this.buf = dst;
         while (this.addr <= endAddr) {
-            reassNextInst(true);
-            buf.append((char) '\n');
+            reassNextInst().appendTo(buf);
+            buf.append('\n');
         }
+        return buf.toString();
+    }
+
+
+    public String reassembleToSource(
+            int begAddr,
+            int endAddr,
+            String labelPrefix) {
+        List<Z8ReassInst> instructions = new ArrayList<>(0x1000);
+        Set<Integer> instAddrs = new TreeSet<>();
+        Set<Integer> destAddrs = new TreeSet<>();
+
+        // Liste mit reassemblierten Instruktionen und Zieladdressen erzeugen
+        this.addr = begAddr;
+        while (this.addr <= endAddr) {
+            Z8ReassInst inst = reassNextInst();
+            int destAddr = inst.getDestAddr();
+            if (destAddr >= 0) {
+                destAddrs.add(destAddr);
+            }
+            instAddrs.add(inst.getAddr());
+            instructions.add(inst);
+        }
+
+        // Ausgabetext erzeugen
+        StringBuilder buf = new StringBuilder(0x4000);
+        buf.append(String.format("\t.ORG\t%%%04X\n\n", begAddr));
+        for (Z8ReassInst inst : instructions) {
+            int addr = inst.getAddr();
+            if (destAddrs.contains(addr)) {
+                String label = String.format("%s%04X:", labelPrefix, addr);
+                buf.append(label);
+                if (label.length() > 7) {
+                    buf.append('\n');
+                }
+            }
+            buf.append('\t');
+            buf.append(inst.getMnemonic());
+
+            boolean warning = false;
+            String[] args = inst.getArgs();
+            if (args != null) {
+                int nArgs = args.length;
+                if (nArgs > 0) {
+                    buf.append('\t');
+                    int destAddr = inst.getDestAddr();
+                    if (destAddr >= 0) {
+                        if (instAddrs.contains(destAddr)) {
+                            --nArgs;
+                        } else {
+                            if ((destAddr >= begAddr) && (destAddr <= endAddr)) {
+                                /*
+                                 * Zieladresse liegt im reassemblierten Bereich,
+                                 * zeigt aber nicht auf den Anfang einer Instruktion
+                                 */
+                                warning = true;
+                            }
+                            destAddr = -1;
+                        }
+                    }
+                    for (int i = 0; i < nArgs; i++) {
+                        if (i > 0) {
+                            buf.append(", ");
+                        }
+                        buf.append(args[i]);
+                    }
+                    if (destAddr >= 0) {
+                        if (nArgs > 0) {
+                            buf.append(", ");
+                        }
+                        buf.append(String.format("%s%04X", labelPrefix, destAddr));
+                    }
+                }
+            }
+            if (inst.isUnknown()) {
+                buf.append("\t\t;???");
+            } else if (warning) {
+                buf.append("\t\t;!!!");
+            }
+            buf.append('\n');
+        }
+        return buf.toString();
     }
 
 
     /* --- private Methoden --- */
 
-    private void reassNextInst(boolean includeAddr) {
-        this.lastInstName = null;
-        this.lastInstArgs = null;
+    private Z8ReassInst reassNextInst() {
+        this.mnemonic = null;
+        this.args = null;
+
+        Z8ReassInst z8ReassInst = null;
         int instBegAddr = this.addr;
         int opc = nextByte();
-        int nibbleH = opc & 0xF0;
-        int nibbleL = opc & 0x0F;
-        int h, l;
-        switch (nibbleL) {
-            case 0x08:                                        // LD r1,R2
-                putInst(
-                        "LD",
-                        getWorkingRegName(opc >> 4),
-                        getRegName(nextByte()));
-                break;
+        if ((instBegAddr < 0x000C) && ((instBegAddr & 0x0001) == 0)) {
+            putInst(".DW", String.format("%%%02X%02X", opc, nextByte()));
+        } else {
+            int nibbleH = opc & 0xF0;
+            int nibbleL = opc & 0x0F;
+            int h, l;
+            switch (nibbleL) {
+                case 0x08:                    // LD r1,R2
+                    putInst(
+                            "LD",
+                            getWorkingRegName(opc >> 4),
+                            getRegText(nextByte()));
+                    break;
 
-            case 0x09:                                        // LD r2,R1
-                putInst(
-                        "LD",
-                        getRegName(nextByte()),
-                        getWorkingRegName(opc >> 4));
-                break;
+                case 0x09:                    // LD r2,R1
+                    putInst(
+                            "LD",
+                            getRegName(nextByte()),    // E0: kein Working Reg!
+                            getWorkingRegName(opc >> 4));
+                    break;
 
-            case 0x0A:                                        // DJNZ r1,RA
-                putInst(
-                        "DJNZ",
-                        getWorkingRegName(opc >> 4),
-                        getRelAddrText(nextByte()));
-                break;
+                case 0x0A:                    // DJNZ r1,RA
+                    putInstWithDestAddr(
+                            "DJNZ",
+                            getWorkingRegName(opc >> 4),
+                            getRelAddr(nextByte()));
+                    break;
 
-            case 0x0B:                                        // JR cc,RA
-                putInst(
-                        "JR",
-                        getCondName(opc),
-                        getRelAddrText(nextByte()));
-                break;
+                case 0x0B:                    // JR cc,RA
+                    putInstWithDestAddr(
+                            "JR",
+                            getCondName(opc),
+                            getRelAddr(nextByte()));
+                    break;
 
-            case 0x0C:                                        // LD r1,IM
-                putInst(
-                        "LD",
-                        getWorkingRegName(opc >> 4),
-                        getDirectValue(nextByte()));
-                break;
+                case 0x0C:                    // LD r1,IM
+                    putInst(
+                            "LD",
+                            getWorkingRegName(opc >> 4),
+                            getDirectValue(nextByte()));
+                    break;
 
-            case 0x0D:                                        // JP cc,RA
-                h = nextByte();
-                l = nextByte();
-                putInst(
-                        "JP",
-                        getCondName(opc),
-                        getDirectValueW(h, l));
-                break;
+                case 0x0D:                    // JP cc,DA
+                    h = nextByte();
+                    l = nextByte();
+                    putInstWithDestAddr(
+                            "JP",
+                            getCondName(opc),
+                            (h << 8) | l);
+                    break;
 
-            case 0x0E:                                        // INC r1
-                putInst("INC", getWorkingRegName(opc >> 4));
-                break;
+                case 0x0E:                    // INC r1
+                    putInst("INC", getWorkingRegName(opc >> 4));
+                    break;
 
-            default:
-                String instName = switch (nibbleH >> 4) {
-                    case 0 -> "ADD";
-                    case 1 -> "ADC";
-                    case 2 -> "SUB";
-                    case 3 -> "SBC";
-                    case 4 -> "OR";
-                    case 5 -> "AND";
-                    case 6 -> "TCM";
-                    case 7 -> "TM";
-                    case 0x0A -> "CP";
-                    case 0x0B -> "XOR";
-                    default -> null;
-                };
-                if ((instName != null) && (nibbleL >= 2) && (nibbleL < 8)) {
-                    reassInst(nibbleL, instName);
-                } else {
-                    reassRemainingInst(opc);
-                }
-        }
-        int begPos = this.buf.length();
-        int instCol = 12;
-        if (includeAddr) {
-            this.buf.append(String.format("%04X   ", instBegAddr));
-            instCol += 7;
-        }
-        if (instBegAddr < this.addr) {
-            this.buf.append(
-                    String.format(
-                            "%02X",
-                            this.memory.getMemByte(instBegAddr++, false)));
-        }
-        while (instBegAddr < this.addr) {
-            this.buf.append(
-                    String.format(
-                            " %02X",
-                            this.memory.getMemByte(instBegAddr++, false)));
-        }
-        if (this.lastInstName == null) {
-            this.lastInstName = "*NOP";
-        }
-        int n = begPos + instCol - this.buf.length();
-        if (n < 1) {
-            n = 1;
-        }
-        this.buf.append(String.valueOf((char) '\u0020').repeat(n));
-        begPos = this.buf.length();
-        this.buf.append(this.lastInstName);
-        if (this.lastInstArgs != null) {
-            for (String arg : this.lastInstArgs) {
-                if (arg != null) {
-                    if (begPos >= 0) {
-                        n = begPos + 8 - this.buf.length();
-                        if (n < 1) {
-                            n = 1;
-                        }
-                        this.buf.append(String.valueOf((char) '\u0020').repeat(n));
-                        begPos = -1;
+                default:
+                    String mnemonic = switch (nibbleH >> 4) {
+                        case 0 -> "ADD";
+                        case 1 -> "ADC";
+                        case 2 -> "SUB";
+                        case 3 -> "SBC";
+                        case 4 -> "OR";
+                        case 5 -> "AND";
+                        case 6 -> "TCM";
+                        case 7 -> "TM";
+                        case 0x0A -> "CP";
+                        case 0x0B -> "XOR";
+                        default -> null;
+                    };
+                    if ((mnemonic != null) && (nibbleL >= 2) && (nibbleL < 8)) {
+                        reassInst(nibbleL, mnemonic);
                     } else {
-                        this.buf.append(", ");
+                        reassRemainingInst(opc);
                     }
-                    this.buf.append(arg);
-                }
             }
         }
+        if (instBegAddr < this.addr) {
+            z8ReassInst = new Z8ReassInst(instBegAddr);
+            int addr = instBegAddr;
+            while (addr < this.addr) {
+                z8ReassInst.addCodeByte(
+                        (byte) this.memory.getMemByte(addr++, false));
+            }
+            if (this.mnemonic != null) {
+                z8ReassInst.setMnemonic(this.mnemonic, this.args);
+                z8ReassInst.setDestAddr(this.destAddr);
+            } else {
+                z8ReassInst.setMnemonic(
+                        ".DB",
+                        new String[]{
+                                String.format(
+                                        "%%%02X",
+                                        this.memory.getMemByte(
+                                                instBegAddr,
+                                                false)),
+                        });
+                z8ReassInst.setUnknown();
+            }
+        }
+        return z8ReassInst;
     }
 
 
-    private void reassInst(int nibbleL, String instName) {
+    private void reassInst(int nibbleL, String mnemonic) {
         int b, r1, r2;
         switch (nibbleL) {
-            case 0x02:                                        // XYZ r1,r2
+            case 0x02:                    // XYZ r1,r2
                 b = nextByte();
                 putInst(
-                        instName,
+                        mnemonic,
                         getWorkingRegName(b >> 4),
                         getWorkingRegName(b));
                 break;
 
-            case 0x03:                                        // XYZ r1,Ir2
+            case 0x03:                    // XYZ r1,Ir2
                 b = nextByte();
                 putInst(
-                        instName,
+                        mnemonic,
                         getWorkingRegName(b >> 4),
                         getIndirectWorkingRegName(b));
                 break;
 
-            case 0x04:                                        // XYZ R2,R1
-                r2 = nextByte();
+            case 0x04:                    // XYZ R2,R1
                 r1 = nextByte();
-                putInst(instName, getRegName(r1), getRegName(r2));
+                r2 = nextByte();
+                putInst(mnemonic, getRegText(r2), getRegText(r1));
                 break;
 
-            case 0x05:                                        // XYZ IR2,R1
-                r2 = nextByte();
+            case 0x05:                    // XYZ IR2,R1
                 r1 = nextByte();
-                putInst(instName, getIndirectRegName(r1), getRegName(r2));
+                r2 = nextByte();
+                putInst(mnemonic, getRegText(r2), getIndirectRegName(r1));
                 break;
 
-            case 0x06:                                        // XYZ R1,IM
+            case 0x06:                    // XYZ R1,IM
                 r1 = nextByte();
                 b = nextByte();
-                putInst(instName, getRegName(r1), getDirectValue(b));
+                putInst(mnemonic, getRegText(r1), getDirectValue(b));
                 break;
 
-            case 0x07:                                        // XYZ IR1,IM
+            case 0x07:                    // XYZ IR1,IM
                 r1 = nextByte();
                 b = nextByte();
-                putInst(instName, getIndirectRegName(r1), getDirectValue(b));
+                putInst(mnemonic, getIndirectRegName(r1), getDirectValue(b));
                 break;
         }
     }
@@ -234,95 +332,95 @@ public class Z8Reassembler {
     private void reassRemainingInst(int opc) {
         int a, b;
         switch (opc) {
-            case 0x00:                                        // DEC R1
-                putInst("DEC", getRegName(nextByte()));
+            case 0x00:                    // DEC R1
+                putInst("DEC", getRegText(nextByte()));
                 break;
 
-            case 0x01:                                        // DEC IR1
+            case 0x01:                    // DEC IR1
                 putInst("DEC", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x10:                                        // RLC R1
-                putInst("RLC", getRegName(nextByte()));
+            case 0x10:                    // RLC R1
+                putInst("RLC", getRegText(nextByte()));
                 break;
 
-            case 0x11:                                        // RLC IR1
+            case 0x11:                    // RLC IR1
                 putInst("RLC", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x20:                                        // INC R1
-                putInst("INC", getRegName(nextByte()));
+            case 0x20:                    // INC R1
+                putInst("INC", getRegText(nextByte()));
                 break;
 
-            case 0x21:                                        // INC IR1
+            case 0x21:                    // INC IR1
                 putInst("INC", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x30:                                        // JP IRR1
+            case 0x30:                    // JP IRR1
                 putInst("JP", getIndirectRegNameW(nextByte()));
                 break;
 
-            case 0x31:                                        // SRP IM
+            case 0x31:                    // SRP IM
                 putInst("SRP", getDirectValue(nextByte()));
                 break;
 
-            case 0x40:                                        // DA R1
-                putInst("DA", getRegName(nextByte()));
+            case 0x40:                    // DA R1
+                putInst("DA", getRegText(nextByte()));
                 break;
 
-            case 0x41:                                        // DA IR1
+            case 0x41:                    // DA IR1
                 putInst("DA", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x4F:                                        // WDh
+            case 0x4F:                    // WDh
                 putInst("WDh");
                 break;
 
-            case 0x50:                                        // POP R1
-                putInst("POP", getRegName(nextByte()));
+            case 0x50:                    // POP R1
+                putInst("POP", getRegText(nextByte()));
                 break;
 
-            case 0x51:                                        // POP IR1
+            case 0x51:                    // POP IR1
                 putInst("POP", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x5F:                                        // WDT
+            case 0x5F:                    // WDT
                 putInst("WDT");
                 break;
 
-            case 0x60:                                        // COM R1
-                putInst("COM", getRegName(nextByte()));
+            case 0x60:                    // COM R1
+                putInst("COM", getRegText(nextByte()));
                 break;
 
-            case 0x61:                                        // COM IR1
+            case 0x61:                    // COM IR1
                 putInst("COM", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x6F:                                        // STOP
+            case 0x6F:                    // STOP
                 putInst("STOP");
                 break;
 
-            case 0x70:                                        // PUSH R1
-                putInst("PUSH", getRegName(nextByte()));
+            case 0x70:                    // PUSH R1
+                putInst("PUSH", getRegText(nextByte()));
                 break;
 
-            case 0x71:                                        // PUSH IR1
+            case 0x71:                    // PUSH IR1
                 putInst("PUSH", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x7F:                                        // HALT
+            case 0x7F:                    // HALT
                 putInst("HALT");
                 break;
 
-            case 0x80:                                        // DECW R1
-                putInst("DECW", getRegName(nextByte()));
+            case 0x80:                    // DECW R1
+                putInst("DECW", getRegText(nextByte()));
                 break;
 
-            case 0x81:                                        // DECW IR1
+            case 0x81:                    // DECW IR1
                 putInst("DECW", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x82:                                        // LDE r1,lrr2
+            case 0x82:                    // LDE r1,Irr2
                 b = nextByte();
                 putInst(
                         "LDE",
@@ -330,7 +428,7 @@ public class Z8Reassembler {
                         getIndirectWorkingRegNameW(b));
                 break;
 
-            case 0x83:                                        // LDEI lr1,lrr2
+            case 0x83:                    // LDEI Ir1,Irr2
                 b = nextByte();
                 putInst(
                         "LDEI",
@@ -338,19 +436,19 @@ public class Z8Reassembler {
                         getIndirectWorkingRegNameW(b));
                 break;
 
-            case 0x8F:                                        // DI
+            case 0x8F:                    // DI
                 putInst("DI");
                 break;
 
-            case 0x90:                                        // RL R1
-                putInst("RL", getRegName(nextByte()));
+            case 0x90:                    // RL R1
+                putInst("RL", getRegText(nextByte()));
                 break;
 
-            case 0x91:                                        // RL IR1
+            case 0x91:                    // RL IR1
                 putInst("RL", getIndirectRegName(nextByte()));
                 break;
 
-            case 0x92:                                        // LDE r2,lrr1
+            case 0x92:                    // LDE Irr2,r1
                 b = nextByte();
                 putInst(
                         "LDE",
@@ -358,7 +456,7 @@ public class Z8Reassembler {
                         getWorkingRegName(b >> 4));
                 break;
 
-            case 0x93:                                        // LDEI r2,lrr1
+            case 0x93:                    // LDEI Irr1,Ir2
                 b = nextByte();
                 putInst(
                         "LDEI",
@@ -366,43 +464,43 @@ public class Z8Reassembler {
                         getIndirectWorkingRegName(b >> 4));
                 break;
 
-            case 0x9F:                                        // EI
+            case 0x9F:                    // EI
                 putInst("EI");
                 break;
 
-            case 0xA0:                                        // INCW R1
-                putInst("INCW", getRegName(nextByte()));
+            case 0xA0:                    // INCW R1
+                putInst("INCW", getRegText(nextByte()));
                 break;
 
-            case 0xA1:                                        // INCW IR1
+            case 0xA1:                    // INCW IR1
                 putInst("INCW", getIndirectRegName(nextByte()));
                 break;
 
-            case 0xAF:                                        // RET
+            case 0xAF:                    // RET
                 putInst("RET");
                 break;
 
-            case 0xB0:                                        // CLR R1
-                putInst("CLR", getRegName(nextByte()));
+            case 0xB0:                    // CLR R1
+                putInst("CLR", getRegText(nextByte()));
                 break;
 
-            case 0xB1:                                        // CLR IR1
+            case 0xB1:                    // CLR IR1
                 putInst("CLR", getIndirectRegName(nextByte()));
                 break;
 
-            case 0xBF:                                        // IRET
+            case 0xBF:                    // IRET
                 putInst("IRET");
                 break;
 
-            case 0xC0:                                        // RRC R1
-                putInst("RRC", getRegName(nextByte()));
+            case 0xC0:                    // RRC R1
+                putInst("RRC", getRegText(nextByte()));
                 break;
 
-            case 0xC1:                                        // RRC IR1
+            case 0xC1:                    // RRC IR1
                 putInst("RRC", getIndirectRegName(nextByte()));
                 break;
 
-            case 0xC2:                                        // LDC r1,lrr2
+            case 0xC2:                    // LDC r1,Irr2
                 b = nextByte();
                 putInst(
                         "LDC",
@@ -410,7 +508,7 @@ public class Z8Reassembler {
                         getIndirectWorkingRegNameW(b));
                 break;
 
-            case 0xC3:                                        // LDCI lr1,lrr2
+            case 0xC3:                    // LDCI Ir1,Irr2
                 b = nextByte();
                 putInst(
                         "LDCI",
@@ -418,28 +516,29 @@ public class Z8Reassembler {
                         getIndirectWorkingRegNameW(b));
                 break;
 
-            case 0xC7:                                        // LD r1,x,R2
+            case 0xC7:                    // LD r1,x(r2)
                 a = nextByte();
                 b = nextByte();
                 putInst(
                         "LD",
                         getWorkingRegName(a >> 4),
-                        getValue(b) + "(" + getWorkingRegName(a) + ")");
+                        getSigned8BitValue(b)
+                                + "(" + getWorkingRegName(a) + ")");
                 break;
 
-            case 0xCF:                                        // RCF
+            case 0xCF:                    // RCF
                 putInst("RCF");
                 break;
 
-            case 0xD0:                                        // SRA R1
-                putInst("SRA", getRegName(nextByte()));
+            case 0xD0:                    // SRA R1
+                putInst("SRA", getRegText(nextByte()));
                 break;
 
-            case 0xD1:                                        // SRA IR1
+            case 0xD1:                    // SRA IR1
                 putInst("SRA", getIndirectRegName(nextByte()));
                 break;
 
-            case 0xD2:                                        // LDC lrr1,r2
+            case 0xD2:                    // LDC Irr2,r1
                 b = nextByte();
                 putInst(
                         "LDC",
@@ -447,7 +546,7 @@ public class Z8Reassembler {
                         getWorkingRegName(b >> 4));
                 break;
 
-            case 0xD3:                                        // LDCI lrr1,lr2
+            case 0xD3:                    // LDCI Irr2,Ir1
                 b = nextByte();
                 putInst(
                         "LDCI",
@@ -455,38 +554,39 @@ public class Z8Reassembler {
                         getIndirectWorkingRegName(b >> 4));
                 break;
 
-            case 0xD4:                                        // CALL IRR1
+            case 0xD4:                    // CALL IRR1
                 putInst("CALL", getIndirectRegNameW(nextByte()));
                 break;
 
-            case 0xD6:                                        // CALL DA
+            case 0xD6:                    // CALL DA
                 a = nextByte();
                 b = nextByte();
-                putInst("CALL", getDirectValueW(a, b));
+                putInstWithDestAddr("CALL", (a << 8) | b);
                 break;
 
-            case 0xD7:                                        // LD r2,x,R1
+            case 0xD7:                    // LD r2,x(r1)
                 a = nextByte();
                 b = nextByte();
                 putInst(
                         "LD",
-                        getValue(b) + "(" + getWorkingRegName(a) + ")",
+                        getSigned8BitValue(b)
+                                + "(" + getWorkingRegName(a) + ")",
                         getWorkingRegName(a >> 4));
                 break;
 
-            case 0xDF:                                        // SCF
+            case 0xDF:                    // SCF
                 putInst("SCF");
                 break;
 
-            case 0xE0:                                        // RR R1
-                putInst("RR", getRegName(nextByte()));
+            case 0xE0:                    // RR R1
+                putInst("RR", getRegText(nextByte()));
                 break;
 
-            case 0xE1:                                        // RR IR1
+            case 0xE1:                    // RR IR1
                 putInst("RR", getIndirectRegName(nextByte()));
                 break;
 
-            case 0xE3:                                        // LD r1,IR2
+            case 0xE3:                    // LD r1,IR2
                 b = nextByte();
                 putInst(
                         "LD",
@@ -494,43 +594,43 @@ public class Z8Reassembler {
                         getIndirectWorkingRegName(b));
                 break;
 
-            case 0xE4:                                        // LD R2,R1
+            case 0xE4:                    // LD R2,R1
                 a = nextByte();
                 b = nextByte();
-                putInst("LD", getRegName(b), getRegName(a));
+                putInst("LD", getRegText(b), getRegText(a));
                 break;
 
-            case 0xE5:                                        // LD IR2,R1
+            case 0xE5:                    // LD IR2,R1
                 a = nextByte();
                 b = nextByte();
-                putInst("LD", getRegName(b), getIndirectRegName(a));
+                putInst("LD", getRegText(b), getIndirectRegName(a));
                 break;
 
-            case 0xE6:                                        // LD R1,IM
+            case 0xE6:                    // LD R1,IM
                 a = nextByte();
                 b = nextByte();
-                putInst("LD", getRegName(a), getDirectValue(b));
+                putInst("LD", getRegText(a), getDirectValue(b));
                 break;
 
-            case 0xE7:                                        // LD IR1,IM
+            case 0xE7:                    // LD IR1,IM
                 a = nextByte();
                 b = nextByte();
                 putInst("LD", getIndirectRegName(a), getDirectValue(b));
                 break;
 
-            case 0xEF:                                        // CCF
+            case 0xEF:                    // CCF
                 putInst("CCF");
                 break;
 
-            case 0xF0:                                        // SWAP R1
-                putInst("SWAP", getRegName(nextByte()));
+            case 0xF0:                    // SWAP R1
+                putInst("SWAP", getRegText(nextByte()));
                 break;
 
-            case 0xF1:                                        // SWAP IR1
+            case 0xF1:                    // SWAP IR1
                 putInst("SWAP", getIndirectRegName(nextByte()));
                 break;
 
-            case 0xF3:                                        // LD Ir1,r2
+            case 0xF3:                    // LD Ir1,r2
                 b = nextByte();
                 putInst(
                         "LD",
@@ -538,13 +638,13 @@ public class Z8Reassembler {
                         getWorkingRegName(b));
                 break;
 
-            case 0xF5:                                        // LD R2,IR1
+            case 0xF5:                    // LD R2,IR1
                 a = nextByte();
                 b = nextByte();
-                putInst("LD", getIndirectRegName(b), getRegName(a));
+                putInst("LD", getIndirectRegName(b), getRegText(a));
                 break;
 
-            case 0xFF:                                        // NOP
+            case 0xFF:                    // NOP
                 putInst("NOP");
                 break;
         }
@@ -559,19 +659,18 @@ public class Z8Reassembler {
 
     private static String getDirectValue(int v) {
         return v <= 9 ?
-                ("#" + String.valueOf(v))
+                String.format("#%1d", v)
                 : String.format("#%%%02X", v);
     }
 
 
-    private static String getDirectValueW(int h, int l) {
-        int v = (h << 8) | l;
-        return v <= 9 ? String.valueOf(v) : String.format("#%%%04X", v);
+    private static String getValueW(int h, int l) {
+        return String.format("%%%04X", (h << 8) | l);
     }
 
 
     private static String getIndirectRegName(int r) {
-        return "@" + getRegName(r);
+        return "@" + getRegText(r);
     }
 
 
@@ -592,47 +691,45 @@ public class Z8Reassembler {
 
 
     private static String getIndirectWorkingRegName(int r) {
-        return "@R" + String.valueOf(r & 0x0F);
+        return String.format("@R%1d", r & 0x0F);
     }
 
 
     private static String getIndirectWorkingRegNameW(int r) {
-        return "@RR" + String.valueOf(r & 0x0F);
+        return String.format("@RR%1d", r & 0x0F);
     }
 
 
-    private static String getRegName(int r) {
-        String rv = null;
+    private int getRelAddr(int relAddr) {
+        return (this.addr + (int) ((byte) relAddr)) & 0xFFFF;
+    }
+
+
+    private static String getRegText(int r) {
+        String rv;
         if ((r & 0xF0) == 0xE0) {
             rv = getWorkingRegName(r);
         } else {
-            int idx = r - 0xF0;
-            if ((idx >= 0) && (idx < regNames.length)) {
-                rv = regNames[idx];
-            } else {
-                rv = getValue(r);
-            }
+            rv = getRegName(r);
         }
         return rv;
     }
 
 
+    private String getSigned8BitValue(int v) {
+        return String.valueOf((byte) (v & 0xFF));
+    }
+
+
     private static String getValue(int v) {
         return v <= 9 ?
-                ("%" + String.valueOf(v))
+                String.format("%%%1d", v)
                 : String.format("%%%02X", v);
     }
 
 
-    private String getRelAddrText(int relAddr) {
-        return String.format(
-                "#%%%04X",
-                (this.addr + (int) (byte) relAddr) & 0xFFFF);
-    }
-
-
     private static String getWorkingRegName(int r) {
-        return "R" + String.valueOf(r & 0x0F);
+        return String.format("R%1d", r & 0x0F);
     }
 
 
@@ -641,9 +738,34 @@ public class Z8Reassembler {
     }
 
 
-    private void putInst(String instName, String... instArgs) {
-        this.lastInstName = instName;
-        this.lastInstArgs = instArgs;
+    private void putInst(String mnemonic, String... args) {
+        this.mnemonic = mnemonic;
+        this.args = args;
+        this.destAddr = -1;
+    }
+
+
+    private void putInstWithDestAddr(
+            String mnemonic,
+            int destAddr) {
+        this.mnemonic = mnemonic;
+        this.args = new String[]{String.format("%%%04X", destAddr)};
+        this.destAddr = destAddr;
+    }
+
+
+    private void putInstWithDestAddr(
+            String mnemonic,
+            String arg1,
+            int destAddr) {
+        if (arg1 != null) {
+            this.mnemonic = mnemonic;
+            this.args = new String[]{
+                    arg1,
+                    String.format("%%%04X", destAddr)};
+            this.destAddr = destAddr;
+        } else {
+            putInstWithDestAddr(mnemonic, destAddr);
+        }
     }
 }
-

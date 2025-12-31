@@ -1,6 +1,6 @@
 /*
- * (c) 2007-2010 Jens Mueller
- * (c) 2017 Lars Sonchocky-Helldorf
+ * (c) 2007-2021 Jens Mueller
+ * (c) 2017-2024 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -9,502 +9,369 @@
 
 package org.sqar.virtualjtc.jtcemu.base;
 
+import org.sqar.virtualjtc.jtcemu.Main;
+import org.sqar.virtualjtc.jtcemu.tools.ToolUtil;
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.*;
 
-import org.sqar.virtualjtc.jtcemu.Main;
-import org.sqar.virtualjtc.z8.Z8Memory;
+public class SaveDlg extends BaseDlg implements ActionListener {
+    private static final Locale locale = Locale.getDefault();
+    private static final ResourceBundle saveDlgResourceBundle = ResourceBundle.getBundle("SaveDlg", locale);
 
+    private static final String textBegAddr = saveDlgResourceBundle.getString("text.begAddr");
+    private static final String textEndAddr = saveDlgResourceBundle.getString("text.endAddr");
+    private static final String textFileBegAddr = saveDlgResourceBundle.getString("text.fileBegAddr");
 
-public class SaveDlg extends BaseDlg implements ActionListener
-{
-  private static final Locale locale = Locale.getDefault();
-  private static final ResourceBundle saveDlgResourceBundle = ResourceBundle.getBundle("SaveDlg", locale);
+    private static final String LABEL_START_ADDR = "Startadresse:"; // TODO: i18n
 
-  private static final String textBegAddr     = saveDlgResourceBundle.getString("text.begAddr");
-  private static final String textEndAddr     = saveDlgResourceBundle.getString("text.endAddr");
-  private static final String textFileBegAddr = saveDlgResourceBundle.getString("text.fileBegAddr");
-
-  private Z8Memory memory;
-  private JTextField   fldBegAddr;
-  private JTextField   fldEndAddr;
-  private JTextField   fldFileBegAddr;
-  private JTextField   fldFileDesc;
-  private JLabel       labelFileBegAddr;
-  private JLabel       labelFileDesc;
-  private JRadioButton btnFmtJTC;
-  private JRadioButton btnFmtTAP;
-  private JRadioButton btnFmtBIN;
-  private JRadioButton btnFmtHEX;
-  private JButton      btnSave;
-  private JButton      btnHelp;
-  private JButton      btnCancel;
-
-
-  public SaveDlg( Window owner, Z8Memory memory )
-  {
-    super( owner );
-    setTitle( saveDlgResourceBundle.getString("window.title") );
-    this.memory = memory;
+    private StatusDisplay statusDisplay;
+    private JTCSys jtcSys;
+    private JTextField fldBegAddr;
+    private JTextField fldEndAddr;
+    private JTextField fldFileBegAddr;
+    private JTextField fldFileStartAddr;
+    private JTextField fldFileDesc;
+    private JLabel labelFileBegAddr;
+    private JLabel labelFileBegAddrOpt;
+    private JLabel labelFileStartAddr;
+    private JLabel labelFileStartAddrOpt;
+    private JLabel labelFileDesc;
+    private JRadioButton btnFmtJTC;
+    private JRadioButton btnFmtTAP;
+    private JRadioButton btnFmtBIN;
+    private JRadioButton btnFmtHEX;
+    private JButton btnSave;
+    private JButton btnHelp;
+    private JButton btnCancel;
 
 
-    // Fensterinhalt
-    setLayout( new GridBagLayout() );
-
-    GridBagConstraints gbc = new GridBagConstraints(
-                                        0, 0,
-                                        1, 1,
-                                        1.0, 0.0,
-                                        GridBagConstraints.CENTER,
-                                        GridBagConstraints.HORIZONTAL,
-                                        new Insets( 5, 5, 5, 5 ),
-                                        0, 0 );
+    public SaveDlg(Window owner, StatusDisplay statusDisplay, JTCSys jtcSys) {
+        super(owner);
+        setTitle("Datei speichern"); // TODO: i18n
+        this.statusDisplay = statusDisplay;
+        this.jtcSys = jtcSys;
 
 
-    // Bereich: Adressbereich
-    JPanel panelAddr = new JPanel( new GridBagLayout() );
-    panelAddr.setBorder( BorderFactory.createTitledBorder( saveDlgResourceBundle.getString("titledBorder.ramToSave") ) );
-    add( panelAddr, gbc );
+        // Fensterinhalt
+        setLayout(new GridBagLayout());
 
-    GridBagConstraints gbcAddr = new GridBagConstraints(
-                                        0, 0,
-                                        1, 1,
-                                        0.0, 0.0,
-                                        GridBagConstraints.WEST,
-                                        GridBagConstraints.NONE,
-                                        new Insets( 5, 5, 5, 5 ),
-                                        0, 0 );
-
-    panelAddr.add( new JLabel( textBegAddr + ":" ), gbcAddr );
-
-    this.fldBegAddr = new JTextField();
-    this.fldBegAddr.addActionListener( this );
-    gbcAddr.fill    = GridBagConstraints.HORIZONTAL;
-    gbcAddr.weightx = 0.5;
-    gbcAddr.gridx++;
-    panelAddr.add( this.fldBegAddr, gbcAddr );
-
-    gbcAddr.fill    = GridBagConstraints.NONE;
-    gbcAddr.weightx = 0.0;
-    gbcAddr.gridx++;
-    panelAddr.add( new JLabel( textEndAddr + ":" ), gbcAddr );
-
-    this.fldEndAddr = new JTextField();
-    this.fldEndAddr.addActionListener( this );
-    gbcAddr.fill    = GridBagConstraints.HORIZONTAL;
-    gbcAddr.weightx = 0.5;
-    gbcAddr.gridx++;
-    panelAddr.add( this.fldEndAddr, gbcAddr );
+        GridBagConstraints gbc = new GridBagConstraints(
+                0, 0,
+                1, 1,
+                1.0, 0.0,
+                GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(5, 5, 5, 5),
+                0, 0);
 
 
-    // Bereich Dateiformat
-    JPanel panelFmt = new JPanel( new GridBagLayout() );
-    panelFmt.setBorder( BorderFactory.createTitledBorder( saveDlgResourceBundle.getString("titledBorder.fileFormat") ) );
-    gbc.gridy++;
-    add( panelFmt, gbc );
+        // Bereich: Adressbereich
+        JPanel panelAddr = new JPanel(new GridBagLayout());
+        panelAddr.setBorder(BorderFactory.createTitledBorder(saveDlgResourceBundle.getString("titledBorder.ramToSave")));
+        add(panelAddr, gbc);
 
-    GridBagConstraints gbcFmt = new GridBagConstraints(
-                                        0, 0,
-                                        1, 1,
-                                        0.0, 0.0,
-                                        GridBagConstraints.WEST,
-                                        GridBagConstraints.NONE,
-                                        new Insets( 5, 5, 5, 5 ),
-                                        0, 0 );
+        GridBagConstraints gbcAddr = new GridBagConstraints(
+                0, 0,
+                1, 1,
+                0.0, 0.0,
+                GridBagConstraints.WEST,
+                GridBagConstraints.NONE,
+                new Insets(5, 5, 5, 5),
+                0, 0);
 
-    ButtonGroup grpFmt = new ButtonGroup();
+        panelAddr.add(new JLabel(textBegAddr + ":"), gbcAddr);
 
-    this.btnFmtJTC = new JRadioButton( "JTC", true );
-    grpFmt.add( this.btnFmtJTC );
-    panelFmt.add( this.btnFmtJTC, gbcFmt );
+        this.fldBegAddr = new JTextField(4);
+        gbcAddr.fill = GridBagConstraints.HORIZONTAL;
+        gbcAddr.weightx = 0.5;
+        gbcAddr.gridx++;
+        panelAddr.add(this.fldBegAddr, gbcAddr);
 
-    this.btnFmtTAP = new JRadioButton( "KC-TAP", false );
-    grpFmt.add( this.btnFmtTAP );
-    gbcFmt.gridx++;
-    panelFmt.add( this.btnFmtTAP, gbcFmt );
+        gbcAddr.fill = GridBagConstraints.NONE;
+        gbcAddr.weightx = 0.0;
+        gbcAddr.gridx++;
+        panelAddr.add(new JLabel(textEndAddr + ":"), gbcAddr);
 
-    this.btnFmtBIN = new JRadioButton( "BIN", false );
-    grpFmt.add( this.btnFmtBIN );
-    gbcFmt.gridx++;
-    panelFmt.add( this.btnFmtBIN, gbcFmt );
-
-    this.btnFmtHEX = new JRadioButton( "Intel-HEX", false );
-    grpFmt.add( this.btnFmtHEX );
-    gbcFmt.gridx++;
-    panelFmt.add( this.btnFmtHEX, gbcFmt );
-
-    this.labelFileBegAddr = new JLabel( textFileBegAddr + ":" );
-    gbcFmt.anchor     = GridBagConstraints.EAST;
-    gbcFmt.insets.top = 10;
-    gbcFmt.gridwidth  = 3;
-    gbcFmt.gridx      = 0;
-    gbcFmt.gridy++;
-    panelFmt.add( this.labelFileBegAddr, gbcFmt );
-
-    this.fldFileBegAddr = new JTextField();
-    this.fldFileBegAddr.addActionListener( this );
-    gbcFmt.fill      = GridBagConstraints.HORIZONTAL;
-    gbcFmt.weightx   = 1.0;
-    gbcFmt.gridwidth = 1;
-    gbcFmt.gridx += 3;
-    panelFmt.add( this.fldFileBegAddr, gbcFmt );
-
-    this.labelFileDesc = new JLabel( saveDlgResourceBundle.getString("label.labelFileDesc") );
-    gbcFmt.fill       = GridBagConstraints.NONE;
-    gbcFmt.weightx    = 0.0;
-    gbcFmt.insets.top = 0;
-    gbcFmt.gridwidth  = 3;
-    gbcFmt.gridx      = 0;
-    gbcFmt.gridy++;
-    panelFmt.add( this.labelFileDesc, gbcFmt );
-
-    this.fldFileDesc = new JTextField( new LimitedLengthDoc( 11 ), "", 0 );
-    this.fldFileDesc.addActionListener( this );
-    gbcFmt.fill    = GridBagConstraints.HORIZONTAL;
-    gbcFmt.weightx = 1.0;
-    gbcFmt.gridx += 3;
-    panelFmt.add( this.fldFileDesc, gbcFmt );
-
-    this.btnFmtJTC.addActionListener( this );
-    this.btnFmtTAP.addActionListener( this );
-    this.btnFmtBIN.addActionListener( this );
-    this.btnFmtHEX.addActionListener( this );
-    updFmtFields();
+        this.fldEndAddr = new JTextField(4);
+        gbcAddr.fill = GridBagConstraints.HORIZONTAL;
+        gbcAddr.weightx = 0.5;
+        gbcAddr.gridx++;
+        panelAddr.add(this.fldEndAddr, gbcAddr);
 
 
-    // Knoepfe
-    JPanel panelBtn = new JPanel( new GridLayout( 1, 3, 5, 5 ) );
-    gbc.fill       = GridBagConstraints.NONE;
-    gbc.weightx    = 0.0;
-    gbc.insets.top = 10;
-    gbc.gridy++;
-    add( panelBtn,gbc );
+        // Bereich Dateiformat
+        JPanel panelFmt = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        panelFmt.setBorder(BorderFactory.createTitledBorder(saveDlgResourceBundle.getString("titledBorder.fileFormat")));
+        gbc.gridy++;
+        add(panelFmt, gbc);
 
-    this.btnSave = new JButton( saveDlgResourceBundle.getString("button.save") );
-    this.btnSave.addActionListener( this );
-    panelBtn.add( this.btnSave );
+        ButtonGroup grpFmt = new ButtonGroup();
 
-    this.btnHelp = new JButton( saveDlgResourceBundle.getString("button.help") );
-    this.btnHelp.addActionListener( this );
-    panelBtn.add( this.btnHelp );
+        this.btnFmtJTC = new JRadioButton("JTC", true);
+        grpFmt.add(this.btnFmtJTC);
+        panelFmt.add(this.btnFmtJTC);
 
-    this.btnCancel = new JButton( saveDlgResourceBundle.getString("button.cancel") );
-    this.btnCancel.addActionListener( this );
-    panelBtn.add( this.btnCancel );
+        this.btnFmtTAP = new JRadioButton("KC-TAP", false);
+        grpFmt.add(this.btnFmtTAP);
+        panelFmt.add(this.btnFmtTAP);
 
+        this.btnFmtBIN = new JRadioButton("BIN", false);
+        grpFmt.add(this.btnFmtBIN);
+        panelFmt.add(this.btnFmtBIN);
 
-    // Fenstergroesse
-    pack();
-    setParentCentered();
-    setResizable( true );
+        this.btnFmtHEX = new JRadioButton("Intel-HEX", false);
+        grpFmt.add(this.btnFmtHEX);
+        panelFmt.add(this.btnFmtHEX);
 
 
-    // ggf. Adressen eines BASIC-Programms eintragen
-    boolean has0D   = false;
-    int     addr    = 0xE000;
-    int     endAddr = -1;
-    while( addr < 0xFC00 ) {
-      int b = this.memory.getMemByte( addr, false );
-      if( b == 0x0D ) {
-        has0D = true;
-      }
-      else if( b == 0 ) {
-        endAddr = addr;
-        break;
-      }
-      addr++;
+        // Dateikopfdaten
+        JPanel panelHead = new JPanel(new GridBagLayout());
+        panelHead.setBorder(BorderFactory.createTitledBorder(
+                "Angaben in der Datei")); // TODO: i18n
+        gbc.gridy++;
+        add(panelHead, gbc);
+
+        GridBagConstraints gbcHead = new GridBagConstraints(
+                0, 0,
+                1, 1,
+                0.0, 0.0,
+                GridBagConstraints.EAST,
+                GridBagConstraints.NONE,
+                new Insets(5, 5, 0, 5),
+                0, 0);
+
+        this.labelFileBegAddr = new JLabel(textBegAddr);
+        panelHead.add(this.labelFileBegAddr, gbcHead);
+
+        this.labelFileStartAddr = new JLabel(LABEL_START_ADDR);
+        gbcHead.gridy++;
+        panelHead.add(this.labelFileStartAddr, gbcHead);
+
+        this.labelFileDesc = new JLabel(saveDlgResourceBundle.getString("label.labelFileDesc"));
+        gbcHead.insets.bottom = 5;
+        gbcHead.gridy++;
+        panelHead.add(this.labelFileDesc, gbcHead);
+
+        this.fldFileBegAddr = new JTextField(4);
+        gbcHead.anchor = GridBagConstraints.WEST;
+        gbcHead.fill = GridBagConstraints.HORIZONTAL;
+        gbcHead.weightx = 1.0;
+        gbcHead.insets.bottom = 0;
+        gbcHead.gridy = 0;
+        gbcHead.gridx++;
+        panelHead.add(this.fldFileBegAddr, gbcHead);
+
+        this.fldFileStartAddr = new JTextField(4);
+        gbcHead.gridy++;
+        panelHead.add(this.fldFileStartAddr, gbcHead);
+
+        this.fldFileDesc = new JTextField(new LimitedLengthDoc(11), "", 0);
+        gbcHead.insets.bottom = 5;
+        gbcHead.gridwidth = GridBagConstraints.REMAINDER;
+        gbcHead.gridy++;
+        panelHead.add(this.fldFileDesc, gbcHead);
+
+        this.labelFileBegAddrOpt = new JLabel("(nur wenn abweichend)"); // TODO: i18n
+        gbcHead.insets.bottom = 0;
+        gbcHead.gridy = 0;
+        gbcHead.gridx++;
+        panelHead.add(this.labelFileBegAddrOpt, gbcHead);
+
+        this.labelFileStartAddrOpt = new JLabel("(optional)"); // TODO: i18n
+        gbcHead.gridy++;
+        panelHead.add(this.labelFileStartAddrOpt, gbcHead);
+
+        updHeadFields();
+
+
+        // Knoepfe
+        JPanel panelBtn = new JPanel(new GridLayout(1, 3, 5, 5));
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.0;
+        gbc.insets.top = 10;
+        gbc.insets.left = 10;
+        gbc.insets.right = 10;
+        gbc.insets.bottom = 10;
+        gbc.gridy++;
+        add(panelBtn, gbc);
+
+        this.btnSave = new JButton(saveDlgResourceBundle.getString("button.save"));
+        panelBtn.add(this.btnSave);
+
+        this.btnHelp = new JButton(saveDlgResourceBundle.getString("button.help"));
+        panelBtn.add(this.btnHelp);
+
+        this.btnCancel = new JButton(saveDlgResourceBundle.getString("button.cancel"));
+        panelBtn.add(this.btnCancel);
+
+
+        // Fenstergroesse
+        pack();
+        setParentCentered();
+        setResizable(true);
+
+
+        // ggf. Adressen eines BASIC-Programms eintragen
+        int endAddr = ToolUtil.getBasicEndAddress(jtcSys);
+        if (endAddr > 0xE002) {
+            this.fldBegAddr.setText("E000");
+            this.fldEndAddr.setText(String.format("%04X", endAddr));
+        }
+
+
+        // Listener
+        this.fldBegAddr.addActionListener(this);
+        this.fldEndAddr.addActionListener(this);
+        this.fldFileBegAddr.addActionListener(this);
+        this.fldFileStartAddr.addActionListener(this);
+        this.fldFileDesc.addActionListener(this);
+        this.btnFmtJTC.addActionListener(this);
+        this.btnFmtTAP.addActionListener(this);
+        this.btnFmtBIN.addActionListener(this);
+        this.btnFmtHEX.addActionListener(this);
+        this.btnSave.addActionListener(this);
+        this.btnHelp.addActionListener(this);
+        this.btnCancel.addActionListener(this);
     }
-    if( has0D && (endAddr > 0xE002) ) {
-      this.fldBegAddr.setText( "E000" );
-      this.fldEndAddr.setText( String.format( "%04X", endAddr ) );
-    }
-  }
 
 
-        /* --- ActionListener --- */
+    /* --- ActionListener --- */
 
-  @Override
-  public void actionPerformed( ActionEvent e )
-  {
-    Object src = e.getSource();
-    if( (src == this.fldEndAddr)
-        || (src == this.fldFileBegAddr)
-        || (src == this.btnSave) )
-    {
-      doSave();
-    }
-    else if( src == this.btnHelp ) {
-      HelpFrm.open( saveDlgResourceBundle.getString("help.loadsave.path") );
-    }
-    else if( src == this.btnCancel ) {
-      doClose();
-    }
-    else if( src == this.fldBegAddr ) {
-      this.fldBegAddr.transferFocus();
-    }
-    else if( (src == this.btnFmtJTC)
-             || (src == this.btnFmtTAP)
-             || (src == this.btnFmtBIN)
-             || (src == this.btnFmtHEX) )
-    {
-      updFmtFields();
-    }
-  }
-
-
-        /* --- private Methoden --- */
-
-  private void doSave()
-  {
-    try {
-      int addr = GUIUtil.parseHex4(
-                                this.fldBegAddr.getText(),
-                                textBegAddr );
-
-      int endAddr = GUIUtil.parseHex4(
-                                this.fldEndAddr.getText(),
-                                textEndAddr );
-      if( endAddr < addr ) {
-        throw new IOException( saveDlgResourceBundle.getString("error.doSave.addressOrderError.message") );
-      }
-
-      int    fileBegAddr = addr;
-      String text        = this.fldFileBegAddr.getText();
-      if( text != null ) {
-        text = text.trim();
-        if( text.length() > 0 )
-          fileBegAddr = GUIUtil.parseHex4( text, textFileBegAddr );
-      }
-
-      boolean jtcSelected = this.btnFmtJTC.isSelected();
-      boolean tapSelected = this.btnFmtTAP.isSelected();
-      boolean hexSelected = this.btnFmtHEX.isSelected();
-      File    file        = null;
-      if( jtcSelected ) {
-        file = FileDlg.showFileSaveDlg(
-                                this,
-                                saveDlgResourceBundle.getString("dialog.doSave.jtc.title"),
-                                Main.getLastPathFile(),
-                                GUIUtil.jtcFileFilter );
-      } else if( tapSelected ) {
-        file = FileDlg.showFileSaveDlg(
-                                this,
-                                saveDlgResourceBundle.getString("dialog.doSave.tap.title"),
-                                Main.getLastPathFile(),
-                                GUIUtil.tapFileFilter );
-      } else if( hexSelected ) {
-        file = FileDlg.showFileSaveDlg(
-                                this,
-                                saveDlgResourceBundle.getString("dialog.doSave.hex.title"),
-                                Main.getLastPathFile(),
-                                GUIUtil.hexFileFilter );
-      } else {
-        file = FileDlg.showFileSaveDlg(
-                                this,
-                                saveDlgResourceBundle.getString("dialog.doSave.binary.title"),
-                                Main.getLastPathFile(),
-                                GUIUtil.binaryFileFilter );
-      }
-      if( file != null ) {
-        if( hexSelected ) {
-          Writer out = null;
-          try {
-            out = new BufferedWriter( new FileWriter( file ) );
-
-            int cnt = 1;
-            while( (addr <= endAddr) && (cnt > 0) ) {
-              cnt = writeHexSegment( out, addr, endAddr, fileBegAddr );
-              addr += cnt;
-              fileBegAddr += cnt;
-            }
-            out.write( ':' );
-            writeHexByte( out, 0 );
-            writeHexByte( out, 0 );
-            writeHexByte( out, 0 );
-            writeHexByte( out, 1 );
-            writeHexByte( out, 0xFF );
-            out.write( 0x0D );
-            out.write( 0x0A );
-            out.close();
-            out = null;
-            Main.setLastFile( file );
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        if ((src == this.fldFileDesc) || (src == this.btnSave)) {
+            doSave();
+        } else if (src == this.btnHelp) {
+            HelpFrm.open(saveDlgResourceBundle.getString("help.loadsave.path"));
+        } else if (src == this.btnCancel) {
             doClose();
-          }
-          finally {
-            if( out != null ) {
-              try {
-                out.close();
-              }
-              catch( IOException ex ) {}
+        } else if ((src == this.btnFmtJTC)
+                || (src == this.btnFmtTAP)
+                || (src == this.btnFmtBIN)
+                || (src == this.btnFmtHEX)) {
+            updHeadFields();
+        } else if (src instanceof JTextField) {
+            ((JTextField) src).transferFocus();
+        }
+    }
+
+
+    /* --- private Methoden --- */
+
+    private void doSave() {
+        try {
+            int begAddr = JTCUtil.parseHex4(
+                    this.fldBegAddr.getText(),
+                    "Anfangsadresse in zu speichernder Bereich:"); // TODO: i18n
+            int endAddr = JTCUtil.parseHex4(
+                    this.fldEndAddr.getText(),
+                    textEndAddr);
+            if (endAddr < begAddr) {
+                throw new IOException(saveDlgResourceBundle.getString("error.doSave.addressOrderError.message"));
             }
-          }
 
-        } else {
-
-          // alle anderen Formate sind binear -> OutputStream oeffnen
-          OutputStream out = null;
-          try {
-            out = new BufferedOutputStream( new FileOutputStream( file ) );
-            if( jtcSelected ) {
-              writeJTCHeader( out, addr, endAddr, fileBegAddr );
-              while( addr <= endAddr ) {
-                out.write( this.memory.getMemByte( addr++, false ) );
-              }
-            } else if( tapSelected ) {
-              String s = "\u00C3KC-TAPE by AF.\u0020";
-              int    n = s.length();
-              for( int i = 0; i < n; i++ ) {
-                out.write( s.charAt( i ) );
-              }
-
-              int blkNum = 1;
-              out.write( blkNum++ );
-              writeJTCHeader( out, addr, endAddr, fileBegAddr );
-
-              n = 0;
-              while( addr <= endAddr ) {
-                if( n == 0 ) {
-                  out.write( (addr + 128) > endAddr ? 0xFF : blkNum++ );
-                  n = 128;
+            int fileBegAddr = begAddr;
+            if (this.fldFileBegAddr.isEnabled()) {
+                String text = this.fldFileBegAddr.getText();
+                if (text != null) {
+                    text = text.trim();
+                    if (!text.isEmpty()) {
+                        fileBegAddr = JTCUtil.parseHex4(
+                                text,
+                                "Anfangsadresse in Angaben in der Datei:"); // TODO: i18n
+                    }
                 }
-                out.write( this.memory.getMemByte( addr++, false ) );
-                --n;
-              }
-              while( n > 0 ) {
-                out.write( 0 );
-                --n;
-              }
+            }
+
+            int fileStartAddr = -1;
+            if (this.fldFileStartAddr.isEnabled()) {
+                String text = this.fldFileStartAddr.getText();
+                if (text != null) {
+                    text = text.trim();
+                    if (!text.isEmpty()) {
+                        fileStartAddr = JTCUtil.parseHex4(text, LABEL_START_ADDR);
+                    }
+                }
+            }
+
+            boolean jtcSelected = this.btnFmtJTC.isSelected();
+            boolean tapSelected = this.btnFmtTAP.isSelected();
+            boolean hexSelected = this.btnFmtHEX.isSelected();
+
+            File file = null;
+            FileSaver.Format format = FileSaver.Format.BIN;
+            if (jtcSelected) {
+                format = FileSaver.Format.JTC;
+                file = FileDlg.showFileSaveDlg(
+                        this,
+                        saveDlgResourceBundle.getString("dialog.doSave.jtc.title"),
+                        AppContext.getLastDirFile(FileInfo.FILE_GROUP_SOFTWARE),
+                        GUIUtil.jtcFileFilter);
+            } else if (tapSelected) {
+                format = FileSaver.Format.TAP;
+                file = FileDlg.showFileSaveDlg(
+                        this,
+                        saveDlgResourceBundle.getString("dialog.doSave.tap.title"),
+                        AppContext.getLastDirFile(FileInfo.FILE_GROUP_SOFTWARE),
+                        GUIUtil.tapFileFilter);
+            } else if (hexSelected) {
+                format = FileSaver.Format.HEX;
+                file = FileDlg.showFileSaveDlg(
+                        this,
+                        saveDlgResourceBundle.getString("dialog.doSave.hex.title"),
+                        AppContext.getLastDirFile(FileInfo.FILE_GROUP_SOFTWARE),
+                        GUIUtil.hexFileFilter);
             } else {
-              while( addr <= endAddr ) {
-                out.write( this.memory.getMemByte( addr++, false ) );
-              }
+                file = FileDlg.showFileSaveDlg(
+                        this,
+                        saveDlgResourceBundle.getString("dialog.doSave.binary.title"),
+                        AppContext.getLastDirFile(FileInfo.FILE_GROUP_SOFTWARE),
+                        GUIUtil.binaryFileFilter);
             }
-            out.close();
-            out = null;
-            Main.setLastFile( file );
-            doClose();
-          }
-          finally {
-            if( out != null ) {
-              try {
-                out.close();
-              }
-              catch( IOException ex ) {}
+            if (file != null) {
+                String statusText = FileSaver.save(
+                        this.jtcSys,
+                        begAddr,
+                        endAddr,
+                        fileStartAddr,
+                        file,
+                        format,
+                        fileBegAddr,
+                        this.fldFileDesc.getText());
+                if (statusText != null) {
+                    doClose();
+                    this.statusDisplay.showStatusText(statusText);
+                }
             }
-          }
+        } catch (Exception ex) {
+            Main.showError(this, ex);
         }
-      }
     }
-    catch( Exception ex ) {
-      Main.showError( this, ex );
+
+
+    private void updHeadFields() {
+        boolean reqHeader = (this.btnFmtJTC.isSelected()
+                || this.btnFmtTAP.isSelected());
+        boolean reqBegAddr = this.btnFmtHEX.isSelected();
+
+        this.labelFileBegAddr.setEnabled(reqHeader || reqBegAddr);
+        this.fldFileBegAddr.setEditable(reqHeader || reqBegAddr);
+        this.labelFileBegAddrOpt.setEnabled(reqHeader || reqBegAddr);
+
+        this.labelFileStartAddr.setEnabled(reqHeader);
+        this.fldFileStartAddr.setEditable(reqHeader);
+        this.labelFileStartAddrOpt.setEnabled(reqHeader);
+
+        this.labelFileDesc.setEnabled(reqHeader);
+        this.fldFileDesc.setEditable(reqHeader);
     }
-  }
-
-
-  private void writeHexChar( Writer out, int value ) throws IOException
-  {
-    value &= 0x0F;
-    out.write( value < 10 ? (value + '0') : (value - 10 + 'A') );
-  }
-
-
-  private void writeHexByte( Writer out, int value ) throws IOException
-  {
-    writeHexChar( out, value >> 4 );
-    writeHexChar( out, value );
-  }
-
-
-  /*
-   * Die Methode schreibt ein Datensegment im Intel-Hex-Format.
-   *
-   * Rueckabewert: Anzahl der geschriebenen Bytes
-   */
-  private int writeHexSegment(
-                        Writer out,
-                        int    addr,
-                        int    endAddr,
-                        int    fileBegAddr ) throws IOException
-  {
-    int cnt = 0;
-    if( (addr >= 0) && (addr <= endAddr) ) {
-      cnt = endAddr - addr + 1;
-      if( cnt > 32 ) {
-        cnt = 32;
-      }
-      out.write( ':' );
-      writeHexByte( out, cnt );
-
-      int hFileBegAddr = fileBegAddr >> 8;
-      writeHexByte( out, hFileBegAddr );
-      writeHexByte( out, fileBegAddr );
-      writeHexByte( out, 0 );
-
-      int cks = (cnt & 0xFF) + (hFileBegAddr & 0xFF) + (fileBegAddr & 0xFF);
-      for( int i = 0; i < cnt; i++ ) {
-        int b = this.memory.getMemByte( addr++, false );
-        writeHexByte( out, b );
-        cks += b;
-      }
-      writeHexByte( out, 0 - cks );
-      out.write( 0x0D );
-      out.write( 0x0A );
-    }
-    return cnt;
-  }
-
-
-  private void updFmtFields()
-  {
-    boolean reqHeader  = (this.btnFmtJTC.isSelected()
-                                        || this.btnFmtTAP.isSelected());
-    boolean reqBegAddr = this.btnFmtHEX.isSelected();
-    this.labelFileBegAddr.setEnabled( reqHeader || reqBegAddr );
-    this.fldFileBegAddr.setEditable( reqHeader || reqBegAddr );
-    this.labelFileDesc.setEnabled( reqHeader );
-    this.fldFileDesc.setEditable( reqHeader );
-  }
-
-
-  private void writeJTCHeader(
-                        OutputStream out,
-                        int          begAddr,
-                        int          endAddr,
-                        int          fileBegAddr ) throws IOException
-  {
-    int    n    = 11;
-    int    src  = 0;
-    String text = this.fldFileDesc.getText();
-    if( text != null ) {
-      int len = text.length();
-      while( (src < len) && (n > 0) ) {
-        char ch = text.charAt( src++ );
-        if( (ch >= '\u0020') && (ch <= 0xFF) ) {
-          out.write( ch );
-          --n;
-        }
-      }
-    }
-    while( n > 0 ) {
-      out.write( '\u0020' );
-      --n;
-    }
-    for( int i = 0; i < 5; i++ ) {
-      out.write( 0 );
-    }
-    out.write( 2 );
-    out.write( fileBegAddr & 0xFF );
-    out.write( fileBegAddr >> 8 );
-    int fileEndAddr = fileBegAddr + endAddr - begAddr;
-    out.write( fileEndAddr & 0xFF );
-    out.write( fileEndAddr >> 8 );
-    for( int i = 0; i < 107; i++ ) {
-      out.write( 0 );
-    }
-  }
 }

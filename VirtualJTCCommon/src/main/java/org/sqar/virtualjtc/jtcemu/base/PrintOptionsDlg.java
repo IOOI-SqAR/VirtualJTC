@@ -1,6 +1,6 @@
 /*
- * (c) 2007-2010 Jens Mueller
- * (c) 2017 Lars Sonchocky-Helldorf
+ * (c) 2007-2019 Jens Mueller
+ * (c) 2017-2024 Lars Sonchocky-Helldorf
  *
  * Jugend+Technik-Computer-Emulator
  *
@@ -9,122 +9,117 @@
 
 package org.sqar.virtualjtc.jtcemu.base;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.*;
 
-import org.sqar.virtualjtc.jtcemu.Main;
+public class PrintOptionsDlg extends BaseDlg implements ActionListener {
+    private static final Locale locale = Locale.getDefault();
+    private static final ResourceBundle printOptionsDlgResourceBundle = ResourceBundle.getBundle("PrintOptionsDlg", locale);
 
-
-public class PrintOptionsDlg extends BaseDlg implements ActionListener
-{
-  private static final Locale locale = Locale.getDefault();
-  private static final ResourceBundle printOptionsDlgResourceBundle = ResourceBundle.getBundle("PrintOptionsDlg", locale);
-
-  private JComboBox comboFontSize;
-  private JButton   btnOK;
-  private JButton   btnCancel;
+    private JComboBox<Integer> comboFontSize;
+    private JButton btnOK;
+    private JButton btnCancel;
 
 
-  public static void open( Window owner )
-  {
-    (new PrintOptionsDlg( owner )).setVisible( true );
-  }
-
-
-        /* --- ActionListener --- */
-
-  @Override
-  public void actionPerformed( ActionEvent e )
-  {
-    Object src = e.getSource();
-    if( src == this.btnOK ) {
-      doApply();
+    public static void open(Window owner) {
+        (new PrintOptionsDlg(owner)).setVisible(true);
     }
-    else if( src == this.btnCancel ) {
-      doClose();
+
+
+    /* --- ActionListener --- */
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        if (src == this.btnOK) {
+            doApply();
+        } else if (src == this.btnCancel) {
+            doClose();
+        }
     }
-  }
 
 
-        /* --- private Konstruktoren und Methoden --- */
+    /* --- private Konstruktoren und Methoden --- */
 
-  private PrintOptionsDlg( Window owner )
-  {
-    super( owner );
-    setTitle( printOptionsDlgResourceBundle.getString("window.title") );
-
-
-    // Fensterinhalt
-    setLayout( new GridBagLayout() );
-
-    GridBagConstraints gbc = new GridBagConstraints(
-                                        0, 0,
-                                        1, 1,
-                                        0.0, 0.0,
-                                        GridBagConstraints.WEST,
-                                        GridBagConstraints.NONE,
-                                        new Insets( 5, 5, 5, 5 ),
-                                        0, 0 );
-
-    add( new JLabel( printOptionsDlgResourceBundle.getString("label.fontsize") ), gbc );
-
-    this.comboFontSize = new JComboBox();
-    this.comboFontSize.setEditable( false );
-    this.comboFontSize.addItem( "6" );
-    this.comboFontSize.addItem( "7" );
-    this.comboFontSize.addItem( "8" );
-    this.comboFontSize.addItem( "9" );
-    this.comboFontSize.addItem( "10" );
-    this.comboFontSize.addItem( "11" );
-    this.comboFontSize.addItem( "12" );
-    this.comboFontSize.addItem( "14"  );
-    this.comboFontSize.addItem( "16"  );
-    this.comboFontSize.addItem( "18" );
-    gbc.gridx++;
-    add( this.comboFontSize, gbc );
-
-    this.comboFontSize.setSelectedItem(
-        Integer.toString(
-                Main.getIntProperty( "org.sqar.virtualjtc.jtcemu.print.font.size", 10 ) ) );
+    private PrintOptionsDlg(Window owner) {
+        super(owner);
+        setTitle(printOptionsDlgResourceBundle.getString("window.title") + "Druckoptionen");
 
 
-    // Knoepfe
-    JPanel panelBtn = new JPanel( new GridLayout( 1, 2, 5, 5 ) );
-    gbc.insets.top = 10;
-    gbc.gridwidth  = 2;
-    gbc.gridx      = 0;
-    gbc.gridy++;
-    add( panelBtn,gbc );
+        // Fensterinhalt
+        setLayout(new GridBagLayout());
 
-    this.btnOK = new JButton( printOptionsDlgResourceBundle.getString("button.ok") );
-    this.btnOK.addActionListener( this );
-    panelBtn.add( this.btnOK );
+        GridBagConstraints gbc = new GridBagConstraints(
+                0, 0,
+                1, 1,
+                0.0, 0.0,
+                GridBagConstraints.WEST,
+                GridBagConstraints.NONE,
+                new Insets(5, 5, 5, 5),
+                0, 0);
 
-    this.btnCancel = new JButton( printOptionsDlgResourceBundle.getString("button.cancel") );
-    this.btnCancel.addActionListener( this );
-    panelBtn.add( this.btnCancel );
+        add(new JLabel(printOptionsDlgResourceBundle.getString("label.fontsize")), gbc);
+
+        this.comboFontSize = new JComboBox<>();
+        this.comboFontSize.setEditable(false);
+        this.comboFontSize.addItem(6);
+        this.comboFontSize.addItem(7);
+        this.comboFontSize.addItem(8);
+        this.comboFontSize.addItem(9);
+        this.comboFontSize.addItem(10);
+        this.comboFontSize.addItem(11);
+        this.comboFontSize.addItem(12);
+        this.comboFontSize.addItem(14);
+        this.comboFontSize.addItem(16);
+        this.comboFontSize.addItem(18);
+        gbc.gridx++;
+        add(this.comboFontSize, gbc);
+
+        this.comboFontSize.setSelectedItem(
+                AppContext.getIntProperty(
+                        AbstractTextFrm.PROP_PRINT_FONT_SIZE,
+                        AbstractTextFrm.DEFAULT_PRINT_FONT_SIZE));
 
 
-    // Fenstergroesse
-    pack();
-    setParentCentered();
-    setResizable( true );
-  }
+        // Knoepfe
+        JPanel panelBtn = new JPanel(new GridLayout(1, 2, 5, 5));
+        gbc.insets.top = 10;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy++;
+        add(panelBtn, gbc);
+
+        this.btnOK = new JButton(printOptionsDlgResourceBundle.getString("button.ok"));
+        this.btnOK.addActionListener(this);
+        panelBtn.add(this.btnOK);
+
+        this.btnCancel = new JButton(printOptionsDlgResourceBundle.getString("button.cancel"));
+        this.btnCancel.addActionListener(this);
+        panelBtn.add(this.btnCancel);
 
 
-  private void doApply()
-  {
-    Object obj = this.comboFontSize.getSelectedItem();
-    if( obj != null ) {
-      String text = obj.toString();
-      if( text != null ) {
-        Main.setProperty( "org.sqar.virtualjtc.jtcemu.print.font.size", text );
-        doClose();
-      }
+        // Fenstergroesse
+        pack();
+        setParentCentered();
+        setResizable(true);
     }
-  }
+
+
+    private void doApply() {
+        Object obj = this.comboFontSize.getSelectedItem();
+        if (obj != null) {
+            String text = obj.toString();
+            if (text != null) {
+                AppContext.setProperty(
+                        AbstractTextFrm.PROP_PRINT_FONT_SIZE,
+                        text);
+                doClose();
+            }
+        }
+    }
 }

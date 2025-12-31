@@ -8,90 +8,119 @@
 
 package org.sqar.virtualjtc.jtcemu.base;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JDialog;
-
 import org.sqar.virtualjtc.jtcemu.Main;
 
-
-public class BaseDlg extends JDialog implements WindowListener
-{
-  protected BaseDlg( Window owner )
-  {
-    super( owner, Dialog.ModalityType.DOCUMENT_MODAL );
-    setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
-    Main.setIconImages( this );
-    addWindowListener( this );
-  }
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.HashSet;
+import java.util.Set;
 
 
-  protected boolean doClose()
-  {
-    setVisible( false );
-    dispose();
-    return true;
-  }
+public class BaseDlg extends JDialog implements WindowListener {
+    private static Set<String> suppressedMessages = new HashSet<>();
 
 
-  protected void setParentCentered()
-  {
-    Component p = getParent();
-    if( p != null ) {
-      int x = p.getX() + ((p.getWidth() - getWidth()) / 2);
-      int y = p.getY() + ((p.getHeight() - getHeight()) / 2);
-      setLocation( x > 0 ? x : 0, y > 0 ? y : 0 );
+    protected BaseDlg(Window owner) {
+        super(owner, ModalityType.DOCUMENT_MODAL);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        Main.setIconImages(this);
+        addWindowListener(this);
     }
-  }
 
 
-        /* --- WindowListener --- */
-
-  @Override
-  public void windowActivated( WindowEvent e )
-  {
-    // leer;
-  }
+    protected boolean doClose() {
+        setVisible(false);
+        dispose();
+        return true;
+    }
 
 
-  @Override
-  public void windowClosed( WindowEvent e )
-  {
-    // leer;
-  }
+    protected void setParentCentered() {
+        setParentCentered(this);
+    }
 
 
-  @Override
-  public void windowClosing( WindowEvent e )
-  {
-    doClose();
-  }
+    public static void setParentCentered(Window window) {
+        Component p = window.getParent();
+        if (p != null) {
+            int x = p.getX() + ((p.getWidth() - window.getWidth()) / 2);
+            int y = p.getY() + ((p.getHeight() - window.getHeight()) / 2);
+            window.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
+        }
+    }
 
 
-  @Override
-  public void windowDeactivated( WindowEvent e )
-  {
-    // leer;
-  }
+    public static void showError(Component owner, String msg) {
+        if (msg == null) {
+            msg = "Unbekannter Fehler"; // TODO: i18n
+        }
+        JOptionPane.showMessageDialog(
+                owner,
+                msg,
+                "Fehler", // TODO: i18n
+                JOptionPane.ERROR_MESSAGE);
+    }
 
 
-  @Override
-  public void windowDeiconified( WindowEvent e )
-  {
-    // leer;
-  }
+    public static void showSuppressableInfoDlg(Component owner, String msg) {
+        if (msg != null) {
+            if (!suppressedMessages.contains(msg)) {
+                JCheckBox cb = new JCheckBox("Diesen Hinweis nicht mehr anzeigen"); // TODO: i18n
+                JOptionPane.showMessageDialog(
+                        owner,
+                        new Object[]{msg, cb},
+                        "Hinweis", // TODO: i18n
+                        JOptionPane.INFORMATION_MESSAGE);
+                if (cb.isSelected()) {
+                    suppressedMessages.add(msg);
+                }
+            }
+        }
+    }
 
 
-  @Override
-  public void windowIconified( WindowEvent e )
-  {
-    // leer;
-  }
+    /* --- WindowListener --- */
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // leer;
+    }
 
 
-  @Override
-  public void windowOpened( WindowEvent e )
-  {
-    // leer
-  }
+    @Override
+    public void windowClosed(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        doClose();
+    }
+
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // leer;
+    }
+
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // leer
+    }
 }

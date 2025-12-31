@@ -20,234 +20,230 @@ import org.sqar.virtualjtc.jtcemu.Main;
 import org.sqar.virtualjtc.jtcemu.base.*;
 
 
-public class FindAndReplaceDlg extends BaseDlg implements ActionListener
-{
-  private static final Locale locale = Locale.getDefault();
-  private static final ResourceBundle findAndReplaceDlgResourceBundle = ResourceBundle.getBundle("FindAndReplaceDlg", locale);
+public class FindAndReplaceDlg extends BaseDlg implements ActionListener {
+    private static final Locale locale = Locale.getDefault();
+    private static final ResourceBundle findAndReplaceDlgResourceBundle = ResourceBundle.getBundle("FindAndReplaceDlg", locale);
 
-  private Pattern    pattern;
-  private String     findText;
-  private String     replaceText;
-  private boolean    replaceAll;
-  private boolean    caseSensitive;
-  private boolean    regularExpr;
-  private JTextField fldFind;
-  private JTextField fldReplace;
-  private JCheckBox  btnCaseSensitive;
-  private JCheckBox  btnRegularExpr;
-  private JButton    btnFind;
-  private JButton    btnReplaceAll;
-  private JButton    btnCancel;
+    public enum Action {FIND_NEXT, REPLACE_ALL, CANCEL}
 
+    ;
 
-  public FindAndReplaceDlg(
-                        Window  owner,
-                        String  findText,
-                        String  replaceText,
-                        boolean caseSensitive,
-                        boolean regularExpr )
-  {
-    super( owner );
-    
-    setTitle( findAndReplaceDlgResourceBundle.getString("window.title") );
-    
-    this.pattern       = null;
-    this.findText      = null;
-    this.replaceText   = null;
-    this.replaceAll    = false;
-    this.caseSensitive = false;
-    this.regularExpr   = false;
+    private Action action;
+    private String searchText;
+    private String replaceText;
+    private JTextField fldSearchText;
+    private JTextField fldReplaceText;
+    private JCheckBox tglCaseSensitive;
+    private JButton btnFind;
+    private JButton btnReplaceAll;
+    private JButton btnCancel;
 
 
-    // Fensterinhalt
-    setLayout( new GridBagLayout() );
-
-    GridBagConstraints gbc = new GridBagConstraints(
-                                        0, 0,
-                                        1, 1,
-                                        1.0, 0.0,
-                                        GridBagConstraints.NORTHWEST,
-                                        GridBagConstraints.HORIZONTAL,
-                                        new Insets( 5, 5, 5, 5 ),
-                                        0, 0 );
-
-
-    // Eingabefelder
-    JPanel panelInput = new JPanel( new GridBagLayout() );
-    add( panelInput, gbc );
-
-    GridBagConstraints gbcInput = new GridBagConstraints(
-                                        0, 0,
-                                        1, 1,
-                                        0.0, 0.0,
-                                        GridBagConstraints.NORTHEAST,
-                                        GridBagConstraints.NONE,
-                                        new Insets( 5, 0, 5, 5 ),
-                                        0, 0 );
-
-    panelInput.add( new JLabel( findAndReplaceDlgResourceBundle.getString("label.panelInput.searchFor") ), gbcInput );
-    gbcInput.insets.top = 5;
-    gbcInput.gridy++;
-    panelInput.add( new JLabel( findAndReplaceDlgResourceBundle.getString("label.panelInput.replaceBy") ), gbcInput );
-
-    this.fldFind = new JTextField();
-    if( findText != null ) {
-      this.fldFind.setText( findText );
+    public static FindAndReplaceDlg createFindDlg(
+            Window owner,
+            String searchText) {
+        return new FindAndReplaceDlg(owner, searchText, null, false, null);
     }
-    this.fldFind.addActionListener( this );
-    gbcInput.anchor     = GridBagConstraints.NORTHWEST;
-    gbcInput.fill       = GridBagConstraints.HORIZONTAL;
-    gbcInput.insets.top = 0;
-    gbcInput.weightx    = 1.0;
-    gbcInput.gridy      = 0;
-    gbcInput.gridx++;
-    panelInput.add( this.fldFind, gbcInput );
 
-    this.fldReplace = new JTextField();
-    if( replaceText != null ) {
-      this.fldReplace.setText( replaceText );
+
+    public static FindAndReplaceDlg createFindAndReplaceDlg(
+            Window owner,
+            String searchText,
+            boolean caseSensitive,
+            String replaceText) {
+        return new FindAndReplaceDlg(
+                owner,
+                searchText,
+                caseSensitive,
+                true,
+                replaceText);
     }
-    this.fldReplace.addActionListener( this );
-    gbcInput.gridy++;
-    panelInput.add( this.fldReplace, gbcInput );
-
-    this.btnCaseSensitive = new JCheckBox(
-                                        findAndReplaceDlgResourceBundle.getString("button.caseSensitive"),
-                                        caseSensitive );
-    gbcInput.fill          = GridBagConstraints.NONE;
-    gbcInput.weightx       = 0.0;
-    gbcInput.insets.bottom = 0;
-    gbcInput.gridy++;
-    panelInput.add( this.btnCaseSensitive, gbcInput );
-
-    this.btnRegularExpr = new JCheckBox(
-                                findAndReplaceDlgResourceBundle.getString("button.regularExpr"),
-                                regularExpr );
-    gbcInput.insets.top = 0;
-    gbcInput.gridy++;
-    panelInput.add( this.btnRegularExpr, gbcInput );
 
 
-    // Knoepfe
-    JPanel panelBtn = new JPanel( new GridLayout( 3, 1, 5, 5 ) );
-    gbc.fill    = GridBagConstraints.NONE;
-    gbc.weightx = 0.0;
-    gbc.gridx++;
-    add( panelBtn,gbc );
-
-    this.btnFind = new JButton( findAndReplaceDlgResourceBundle.getString("button.find") );
-    this.btnFind.addActionListener( this );
-    panelBtn.add( this.btnFind );
-
-    this.btnReplaceAll = new JButton( findAndReplaceDlgResourceBundle.getString("button.replaceAll") );
-    this.btnReplaceAll.addActionListener( this );
-    panelBtn.add( this.btnReplaceAll );
-
-    this.btnCancel = new JButton( findAndReplaceDlgResourceBundle.getString("button.cancel") );
-    this.btnCancel.addActionListener( this );
-    panelBtn.add( this.btnCancel );
-
-
-    // Fenstergroesse
-    pack();
-    setParentCentered();
-    setResizable( true );
-  }
-
-
-  public boolean getCaseSensitive()
-  {
-    return this.caseSensitive;
-  }
-
-
-  public String getFindText()
-  {
-    return this.findText;
-  }
-
-
-  public Pattern getPattern()
-  {
-    return this.pattern;
-  }
-
-
-  public boolean getRegularExpr()
-  {
-    return this.regularExpr;
-  }
-
-
-  public boolean getReplaceAll()
-  {
-    return this.replaceAll;
-  }
-
-
-  public String getReplaceText()
-  {
-    return this.replaceText;
-  }
-
-
-        /* --- ActionEvent --- */
-
-  @Override
-  public void actionPerformed( ActionEvent e )
-  {
-    Object src = e.getSource();
-    if( src == this.fldFind ) {
-      this.fldReplace.requestFocus();
+    public Action getAction() {
+        return this.action;
     }
-    else if( (src == this.fldReplace) || (src == this.btnFind) ) {
-      if( doApply() )
-        doClose();
-    }
-    else if( src == this.btnReplaceAll ) {
-      if( doApply() ) {
-        this.replaceAll = true;
-        doClose();
-      }
-    }
-    else if( src == this.btnCancel ) {
-      doClose();
-    }
-  }
 
 
-        /* --- private Methoden --- */
-
-  private boolean doApply()
-  {
-    boolean rv   = false;
-    String  text = this.fldFind.getText();
-    if( text == null ) {
-      text = "";
+    public boolean getCaseSensitive() {
+        return this.tglCaseSensitive != null ?
+                this.tglCaseSensitive.isSelected()
+                : false;
     }
-    if( text.length() > 0 ) {
-      try {
-        this.caseSensitive = this.btnCaseSensitive.isSelected();
-        this.regularExpr   = this.btnRegularExpr.isSelected();
 
-        int flags = Pattern.MULTILINE | Pattern.UNICODE_CASE;
-        if( !this.caseSensitive ) {
-          flags |= Pattern.CASE_INSENSITIVE;
+
+    public String getReplaceText() {
+        return this.replaceText != null ? this.replaceText : "";
+    }
+
+
+    public String getSearchText() {
+        return this.searchText != null ? this.searchText : "";
+    }
+
+
+    /* --- Konstruktor --- */
+
+    private FindAndReplaceDlg(
+            Window owner,
+            String searchText,
+            Boolean caseSensitive,
+            boolean withReplace,
+            String replaceText) {
+        super(owner);
+
+        setTitle(findAndReplaceDlgResourceBundle.getString("window.title"));
+
+        this.action = Action.CANCEL;
+        this.searchText = null;
+        this.replaceText = null;
+
+
+        // Layout
+        setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints(
+                0, 0,
+                1, 1,
+                0.0, 0.0,
+                GridBagConstraints.NORTHEAST,
+                GridBagConstraints.NONE,
+                new Insets(5, 0, 5, 5),
+                0, 0);
+
+
+        // Eingabebereich
+        add(new JLabel(findAndReplaceDlgResourceBundle.getString("label.panelInput.searchFor")), gbc);
+
+        this.fldSearchText = new JTextField();
+        if (searchText != null) {
+            this.fldSearchText.setText(searchText);
         }
-        if( !this.regularExpr ) {
-          flags |= Pattern.LITERAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.gridx++;
+        add(this.fldSearchText, gbc);
+
+        if (withReplace) {
+            gbc.anchor = GridBagConstraints.EAST;
+            gbc.fill = GridBagConstraints.NONE;
+            gbc.weightx = 0.0;
+            gbc.gridx = 0;
+            gbc.gridy++;
+            add(new JLabel(findAndReplaceDlgResourceBundle.getString("label.panelInput.replaceBy")), gbc);
+
+            this.fldReplaceText = new JTextField();
+            if (replaceText != null) {
+                this.fldReplaceText.setText(replaceText);
+            }
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1.0;
+            gbc.gridx++;
+            add(this.fldReplaceText, gbc);
+        } else {
+            this.fldReplaceText = null;
         }
-        this.pattern     = Pattern.compile( text, flags );
-        this.findText    = text;
-        this.replaceText = this.fldReplace.getText();
-        rv = true;
-      }
-      catch( PatternSyntaxException ex ) {
-        Main.showError( this, ex );
-      }
-    } else {
-      Main.showError( this, findAndReplaceDlgResourceBundle.getString("error.doApply.inputExpected.errorText") );
+
+
+        // Toggle fuer Gross-/Kleinschreibung
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.0;
+        if (caseSensitive != null) {
+            gbc.gridy++;
+            this.tglCaseSensitive = new JCheckBox(
+                    findAndReplaceDlgResourceBundle.getString("button.caseSensitive"),
+                    caseSensitive);
+            add(this.tglCaseSensitive, gbc);
+        } else {
+            this.tglCaseSensitive = null;
+        }
+
+
+        // Schaltflaechen
+        JPanel panelBtn = new JPanel();
+        panelBtn.setLayout(new GridLayout(1, withReplace ? 3 : 2, 5, 5));
+
+        this.btnFind = new JButton(findAndReplaceDlgResourceBundle.getString("button.find"));
+        panelBtn.add(this.btnFind);
+
+        if (withReplace) {
+            this.btnReplaceAll = new JButton(findAndReplaceDlgResourceBundle.getString("button.replaceAll"));
+            panelBtn.add(this.btnReplaceAll);
+        } else {
+            this.btnReplaceAll = null;
+        }
+
+        this.btnCancel = new JButton(findAndReplaceDlgResourceBundle.getString("button.cancel"));
+        panelBtn.add(this.btnCancel);
+
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridx = 0;
+        gbc.gridy++;
+        add(panelBtn, gbc);
+
+
+        // Listener
+        this.fldSearchText.addActionListener(this);
+        if (this.fldReplaceText != null) {
+            this.fldReplaceText.addActionListener(this);
+        }
+        this.btnFind.addActionListener(this);
+        if (this.btnReplaceAll != null) {
+            this.btnReplaceAll.addActionListener(this);
+        }
+        this.btnCancel.addActionListener(this);
+
+
+        // Fenstergroesse und -position
+        pack();
+        setParentCentered();
+        setResizable(false);
     }
-    return rv;
-  }
+
+
+    /* --- ActionListener --- */
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        if ((src == this.fldReplaceText) || (src == this.btnFind)) {
+            doFind(Action.FIND_NEXT);
+        } else if (src == this.fldSearchText) {
+            if (this.fldReplaceText != null) {
+                this.fldReplaceText.requestFocus();
+            } else {
+                doFind(Action.FIND_NEXT);
+            }
+        } else if (src == this.btnReplaceAll) {
+            doFind(Action.REPLACE_ALL);
+        } else if (src == this.btnCancel) {
+            doClose();
+        }
+    }
+
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        if (e.getWindow() == this)
+            this.fldSearchText.requestFocus();
+    }
+
+
+    /* --- private Methoden --- */
+
+    private void doFind(Action action) {
+        this.searchText = this.fldSearchText.getText();
+        if (this.fldReplaceText != null) {
+            this.replaceText = this.fldReplaceText.getText();
+        }
+        if (this.searchText != null) {
+            if (!this.searchText.isEmpty()) {
+                this.action = action;
+                doClose();
+            }
+        }
+    }
 }
