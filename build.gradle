@@ -13,10 +13,10 @@ version '1.0-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(24)
     }
-    sourceCompatibility = '21'
-    targetCompatibility = '21'
+    sourceCompatibility = '24'
+    targetCompatibility = '24'
 }
 
 dependencies {
